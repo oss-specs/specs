@@ -17,6 +17,7 @@
     "serve-favicon": "~2.2.1"
   },
   "devDependencies": {
-    "cucumber": "^0.5.1"
+    "cucumber": "^0.5.1",
+    "request": "^2.58.0"
   }
 }

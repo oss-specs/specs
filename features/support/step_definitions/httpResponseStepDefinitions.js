@@ -1,4 +1,5 @@
 var fs = require("q-io/fs"); // https://github.com/kriskowal/q-io
+var request = require('request');
 
 module.exports = function () {
 
@@ -24,16 +25,24 @@ module.exports = function () {
       })
 
       // End the promise chain.
-      .done();;
+      .done();
   });
 
   this.When(/^an interested party attempts to view them$/, function (callback) {
-    // Write code here that turns the phrase above into concrete actions
-    callback.pending();
+    var world = this;
+    request
+      .get('http://localhost:3000', function(error, response, body) {
+        world.statusCode = response.statusCode;
+        world.body = body;
+        callback();
+      });
   });
 
   this.Then(/^the specifications should be visible$/, function (callback) {
-    // Write code here that turns the phrase above into concrete actions
-    callback.pending();
+    if (this.statusCode === 200 && /feature/.test(this.body)) {
+      callback();
+    } else {
+      callback("Got response: status code: " + this.statusCode + ". Body: " + this.body);
+    }
   });
 }
