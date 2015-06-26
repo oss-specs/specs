@@ -1,3 +1,6 @@
+# Project specific
+public/test-feature-files/*
+
 # Logs
 logs
 *.log
@@ -25,3 +28,6 @@ build/Release
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
+
+# File system
+.DS_Store
