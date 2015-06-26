@@ -19,9 +19,13 @@ module.exports = function () {
         // Ignore failure to unlink missing directory.
         if (err.code !== 'ENOENT') throw err;
       })
+
+      // Make the target directory for static feature files
+      // in the static assets 'public' directory.
       .then(function() {
         return fs.makeTree(paths.public);
       })
+      // Copy over the feature files.
       .then(function() {
         return fs.copyTree(paths.features, paths.public);
       })
@@ -38,11 +42,16 @@ module.exports = function () {
   });
 
   this.When(/^an interested party attempts to view them$/, function (callback) {
+    // the World variable is passed around the step defs as `this`.
     var world = this;
+
+    // Get a list of feature files.
     fs.listTree(paths.public, function guard(path, stat) {
       return /\.feature$/.test(path);
     })
+
     .then(function(featureFiles) {
+      // Request the contents of the first file.
       var featureFile = featureFiles[0];
       request
         .get('http://localhost:3000/' + featureFile, function(error, response, body) {
@@ -50,8 +59,12 @@ module.exports = function () {
             callback(error);
             return;
           }
+
+          // Store the relevant information on the world object for testing.
           world.statusCode = response.statusCode;
           world.body = body;
+
+          // We're done.
           callback();
         });
       })
@@ -61,6 +74,10 @@ module.exports = function () {
   });
 
   this.Then(/^the specifications should be visible$/, function (callback) {
+
+    // If the request succeeded and the body
+    // has the word 'feature' in it the test
+    // passes.
     if (this.statusCode === 200 && /feature/i.test(this.body)) {
       callback();
     } else {
