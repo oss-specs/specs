@@ -1,0 +1,27 @@
+{
+  "name": "specs-express",
+  "version": "0.0.1",
+  "description": "A service for exposing specification files in version control via a nice web UI.",
+	"private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jimCresswell/specsExpress.git"
+  },
+  "keywords": [
+    "specification",
+    "by",
+    "example",
+    "specifications",
+    "gherkin",
+    "cucumber"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jimCresswell/specsExpress/issues"
+  },
+  "homepage": "https://github.com/jimCresswell/specsExpress#readme"
+}
