@@ -1,5 +1,5 @@
 require('should');
-var GherkinParser = require('../../lib/parser/gherkin.js');
+var GherkinParser = require('../../../lib/parser/gherkin.js');
 
 module.exports = function() {
   // Shared variables
