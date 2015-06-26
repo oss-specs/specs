@@ -1,5 +1,6 @@
 # Project files (for now)
 .idea
+public/test-feature-files/*
 
 # Logs
 logs
@@ -28,3 +29,6 @@ build/Release
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
+
+# File system
+.DS_Store
