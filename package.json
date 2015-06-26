@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "test": "node_modules/cucumber/bin/cucumber.js",
+    "test": "node_modules/.bin/cucumber-js",
     "start": "node ./bin/www"
   },
   "dependencies": {
