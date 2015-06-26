@@ -8,6 +8,13 @@ var app = require('../app');
 var debug = require('debug')('specExpress:server');
 var http = require('http');
 
+var appName = require('../package.json').name || 'myLovelyApp';
+
+/**
+ * Set a process name so we can kill this later.
+ */
+ process.title = appName;
+
 /**
  * Get port from environment and store in Express.
  */
