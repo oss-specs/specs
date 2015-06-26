@@ -10,6 +10,13 @@ module.exports = function () {
 
     // Remove old files.
     fs.removeTree('public/test-feature-files/')
+      .catch(function(err) {
+        // Ignore failure to unlink missing directory.
+        if (err.code !== 'ENOENT') throw err;
+      })
+      .then(function() {
+        return fs.makeTree('public/test-feature-files/');
+      })
       .then(function() {
         return fs.copyTree('features', 'public/test-feature-files/');
       })
