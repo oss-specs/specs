@@ -46,6 +46,10 @@ module.exports = function () {
       var featureFile = featureFiles[0];
       request
         .get('http://localhost:3000/' + featureFile, function(error, response, body) {
+          if (error) {
+            callback(error);
+            return;
+          }
           world.statusCode = response.statusCode;
           world.body = body;
           callback();
