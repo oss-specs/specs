@@ -17,6 +17,6 @@ Feature: Parsing specifications
 			"""
 		When I parse this specification
 		Then I get a feature with title "Feature title"
-		And 2 scenarios with titles
+		And scenarios with titles
 		| Scenario 1 |
 		| Scenario 2 |
