@@ -7,13 +7,13 @@ Feature: Parsing specifications
 	Scenario: Parse specification
 		Given following feature file
 			"""
-				Feature: Feature title
-				
-					Narrative
+			Feature: Feature title
 
-				Scenario: Scenario 1
+				Narrative
 
-				Scenario: Scenario 2
+			Scenario: Scenario 1
+
+			Scenario: Scenario 2
 			"""
 		When I parse this specification
 		Then I get a feature with title "Feature title"
