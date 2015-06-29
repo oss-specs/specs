@@ -32,3 +32,6 @@ node_modules
 
 # File system
 .DS_Store
+
+# Test results
+test-results.xml
