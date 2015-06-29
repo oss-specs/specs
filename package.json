@@ -6,7 +6,7 @@
     "start": "node ./bin/www",
     "stop": "pkill specExpress",
     "pretest": "npm start & sleep 1",
-    "test": "node_modules/.bin/cucumber-js",
+    "test": "node_modules/.bin/cucumber-js -f json | node_modules/.bin/cucumber-junit > test-results.xml",
     "posttest": "npm stop"
   },
   "contributors": [
@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "cucumber": "^0.5.1",
+    "cucumber-junit": "^1.1.10",
     "request": "^2.58.0",
     "should": "^7.0.1"
   }
