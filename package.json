@@ -6,7 +6,7 @@
     "start": "node ./bin/www",
     "stop": "pkill specExpress",
     "pretest": "npm start & sleep 1",
-    "test": "node_modules/.bin/cucumber-js -f json | node_modules/.bin/cucumber-junit > test-results.xml",
+    "test": "node_modules/.bin/istanbul test node_modules/.bin/cucumber-js --print none -- --format=json | node_modules/.bin/cucumber-junit > test-results.xml",
     "posttest": "npm stop",
     "lint": "node_modules/.bin/eslint ./"
   },
