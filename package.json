@@ -7,7 +7,8 @@
     "stop": "pkill specExpress",
     "pretest": "npm start & sleep 1",
     "test": "node_modules/.bin/cucumber-js -f json | node_modules/.bin/cucumber-junit > test-results.xml",
-    "posttest": "npm stop"
+    "posttest": "npm stop",
+    "lint": "node_modules/.bin/eslint ./"
   },
   "contributors": [
     "Jim Cresswell <jimCresswell>",
@@ -30,6 +31,7 @@
   "devDependencies": {
     "cucumber": "^0.5.1",
     "cucumber-junit": "^1.1.10",
+    "eslint": "^0.24.0",
     "request": "^2.58.0",
     "should": "^7.0.1"
   }
