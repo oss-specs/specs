@@ -1,7 +1,7 @@
 # specsExpress
-[![Dependency Status](https://david-dm.org/oss-specs/specsExpress.svg)](https://david-dm.org/jimCresswell/specsExpress)
-[![Code Climate](https://codeclimate.com/github/oss-specs/specsExpress/badges/gpa.svg)](https://codeclimate.com/github/jimCresswell/specsExpress)
-[![Test Coverage](https://codeclimate.com/github/oss-specs/specsExpress/badges/coverage.svg)](https://codeclimate.com/github/jimCresswell/specsExpress/coverage)
+[![Dependency Status](https://david-dm.org/oss-specs/specsExpress.svg)](https://david-dm.org/oss-specs/specsExpress)
+[![Code Climate](https://codeclimate.com/github/oss-specs/specsExpress/badges/gpa.svg)](https://codeclimate.com/github/oss-specs/specsExpress)
+[![Test Coverage](https://codeclimate.com/github/oss-specs/specsExpress/badges/coverage.svg)](https://codeclimate.com/github/oss-specs/specsExpress/coverage)
 
 A service for exposing specification files via a nice web UI.
 
