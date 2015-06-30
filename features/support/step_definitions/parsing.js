@@ -1,3 +1,6 @@
+"use strict";
+/* eslint new-cap: 0 */
+
 var GherkinParser = require('../../../lib/parser/gherkin.js');
 
 module.exports = function() {
@@ -16,7 +19,7 @@ module.exports = function() {
     // Write code here that turns the phrase above into concrete actions
 
     parser = new GherkinParser();
-    visitor = parser.parse(featureText)
+    visitor = parser.parse(featureText);
   });
 
   this.Then(/^I get a feature with title "([^"]*)"$/, function (featureTitle) {
@@ -28,7 +31,7 @@ module.exports = function() {
   this.Then(/^scenarios with titles$/, function (table) {
     // Write code here that turns the phrase above into concrete actions
 
-    for(i=0; i<table.raw().length; i++) {
+    for(var i = 0; i < table.raw().length; i++) {
       var row = table.raw()[i];
       var scenario = visitor.scenarios[i];
       scenario.name.should.be.exactly(row[0]);

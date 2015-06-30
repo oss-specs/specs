@@ -1,3 +1,6 @@
+"use strict";
+/* eslint new-cap: 0 */
+
 var fs = require("q-io/fs"); // https://github.com/kriskowal/q-io
 var request = require('request');
 
@@ -17,7 +20,9 @@ module.exports = function () {
     fs.removeTree(paths.public)
       .catch(function(err) {
         // Ignore failure to unlink missing directory.
-        if (err.code !== 'ENOENT') throw err;
+        if (err.code !== 'ENOENT') {
+          throw err;
+        }
       })
 
       // Make the target directory for static feature files
@@ -46,7 +51,7 @@ module.exports = function () {
     var world = this;
 
     // Get a list of feature files.
-    fs.listTree(paths.public, function guard(path, stat) {
+    fs.listTree(paths.public, function guard(path) {
       return /\.feature$/.test(path);
     })
 
@@ -84,4 +89,4 @@ module.exports = function () {
       callback("Got response: status code: " + this.statusCode + ". Body: " + this.body);
     }
   });
-}
+};
