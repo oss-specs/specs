@@ -6,7 +6,10 @@
     "start": "node ./bin/www",
     "stop": "pkill specExpress",
     "pretest": "npm start & sleep 1",
-    "test": "node_modules/.bin/cucumber-js -f json | node_modules/.bin/cucumber-junit > test-results.xml",
+    "test": "node_modules/.bin/cucumber-js --format=json | node_modules/.bin/cucumber-junit > test-results.xml",
+    "preteamcity-coverage": "npm run-script pretest",
+    "teamcity-coverage": "node_modules/.bin/istanbul cover node_modules/.bin/cucumber-js --report teamcity",
+    "ppostteamcity-coverage": "npm run-script posttest",
     "posttest": "npm stop",
     "lint": "node_modules/.bin/eslint ./"
   },
@@ -32,6 +35,7 @@
     "cucumber": "^0.5.1",
     "cucumber-junit": "^1.1.10",
     "eslint": "^0.24.0",
+    "istanbul": "^0.3.17",
     "request": "^2.58.0",
     "should": "^7.0.1"
   }
