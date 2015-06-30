@@ -1,5 +1,8 @@
 # specsExpress
+[![Dependency Status](https://david-dm.org/jimCresswell/specsExpress.svg)](https://david-dm.org/jimCresswell/specsExpress)
+
 A service for exposing specification files via a nice web UI.
+
 
 For a full specification please see the `features` folder, and hopefully soon a nice web page.
 
