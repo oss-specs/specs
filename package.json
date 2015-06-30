@@ -32,6 +32,7 @@
     "gherkin": "^2.12.1"
   },
   "devDependencies": {
+    "codeclimate-test-reporter": "0.0.4",
     "cucumber": "^0.5.1",
     "cucumber-junit": "^1.1.10",
     "eslint": "^0.24.0",
