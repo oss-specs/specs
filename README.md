@@ -17,5 +17,3 @@ For a full specification please see the `features` folder, and hopefully soon a 
 ## Usage
 
 * Run the server in develop mode locally `DEBUG=specExpress:* npm start`.
-
-(c) 2015
