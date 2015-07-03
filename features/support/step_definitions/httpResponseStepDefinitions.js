@@ -53,7 +53,7 @@ module.exports = function () {
   });
 
   this.When(/^an interested party attempts to view them$/, function (callback) {
-    var world = this; // the World variable is passed around the step defs as `this`.
+    var world = this;
     request
       .get('http://localhost:3000/', function(error, response, body) {
         if (error) {
@@ -78,19 +78,34 @@ module.exports = function () {
     callback();
   });
 
-  this.Given(/^a list of feature files is displayed$/, function (callback) {
-    // Write code here that turns the phrase above into concrete actions
-    callback.pending();
-  });
-
-  this.When(/^an interested party wants to view the scenarios within that feature file$/, function (callback) {
-    // Write code here that turns the phrase above into concrete actions
-    callback.pending();
+  this.When(/^an interested party wants to view the scenarios within a feature file$/, function (callback) {
+    var world = this; // the World variable is passed around the step defs as `this`.
+    request
+      .get('http://localhost:3000/', function(error, response, body) {
+        if (error) {
+          callback(error);
+          return;
+        }
+        var firstLink = (/href="([\w\/-]+)"/.exec(body))[1];
+        request
+          .get('http://localhost:3000/' + firstLink, function(error, response, body) {
+            if (error) {
+              callback(error);
+              return;
+            }
+            world.statusCode = response.statusCode;
+            world.body = body;
+            callback();
+          });
+      });
   });
 
   this.Then(/^the scenarios will be visible\.$/, function (callback) {
-    // Write code here that turns the phrase above into concrete actions
-    callback.pending();
+    should.equal(this.statusCode, 200, "Bad HTTP status code.");
+    should.equal(/feature/i.test(this.body),
+      true,
+      "The returned document body does not contain the word 'feature'");
+    callback();
   });
 
 };

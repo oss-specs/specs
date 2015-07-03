@@ -15,7 +15,7 @@ router.get('/', function(req, res) {
         .send(featureFilePaths.reduce(function(previous, current) {
           // There's no school like old school.
           // Seriously, I will replace this with a templating engine once it matters.
-          return previous + '<p><a href="' + current + '">' + current + '</a></p>'
+          return previous + '<p><a href="' + current.replace('.feature','').replace('public/','') + '">' + current + '</a></p>'
         }, ''));
     })
     .catch(function(err) {
