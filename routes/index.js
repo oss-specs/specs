@@ -12,8 +12,11 @@ router.get('/', function(req, res) {
     .then(function(featureFilePaths) {
       res
         .status(200)
-        .type("text/feature")
-        .send(featureFilePaths.join("\n"));
+        .send(featureFilePaths.reduce(function(previous, current) {
+          // There's no school like old school.
+          // Seriously, I will replace this with a templating engine once it matters.
+          return previous + '<p><a href="' + current + '">' + current + '</a></p>'
+        }, ''));
     })
     .catch(function(err) {
       res
