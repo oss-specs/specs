@@ -1,16 +1,17 @@
 {
-  "name": "specExpress",
+  "name": "specs",
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "prestart" : "npm stop",
     "start": "node ./bin/www",
-    "stop": "pkill specExpress",
+    "stop": "pkill specs || true",
 
     "pretest": "npm start & sleep 1",
     "test": "node_modules/.bin/cucumber-js --format=json | node_modules/.bin/cucumber-junit > test-results.xml",
     "posttest": "npm stop",
 
-    "precuke": "npm start & sleep 1",
+    "precuke": "npm pretest",
     "cuke": "node_modules/.bin/cucumber-js",
     "postcuke": "npm stop",
 
