@@ -1,6 +1,6 @@
 # Project files (for now)
 .idea
-public/test-feature-files/*
+public/feature-files/*
 
 # Logs
 logs
