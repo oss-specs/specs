@@ -4,16 +4,16 @@
 var express = require('express');
 var router = express.Router();
 
-var getFeatureFiles = require("../lib/specifications/getFeatureFiles");
+var getFeatureFilePaths = require("../lib/specifications/getFeatureFilePaths");
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  getFeatureFiles('public/feature-files')
-    .then(function(featureFiles) {
+  getFeatureFilePaths('public/feature-files')
+    .then(function(featureFilePaths) {
       res
         .status(200)
         .type("text/feature")
-        .send(featureFiles.join("\n"));
+        .send(featureFilePaths.join("\n"));
     })
     .catch(function(err) {
       res
