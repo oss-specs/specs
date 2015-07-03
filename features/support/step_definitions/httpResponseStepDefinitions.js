@@ -13,11 +13,10 @@ var paths = {
 /**
  * Copy this repo's features files to a public directory.
  */
-function createSpecsForTesting(callback) {
-  callback = callback || function(){};
+function createSpecsForTesting() {
 
   // Remove old files.
-  fs.removeTree(paths.public)
+  return fs.removeTree(paths.public)
     .catch(function(err) {
       // Ignore failure to unlink missing directory.
       if (err.code !== 'ENOENT') {
@@ -33,23 +32,19 @@ function createSpecsForTesting(callback) {
     // Copy over the feature files.
     .then(function() {
       return fs.copyTree(paths.features, paths.public);
-    })
-
-    // We are done.
-    .then(function() {
-        callback();
-    })
-
-    // Pass unhandled errors to the test framework.
-    .catch(function(err) {
-      callback(err);
     });
 }
 
 module.exports = function () {
 
   this.Given(/^a set of specifications containing at least one feature file$/, function (callback) {
-    createSpecsForTesting(callback);
+    createSpecsForTesting()
+      .then(function() {
+        callback();
+      })
+      .catch(function(err) {
+        callback(err);
+      });
   });
 
   this.When(/^an interested party attempts to view them$/, function (callback) {
@@ -78,25 +73,36 @@ module.exports = function () {
     callback();
   });
 
-  this.When(/^an interested party wants to view the scenarios within a feature file$/, function (callback) {
+  this.Given(/^a list of feature files is displayed$/, function (callback) {
     var world = this; // the World variable is passed around the step defs as `this`.
-    request
-      .get('http://localhost:3000/', function(error, response, body) {
-        if (error) {
-          callback(error);
-          return;
-        }
-        var firstLink = (/href="([\w\/-]+)"/.exec(body))[1];
+    createSpecsForTesting()
+      .then(function() {
         request
-          .get('http://localhost:3000/' + firstLink, function(error, response, body) {
+          .get('http://localhost:3000/', function(error, response, body) {
             if (error) {
               callback(error);
               return;
             }
-            world.statusCode = response.statusCode;
-            world.body = body;
+            world.firstLink = (/href="([\w\/-]+)"/.exec(body))[1];
             callback();
           });
+      })
+      .catch(function(err) {
+        callback(err);
+      });
+  });
+
+  this.When(/^an interested party wants to view the scenarios within that feature file$/, function (callback) {
+    var world = this; // the World variable is passed around the step defs as `this`.
+    request
+      .get('http://localhost:3000/' + world.firstLink, function(error, response, body) {
+        if (error) {
+          callback(error);
+          return;
+        }
+        world.statusCode = response.statusCode;
+        world.body = body;
+        callback();
       });
   });
 
