@@ -1,4 +1,8 @@
 # specsExpress
+[![Dependency Status](https://david-dm.org/oss-specs/specsExpress.svg)](https://david-dm.org/oss-specs/specsExpress)
+[![Code Climate](https://codeclimate.com/github/oss-specs/specsExpress/badges/gpa.svg)](https://codeclimate.com/github/oss-specs/specsExpress)
+[![Test Coverage](https://codeclimate.com/github/oss-specs/specsExpress/badges/coverage.svg)](https://codeclimate.com/github/oss-specs/specsExpress/coverage)
+
 A service for exposing specification files via a nice web UI.
 
 This software is pre-alpha, in that it doesn't do actually do anything useful yet. 
@@ -14,5 +18,3 @@ For a full specification please see the `features` folder, and hopefully soon a 
 ## Usage
 
 * Run the server in develop mode locally `DEBUG=specExpress:* npm start`.
-
-(c) 2015
