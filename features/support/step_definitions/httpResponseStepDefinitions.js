@@ -7,7 +7,7 @@ var request = require('request');
 
 var paths = {
   features: 'features',
-  public: 'public/test-feature-files/'
+  public: 'public/feature-files/'
 };
 
 /**
