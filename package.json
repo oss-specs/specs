@@ -7,11 +7,11 @@
     "start": "node ./bin/www",
     "stop": "pkill specs || true",
 
-    "pretest": "npm start & sleep 1",
+    "pretest": "npm start > /dev/null & sleep 1",
     "test": "node_modules/.bin/cucumber-js --format=json | node_modules/.bin/cucumber-junit > test-results.xml",
     "posttest": "npm stop",
 
-    "precuke": "npm pretest",
+    "precuke": "npm start > /dev/null & sleep 1",
     "cuke": "node_modules/.bin/cucumber-js",
     "postcuke": "npm stop",
 
