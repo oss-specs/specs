@@ -3,23 +3,19 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "prestart" : "npm stop",
+    "prestart": "npm stop",
     "start": "node ./bin/www",
     "stop": "pkill specs || true",
-
     "pretest": "npm start > /dev/null & sleep 1",
     "test": "node_modules/.bin/cucumber-js --format=json | node_modules/.bin/cucumber-junit > test-results.xml",
     "posttest": "npm stop",
-
     "precuke": "npm start > /dev/null & sleep 1",
     "cuke": "node_modules/.bin/cucumber-js",
     "postcuke": "npm stop",
-
     "preteamcity-coverage": "npm run-script pretest",
     "teamcity-coverage": "node_modules/.bin/istanbul cover node_modules/.bin/cucumber-js --report teamcity --report lcov",
     "postteamcity-coverage": "npm run-script posttest",
-
-    "codeclimate": "node_modules/.bin/codeclimate < coverage/lcov.info",
+    "codeclimate": "node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info",
     "lint": "node_modules/.bin/eslint ./"
   },
   "contributors": [
@@ -40,7 +36,7 @@
     "gherkin": "^2.12.1"
   },
   "devDependencies": {
-    "codeclimate-test-reporter": "0.0.4",
+    "codeclimate-test-reporter": "^0.1.0",
     "cucumber": "^0.5.1",
     "cucumber-junit": "^1.1.10",
     "eslint": "^0.24.0",
