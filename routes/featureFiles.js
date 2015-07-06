@@ -6,8 +6,10 @@ var router = express.Router();
 
 var getFeatureFile = require("../lib/specifications/getFeatureFile");
 
-router.get('/:filePath', function(req, res) {
-  getFeatureFile(req.params.filePath)
+// Match all routes with something after the slash.
+router.get(/^\/(.+)/, function(req, res) {
+  var featureFilePath = req.params[0];
+  getFeatureFile(featureFilePath)
     .then(function(fileContents) {
 
       // Hack hack hack.
