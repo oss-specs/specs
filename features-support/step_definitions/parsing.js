@@ -1,7 +1,9 @@
 "use strict";
 /* eslint new-cap: 0 */
 
-var GherkinParser = require('../../../lib/parser/gherkin.js');
+require('should');
+
+var GherkinParser = require('../../lib/parser/gherkin.js');
 
 module.exports = function() {
   // Shared variables
