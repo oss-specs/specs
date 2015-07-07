@@ -1,5 +1,5 @@
 # Specs
-[![Test Status](https://img.shields.io/teamcity/https/teamcity.sponte.uk/s/SpecsExpress_Ci.svg)](https://img.shields.io/teamcity/https/teamcity.sponte.uk/s/SpecsExpress_Ci.svg)
+[![Test Status](https://img.shields.io/teamcity/https/teamcity.sponte.uk/s/SpecsExpress_Ci.svg)](https://teamcity.sponte.uk/viewType.html?buildTypeId=SpecsExpress_Ci&branch_OssSpecs=%3Cdefault%3E&tab=buildTypeStatusDiv)
 [![Dependency Status](https://david-dm.org/oss-specs/specs.svg)](https://david-dm.org/oss-specs/specs)
 [![Code Climate](https://codeclimate.com/github/oss-specs/specs/badges/gpa.svg)](https://codeclimate.com/github/oss-specs/specs)
 [![Test Coverage](https://codeclimate.com/github/oss-specs/specs/badges/coverage.svg)](https://codeclimate.com/github/oss-specs/specs/coverage)
