@@ -1,0 +1,50 @@
+.alphabeta::after {
+    content: 'ALPHA';
+    display: inline-block;
+    position: absolute;
+    font-size: 1.5rem;
+    width: 16rem;
+    height: 2rem;
+    top: 2.1rem;
+    left: -4.8rem;
+    transform: rotate(-45deg);
+    text-align: center;
+    white-space: nowrap;
+    background-color: red;
+    color: white;
+    text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+    transition: font-size 0.7s cubic-bezier(0.0, 0.9, 0.6, 1.5);
+}
+
+
+.alphabeta:hover::after {
+    content: 'IT\'S NOT FINISHED!';
+    font-size: 0.8rem;
+    font-weight: 900;
+    line-height: 2.5em;
+}
+
+
+@media (min-width: 780px) {
+    .alphabeta::after {
+        font-size: 3rem;
+        width: 16rem;
+        height: 3.5rem;
+        top: 2.3rem;
+        left: -3.8rem;
+    }
+
+    .alphabeta:hover::after {
+        font-size: 1.1rem;
+        line-height: 3.2em;
+    }
+}
+
+
+.beta::after {
+    content: 'BETA';
+};
