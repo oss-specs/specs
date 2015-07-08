@@ -15,7 +15,7 @@ For a full specification please see the [features](/features) folder, and hopefu
 * Install [node](https://nodejs.org/).
 * Clone this repository.
 * `npm install`.
-* To test locally `npm run cuke`, to test and generate JUnit XML (for CI) `npm test`.
+* To test `npm test`.
 * To start the service `npm start` -- by default the web UI will be visible at http://localhost:3000 .
 * For other tasks see the [package.json](/package.json).
 

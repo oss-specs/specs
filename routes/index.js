@@ -10,31 +10,22 @@ var getFeatureFilePaths = require("../lib/specifications/getFeatureFilePaths");
 router.get('/', function(req, res) {
   getFeatureFilePaths('public/feature-files')
     .then(function(featureFilePaths) {
+      featureFilePaths = featureFilePaths.map(function(featurePath) {
+        featurePath = featurePath.replace('public/', '');
+        var featureName = featurePath.replace('.feature', '').replace('feature-files/', '');
+        return {
+          featurePath: featurePath,
+          featureName: featureName
+        };
+      });
 
-      // Now would be a good time to add a templating library.
-      var content =
-        '<head><link rel="stylesheet" href="public/css/modified-normalize.css"><link rel="stylesheet" href="public/css/alphabeta.css"><link rel="stylesheet" href="public/css/main.css"></head>' +
-        '<body>' +
-        '<div class="alphabeta"></div>' +
-        '<main>' +
-        '<header><h1>Available Specifications</h1></header>' +
-        '<section>' +
-        (featureFilePaths.reduce(function(previous, current) {
-          return previous + '<p><a href="' + current.replace('.feature','').replace('public/','') + '">' + current + '</a></p>'
-        }, '') || '<p>No specifications found.</p>') +
-        '</section>' +
-        '</main>' +
-        '</body>';
-
-      res
-        .status(200)
-        .send(content);
+      res.render('feature-files', {paths: featureFilePaths});
     })
     .catch(function(err) {
       res
         .status(500)
         .send(err);
-    })
+    });
 });
 
 module.exports = router;
