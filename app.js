@@ -1,10 +1,5 @@
 "use strict";
 
-// Only require newrelic if we've provided API KEY
-if(process.env.NEWRELIC_API_KEY) {
-  console.log("Setting up new relic monitoring");
-  require('newrelic');
-}
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
