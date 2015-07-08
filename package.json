@@ -7,15 +7,12 @@
     "start": "node ./bin/www",
     "stop": "pkill specs || true",
     "pretest": "npm start > /dev/null & sleep 1",
-    "test": "node_modules/.bin/cucumber-js --require features-support --format=json | node_modules/.bin/cucumber-junit > test-results.xml",
+    "test": "node_modules/.bin/cucumber-js --require features-support",
     "posttest": "npm stop",
-    "precuke": "npm start > /dev/null & sleep 1",
-    "cuke": "node_modules/.bin/cucumber-js --require features-support",
-    "postcuke": "npm stop",
-    "preteamcity-coverage": "npm run-script pretest",
-    "teamcity-coverage": "node_modules/.bin/istanbul cover node_modules/.bin/cucumber-js --require features-support --report teamcity --report lcov",
-    "postteamcity-coverage": "npm run-script posttest",
-    "codeclimate": "node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info",
+    "pretest-with-coverage": "npm run pretest",
+    "test-with-coverage": "node_modules/.bin/istanbul cover node_modules/.bin/cucumber-js --report teamcity --report lcov -- --require features-support -f progress",
+    "posttest-with-coverage": "npm run posttest",
+    "upload-coverage-data": "node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info",
     "lint": "node_modules/.bin/eslint ./"
   },
   "contributors": [
@@ -38,7 +35,6 @@
   "devDependencies": {
     "codeclimate-test-reporter": "^0.1.0",
     "cucumber": "^0.5.1",
-    "cucumber-junit": "^1.1.10",
     "eslint": "^0.24.0",
     "istanbul": "^0.3.17",
     "request": "^2.58.0",
