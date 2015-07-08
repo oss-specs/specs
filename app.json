@@ -1,0 +1,8 @@
+{
+  "name": "specs",
+  "scripts": {},
+  "env": {},
+  "addons": [
+    "newrelic"
+  ]
+}
