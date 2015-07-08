@@ -11,8 +11,7 @@ router.get('/', function(req, res) {
   getFeatureFilePaths('public/feature-files')
     .then(function(featureFilePaths) {
 
-      // There's no school like old school.
-      // Seriously, I will replace this with a templating engine once it matters.
+      // Now would be a good time to add a templating library.
       var content =
         '<head><link rel="stylesheet" href="public/css/modified-normalize.css"><link rel="stylesheet" href="public/css/alphabeta.css"><link rel="stylesheet" href="public/css/main.css"></head>' +
         '<body>' +
