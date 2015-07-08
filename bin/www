@@ -10,6 +10,12 @@ var http = require('http');
 
 var appName = require('../package.json').name || 'myLovelyApp';
 
+// Only require newrelic if we've provided API KEY
+if(process.env.NEWRELIC_API_KEY) {
+  console.log("Setting up new relic monitoring");
+  require('newrelic');
+}
+
 /**
  * Set a process name so we can kill this later.
  */
