@@ -1,0 +1,127 @@
+/* Control the margins and padding. */
+body, h1, h2, h3, h4, h5, h6, p, ul, ol {
+  padding: 0;
+  margin: 0;
+}
+
+/* Base font size. */
+html {
+  font-size: 14px;
+}
+
+/* Body. */
+body {
+  padding: 0 0.5em;
+  font-family: Helvetica,FreeSans,"Liberation Sans",Helmet,Arial,sans-serif;
+  background-color: #e9e9e9;
+}
+
+/**
+ * Main and immediate sections.
+ */
+
+main {
+  font-size: 1rem;
+  max-width: 38em;
+  padding: 5em 0.4em;
+  margin: 0 auto;
+}
+
+main > header,
+main > section,
+main > footer {
+  padding: 0 0.6em;
+}
+
+main > header {
+  margin-bottom: 3.2em;
+  text-align: center;
+}
+
+main > section {
+  margin-bottom: 3em;
+}
+
+main > header > h1 {
+  margin-bottom: 0.8em;
+}
+
+main > header > p {
+  font-size: 1.2em;
+  margin-bottom: 1em;
+}
+
+main > section > p {
+  margin: 1em 0;
+}
+
+/**
+ * Main footer and external nav
+ */
+
+main > footer {
+  margin-top: 1em;
+  margin-bottom: 2em;
+}
+
+/**
+ * Landscape and larger phones
+ */
+@media (min-width: 480px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/**
+ * Wideview port (e.g. landscape tablet).
+ */
+@media (min-width: 800px) {
+  main {
+    max-width: 50em;
+  }
+
+  main > header {
+    max-width: 38em;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  main > header > h1 {
+    font-size: 2.2em;
+  }
+
+  main > section > h2 {
+    font-size: 1.8em;
+  }
+
+  section.occupation > header {
+    float: left;
+    max-width: 18em;
+  }
+}
+
+/**
+ * Wider viewport (e.g. monitor, tv).
+ */
+@media (min-width: 1280px) {
+  html {
+    font-size: 18px;
+  }
+
+  main {
+    max-width: 60em;
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+}
+
+
+/**
+ * Semantic clearfix.
+ */
+.group:after {
+  content: "";
+  display: table;
+  clear: both;
+}
