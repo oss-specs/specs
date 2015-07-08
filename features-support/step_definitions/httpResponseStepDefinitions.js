@@ -83,7 +83,7 @@ module.exports = function () {
               callback(error);
               return;
             }
-            world.firstLink = (/href="([\w\/-]+)"/.exec(body))[1];
+            world.firstLink = (/class="speclink" href="([\w\/.-]+)"/.exec(body))[1];
             callback();
           });
       })
