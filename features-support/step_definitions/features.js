@@ -50,7 +50,7 @@ module.exports = function () {
   this.When(/^an interested party attempts to view them$/, function (callback) {
     var world = this;
     request
-      .get('http://localhost:3000/', function(error, response, body) {
+      .get('http://localhost:3000/features', function(error, response, body) {
         if (error) {
           callback(error);
           return;
@@ -78,7 +78,7 @@ module.exports = function () {
     createSpecsForTesting()
       .then(function() {
         request
-          .get('http://localhost:3000/', function(error, response, body) {
+          .get('http://localhost:3000/features', function(error, response, body) {
             if (error) {
               callback(error);
               return;
@@ -95,7 +95,7 @@ module.exports = function () {
   this.When(/^an interested party wants to view the scenarios within that feature file$/, function (callback) {
     var world = this; // the World variable is passed around the step defs as `this`.
     request
-      .get('http://localhost:3000/' + world.firstLink, function(error, response, body) {
+      .get('http://localhost:3000/features/' + world.firstLink, function(error, response, body) {
         if (error) {
           callback(error);
           return;
@@ -108,7 +108,7 @@ module.exports = function () {
 
   this.Then(/^the scenarios will be visible\.$/, function (callback) {
     should.equal(this.statusCode, 200, "Bad HTTP status code.");
-    should.equal(/feature/i.test(this.body),
+    should.equal(/feature:/i.test(this.body),
       true,
       "The returned document body does not contain the word 'feature'");
     callback();
