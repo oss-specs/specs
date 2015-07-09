@@ -94,8 +94,9 @@ module.exports = function () {
 
   this.When(/^an interested party wants to view the scenarios within that feature file$/, function (callback) {
     var world = this; // the World variable is passed around the step defs as `this`.
+    var featurePath = 'http://localhost:3000/' + world.firstLink;
     request
-      .get('http://localhost:3000/features/' + world.firstLink, function(error, response, body) {
+      .get(featurePath, function(error, response, body) {
         if (error) {
           callback(error);
           return;

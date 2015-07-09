@@ -18,11 +18,11 @@ router.get('/', function(req, res) {
 
         // Map from the storage directory to the Express route.
         // TODO move inside getFeatureFilePaths and call it getFeatureFileRoutes.
-        featurePath = featurePath.replace('public/feature-files/', '');
+        featurePath = featurePath.replace('public/feature-files/', 'features/');
 
         // Create a display name for the feature.
         // TODO move inside getFeatureFilePaths and call it getFeatureFileRoutes.
-        var featureName = featurePath.replace('.feature', '').replace('feature-files/', '');
+        var featureName = featurePath.replace('.feature', '').replace('features/', '');
 
         return {
           featurePath: featurePath,
@@ -43,11 +43,18 @@ router.get('/', function(req, res) {
 // and display an individual feature.
 router.get(/^\/(.+)/, function(req, res) {
   var featureFilePath = req.params[0];
+
+  // Map from Express route to file system directory.
+  // TODO move into getFeature function.
+  featureFilePath = featureFilePath.replace('/features/', '/public/feature-files/');
+
   getFeatureFile(featureFilePath)
     .then(function(fileContents) {
 
-      // Hack hack hack.
-      res.send(fileContents.replace(/\n/g, '<br>'))
+      // Parse the feature from the file contents.
+      // TODO move to a separate module.
+      var featureLines = fileContents.split('\n');
+      res.render('feature', {featureLines: featureLines});
     })
     .catch(function(err) {
       res
