@@ -44,10 +44,6 @@ router.get('/', function(req, res) {
 router.get(/^\/(.+)/, function(req, res) {
   var featureFilePath = req.params[0];
 
-  // Map from Express route to file system directory.
-  // TODO move into getFeature function.
-  featureFilePath = featureFilePath.replace('/features/', '/public/feature-files/');
-
   getFeatureFile(featureFilePath)
     .then(function(fileContents) {
 
