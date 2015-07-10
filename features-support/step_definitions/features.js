@@ -24,11 +24,27 @@ function getFeaturesFromUrl(callback) {
     });
 }
 
+var staticTestDataExists = false;
+
 module.exports = function () {
+
+  // Create static test data, only do this once.
   this.Given(/^a set of specifications containing at least one feature file\.?$/, function (callback) {
     var world = this;
-    world.createSpecsForTesting()
+
+    // Only generate the static test data once.
+    if (staticTestDataExists) {
+      callback();
+      return;
+    }
+
+    // Make sure the test data is clean.
+    world.deleteTestSpecs()
       .then(function() {
+        return world.createSpecsForTesting();
+      })
+      .then(function() {
+        staticTestDataExists = true;
         callback();
       })
       .catch(function(err) {
@@ -64,21 +80,14 @@ module.exports = function () {
 
   this.Given(/^a list of feature files is displayed\.?$/, function (callback) {
     var world = this;
-    world.createSpecsForTesting()
-      .then(function() {
-        request
-          .get('http://localhost:' + world.appPort + '/features', function(error, response, body) {
-            if (error) {
-              callback(error);
-              return;
-            }
-            world.firstLink = (/class="speclink" href="([\w\/.-]+)"/.exec(body))[1];
-            callback();
-          });
-      })
-      .catch(function(err) {
-        callback(err);
-      });
+    request.get('http://localhost:' + world.appPort + '/features', function(error, response, body) {
+      if (error) {
+        callback(error);
+        return;
+      }
+      world.firstLink = (/class="speclink" href="([\w\/.-]+)"/.exec(body))[1];
+      callback();
+    });
   });
 
   this.When(/^an interested party wants to view the scenarios within that feature file\.?$/, function (callback) {
