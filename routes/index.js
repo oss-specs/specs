@@ -4,27 +4,29 @@
 var express = require('express');
 var router = express.Router();
 
-var getFeatureFilePaths = require("../lib/specifications/getFeatureFilePaths");
+var getProject = require("../lib/specifications/getProject");
 
-/* GET home page. */
 router.get('/', function(req, res) {
-  getFeatureFilePaths('public/feature-files')
-    .then(function(featureFilePaths) {
-      featureFilePaths = featureFilePaths.map(function(featurePath) {
-        featurePath = featurePath.replace('public/', '');
-        var featureName = featurePath.replace('.feature', '').replace('feature-files/', '');
-        return {
-          featurePath: featurePath,
-          featureName: featureName
-        };
-      });
+  var repoUrl = req.query.repo_url;
 
-      res.render('feature-files', {paths: featureFilePaths});
+  // If there is no URL query param then
+  // render the index page.
+  if (!repoUrl) {
+    res.render('index');
+    return;
+  }
+
+  getProject(repoUrl)
+    .then(function(headCommitHash) {
+
+      // Redirect to the features page.
+      // TODO features page per repo, then using the commit hash makes sense.
+      res.redirect('/features');
     })
     .catch(function(err) {
       res
         .status(500)
-        .send(err);
+        .send(err.message || err);
     });
 });
 
