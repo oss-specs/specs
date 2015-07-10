@@ -7,7 +7,7 @@ var should = require('should');
 // Test helper.
 function getFeaturesFromUrl(callback) {
   var world = this;
-  var projectFeaturesUrl = 'http://localhost:3000/?repo_url=' + encodeURIComponent(world.repoUrl);
+  var projectFeaturesUrl = 'http://localhost:' + world.appPort + '/?repo_url=' + encodeURIComponent(world.repoUrl);
   request
     .get(projectFeaturesUrl, function(error, response, body) {
       if (error) {
@@ -39,7 +39,7 @@ module.exports = function () {
   this.When(/^an interested party attempts to view them\.?$/, function (callback) {
     var world = this;
     request
-      .get('http://localhost:3000/features', function(error, response, body) {
+      .get('http://localhost:' + world.appPort + '/features', function(error, response, body) {
         if (error) {
           callback(error);
           return;
@@ -67,7 +67,7 @@ module.exports = function () {
     world.createSpecsForTesting()
       .then(function() {
         request
-          .get('http://localhost:3000/features', function(error, response, body) {
+          .get('http://localhost:' + world.appPort + '/features', function(error, response, body) {
             if (error) {
               callback(error);
               return;
@@ -83,7 +83,7 @@ module.exports = function () {
 
   this.When(/^an interested party wants to view the scenarios within that feature file\.?$/, function (callback) {
     var world = this; // the World variable is passed around the step defs as `this`.
-    var featurePath = 'http://localhost:3000/' + world.firstLink;
+    var featurePath = 'http://localhost:' + world.appPort + '/' + world.firstLink;
     request
       .get(featurePath, function(error, response, body) {
         if (error) {
