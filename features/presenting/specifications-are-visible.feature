@@ -19,13 +19,13 @@ Feature: Specifications are visible to users
 
   @internet @server
   Scenario: Features can be retrieved from a remote Git repo.
-    Given a URL representing a remote Git repo
+    Given a URL representing a remote Git repo "https://github.com/oss-specs/specs"
     When an interested party wants to view the features in that repo
     Then the list of features will be visible.
 
     @internet @server
     Scenario: Requesting features for an existing project displays features.
-      Given a URL representing a remote Git repo
+      Given a URL representing a remote Git repo "https://github.com/oss-specs/specs"
       When an interested party wants to view the features in that repo
       And they request the features for the same repository again
       Then the list of features will be visible.

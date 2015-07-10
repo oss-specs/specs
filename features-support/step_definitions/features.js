@@ -104,8 +104,8 @@ module.exports = function () {
     callback();
   });
 
-  this.Given(/^a URL representing a remote Git repo\.?$/, function (callback) {
-    this.repoUrl = "https://github.com/oss-specs/specs";
+  this.Given(/^a URL representing a remote Git repo "([^"]*)"$/, function (repoUrl, callback) {
+    this.repoUrl = repoUrl;
     callback();
   });
 
