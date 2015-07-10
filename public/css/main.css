@@ -23,72 +23,45 @@ body {
 main {
   font-size: 1rem;
   max-width: 38em;
-  padding: 6em 2em;
+  padding: 5em 0.4em;
   margin: 0 auto;
 }
 
 main > header,
 main > section,
 main > footer {
-  padding: 1em;
+  padding: 0 0.6em;
 }
 
-main > header,
-main > h1,
-main > section {
-  margin-bottom: 2em;
-}
-
-main > header,
-main > h1 {
+main > header {
+  margin-bottom: 3.2em;
   text-align: center;
 }
 
-section > h2 {
-    margin-bottom: 1em;
+main > section {
+  margin-bottom: 3em;
 }
 
-section ul,
-section ol {
-  list-style: none;
+main > header > h1 {
+  margin-bottom: 0.8em;
 }
 
-p {
+main > header > p {
   font-size: 1.2em;
   margin-bottom: 1em;
 }
 
-/* Somewhat borrowed from Bootstrap */
-button {
-  display: inline-block;
-  padding: 0.2em 0.4em;
-  margin-bottom: 0;
-  font-weight: normal;
-  line-height: 1.4;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  -ms-touch-action: manipulation;
-      touch-action: manipulation;
-  cursor: pointer;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-  background-image: none;
-  border: 1px solid transparent;
-  border-radius: 4px;
+main > section > p {
+  margin: 1em 0;
 }
 
-button.call-to-action {
-  background-color: blue;
-  color: white;
-}
-button.call-to-action:hover {
-  background-color: green;
-}
-button.call-to-action:active {
-  box-shadow: 1px 1px rgba(0, 0, 0, 0.4);
+/**
+ * Main footer and external nav
+ */
+
+main > footer {
+  margin-top: 1em;
+  margin-bottom: 2em;
 }
 
 /**
@@ -113,6 +86,19 @@ button.call-to-action:active {
     margin-left: auto;
     margin-right: auto;
   }
+
+  main > header > h1 {
+    font-size: 2.2em;
+  }
+
+  main > section > h2 {
+    font-size: 1.8em;
+  }
+
+  section.occupation > header {
+    float: left;
+    max-width: 18em;
+  }
 }
 
 /**
@@ -130,6 +116,7 @@ button.call-to-action:active {
   }
 }
 
+
 /**
  * Semantic clearfix.
  */
@@ -137,15 +124,4 @@ button.call-to-action:active {
   content: "";
   display: table;
   clear: both;
-}
-
-/**
- * Project management
- */
-.project-management > section {
-  float: left;
-  margin-right: 3em;
-}
-.project-management form button {
-  margin-left: 0.5em;
 }

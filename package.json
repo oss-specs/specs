@@ -6,11 +6,11 @@
     "prestart": "npm stop",
     "start": "node ./bin/www",
     "stop": "pkill specs || true",
-    "pretest": "PORT=1337 npm start & sleep 1",
-    "test": "PORT=1337 node_modules/.bin/cucumber-js --require features-support",
+    "pretest": "npm start > /dev/null & sleep 1",
+    "test": "node_modules/.bin/cucumber-js --require features-support",
     "posttest": "npm stop",
     "pretest-with-coverage": "npm run pretest",
-    "test-with-coverage": "PORT=1337 node_modules/.bin/istanbul cover node_modules/.bin/cucumber-js --report teamcity --report lcov -- --require features-support -f progress",
+    "test-with-coverage": "node_modules/.bin/istanbul cover node_modules/.bin/cucumber-js --report teamcity --report lcov -- --require features-support -f progress",
     "posttest-with-coverage": "npm run posttest",
     "upload-coverage-data": "node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info",
     "lint": "node_modules/.bin/eslint ./"
@@ -31,7 +31,6 @@
     "hbs": "^3.1.0",
     "morgan": "~1.6.0",
     "newrelic": "^1.20.2",
-    "nodegit": "^0.4.1",
     "q-io": "^1.13.1",
     "serve-favicon": "~2.3.0"
   },
