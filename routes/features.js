@@ -35,7 +35,7 @@ router.get('/', function(req, res) {
     .catch(function(err) {
       res
         .status(500)
-        .send(err);
+        .send(err.message || err);
     });
 });
 
@@ -55,7 +55,7 @@ router.get(/^\/(.+)/, function(req, res) {
     .catch(function(err) {
       res
         .status(err.code === 'ENOENT' ? 404 : 500)
-        .send(err);
+        .send(err.message || err);
     });
 })
 
