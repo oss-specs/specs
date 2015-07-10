@@ -84,6 +84,12 @@ button.call-to-action {
   background-color: blue;
   color: white;
 }
+button.call-to-action:hover {
+  background-color: green;
+}
+button.call-to-action:active {
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.4);
+}
 
 /**
  * Landscape and larger phones
@@ -140,7 +146,6 @@ button.call-to-action {
   float: left;
   margin-right: 3em;
 }
-
 .project-management form button {
   margin-left: 0.5em;
 }
