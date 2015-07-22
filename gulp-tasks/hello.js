@@ -6,3 +6,9 @@ gulp.task('Hello', 'Hello world task', function(done) {
   console.log("hello world");
   done();
 });
+
+// serve
+// acceptance test
+// acceptance test with coverage
+// lint
+// watch - refresh browser on css or js change, restart server and refresh browser on server logic or template change.
