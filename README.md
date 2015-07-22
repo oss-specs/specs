@@ -14,7 +14,8 @@ For a full specification please see the [features](/features) folder, and hopefu
 
 * Install [node](https://nodejs.org/).
 * Clone this repository.
-* `npm install`.
+* Make sure the task runner [Gulp](http://gulpjs.com/) is installed globally `npm install --global gulp`.
+* Move to the cloned project directory and run `npm install`.
 * To test `npm test`.
 * To start the service `npm start` -- by default the web UI will be visible at http://localhost:3000 .
 * For other tasks see the [package.json](/package.json).
