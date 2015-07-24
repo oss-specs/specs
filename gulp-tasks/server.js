@@ -20,12 +20,12 @@ var watchGlobs = [
   'views/**/*'
 ];
 
-gulp.task('server:start', 'Start serving the app', function(done) {
+gulp.task('server:start', 'Start serving the app', ['set-envs'], function(done) {
   server.listen({
     path: binaryPath,
     env: {
-      NODE_ENV: 'development',
-      PORT: 1337
+      NODE_ENV: process.env.NODE_ENV,
+      PORT: process.env.PORT
     }
   }, done);
 });
