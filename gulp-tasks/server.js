@@ -21,7 +21,6 @@ var watchGlobs = [
 ];
 
 gulp.task('server:start', 'Start serving the app', function(done) {
-
   server.listen({
     path: binaryPath,
     env: {

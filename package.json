@@ -43,6 +43,7 @@
     "cucumber": "^0.5.1",
     "eslint": "^0.24.0",
     "gulp": "^3.9.0",
+    "gulp-cucumber": "0.0.11",
     "gulp-develop-server": "^0.4.3",
     "gulp-help": "^1.6.0",
     "istanbul": "^0.3.17",
