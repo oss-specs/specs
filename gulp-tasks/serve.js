@@ -16,3 +16,7 @@ gulp.task('server:start', 'Start serving the app', function(done) {
     }
   }, done);
 });
+
+gulp.task('server:stop', 'Stop serving the app', function(done) {
+  server.kill(undefined, done);
+});
