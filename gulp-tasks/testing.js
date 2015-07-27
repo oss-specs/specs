@@ -16,7 +16,7 @@ gulp.task('cucumber', false, function() {
 });
 
 gulp.task('test:features', 'Test the features', function(done) {
-  runSequence('set-envs',
+  runSequence('set-test-envs',
               'server:start',
               'cucumber',
               'server:stop',

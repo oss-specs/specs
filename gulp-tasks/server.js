@@ -20,7 +20,7 @@ var watchGlobs = [
   'views/**/*'
 ];
 
-gulp.task('server:start', 'Start serving the app', ['set-envs'], function(done) {
+gulp.task('server:start', 'Start serving the app', ['set-test-envs'], function(done) {
   server.listen({
     path: binaryPath,
     env: {
