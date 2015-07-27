@@ -25,6 +25,33 @@
   "directories": {
     "lib": "./lib"
   },
+  "paths": {
+    "server-js": [
+      "bin/www",
+      "app.js",
+      "routes/**/*.js",
+      "lib/**/*.js"
+    ],
+    "client-js": [
+      "public/javascript/**/*.js"
+    ],
+    "test-js": [
+      "features-support/**/*.js"
+    ],
+    "gulp-js": [
+      "gulpfile.js",
+      "gulp-tasks/**/*.js"
+    ],
+    "css": [
+      "public/css/**/*.css"
+    ],
+    "view-templates": [
+      "views/**/*.hbs"
+    ],
+    "feature-files": [
+      "features/**/*.feature"
+    ]
+  },
   "dependencies": {
     "body-parser": "~1.13.1",
     "cookie-parser": "~1.3.5",

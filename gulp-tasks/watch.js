@@ -2,19 +2,10 @@
 // which lists what tasks are available.
 var gulp = require('gulp-help')(require('gulp'));
 
-var packagejson = require('../package.json');
-var binaryPath = packagejson.bin['module-name'];
-var watchGlobs = [
-  binaryPath,
-  'app.js',
-  'lib/**/*.js',
-  'public/css/**/*.css',
-  'public/javascript/**/*.js',
-  'routes/**/*.js',
-  'views/**/*'
-];
+var sourceGlobs = require('../package.json')['paths'];
+var serverGlobs = [sourceGlobs['server-js'], sourceGlobs['view-templates']];
 
 gulp.task('watch:start', 'Start watching files for changes', function(done) {
-  gulp.watch(watchGlobs, ['server:restart']);
+  gulp.watch(serverGlobs, ['server:restart']);
   done();
 });
