@@ -5,7 +5,6 @@ var fs = require("q-io/fs"); // https://github.com/kriskowal/q-io
 module.exports = function() {
   this.World = function World(callback) {
     this.appPort = process.env.PORT || 3000;
-
     this.paths = {
       features: 'features',
       public: 'public/feature-files/'

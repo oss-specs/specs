@@ -11,8 +11,9 @@ if(process.env.NEW_RELIC_LICENSE_KEY) {
 }
 
 var app = require('../app');
-var debug = require('debug')('specExpress:server');
+var debug = require('debug')('specs:server');
 var http = require('http');
+var cp = require('child_process');
 
 var appName = require('../package.json').name || 'myLovelyApp';
 
@@ -76,17 +77,34 @@ function onError(error) {
     : 'Port ' + port;
 
   // handle specific listen errors with friendly messages
+  var exit = false;
+  var errorMessage = 'Error: ';
   switch (error.code) {
     case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
+      errorMessage += bind + ' requires elevated privileges.';
+      exit = true;
       break;
     case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
+      errorMessage += bind + ' is already in use.';
+      exit = true;
       break;
     default:
+      errorMessage += error.message || 'Something broke.';
+
+    console.error(errorMessage);
+
+    // If the process is a child process (e.g. started in Gulp)
+    // then inform the parent process that the server has errored.
+    if (process.send) {
+      process.send(startMessage);
+    }
+
+    // Exit or rethrow.
+    if (exit) {
+      process.exit(1);
+    } else {
       throw error;
+    }
   }
 }
 
@@ -99,5 +117,12 @@ function onListening() {
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  var startMessage = 'Server listening on ' + bind;
+  debug(startMessage);
+
+  // If the process is a child process (e.g. started in Gulp)
+  // then inform the parent process that the server has started.
+  if (process.send) {
+    process.send(startMessage);
+  }
 }
