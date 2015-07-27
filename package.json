@@ -32,25 +32,16 @@
       "routes/**/*.js",
       "lib/**/*.js"
     ],
-    "client-js": [
-      "public/javascript/**/*.js"
-    ],
-    "test-js": [
-      "features-support/**/*.js"
-    ],
+    "client-js": "public/javascript/**/*.js",
+    "test-js": "features-support/**/*.js",
     "gulp-js": [
       "gulpfile.js",
       "gulp-tasks/**/*.js"
     ],
-    "css": [
-      "public/css/**/*.css"
-    ],
-    "view-templates": [
-      "views/**/*.hbs"
-    ],
-    "feature-files": [
-      "features/**/*.feature"
-    ]
+    "css": "public/css/**/*.css",
+    "view-templates": "views/**/*.hbs",
+    "feature-files": "features/**/*.feature",
+    "test-output-dir": "test-results"
   },
   "dependencies": {
     "body-parser": "~1.13.1",
@@ -72,6 +63,7 @@
     "gulp": "^3.9.0",
     "gulp-cucumber": "0.0.12",
     "gulp-develop-server": "^0.4.3",
+    "gulp-eslint": "^0.15.0",
     "gulp-help": "^1.6.0",
     "istanbul": "^0.3.17",
     "request": "^2.58.0",
