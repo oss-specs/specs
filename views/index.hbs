@@ -5,7 +5,8 @@
     <h2>Get features from a project</h2>
     <form action="/" method="get">
       <label>Project Git repo URL (https only please): <input type="text" name="repo_url" /></label>
-      <button class="call-to-action">Submit</button>
+      <button class="call-to-action" onclick="document.body.classList.add('waiting')">Submit</button>
+      <div class="loader-container"><div class="loader"></div></div>
     </form>
   </section>
   <section>
