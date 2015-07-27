@@ -35,6 +35,7 @@ gulp.task('server:stop', 'Stop serving the app', function(done) {
 });
 
 // Note: will exit process on error.
-gulp.task('server:restart', 'Restart the server when defined files change', function() {
+gulp.task('server:watch-restart', 'Restart the server when defined files change', function(done) {
     gulp.watch(watchGlobs, server.restart);
+    done();
 });
