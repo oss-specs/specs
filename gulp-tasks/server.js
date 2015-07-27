@@ -10,15 +10,6 @@ var server = require('gulp-develop-server');
 
 var packagejson = require('../package.json');
 var binaryPath = packagejson.bin['module-name'];
-var watchGlobs = [
-  binaryPath,
-  'app.js',
-  'lib/**/*.js',
-  'public/css/**/*.css',
-  'public/javascript/**/*.js',
-  'routes/**/*.js',
-  'views/**/*'
-];
 
 gulp.task('server:start', 'Start serving the app', ['set-test-envs'], function(done) {
   server.listen({
@@ -34,8 +25,8 @@ gulp.task('server:stop', 'Stop serving the app', function(done) {
   server.kill(undefined, done);
 });
 
-// Note: will exit process on error.
-gulp.task('server:watch-restart', 'Restart the server when defined files change', function(done) {
-    gulp.watch(watchGlobs, server.restart);
-    done();
+gulp.task('server:restart', 'Restart the server', function(done) {
+    server.restart(function(error) {
+      done(error);
+    });
 });

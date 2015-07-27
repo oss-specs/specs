@@ -5,10 +5,6 @@
 // Pull in the tasks from the gulp-tasks directory.
 require('require-dir')('./gulp-tasks');
 
-// "start": "node ./bin/www",
-
-// "test": "PORT=1337 node_modules/.bin/cucumber-js --require features-support";
-
 // "pretest-with-coverage": "npm run pretest",
 // "test-with-coverage": "PORT=1337 node_modules/.bin/istanbul cover node_modules/.bin/cucumber-js --report teamcity --report lcov -- --require features-support -f progress",
 // "posttest-with-coverage": "npm run posttest",
