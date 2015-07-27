@@ -35,4 +35,5 @@ node_modules
 
 # Test results
 test-results
+!test-results/.gitkeep
 test-results.xml
