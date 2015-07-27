@@ -11,7 +11,7 @@ var server = require('gulp-develop-server');
 var packagejson = require('../package.json');
 var binaryPath = packagejson.bin['module-name'];
 
-gulp.task('server:start', 'Start serving the app', ['set-test-envs'], function(done) {
+gulp.task('server:start', 'Start serving the app', ['set-envs:test'], function(done) {
   server.listen({
     path: binaryPath,
     env: {
