@@ -34,4 +34,5 @@ node_modules
 .DS_Store
 
 # Test results
+test-results
 test-results.xml
