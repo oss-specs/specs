@@ -146,6 +146,9 @@ button.call-to-action:active {
   float: left;
   margin-right: 3em;
 }
+.project-management form input {
+  margin-top: 2em;
+}
 .project-management form button {
   margin-left: 0.5em;
 }
