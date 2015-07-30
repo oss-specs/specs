@@ -14,7 +14,7 @@ Feature: Parsing specifications
         Some descriptive text, sometimes a "user story"
 
         # A comment
-        @myScenarioLevelTag1 @myScenarioLevelTag1
+        @myScenarioLevelTag1 @myScenarioLevelTag2
         Scenario: Scenario 1
           Given something is true
           And something else is true
@@ -54,8 +54,12 @@ Feature: Parsing specifications
     | Scenario 1 |
     | Scenario 2 |
 
-  @parsing
+  @parsing @dev
   Scenario: Parse tags
     When I parse this specification
     Then features tags are associated with features
-    And scenario tags are associated with scenarios.
+      | @myFeatureLevelTag1 |
+      | @myFeatureLevelTag2 |
+    And scenario tags are associated with scenarios
+      | @myScenarioLevelTag1 |
+      | @myScenarioLevelTag2 |

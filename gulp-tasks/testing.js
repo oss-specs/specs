@@ -6,6 +6,9 @@ var gulp = require('gulp-help')(require('gulp'));
 var runSequence = require('run-sequence').use(gulp);
 
 var cucumber = require('gulp-cucumber');
+var jasmine = require('gulp-jasmine');
+
+var projectPaths = require('../package.json')['paths'];
 
 // Parse any command line arguments ignoring
 // Node and the name of the calling script.
@@ -17,7 +20,7 @@ var tags = argv.tags || false;
 // Hidden from gulp-help.
 gulp.task('cucumber', 'Run Cucumber directly without starting the server.', function() {
   var options = {
-    support: 'features-support/**/*.js',
+    support: projectPaths['cucumber-support-js'],
     // Tags are optional, falsey values are ignored.
     tags: tags
   }
@@ -35,4 +38,9 @@ gulp.task('test:features', 'Test the features.', function(done) {
               done);
 }, {
   options: {'tags': 'Supports same optional tags arguments as \'Cucumber\' task.'}
+});
+
+gulp.task('test:unit', 'Run the unit tests.', function () {
+    return gulp.src(projectPaths['unit-test-js'])
+        .pipe(jasmine());
 });

@@ -12,35 +12,43 @@ module.exports = function() {
   var visitor;
   var features;
 
-  this.Given(/^the feature file\.?$/, function (string) {
+  this.Given(/^the feature file\.?$/, function (string, done) {
     featureText = string;
+    done();
   });
 
-  this.When(/^I parse this specification\.?$/, function () {
+  this.When(/^I parse this specification\.?$/, function (done) {
     parser = new GherkinParser();
     visitor = parser.parse(featureText);
     features = visitor.getFeatures();
+    done();
   });
 
-  this.Then(/^I get a feature with title "([^"]*)"\.?$/, function (featureTitle) {
+  this.Then(/^I get a feature with title "([^"]*)"\.?$/, function (featureTitle, done) {
     features[0].name.should.be.exactly(featureTitle);
+    done();
   });
 
-  this.Then(/^scenarios with titles$/, function (table) {
+  this.Then(/^scenarios with titles$/, function (table, done) {
     for(var i = 0; i < table.raw().length; i++) {
       var row = table.raw()[i];
       var scenario = features[0].scenarios[i];
       scenario.name.should.be.exactly(row[0]);
     }
+    done();
   });
 
-  this.Then(/^features tags are associated with features\.?$/, function (callback) {
-    // Write code here that turns the phrase above into concrete actions
-    callback.pending();
+  this.Then(/^features tags are associated with features\.?$/, function (table, done) {
+    var featureTags = features[0].tags;
+    var expectedTags = (table.raw()).map(function (valueWrappedInArray) {return valueWrappedInArray[0]});
+    featureTags.should.containDeepOrdered(expectedTags);
+    done();
   });
 
-  this.Then(/^scenario tags are associated with scenarios\.?$/, function (callback) {
-    // Write code here that turns the phrase above into concrete actions
-    callback.pending();
+  this.Then(/^scenario tags are associated with scenarios\.?$/, function (table, done) {
+    var scenarioTags = features[0].scenarios[0].tags;
+    var expectedTags = (table.raw()).map(function (valueWrappedInArray) {return valueWrappedInArray[0]});
+    scenarioTags.should.containDeepOrdered(expectedTags);
+    done();
   });
 };
