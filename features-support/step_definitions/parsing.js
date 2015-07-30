@@ -12,17 +12,17 @@ module.exports = function() {
   var visitor;
   var features;
 
-  this.Given(/^the feature file$/, function (string) {
+  this.Given(/^the feature file\.?$/, function (string) {
     featureText = string;
   });
 
-  this.When(/^I parse this specification$/, function () {
+  this.When(/^I parse this specification\.?$/, function () {
     parser = new GherkinParser();
     visitor = parser.parse(featureText);
     features = visitor.getFeatures();
   });
 
-  this.Then(/^I get a feature with title "([^"]*)"$/, function (featureTitle) {
+  this.Then(/^I get a feature with title "([^"]*)"\.?$/, function (featureTitle) {
     features[0].name.should.be.exactly(featureTitle);
   });
 
@@ -34,11 +34,11 @@ module.exports = function() {
     }
   });
 
-  this.Then(/^features tags are associated with features$/, function (callback) {
+  this.Then(/^features tags are associated with features\.?$/, function (callback) {
     // Write code here that turns the phrase above into concrete actions
     callback.pending();
   });
-  
+
   this.Then(/^scenario tags are associated with scenarios\.?$/, function (callback) {
     // Write code here that turns the phrase above into concrete actions
     callback.pending();
