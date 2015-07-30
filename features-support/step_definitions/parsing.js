@@ -33,4 +33,14 @@ module.exports = function() {
       scenario.name.should.be.exactly(row[0]);
     }
   });
+
+  this.Then(/^features tags are associated with features$/, function (callback) {
+    // Write code here that turns the phrase above into concrete actions
+    callback.pending();
+  });
+  
+  this.Then(/^scenario tags are associated with scenarios\.?$/, function (callback) {
+    // Write code here that turns the phrase above into concrete actions
+    callback.pending();
+  });
 };
