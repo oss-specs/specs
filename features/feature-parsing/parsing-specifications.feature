@@ -4,6 +4,7 @@ Feature: Parsing specifications
 	As a user
 	I want to see features broken down into logical parts such as scenarios, features, tables, tags etc
 
+	@parsing
 	Scenario: Parse specification
 		Given following feature file
 			"""
