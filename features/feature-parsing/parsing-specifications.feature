@@ -53,3 +53,9 @@ Feature: Parsing specifications
     And scenarios with titles
     | Scenario 1 |
     | Scenario 2 |
+
+  @parsing
+  Scenario: Parse tags
+    When I parse this specification
+    Then features tags are associated with features
+    And scenario tags are associated with scenarios.
