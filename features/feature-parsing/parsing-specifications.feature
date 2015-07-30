@@ -5,8 +5,8 @@ Feature: Parsing specifications
 	I want to see features broken down into logical parts such as scenarios, features, tables, tags etc
 
 	# Slightly confusing because this is a feature about features.
-	Background: A feature exists
-		Given the feature
+	Background: A feature file exists
+		Given the feature file
 			"""
 			@myFeatureLevelTag
 			Feature: Feature title

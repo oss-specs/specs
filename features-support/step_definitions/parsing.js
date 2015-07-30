@@ -12,7 +12,7 @@ module.exports = function() {
   var visitor;
   var features;
 
-  this.Given(/^the feature$/, function (string) {
+  this.Given(/^the feature file$/, function (string) {
     featureText = string;
   });
 
