@@ -42,6 +42,8 @@ Feature: Parsing specifications
 						| placeholder | another placeholder | a third lovely placeholder |
 						| value1-1    | value1-2            | value1-3                   |
 						| value2-1    | value2-2            | value2-3                   |
+
+			Feature: coping with multiple features in a file.
 			"""
 
 	@parsing
