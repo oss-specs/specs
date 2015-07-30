@@ -11,7 +11,7 @@ var server = require('gulp-develop-server');
 var packagejson = require('../package.json');
 var binaryPath = packagejson.bin['module-name'];
 
-gulp.task('server:start', 'Start serving the app', ['set-envs:test'], function(done) {
+gulp.task('server:start', 'Start serving the app.', ['set-envs:test'], function(done) {
   server.listen({
     path: binaryPath,
     env: {
@@ -21,11 +21,11 @@ gulp.task('server:start', 'Start serving the app', ['set-envs:test'], function(d
   }, done);
 });
 
-gulp.task('server:stop', 'Stop serving the app', function(done) {
+gulp.task('server:stop', 'Stop serving the app.', function(done) {
   server.kill(undefined, done);
 });
 
-gulp.task('server:restart', 'Restart the server', function(done) {
+gulp.task('server:restart', 'Restart the server.', function(done) {
     server.restart(function(error) {
       done(error);
     });

@@ -14,7 +14,7 @@ var eslintOptions = {
   'useEslintrc': true
 };
 
-gulp.task('analyse:lint', 'Lint the server and client JavaScript files', function() {
+gulp.task('analyse:lint', 'Lint the server and client JavaScript files.', function() {
   return gulp.src(eslintGlobs)
     .pipe(eslint(eslintOptions))
     .pipe(eslint.format())
