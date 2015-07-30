@@ -33,4 +33,6 @@ gulp.task('test:features', 'Test the features.', function(done) {
               'cucumber',
               'server:stop',
               done);
+}, {
+  options: {'tags': 'Supports same optional tags arguments as \'Cucumber\' task.'}
 });
