@@ -4,18 +4,48 @@ Feature: Parsing specifications
 	As a user
 	I want to see features broken down into logical parts such as scenarios, features, tables, tags etc
 
-	@parsing
-	Scenario: Parse specification
-		Given following feature file
+	# Slightly confusing because this is a feature about features.
+	Background: A feature exists
+		Given the feature
 			"""
+			@myFeatureLevelTag
 			Feature: Feature title
 
-				Narrative
+				Some descriptive text, sometimes a "user story"
 
-			Scenario: Scenario 1
+				# A comment
+				@myScenarioLevelTag
+				Scenario: Scenario 1
+					Given something is true
+					And something else is true
+					But a third thing is not true
+					When an action happens
+					Then there is an outcome
 
-			Scenario: Scenario 2
+				Scenario: Scenario 2
+					Given I have an "argument"
+					When I have a table data:
+						| name | stuff |
+						| asdf | ASDDS |
+					Then I expect
+						\"\"\"
+							A block of text
+							On mulptiple lines.
+						\"\"\"
+
+				Scenario Outline: a collection of related examples
+					Given I have a <placeholder>
+					When I compare it to <another placeholder>
+					Then the expected outcome is <a third lovely placeholder>
+
+					Examples:
+						| placeholder | another placeholder | a third lovely placeholder |
+						| value1-1    | value1-2            | value1-3                   |
+						| value1-1    | value1-2            | value1-3                   |
 			"""
+
+	@parsing
+	Scenario: Parse titles
 		When I parse this specification
 		Then I get a feature with title "Feature title"
 		And scenarios with titles

@@ -11,7 +11,7 @@ module.exports = function() {
   var parser;
   var visitor;
 
-  this.Given(/^following feature file$/, function (string) {
+  this.Given(/^the feature$/, function (string) {
     // Write code here that turns the phrase above into concrete actions
     featureText = string;
   });
