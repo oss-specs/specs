@@ -18,5 +18,5 @@ gulp.task('analyse:lint', 'Lint the server and client JavaScript files', functio
   return gulp.src(eslintGlobs)
     .pipe(eslint(eslintOptions))
     .pipe(eslint.format())
-    .pipe(eslint.format('junit', lintResultsFileStream))
+    .pipe(eslint.format('junit', lintResultsFileStream));
 });
