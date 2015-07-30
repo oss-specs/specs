@@ -15,13 +15,15 @@ var tags = argv.tags || false;
 
 // Run all the Cucumber features, doesn't start server
 // Hidden from gulp-help.
-gulp.task('cucumber', 'Run Cucumber directly without starting the server. Supports tags e.g. "--tags @parsing".', function() {
+gulp.task('cucumber', 'Run Cucumber directly without starting the server.', function() {
   var options = {
     support: 'features-support/**/*.js',
     // Tags are optional, falsey values are ignored.
     tags: tags
   }
   return gulp.src('features/**/*.feature').pipe(cucumber(options));
+}, {
+  options: {'tags': 'Supports optional tags argument e.g.\n\t\t\t--tags @parsing\n\t\t\t--tags @tag1,orTag2\n\t\t\t--tags @tag1 --tags @andTag2\n\t\t\t--tags @tag1 --tags ~@andNotTag2'}
 });
 
 // Default Cucumber run requires server to be running.
