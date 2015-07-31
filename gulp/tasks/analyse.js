@@ -6,7 +6,7 @@ var eslint = require('gulp-eslint');
 
 var path = require('path');
 
-var projectPaths = require('../package.json')['paths'];
+var projectPaths = require('../../package.json')['paths'];
 
 var fs = require('fs');
 var lintingOutputPath = path.join(projectPaths['test-output-dir'], 'lintingResults.xml');

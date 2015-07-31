@@ -5,10 +5,11 @@ var gulp = require('gulp-help')(require('gulp'));
 // Sequential Gulp tasks
 var runSequence = require('run-sequence').use(gulp);
 
-var projectPaths = require('../package.json')['paths'];
+var projectPaths = require('../../package.json')['paths'];
 var path = require('path');
 
 var cucumber = require('gulp-cucumber');
+
 var jasmine = require('gulp-jasmine');
 var jasmineReporters = require('jasmine-reporters');
 
@@ -30,17 +31,18 @@ var jUnitXmlReporter = new jasmineReporters.JUnitXmlReporter({
   consolidateAll: true
 });
 
-// Run all the Cucumber features, doesn't start server
-// Hidden from gulp-help.
-gulp.task('cucumber', 'Run Cucumber directly without starting the server.', function() {
-  var options = {
-    support: projectPaths['cucumber-support-js'],
-    // Tags are optional, falsey values are ignored.
-    tags: tags
-  }
+function createCucumberOptions(reporter) {
+  return {
+      support: projectPaths['cucumber-support-js'],
+      tags: tags,
+      format: reporter || 'summary'
+    }
+}
 
-  // TODO: does this generate test results on disk?
-  return gulp.src('features/**/*.feature').pipe(cucumber(options));
+// Run all the Cucumber features, doesn't start server
+gulp.task('test:cucumber', 'Run Cucumber directly without starting the server.', function() {
+  return gulp.src(projectPaths['feature-files'])
+    .pipe(cucumber(createCucumberOptions()));
 }, {
   options: {'tags': 'Supports optional tags argument e.g.\n\t\t\t--tags @parsing\n\t\t\t--tags @tag1,orTag2\n\t\t\t--tags @tag1 --tags @andTag2\n\t\t\t--tags @tag1 --tags ~@andNotTag2'}
 });
@@ -53,7 +55,7 @@ gulp.task('test:features', 'Test the features.', function(done) {
               'server:stop',
               done);
 }, {
-  options: {'tags': 'Supports same optional tags arguments as \'Cucumber\' task.'}
+  options: {'tags': 'Supports same optional tags arguments as \'test:cucumber\' task.'}
 });
 
 // Run the unit tests, report to terminal and disk.
