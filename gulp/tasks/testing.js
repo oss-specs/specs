@@ -40,6 +40,7 @@ function createCucumberOptions(reporter) {
 }
 
 // Run all the Cucumber features, doesn't start server
+// TODO: Does not currently write to disk.
 gulp.task('test:cucumber', 'Run Cucumber directly without starting the server.', function() {
   return gulp.src(projectPaths['feature-files'])
     .pipe(cucumber(createCucumberOptions()));
