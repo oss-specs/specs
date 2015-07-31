@@ -4,10 +4,12 @@ var gulp = require('gulp-help')(require('gulp'));
 
 var eslint = require('gulp-eslint');
 
+var path = require('path');
+
 var projectPaths = require('../package.json')['paths'];
 
 var fs = require('fs');
-var lintResultsFileStream = fs.createWriteStream(projectPaths['test-output-dir'] + '/linting-results.xml');
+var lintingOutputPath = path.join(projectPaths['test-output-dir'], 'lintingResults.xml');
 
 var eslintGlobs = [].concat(projectPaths['server-js'], projectPaths['client-js']);
 var eslintOptions = {
@@ -15,6 +17,7 @@ var eslintOptions = {
 };
 
 gulp.task('analyse:lint', 'Lint the server and client JavaScript files.', function() {
+  var lintResultsFileStream = fs.createWriteStream(lintingOutputPath);
   return gulp.src(eslintGlobs)
     .pipe(eslint(eslintOptions))
     .pipe(eslint.format())
