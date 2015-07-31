@@ -12,17 +12,17 @@ module.exports = function() {
   var visitor;
   var features;
 
-  this.Given(/^the feature file$/, function (string) {
+  this.Given(/^the feature file\.?$/, function (string) {
     featureText = string;
   });
 
-  this.When(/^I parse this specification$/, function () {
+  this.When(/^I parse this specification\.?$/, function () {
     parser = new GherkinParser();
     visitor = parser.parse(featureText);
     features = visitor.getFeatures();
   });
 
-  this.Then(/^I get a feature with title "([^"]*)"$/, function (featureTitle) {
+  this.Then(/^I get a feature with title "([^"]*)"\.?$/, function (featureTitle) {
     features[0].name.should.be.exactly(featureTitle);
   });
 
@@ -32,5 +32,17 @@ module.exports = function() {
       var scenario = features[0].scenarios[i];
       scenario.name.should.be.exactly(row[0]);
     }
+  });
+
+  this.Then(/^features tags are associated with features\.?$/, function (table) {
+    var featureTags = features[0].tags;
+    var expectedTags = (table.raw()).map(function (valueWrappedInArray) {return valueWrappedInArray[0]});
+    featureTags.should.containDeepOrdered(expectedTags);
+  });
+
+  this.Then(/^scenario tags are associated with scenarios\.?$/, function (table) {
+    var scenarioTags = features[0].scenarios[0].tags;
+    var expectedTags = (table.raw()).map(function (valueWrappedInArray) {return valueWrappedInArray[0]});
+    scenarioTags.should.containDeepOrdered(expectedTags);
   });
 };
