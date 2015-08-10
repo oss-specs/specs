@@ -24,6 +24,7 @@ var argv = require('minimist')(process.argv.slice(2));
 
 // Extract arguments for the Cucumber tasks.
 var tags = argv.tags || false;
+var reporter = argv.reporter || false;
 
 // Create the reporters for Jamsine.
 var terminalReporter = new jasmineReporters.TerminalReporter({
@@ -36,7 +37,7 @@ var jUnitXmlReporter = new jasmineReporters.JUnitXmlReporter({
   consolidateAll: true
 });
 
-function createCucumberOptions(reporter) {
+function createCucumberOptions(tags, reporter) {
   return {
       support: projectPaths['cucumber-support-js'],
       tags: tags,
@@ -45,21 +46,25 @@ function createCucumberOptions(reporter) {
 }
 
 // Run all the Cucumber features, doesn't start server
-gulp.task('test:cucumber', 'Run Cucumber alone.', function() {
+gulp.task('test:cucumber', 'Run Cucumber alone, output to stdout', function() {
   return gulp.src(projectPaths['feature-files'])
-    .pipe(cucumber(createCucumberOptions()));
+    .pipe(cucumber(createCucumberOptions(tags, reporter)));
 }, {
   options: {'tags': 'Supports optional tags argument e.g.\n\t\t\t--tags @parsing\n\t\t\t--tags @tag1,orTag2\n\t\t\t--tags @tag1 --tags @andTag2\n\t\t\t--tags @tag1 --tags ~@andNotTag2'}
 });
 
-gulp.task('test:cucumber:fileoutput', 'Run Cucumber and capture stdout to file.', function(done) {
+// Write Cucumber JSON output to file.
+gulp.task('test:cucumber:fileoutput', 'Run Cucumber, only output JSON to file.', function(done) {
     var baseEncoding = 'utf8';
-    var fileStream = fs.createWriteStream('cucumber-result.txt', {
+    var outPath = path.join(projectPaths['test-output-dir'], 'cucumber.json');
+    var fileStream = fs.createWriteStream(outPath, {
         encoding: baseEncoding
     });
 
     // The command args to run.
-    var commandArgs = ['test:cucumber'];
+    // Use Cucumber JSON reporter with the intent to feed it to the Cucumber XML converter.
+    // Use the Gulp --silent option to reduce the output to Cucumber JSON only.
+    var commandArgs = ['test:cucumber', '--silent', '--reporter', 'json'];
 
     // Pass through any tags arguments.
     // Can be string or array so use
