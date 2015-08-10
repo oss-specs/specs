@@ -2,6 +2,11 @@
 // which lists what tasks are available.
 var gulp = require('gulp-help')(require('gulp'));
 
+// Process and file manipulation to capture stdout
+// from the Cucumber tests.
+var spawn = require('child_process').spawn;
+var fs = require('fs');
+
 // Sequential Gulp tasks
 var runSequence = require('run-sequence').use(gulp);
 
@@ -17,7 +22,7 @@ var jasmineReporters = require('jasmine-reporters');
 // Node and the name of the calling script.
 var argv = require('minimist')(process.argv.slice(2));
 
-// Extract tags arguments for the Cucumber tasks.
+// Extract arguments for the Cucumber tasks.
 var tags = argv.tags || false;
 
 // Create the reporters for Jamsine.
@@ -40,19 +45,51 @@ function createCucumberOptions(reporter) {
 }
 
 // Run all the Cucumber features, doesn't start server
-// TODO: Does not currently write to disk.
-gulp.task('test:cucumber', 'Run Cucumber directly without starting the server.', function() {
+gulp.task('test:cucumber', 'Run Cucumber alone.', function() {
   return gulp.src(projectPaths['feature-files'])
     .pipe(cucumber(createCucumberOptions()));
 }, {
   options: {'tags': 'Supports optional tags argument e.g.\n\t\t\t--tags @parsing\n\t\t\t--tags @tag1,orTag2\n\t\t\t--tags @tag1 --tags @andTag2\n\t\t\t--tags @tag1 --tags ~@andNotTag2'}
 });
 
+gulp.task('test:cucumber:fileoutput', 'Run Cucumber and capture stdout to file.', function(done) {
+    var baseEncoding = 'utf8';
+    var fileStream = fs.createWriteStream('cucumber-result.txt', {
+        encoding: baseEncoding
+    });
+
+    // The command args to run.
+    var commandArgs = ['test:cucumber'];
+
+    // Pass through any tags arguments.
+    // Can be string or array so use
+    // concat to gaurantee array.
+    if (tags) {
+      tags = [].concat(tags);
+      commandArgs = tags.reduce(function(previous, current) {
+        return previous.concat(['--tags', current]);
+      }, commandArgs);
+    }
+
+    var stream = spawn('gulp', commandArgs);
+
+    stream.stdout.setEncoding(baseEncoding);
+    stream.stderr.setEncoding(baseEncoding);
+    stream.stderr.pipe(fileStream);
+    stream.stdout.pipe(fileStream);
+    stream.on('close', function(e) {
+        fileStream.end();
+        done(e);
+    });
+}, {
+  options: {'tags': 'Supports same optional tags arguments as \'test:cucumber\' task.'}
+});
+
 // The default Cucumber test run requires server to be running.
 gulp.task('test:features', 'Everything necessesary to test the features.', function(done) {
   runSequence('set-envs:test',
               'server:start',
-              'cucumber',
+              'test:cucumber',
               'server:stop',
               done);
 }, {
