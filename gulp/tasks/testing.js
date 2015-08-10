@@ -54,6 +54,11 @@ gulp.task('test:cucumber', 'Run Cucumber alone, output to stdout', function() {
 });
 
 // Write Cucumber JSON output to file.
+// Starting a new Cucumber process and captuting stdout is a work around
+// Until CucmberJS supports arbitrary plugins at which point I'd
+// hope a stream based reporter could be to gulp-cucumber and the
+// results could be put in file in the normal Gulp way
+// https://github.com/vgamula/gulp-cucumber/issues/17
 gulp.task('test:cucumber:fileoutput', 'Run Cucumber, only output JSON to file.', function(done) {
     var baseEncoding = 'utf8';
     var outPath = path.join(projectPaths['test-output-dir'], 'cucumber.json');
