@@ -49,7 +49,7 @@ gulp.task('test:cucumber', 'Run Cucumber directly without starting the server.',
 });
 
 // The default Cucumber test run requires server to be running.
-gulp.task('test:features', 'Test the features.', function(done) {
+gulp.task('test:features', 'Everything necessesary to test the features.', function(done) {
   runSequence('set-envs:test',
               'server:start',
               'cucumber',
