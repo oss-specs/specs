@@ -53,6 +53,8 @@ gulp.task('test:cucumber', 'Run Cucumber alone, output to stdout', function() {
   options: {'tags': 'Supports optional tags argument e.g.\n\t\t\t--tags @parsing\n\t\t\t--tags @tag1,orTag2\n\t\t\t--tags @tag1 --tags @andTag2\n\t\t\t--tags @tag1 --tags ~@andNotTag2'}
 });
 
+// TODO convert the JSON output to XML output.
+
 // Write Cucumber JSON output to file.
 // Starting a new Cucumber process and captuting stdout is a work around
 // Until CucmberJS supports arbitrary plugins at which point I'd
