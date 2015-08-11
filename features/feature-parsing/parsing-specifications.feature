@@ -54,7 +54,7 @@ Feature: Parsing specifications
     | Scenario 1 |
     | Scenario 2 |
 
-  @parsing
+  @parsing @dev
   Scenario: Parse tags
     When I parse this specification
     Then features tags are associated with features

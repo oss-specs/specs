@@ -8,7 +8,7 @@ var gulp = require('gulp-help')(require('gulp'));
 // http://stackoverflow.com/a/10394457
 var server = require('gulp-develop-server');
 
-var packagejson = require('../package.json');
+var packagejson = require('../../package.json');
 var binaryPath = packagejson.bin['module-name'];
 
 gulp.task('server:start', 'Start serving the app.', ['set-envs:test'], function(done) {
