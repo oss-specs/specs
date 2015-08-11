@@ -54,7 +54,7 @@ Feature: Parsing specifications
     | Scenario 1 |
     | Scenario 2 |
 
-  @parsing @dev
+  @parsing
   Scenario: Parse tags
     When I parse this specification
     Then features tags are associated with features
@@ -63,3 +63,8 @@ Feature: Parsing specifications
     And scenario tags are associated with scenarios
       | @myScenarioLevelTag1 |
       | @myScenarioLevelTag2 |
+
+  @parsing @dev
+  Scenario: Parse comments
+  When I parse this specification
+  Then comments have been captured

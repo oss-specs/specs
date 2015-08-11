@@ -43,4 +43,9 @@ module.exports = function() {
     var expectedTags = (table.raw()).map(function (valueWrappedInArray) {return valueWrappedInArray[0]});
     scenarioTags.should.containDeepOrdered(expectedTags);
   });
+
+  this.Then(/^comments have been captured\.?$/, function (callback) {
+    // Write code here that turns the phrase above into concrete actions
+    callback.pending();
+  });
 };
