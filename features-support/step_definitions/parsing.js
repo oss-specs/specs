@@ -8,8 +8,6 @@ var GherkinParser = require('../../lib/parser/gherkin.js');
 module.exports = function() {
   // Shared variables
   var featureText;
-  var parser;
-  var visitor;
   var features;
 
   this.Given(/^the feature file\.?$/, function (string) {
@@ -17,8 +15,8 @@ module.exports = function() {
   });
 
   this.When(/^I parse this specification\.?$/, function () {
-    parser = new GherkinParser();
-    visitor = parser.parse(featureText);
+    var parser = new GherkinParser();
+    var visitor = parser.parse(featureText);
     features = visitor.getFeatures();
   });
 
