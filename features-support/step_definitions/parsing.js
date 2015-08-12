@@ -5,6 +5,10 @@ require('should');
 
 var GherkinParser = require('../../lib/parser/gherkin.js');
 
+function unwrapSingleColumnTable(singleColumnTable) {
+  return (singleColumnTable.raw()).map(function (valueWrappedInArray) {return valueWrappedInArray[0]});
+}
+
 module.exports = function() {
   // Shared variables
   var featureText;
@@ -34,25 +38,25 @@ module.exports = function() {
 
   this.Then(/^feature tags are associated with features\.?$/, function (table) {
     var featureTags = features[0].tags;
-    var expectedTags = (table.raw()).map(function (valueWrappedInArray) {return valueWrappedInArray[0]});
+    var expectedTags = unwrapSingleColumnTable(table);
     featureTags.should.containDeepOrdered(expectedTags);
   });
 
   this.Then(/^scenario tags are associated with scenarios\.?$/, function (table) {
     var scenarioTags = features[0].scenarios[0].tags;
-    var expectedTags = (table.raw()).map(function (valueWrappedInArray) {return valueWrappedInArray[0]});
+    var expectedTags = unwrapSingleColumnTable(table);
     scenarioTags.should.containDeepOrdered(expectedTags);
   });
 
   this.Then(/^feature comments are associated with features\.?$/, function (table) {
     var featureComments = features[0].comments;
-    var expectedComments = (table.raw()).map(function (valueWrappedInArray) {return valueWrappedInArray[0]});
+    var expectedComments = unwrapSingleColumnTable(table);
     featureComments.should.containDeepOrdered(expectedComments);
   });
 
   this.Then(/^scenario comments are associated with scenarios\.?$/, function (table) {
     var scenarioComments = features[0].scenarios[0].comments;
-    var expectedComments = (table.raw()).map(function (valueWrappedInArray) {return valueWrappedInArray[0]});
+    var expectedComments = unwrapSingleColumnTable(table);
     scenarioComments.should.containDeepOrdered(expectedComments);
   });
 };
