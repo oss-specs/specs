@@ -36,27 +36,27 @@ module.exports = function() {
     }
   });
 
-  this.Then(/^feature tags are associated with features\.?$/, function (table) {
-    var featureTags = features[0].tags;
-    var expectedTags = unwrapSingleColumnTable(table);
-    featureTags.should.containDeepOrdered(expectedTags);
-  });
+  function compareFeatureValues(key) {
+    return function compare(table) {
+      var featureValues = features[0][key];
+      var expectedValues = unwrapSingleColumnTable(table);
+      featureValues.should.containDeepOrdered(expectedValues);
+    }
+  }
 
-  this.Then(/^scenario tags are associated with scenarios\.?$/, function (table) {
-    var scenarioTags = features[0].scenarios[0].tags;
-    var expectedTags = unwrapSingleColumnTable(table);
-    scenarioTags.should.containDeepOrdered(expectedTags);
-  });
+  function compareScenarioValues(key) {
+    return function compare(table) {
+      var featureValues = features[0].scenarios[0][key];
+      var expectedValues = unwrapSingleColumnTable(table);
+      featureValues.should.containDeepOrdered(expectedValues);
+    }
+  }
 
-  this.Then(/^feature comments are associated with features\.?$/, function (table) {
-    var featureComments = features[0].comments;
-    var expectedComments = unwrapSingleColumnTable(table);
-    featureComments.should.containDeepOrdered(expectedComments);
-  });
+  this.Then(/^feature tags are associated with features\.?$/, compareFeatureValues('tags'));
 
-  this.Then(/^scenario comments are associated with scenarios\.?$/, function (table) {
-    var scenarioComments = features[0].scenarios[0].comments;
-    var expectedComments = unwrapSingleColumnTable(table);
-    scenarioComments.should.containDeepOrdered(expectedComments);
-  });
+  this.Then(/^scenario tags are associated with scenarios\.?$/, compareScenarioValues('tags'));
+
+  this.Then(/^feature comments are associated with features\.?$/, compareFeatureValues('comments'));
+
+  this.Then(/^scenario comments are associated with scenarios\.?$/, compareScenarioValues('comments'));
 };
