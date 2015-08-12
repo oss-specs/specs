@@ -8,12 +8,13 @@ Feature: Parsing specifications
   Background: A feature file exists
     Given the feature file
       """
+      # A feature comment.
       @myFeatureLevelTag1 @myFeatureLevelTag2
       Feature: Feature title
 
         Some descriptive text, sometimes a "user story"
 
-        # A comment
+        # A scenario comment.
         @myScenarioLevelTag1 @myScenarioLevelTag2
         Scenario: Scenario 1
           Given something is true
@@ -57,7 +58,7 @@ Feature: Parsing specifications
   @parsing
   Scenario: Parse tags
     When I parse this specification
-    Then features tags are associated with features
+    Then feature tags are associated with features
       | @myFeatureLevelTag1 |
       | @myFeatureLevelTag2 |
     And scenario tags are associated with scenarios
@@ -66,5 +67,8 @@ Feature: Parsing specifications
 
   @parsing @dev
   Scenario: Parse comments
-  When I parse this specification
-  Then comments have been captured
+    When I parse this specification
+    Then feature comments are associated with features
+      | # A feature comment. |
+    And scenario comments are associated with scenarios
+      | # A scenario comment. |

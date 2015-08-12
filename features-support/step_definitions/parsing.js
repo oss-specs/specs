@@ -32,7 +32,7 @@ module.exports = function() {
     }
   });
 
-  this.Then(/^features tags are associated with features\.?$/, function (table) {
+  this.Then(/^feature tags are associated with features\.?$/, function (table) {
     var featureTags = features[0].tags;
     var expectedTags = (table.raw()).map(function (valueWrappedInArray) {return valueWrappedInArray[0]});
     featureTags.should.containDeepOrdered(expectedTags);
@@ -44,8 +44,15 @@ module.exports = function() {
     scenarioTags.should.containDeepOrdered(expectedTags);
   });
 
-  this.Then(/^comments have been captured\.?$/, function (callback) {
-    // Write code here that turns the phrase above into concrete actions
-    callback.pending();
+  this.Then(/^feature comments are associated with features\.?$/, function (table) {
+    var featureComments = features[0].comments;
+    var expectedComments = (table.raw()).map(function (valueWrappedInArray) {return valueWrappedInArray[0]});
+    featureComments.should.containDeepOrdered(expectedComments);
+  });
+
+  this.Then(/^scenario comments are associated with scenarios\.?$/, function (table) {
+    var scenarioComments = features[0].scenarios[0].comments;
+    var expectedComments = (table.raw()).map(function (valueWrappedInArray) {return valueWrappedInArray[0]});
+    scenarioComments.should.containDeepOrdered(expectedComments);
   });
 };
