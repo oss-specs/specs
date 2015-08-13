@@ -5,11 +5,13 @@ require('should');
 
 var GherkinParser = require('../../lib/parser/gherkin.js');
 
+function unwrapSingleColumnTable(singleColumnTable) {
+  return (singleColumnTable.raw()).map(function (valueWrappedInArray) {return valueWrappedInArray[0]});
+}
+
 module.exports = function() {
   // Shared variables
   var featureText;
-  var parser;
-  var visitor;
   var features;
 
   this.Given(/^the feature file\.?$/, function (string) {
@@ -17,8 +19,8 @@ module.exports = function() {
   });
 
   this.When(/^I parse this specification\.?$/, function () {
-    parser = new GherkinParser();
-    visitor = parser.parse(featureText);
+    var parser = new GherkinParser();
+    var visitor = parser.parse(featureText);
     features = visitor.getFeatures();
   });
 
@@ -34,15 +36,27 @@ module.exports = function() {
     }
   });
 
-  this.Then(/^features tags are associated with features\.?$/, function (table) {
-    var featureTags = features[0].tags;
-    var expectedTags = (table.raw()).map(function (valueWrappedInArray) {return valueWrappedInArray[0]});
-    featureTags.should.containDeepOrdered(expectedTags);
-  });
+  function compareFeatureValues(key) {
+    return function compare(table) {
+      var featureValues = features[0][key];
+      var expectedValues = unwrapSingleColumnTable(table);
+      featureValues.should.containDeepOrdered(expectedValues);
+    }
+  }
 
-  this.Then(/^scenario tags are associated with scenarios\.?$/, function (table) {
-    var scenarioTags = features[0].scenarios[0].tags;
-    var expectedTags = (table.raw()).map(function (valueWrappedInArray) {return valueWrappedInArray[0]});
-    scenarioTags.should.containDeepOrdered(expectedTags);
-  });
+  function compareScenarioValues(key) {
+    return function compare(table) {
+      var featureValues = features[0].scenarios[0][key];
+      var expectedValues = unwrapSingleColumnTable(table);
+      featureValues.should.containDeepOrdered(expectedValues);
+    }
+  }
+
+  this.Then(/^feature tags are associated with features\.?$/, compareFeatureValues('tags'));
+
+  this.Then(/^scenario tags are associated with scenarios\.?$/, compareScenarioValues('tags'));
+
+  this.Then(/^feature comments are associated with features\.?$/, compareFeatureValues('comments'));
+
+  this.Then(/^scenario comments are associated with scenarios\.?$/, compareScenarioValues('comments'));
 };
