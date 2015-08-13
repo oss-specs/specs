@@ -51,14 +51,14 @@ Feature: Parsing specifications
       Feature: coping with multiple features in a file.
       """
 
-  @parsing @dev
+  @parsing
   Scenario: Parse titles
     When I parse this specification
     Then I get a feature with title "Feature title"
-    And a background with the title "Backgrounds exist"
-    And scenarios with titles
-    | Scenario 1 |
-    | Scenario 2 |
+    And I get a background with the title "Backgrounds exist"
+    And I get scenarios with titles
+      | Scenario 1 |
+      | Scenario 2 |
 
   @parsing
   Scenario: Parse tags
@@ -77,3 +77,13 @@ Feature: Parsing specifications
       | # A feature comment. |
     And scenario comments are associated with scenarios
       | # A scenario comment. |
+
+  @parsing
+  Scenario: Parse steps
+    When I parse this specification
+    Then the "first" scenario has steps with the names
+      | something is true   |
+      | there is an outcome |
+    And the "second" scenario has steps with the names
+      | I have an "argument" |
+      | I expect             |
