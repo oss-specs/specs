@@ -8,15 +8,15 @@ Feature: Parsing specifications
   Background: A feature file exists
     Given the feature file
       """
-      # An example background in text block in a background.
-      Background: Backgrounds exist
-        Given there is a background
-
       # A feature comment.
       @myFeatureLevelTag1 @myFeatureLevelTag2
       Feature: Feature title
 
         Some descriptive text, sometimes a "user story"
+
+        # An example background in text block in a background.
+        Background: Backgrounds exist
+          Given there is a background
 
         # A scenario comment.
         @myScenarioLevelTag1 @myScenarioLevelTag2

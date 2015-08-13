@@ -28,6 +28,10 @@ module.exports = function() {
     features[0].name.should.be.exactly(featureTitle);
   });
 
+  this.Then(/^a background with the title "([^"]*)"\.?$/, function (backgroundTitle) {
+    features[0].backgrounds[0].name.should.be.exactly(backgroundTitle);
+  });
+
   this.Then(/^scenarios with titles$/, function (table) {
     for(var i = 0; i < table.raw().length; i++) {
       var row = table.raw()[i];
