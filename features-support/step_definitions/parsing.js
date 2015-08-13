@@ -20,8 +20,9 @@ module.exports = function() {
 
   this.When(/^I parse this specification\.?$/, function () {
     var parser = new GherkinParser();
-    var visitor = parser.parse(featureText);
-    features = visitor.getFeatures();
+    features = parser
+      .parse(featureText)
+      .getFeatures();
   });
 
   this.Then(/^I get a feature with title "([^"]*)"\.?$/, function (featureTitle) {
