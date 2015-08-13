@@ -1,6 +1,6 @@
 Feature: Parsing specifications
 
-  So that I easily identify different parts of specifications
+  So that I can easily identify different parts of specifications
   As a user
   I want to see features broken down into logical parts such as scenarios, features, tables, tags etc
 
@@ -8,6 +8,10 @@ Feature: Parsing specifications
   Background: A feature file exists
     Given the feature file
       """
+      # An example background in text block in a background.
+      Background: Backgrounds exist
+        Given there is a background
+
       # A feature comment.
       @myFeatureLevelTag1 @myFeatureLevelTag2
       Feature: Feature title
@@ -47,10 +51,11 @@ Feature: Parsing specifications
       Feature: coping with multiple features in a file.
       """
 
-  @parsing
+  @parsing @dev
   Scenario: Parse titles
     When I parse this specification
     Then I get a feature with title "Feature title"
+    And a background with the title "Backgrounds exist"
     And scenarios with titles
     | Scenario 1 |
     | Scenario 2 |
@@ -65,7 +70,7 @@ Feature: Parsing specifications
       | @myScenarioLevelTag1 |
       | @myScenarioLevelTag2 |
 
-  @parsing @dev
+  @parsing
   Scenario: Parse comments
     When I parse this specification
     Then feature comments are associated with features
