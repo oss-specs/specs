@@ -72,9 +72,10 @@ module.exports = function () {
 
   this.Then(/^the list of features will be visible\.?$/, function (callback) {
     should.equal(this.statusCode, 200, "Bad HTTP status code.");
-    should.equal(/feature/i.test(this.body),
+    should.equal(
+      /\.feature/i.test(this.body) && /\.md/i.test(this.body),
       true,
-      "The returned document body does not contain the word 'feature'");
+      "The returned document body does not contain the strings '.feature' and '.md'");
     callback();
   });
 
@@ -85,14 +86,14 @@ module.exports = function () {
         callback(error);
         return;
       }
-      world.firstLink = (/class="speclink" href="([\w\/.-]+)"/.exec(body))[1];
+      world.firstFeatureLink = (/class="speclink" href="([\w\/.-]+)\.feature"/.exec(body))[1];
       callback();
     });
   });
 
   this.When(/^an interested party wants to view the scenarios within that feature file\.?$/, function (callback) {
     var world = this; // the World variable is passed around the step defs as `this`.
-    var featurePath = 'http://localhost:' + world.appPort + '/' + world.firstLink;
+    var featurePath = 'http://localhost:' + world.appPort + '/' + world.firstFeatureLink;
     request
       .get(featurePath, function(error, response, body) {
         if (error) {
