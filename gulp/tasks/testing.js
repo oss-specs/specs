@@ -83,7 +83,7 @@ gulp.task('test:cucumber:fileoutput', 'Run Cucumber, only output JSON to file.',
       }, commandArgs);
     }
 
-    var stream = spawn('gulp', commandArgs);
+    var stream = spawn('./node_modules/.bin/gulp', commandArgs);
 
     stream.stdout.setEncoding(baseEncoding);
     stream.stderr.setEncoding(baseEncoding);
