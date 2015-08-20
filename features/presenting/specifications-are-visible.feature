@@ -8,12 +8,12 @@ Feature: Specifications are visible to users
   Background:
     Given a set of specifications containing at least one feature file
 
-  @server
+  @server @presenting
   Scenario: A list of features is available.
     When an interested party attempts to view them
     Then the list of features will be visible.
 
-  @server
+  @server @presenting
   Scenario: It is simple to see the scenarios within with a feature file.
     Given a list of feature files is displayed
     When an interested party wants to view the scenarios within that feature file
