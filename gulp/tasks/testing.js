@@ -83,7 +83,7 @@ gulp.task('test:cucumber:fileoutput', 'Run Cucumber, only output JSON to file.',
       }, commandArgs);
     }
 
-    var stream = spawn('gulp', commandArgs);
+    var stream = spawn('./node_modules/.bin/gulp', commandArgs);
 
     stream.stdout.setEncoding(baseEncoding);
     stream.stderr.setEncoding(baseEncoding);
@@ -97,11 +97,22 @@ gulp.task('test:cucumber:fileoutput', 'Run Cucumber, only output JSON to file.',
   options: {'tags': 'Supports same optional tags arguments as \'test:cucumber\' task.'}
 });
 
-// The default Cucumber test run requires server to be running.
+// The default Cucumber test run requires the server to be running.
 gulp.task('test:features', 'Everything necessesary to test the features.', function(done) {
   runSequence('set-envs:test',
               'server:start',
               'test:cucumber',
+              'server:stop',
+              done);
+}, {
+  options: {'tags': 'Supports same optional tags arguments as \'test:cucumber\' task.'}
+});
+
+// The default Cucumber test run requires server to be running.
+gulp.task('test:features:fileoutput', 'Everything necessesary to test the features and send the output to file.', function(done) {
+  runSequence('set-envs:test',
+              'server:start',
+              'test:cucumber:fileoutput',
               'server:stop',
               done);
 }, {

@@ -74,5 +74,18 @@
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.2",
     "should": "^7.0.1"
-  }
+  },
+  "bundleDependencies": [
+    "body-parser",
+    "cookie-parser",
+    "debug",
+    "express",
+    "gherkin",
+    "hbs",
+    "morgan",
+    "newrelic",
+    "nodegit",
+    "q-io",
+    "serve-favicon"
+  ]
 }
