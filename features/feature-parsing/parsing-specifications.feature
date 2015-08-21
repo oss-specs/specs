@@ -33,7 +33,7 @@ Feature: Parsing specifications
             | name | stuff |
             | asdf | ASDDS |
           Then I expect
-            \"\"\"
+            \"\"\" the-type-of-content
               A block of text
               On mulptiple lines.
             \"\"\"
@@ -43,7 +43,8 @@ Feature: Parsing specifications
           When I compare it to <another placeholder>
           Then the expected outcome is <a third lovely placeholder>
 
-          Examples:
+          Examples: examples with a title
+            some description of the examples
             | placeholder | another placeholder | a third lovely placeholder |
             | value1-1    | value1-2            | value1-3                   |
             | value2-1    | value2-2            | value2-3                   |
@@ -51,7 +52,7 @@ Feature: Parsing specifications
       Feature: coping with multiple features in a file.
       """
 
-  @parsing
+  @parsing @dev
   Scenario: Parse titles
     When I parse this specification
     Then I get a feature with title "Feature title"
