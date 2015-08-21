@@ -9,6 +9,8 @@ function unwrapSingleColumnTable(singleColumnTable) {
   return (singleColumnTable.raw()).map(function (valueWrappedInArray) {return valueWrappedInArray[0]});
 }
 
+// Important because need to check that steps
+// have been assigned to the correct scenario.
 var scenarioNumberToIndex = {
   "background": 0,
   "default": 1,
