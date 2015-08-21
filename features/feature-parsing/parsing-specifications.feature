@@ -48,12 +48,12 @@ Feature: Parsing specifications
               On mulptiple lines.
             \"\"\"
 
-        Scenario Outline: a collection of related examples
+        Scenario Outline: A collection of related examples
           Given I have a <placeholder>
           When I compare it to <another placeholder>
           Then the expected outcome is <a third lovely placeholder>
 
-          Examples: examples with a title
+          Examples: Examples with a title
             some description of the examples
             | placeholder | another placeholder | a third lovely placeholder |
             | value1-1    | value1-2            | value1-3                   |
@@ -62,7 +62,7 @@ Feature: Parsing specifications
       Feature: coping with multiple features in a file.
       """
 
-  @parsing
+  @parsing @dev
   Scenario: Parse titles
     When I parse this specification
     Then I get a feature with title "Feature title"
@@ -70,6 +70,7 @@ Feature: Parsing specifications
     And I get scenarios with titles
       | Scenario 1 |
       | Scenario 2 |
+    And I get a scenario outline with the title "A collection of related examples"
 
   @parsing
   Scenario: Parse tags
@@ -89,7 +90,7 @@ Feature: Parsing specifications
     And scenario comments are associated with scenarios
       | # A scenario comment. |
 
-  @parsing @dev
+  @parsing
   Scenario: Parse steps
     When I parse this specification
     Then the "first" scenario has steps with the names
