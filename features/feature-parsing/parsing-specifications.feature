@@ -52,7 +52,7 @@ Feature: Parsing specifications
       Feature: coping with multiple features in a file.
       """
 
-  @parsing @dev
+  @parsing
   Scenario: Parse titles
     When I parse this specification
     Then I get a feature with title "Feature title"
@@ -79,7 +79,7 @@ Feature: Parsing specifications
     And scenario comments are associated with scenarios
       | # A scenario comment. |
 
-  @parsing
+  @parsing @dev
   Scenario: Parse steps
     When I parse this specification
     Then the "first" scenario has steps with the names
