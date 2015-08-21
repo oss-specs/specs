@@ -4,6 +4,16 @@ Feature: Parsing specifications
   As a user
   I want to see features broken down into logical parts such as scenarios, features, tables, tags etc
 
+  General notes:
+  Features are the top level entity.
+  Backgrounds, Scenarios and Scenario Outlines belong to Features.
+  Steps can belong to Backgrounds, Scenarios and Scenario Outlines.
+  Rows can belong to Steps (data table) or Examples.
+  Examples belong to Scenario Outlines.
+  Doc Strings belong to Steps.
+  Tags and Comments belong to Features and Scenarios.
+
+
   # Slightly confusing because this is a feature about features.
   Background: A feature file exists
     Given the feature file
