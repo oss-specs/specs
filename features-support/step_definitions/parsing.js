@@ -77,6 +77,15 @@ module.exports = function() {
     }
   }
 
+  // Extract scenario names from scenario objects of types
+  // 'scenario', 'background' or 'scenario outline'.
+  function getScenarioNames(feature, tokenType) {
+      tokenType = tokenType || 'scenario';
+      return feature.scenarios
+        .filter(function(scenario) {return scenario.token === tokenType;})
+        .map(function(scenario) {return scenario.name});
+  }
+
   this.Given(/^the feature file\.?$/, function (string) {
     featureText = string;
   });
@@ -93,17 +102,19 @@ module.exports = function() {
   });
 
   this.Then(/^I get a background with the title "([^"]*)"\.?$/, function (backgroundTitle) {
-    features[0].scenarios[0].name.should.be.exactly(backgroundTitle);
+    var backgroundNames = getScenarioNames(features[0], 'background');
+    backgroundNames.should.containEql(backgroundTitle);
   });
 
-  // TODO: Make more expressive.
   this.Then(/^I get scenarios with titles\.?$/, function (table) {
-    var expectedValues = unwrapSingleColumnTable(table);
-    for(var i = 1; i < table.raw().length; i++) {
-      var row = table.raw()[i-1];
-      var scenario = features[0].scenarios[i];
-      scenario.name.should.be.exactly(row[0]);
-    }
+    var expectedScenarioNames = unwrapSingleColumnTable(table);
+    var scenarioNames = getScenarioNames(features[0], 'scenario');
+    scenarioNames.should.containDeep(expectedScenarioNames);
+  });
+
+  this.Then(/^I get a scenario outline with the title "([^"]*)"$/, function (scenarioOutlineTitle) {
+    var scenarioOutlineNames = getScenarioNames(features[0], 'scenario outline');
+    scenarioOutlineNames.should.containEql(scenarioOutlineTitle);
   });
 
   this.Then(/^feature tags are associated with features\.?$/, compareFeatureValues('tags'));
