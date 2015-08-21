@@ -62,7 +62,7 @@ Feature: Parsing specifications
       Feature: coping with multiple features in a file.
       """
 
-  @parsing @dev
+  @parsing
   Scenario: Parse titles
     When I parse this specification
     Then I get a feature with title "Feature title"

@@ -114,7 +114,7 @@ module.exports = function() {
     scenarioNames.should.containDeep(expectedScenarioNames);
   });
 
-  this.Then(/^I get a scenario outline with the title "([^"]*)"$/, function (scenarioOutlineTitle) {
+  this.Then(/^I get a scenario outline with the title "([^"]*)"\.?$/, function (scenarioOutlineTitle) {
     var scenarioOutlineNames = getScenarioNames(features[0], 'scenario outline');
     scenarioOutlineNames.should.containEql(scenarioOutlineTitle);
   });
