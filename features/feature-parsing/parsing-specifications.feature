@@ -30,8 +30,8 @@ Feature: Parsing specifications
         Scenario: Scenario 2
           Given I have an "argument"
           When I have a table data:
-            | name | stuff |
-            | asdf | ASDDS |
+            | column name 1 | column name 2       |
+            | a table value | another table value |
           Then I expect
             \"\"\" the-type-of-content
               A block of text
