@@ -88,6 +88,11 @@ module.exports = function() {
         .map(function(scenario) {return scenario.name});
   }
 
+  function getScenarioOutlines(feature) {
+    return feature.scenarios
+      .filter(function(scenario) {return scenario.token === 'scenario outline';});
+  }
+
   this.Given(/^the feature file\.?$/, function (string) {
     featureText = string;
   });
@@ -119,6 +124,12 @@ module.exports = function() {
     scenarioOutlineNames.should.containEql(scenarioOutlineTitle);
   });
 
+  this.Then(/^I get a set of examples with the title "([^"]*)"\.?$/, function (expectedExampleTitle) {
+    var scenarioOutlines = getScenarioOutlines(features[0]);
+    var exampleTitle = scenarioOutlines[0].examples[0].name;
+    exampleTitle.should.be.exactly(expectedExampleTitle);
+  });
+
   this.Then(/^feature tags are associated with features\.?$/, compareFeatureValues('tags'));
 
   this.Then(/^scenario tags are associated with scenarios\.?$/, compareScenarioValues('tags'));
@@ -127,5 +138,12 @@ module.exports = function() {
 
   this.Then(/^scenario comments are associated with scenarios\.?$/, compareScenarioValues('comments'));
 
-  this.Then(/^the "([^"]*)" scenario has steps with the names\.?$/, compareScenarioValues('steps', 'name'));;
+  this.Then(/^the "([^"]*)" scenario has steps with the names\.?$/, compareScenarioValues('steps', 'name'));
+
+  this.Then(/^scenario outlines have example data$/, function (table) {
+    var expectedExampleDataValues = unwrapSingleColumnTable(table);
+    var scenarioOutlines = getScenarioOutlines(features[0]);
+    var exampleDataValues = scenarioOutlines[0].examples[0].rows;
+    scenarioNames.should.containDeep(expectedScenarioNames);
+  });
 };

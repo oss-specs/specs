@@ -62,7 +62,7 @@ Feature: Parsing specifications
       Feature: coping with multiple features in a file.
       """
 
-  @parsing
+  @parsing @dev
   Scenario: Parse titles
     When I parse this specification
     Then I get a feature with title "Feature title"
@@ -71,6 +71,7 @@ Feature: Parsing specifications
       | Scenario 1 |
       | Scenario 2 |
     And I get a scenario outline with the title "A collection of related examples"
+    And I get a set of examples with the title "Examples with a title"
 
   @parsing
   Scenario: Parse tags
@@ -99,3 +100,10 @@ Feature: Parsing specifications
     And the "second" scenario has steps with the names
       | I have an "argument" |
       | I expect             |
+
+    @parsing @dev
+    Scenario: Parse comments
+      When I parse this specification
+      Then scenario outlines have example data
+        | value1-1 |
+        | value2-3 |
