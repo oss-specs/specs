@@ -79,18 +79,18 @@ module.exports = function() {
     }
   }
 
-  // Extract scenario names from scenario objects of types
-  // 'scenario', 'background' or 'scenario outline'.
-  function getScenarioNames(feature, tokenType) {
-      tokenType = tokenType || 'scenario';
-      return feature.scenarios
-        .filter(function(scenario) {return scenario.token === tokenType;})
-        .map(function(scenario) {return scenario.name});
-  }
-
-  function getScenarioOutlines(feature) {
+  // Get scenarios etc and properties of such.
+  function getScenarios(feature, tokenType) {
+    tokenType = tokenType || 'scenario';
     return feature.scenarios
-      .filter(function(scenario) {return scenario.token === 'scenario outline';});
+      .filter(function(scenario) {return scenario.token === tokenType;});
+  }
+  function getScenarioOutlines(feature) {
+    return getScenarios(feature, 'scenario outline');
+  }
+  function getScenarioNames(feature, tokenType) {
+      return getScenarios(feature, tokenType)
+        .map(function(scenario) {return scenario.name});
   }
 
   this.Given(/^the feature file\.?$/, function (string) {
@@ -140,12 +140,35 @@ module.exports = function() {
 
   this.Then(/^the "([^"]*)" scenario has steps with the names\.?$/, compareScenarioValues('steps', 'name'));
 
-  this.Then(/^scenario outlines have example data$/, function (table) {
+  this.Then(/^scenario outlines have example data\.?$/, function (table) {
     var expectedExampleDataValues = unwrapSingleColumnTable(table);
     var scenarioOutlines = getScenarioOutlines(features[0]);
     var exampleDataValues = scenarioOutlines[0].examples[0].rows
       .map(function(row) { return row.content; })
       .reduce(function(a, b) { return a.concat(b); });
     exampleDataValues.should.containDeep(expectedExampleDataValues);
+  });
+
+  this.Then(/^steps with tables have that table data\.?$/, function (table) {
+      var expectedTableDataValues = unwrapSingleColumnTable(table);
+      var scenarios = getScenarios(features[0]);
+
+      // Dig the relevant values out of the data structure.
+      // Hahahaha.
+      var scenarioTableData = scenarios
+        .map(function(scenario) {
+          return scenario.steps
+            .filter(function(step) {
+              return step.rows.length !== 0;
+            })
+            .map(function(step) {
+              return step.rows.map(function(row) { return row.content; });
+            })
+            .reduce(function(a, b) { return a.concat(b); }, []);
+        })
+        .reduce(function(a, b) { return a.concat(b); })
+        .reduce(function(a, b) { return a.concat(b); });
+
+      scenarioTableData.should.containDeep(expectedTableDataValues);
   });
 };
