@@ -143,7 +143,9 @@ module.exports = function() {
   this.Then(/^scenario outlines have example data$/, function (table) {
     var expectedExampleDataValues = unwrapSingleColumnTable(table);
     var scenarioOutlines = getScenarioOutlines(features[0]);
-    var exampleDataValues = scenarioOutlines[0].examples[0].rows;
+    var exampleDataValues = scenarioOutlines[0].examples[0].rows
+      .map(function(row) { return row.content; })
+      .reduce(function(a, b) { return a.concat(b); });
     exampleDataValues.should.containDeep(expectedExampleDataValues);
   });
 };
