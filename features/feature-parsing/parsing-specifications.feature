@@ -4,6 +4,16 @@ Feature: Parsing specifications
   As a user
   I want to see features broken down into logical parts such as scenarios, features, tables, tags etc
 
+  General notes:
+  Features are the top level entity.
+  Backgrounds, Scenarios and Scenario Outlines belong to Features.
+  Steps can belong to Backgrounds, Scenarios and Scenario Outlines.
+  Rows can belong to Steps (data table) or Examples.
+  Examples belong to Scenario Outlines.
+  Doc Strings belong to Steps.
+  Tags and Comments belong to Features and Scenarios.
+
+
   # Slightly confusing because this is a feature about features.
   Background: A feature file exists
     Given the feature file
@@ -30,20 +40,21 @@ Feature: Parsing specifications
         Scenario: Scenario 2
           Given I have an "argument"
           When I have a table data:
-            | name | stuff |
-            | asdf | ASDDS |
+            | column name 1 | column name 2       |
+            | a table value | another table value |
           Then I expect
-            \"\"\"
+            \"\"\" the-type-of-content
               A block of text
               On mulptiple lines.
             \"\"\"
 
-        Scenario Outline: a collection of related examples
+        Scenario Outline: A collection of related examples
           Given I have a <placeholder>
           When I compare it to <another placeholder>
           Then the expected outcome is <a third lovely placeholder>
 
-          Examples:
+          Examples: Examples with a title
+            some description of the examples
             | placeholder | another placeholder | a third lovely placeholder |
             | value1-1    | value1-2            | value1-3                   |
             | value2-1    | value2-2            | value2-3                   |
@@ -59,6 +70,7 @@ Feature: Parsing specifications
     And I get scenarios with titles
       | Scenario 1 |
       | Scenario 2 |
+    And I get a scenario outline with the title "A collection of related examples"
 
   @parsing
   Scenario: Parse tags
