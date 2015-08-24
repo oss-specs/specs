@@ -144,6 +144,6 @@ module.exports = function() {
     var expectedExampleDataValues = unwrapSingleColumnTable(table);
     var scenarioOutlines = getScenarioOutlines(features[0]);
     var exampleDataValues = scenarioOutlines[0].examples[0].rows;
-    scenarioNames.should.containDeep(expectedScenarioNames);
+    exampleDataValues.should.containDeep(expectedExampleDataValues);
   });
 };
