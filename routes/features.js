@@ -4,6 +4,9 @@
 var express = require('express');
 var router = express.Router();
 
+// HACK FOR DEMO
+var fs = require('fs');
+
 var getFeatureFilePaths = require("../lib/specifications/getFeatureFilePaths");
 var getFeatureFile = require("../lib/specifications/getFeatureFile");
 
@@ -14,21 +17,29 @@ var getFeatureFile = require("../lib/specifications/getFeatureFile");
 router.get('/', function(req, res) {
   getFeatureFilePaths('public/feature-files')
     .then(function(featureFilePaths) {
-      featureFilePaths = featureFilePaths.map(function(featurePath) {
+      featureFilePaths = featureFilePaths
+        .filter(function(featurePath) {
+          // HACK FOR DEMO
+          var content = fs.readFileSync(featurePath, {encoding: 'utf8'});
 
-        // Map from the storage directory to the Express route.
-        // TODO move inside getFeatureFilePaths and call it getFeatureFileRoutes.
-        featurePath = featurePath.replace('public/feature-files/', 'features/');
+          return content.length !== 0;
+        })
+        .map(function(featurePath) {
 
-        // Create a display name for the feature.
-        // TODO move inside getFeatureFilePaths and call it getFeatureFileRoutes.
-        var featureName = featurePath.replace('.feature', '').replace('features/', '');
+          // Map from the storage directory to the Express route.
+          // TODO move inside getFeatureFilePaths and call it getFeatureFileRoutes.
+          featurePath = featurePath.replace('public/feature-files/', 'features/');
 
-        return {
-          featurePath: featurePath,
-          featureName: featureName
-        };
-      });
+          // Create a display name for the feature.
+          // TODO move inside getFeatureFilePaths and call it getFeatureFileRoutes.
+          var featureName = featurePath.replace('.feature', '').replace('features/', '');
+
+          return {
+            featurePath: featurePath,
+            // HACK FOR DEMO
+            featureName: featureName.replace('autotest/src/test/resources/com/ba/test/','')
+          };
+        });
 
       res.render('features', {paths: featureFilePaths});
     })
