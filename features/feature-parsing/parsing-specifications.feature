@@ -74,7 +74,7 @@ Feature: Parsing specifications
     And I get a scenario outline with the title "A collection of related examples"
     And I get a set of examples with the title "Examples with a title"
 
-  @parsing @dev
+  @parsing
   Scenario: Parse tags
     When I parse this specification
     Then feature tags are associated with features
