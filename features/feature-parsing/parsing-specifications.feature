@@ -53,6 +53,7 @@ Feature: Parsing specifications
           When I compare it to <another placeholder>
           Then the expected outcome is <a third lovely placeholder>
 
+          @myExampleLevelTag1 @myExampleLevelTag2
           Examples: Examples with a title
             some description of the examples
             | placeholder | another placeholder | a third lovely placeholder |
@@ -73,7 +74,7 @@ Feature: Parsing specifications
     And I get a scenario outline with the title "A collection of related examples"
     And I get a set of examples with the title "Examples with a title"
 
-  @parsing
+  @parsing @dev
   Scenario: Parse tags
     When I parse this specification
     Then feature tags are associated with features
@@ -82,6 +83,9 @@ Feature: Parsing specifications
     And scenario tags are associated with scenarios
       | @myScenarioLevelTag1 |
       | @myScenarioLevelTag2 |
+    And example tags are associated with examples
+      | @myExampleLevelTag1 |
+      | @myExampleLevelTag2 |
 
   @parsing
   Scenario: Parse comments
