@@ -114,3 +114,10 @@ Feature: Parsing specifications
       Then steps with tables have that table data
         | a table value       |
         | another table value |
+
+    @parsing @dev
+    Scenario: Parse doc strings
+      When I parse this specification
+      Then steps with doc strings have that doc string content
+        | A block of text     |
+        | On mulptiple lines. |

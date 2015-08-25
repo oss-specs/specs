@@ -154,7 +154,7 @@ module.exports = function() {
       var scenarios = getScenarios(features[0]);
 
       // Dig the relevant values out of the data structure.
-      // Hahahaha.
+      // TODO: too complicated, abstract or find another solution.
       var scenarioTableData = scenarios
         .map(function(scenario) {
           return scenario.steps
@@ -170,5 +170,14 @@ module.exports = function() {
         .reduce(function(a, b) { return a.concat(b); });
 
       scenarioTableData.should.containDeep(expectedTableDataValues);
+  });
+
+  this.Then(/^steps with doc strings have that doc string content\.?$/, function (table) {
+    var expectedDocStringValues = unwrapSingleColumnTable(table);
+    var scenarios = getScenarios(features[0]);
+
+    var scenarioDocStringData = {};
+
+    scenarioDocStringData.should.containDeep(expectedDocStringValues);
   });
 };
