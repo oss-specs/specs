@@ -44,8 +44,8 @@ Feature: Parsing specifications
             | a table value | another table value |
           Then I expect
             \"\"\" the-type-of-content
-              A block of text
-              On mulptiple lines.
+            A block of text
+            On mulptiple lines.
             \"\"\"
 
         Scenario Outline: A collection of related examples
@@ -115,9 +115,8 @@ Feature: Parsing specifications
         | a table value       |
         | another table value |
 
-    @parsing @dev
+    @parsing
     Scenario: Parse doc strings
       When I parse this specification
       Then steps with doc strings have that doc string content
-        | A block of text     |
-        | On mulptiple lines. |
+        | A block of text\nOn mulptiple lines. |
