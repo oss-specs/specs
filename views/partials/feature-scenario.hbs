@@ -2,16 +2,9 @@
   <section class="scenario">
     {{> feature_comments}}
     {{> feature_tags}}
-    {{> feature_keyword_title}}
+    {{> scenario_keyword_title}}
     {{> feature_description}}
     {{> feature_steps}}
-    {{#each examples}}
-      {{> feature_tags}}
-      {{> scenario_keyword_title}}
-      {{> feature_description}}
-      {{#each rows}}
-        &nbsp;&nbsp;| {{content}} |<br>
-      {{/each}}
-    {{/each}}
+    {{> feature_examples}}
   </section>
 {{/each}}<!-- end scenario -->

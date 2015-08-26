@@ -1,0 +1,10 @@
+{{#each examples}}
+  <section class="example">
+    {{> feature_tags}}
+    {{> scenario_keyword_title}}
+    {{> feature_description}}
+    {{#each rows}}
+      &nbsp;&nbsp;| {{content}} |<br>
+    {{/each}}
+  </section>
+{{/each}}
