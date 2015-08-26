@@ -49,6 +49,7 @@
 }
 
 .docstring > p {
+  font-family: monospace;
   margin-bottom: 0;
   margin-left: 1em;
   color: green;
