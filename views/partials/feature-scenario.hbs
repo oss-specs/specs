@@ -1,6 +1,6 @@
 {{#each scenarios}}<!-- start scenario -->
   {{comments}}<br>
-  {{#each tags}}{{this}} {{/each}}<br>
+  {{> feature_tags}}
   {{keyword}}: {{name}}<br>
   {{> feature_description}}
   {{#each steps}}<!-- start step -->
@@ -18,7 +18,7 @@
   {{/each}}<!-- end step -->
   {{#each examples}}
     <br>
-    {{#each tags}}{{this}} {{/each}}<br>
+    {{> feature_tags}}
     {{keyword}}: {{name}}<br>
     {{> feature_description}}
     {{#each rows}}

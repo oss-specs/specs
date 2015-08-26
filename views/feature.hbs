@@ -4,13 +4,13 @@
 {{> layout_start_body}}
 <main>
   <header>
-    <h1>Your Feature</h1>
+    <h1 class="title">Your Feature</h1>
   </header>
   <article>
     {{#each features}}<!-- start feature -->
       <section class="feature">
         {{comments}}<br>
-        {{#each tags}}{{this}} {{/each}}<br>
+        {{> feature_tags}}
         {{> feature_title}}
         {{> feature_description}}
         {{> feature_scenario}}

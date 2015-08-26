@@ -5,12 +5,18 @@
  * http://getbem.com/introduction/
  */
 
-.feature {}
+.title {
+  color: darkblue;
+}
 
 .feature--title {
-    color: darkorange;
+    color: darkblue;
 }
 
 .description {
   color: grey;
+}
+
+.tags--tag {
+  margin-right: 0.5em;
 }
