@@ -9,7 +9,7 @@
   <article>
     {{#each features}}<!-- start feature -->
       <section class="feature">
-        {{comments}}<br>
+        {{> feature_comments}}
         {{> feature_tags}}
         {{> feature_title}}
         {{> feature_description}}

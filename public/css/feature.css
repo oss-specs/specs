@@ -9,14 +9,18 @@
   color: darkblue;
 }
 
+.tags--tag {
+  margin-right: 0.5em;
+}
+
+.comments {
+
+}
+
 .feature--title {
     color: darkblue;
 }
 
 .description {
   color: grey;
-}
-
-.tags--tag {
-  margin-right: 0.5em;
 }
