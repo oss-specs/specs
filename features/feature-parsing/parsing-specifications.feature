@@ -31,6 +31,7 @@ Feature: Parsing specifications
         # A scenario comment.
         @myScenarioLevelTag1 @myScenarioLevelTag2
         Scenario: Scenario 1
+        Some scenarios have descriptions as well.
           Given something is true
           And something else is true
           But a third thing is not true
