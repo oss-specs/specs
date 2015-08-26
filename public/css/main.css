@@ -58,10 +58,6 @@ p {
   margin-bottom: 1em;
 }
 
-p.error {
-  color: red;
-}
-
 /* Somewhat borrowed from Bootstrap */
 button {
   display: inline-block;

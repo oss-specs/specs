@@ -1,15 +1,43 @@
 {{> layout_start_document}}
+<!--  Feature specific CSS -->
+<link rel="stylesheet" href="/public/css/feature.css">
 {{> layout_start_body}}
 <main>
   <header>
     <h1>Your Feature</h1>
   </header>
   <section>
-    {{#each features.features}}
-      {{this}}<br>
+    {{#each features}}<!-- start feature -->
+      {{comments}}<br>
+      {{#each tags}}{{this}} {{/each}}<br>
+      {{keyword}}: {{name}}<br>
+      {{description}}<br>
+      {{#each scenarios}}<!-- start scenario -->
+        {{comments}}<br>
+        {{#each tags}}{{this}} {{/each}}<br>
+        {{keyword}}: {{name}}<br>
+        {{#each steps}}<!-- start step -->
+          {{keyword}} {{name}}<br>
+          {{#each rows}}{{content}}{{/each}}
+          {{#each docStrings}}
+            ``` {{contentType}}<br>
+            {{content}}<br>
+            ```<br>
+          {{/each}}
+        {{/each}}<!-- end step -->
+        {{#each examples}}
+          <br>
+          {{#each tags}}{{this}} {{/each}}<br>
+          {{keyword}}: {{name}}<br>
+          {{description}}<br>
+          {{#each rows}}
+            {{content}}
+          {{/each}}
+        {{/each}}
+      {{/each}}<!-- end scenario -->
     {{else}}
       <p>Sorry, no feature found</p>
-    {{/each}}
+    {{/each}}<!-- end feature -->
   </section>
 </main>
 {{> layout_end}}
