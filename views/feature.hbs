@@ -12,33 +12,7 @@
       {{#each tags}}{{this}} {{/each}}<br>
       {{keyword}}: {{name}}<br><br>
       {{description}}<br><br>
-      {{#each scenarios}}<!-- start scenario -->
-        {{comments}}<br>
-        {{#each tags}}{{this}} {{/each}}<br>
-        {{keyword}}: {{name}}<br>
-        {{#each steps}}<!-- start step -->
-          {{keyword}} {{name}}<br>
-          {{#each rows}}
-            &nbsp;&nbsp;| {{content}} |<br>
-          {{/each}}
-          {{#each docStrings}}
-            <br>
-            """ {{contentType}}
-            <pre>{{content}}</pre>
-            """
-            <br>
-          {{/each}}
-        {{/each}}<!-- end step -->
-        {{#each examples}}
-          <br>
-          {{#each tags}}{{this}} {{/each}}<br>
-          {{keyword}}: {{name}}<br>
-          {{description}}<br>
-          {{#each rows}}
-            &nbsp;&nbsp;| {{content}} |<br>
-          {{/each}}
-        {{/each}}
-      {{/each}}<!-- end scenario -->
+      {{> feature_scenario}}
     {{else}}
       <p>Sorry, no feature found</p>
     {{/each}}<!-- end feature -->
