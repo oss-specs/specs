@@ -1,0 +1,9 @@
+{{#if rows}}
+  <table>
+    <tbody>
+      {{#each rows}}
+        <tr>{{#each content}}<td>{{this}}</td>{{/each}}</tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{/if}}

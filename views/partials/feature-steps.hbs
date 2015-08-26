@@ -1,8 +1,6 @@
 {{#each steps}}
   <h3>{{keyword}} {{name}}<br></h3>
-  {{#each rows}}
-    &nbsp;&nbsp;| {{content}} |<br>
-  {{/each}}
+  {{> feature_table}}
   {{#each docStrings}}
     <br>
     """ {{contentType}}
