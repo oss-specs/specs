@@ -25,3 +25,20 @@
 .description {
   color: black;
 }
+
+.scenario {
+  margin-bottom: 2em;
+}
+
+.step {
+  margin-bottom: 0.1em;
+}
+
+.step-keyword {
+  color: green;
+}
+
+.gherkin-table {
+  margin-left: 1em;
+  margin-bottom: 0.5em;
+}
