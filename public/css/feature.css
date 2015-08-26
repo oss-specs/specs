@@ -14,13 +14,13 @@
 }
 
 .comments {
-
+  color: darkgrey
 }
 
-.feature--title {
+.keyword-title {
     color: darkblue;
 }
 
 .description {
-  color: grey;
+  color: black;
 }

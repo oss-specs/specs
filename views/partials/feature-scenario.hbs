@@ -1,28 +1,18 @@
 {{#each scenarios}}<!-- start scenario -->
-  {{> feature_comments}}
-  {{> feature_tags}}
-  {{keyword}}: {{name}}<br>
-  {{> feature_description}}
-  {{#each steps}}<!-- start step -->
-    {{keyword}} {{name}}<br>
-    {{#each rows}}
-      &nbsp;&nbsp;| {{content}} |<br>
-    {{/each}}
-    {{#each docStrings}}
-      <br>
-      """ {{contentType}}
-      <pre>{{content}}</pre>
-      """
-      <br>
-    {{/each}}
-  {{/each}}<!-- end step -->
-  {{#each examples}}
-    <br>
+  <section class="scenario">
+    {{> feature_comments}}
     {{> feature_tags}}
-    {{keyword}}: {{name}}<br>
+    {{> feature_keyword_title}}
     {{> feature_description}}
-    {{#each rows}}
-      &nbsp;&nbsp;| {{content}} |<br>
+    {{> feature_steps}}
+    {{#each examples}}
+      <br>
+      {{> feature_tags}}
+      {{> feature_keyword_title}}
+      {{> feature_description}}
+      {{#each rows}}
+        &nbsp;&nbsp;| {{content}} |<br>
+      {{/each}}
     {{/each}}
-  {{/each}}
+  </section>
 {{/each}}<!-- end scenario -->

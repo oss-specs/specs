@@ -1,0 +1,13 @@
+{{#each steps}}
+  {{keyword}} {{name}}<br>
+  {{#each rows}}
+    &nbsp;&nbsp;| {{content}} |<br>
+  {{/each}}
+  {{#each docStrings}}
+    <br>
+    """ {{contentType}}
+    <pre>{{content}}</pre>
+    """
+    <br>
+  {{/each}}
+{{/each}}
