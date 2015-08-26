@@ -34,7 +34,7 @@ module.exports = function() {
   }
 
   // TODO: FAR TOO COMPLICATED! Maybe remove the conditionals
-  // TODO: by having two different functions.
+  // TODO: by having two different functions. See Example tags scenario for a possible alternative.
   // key1 is a key on the scenario
   // key2 is an optional key on a sub-object.
   function compareScenarioValues(key1, key2) {
@@ -139,6 +139,15 @@ module.exports = function() {
   this.Then(/^scenario comments are associated with scenarios\.?$/, compareScenarioValues('comments'));
 
   this.Then(/^the "([^"]*)" scenario has steps with the names\.?$/, compareScenarioValues('steps', 'name'));
+
+  this.Then(/^example tags are associated with examples$/, function (table) {
+    var expectedTagValues = unwrapSingleColumnTable(table);
+    var scenarioOutlines = getScenarioOutlines(features[0]);
+
+    var exampleTagData = scenarioOutlines[0].examples[0].tags;
+
+    exampleTagData.should.containDeep(expectedTagValues);
+  });
 
   this.Then(/^scenario outlines have example data\.?$/, function (table) {
     var expectedExampleDataValues = unwrapSingleColumnTable(table);

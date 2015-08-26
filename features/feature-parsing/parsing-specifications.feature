@@ -53,6 +53,7 @@ Feature: Parsing specifications
           When I compare it to <another placeholder>
           Then the expected outcome is <a third lovely placeholder>
 
+          @myExampleLevelTag1 @myExampleLevelTag2
           Examples: Examples with a title
             some description of the examples
             | placeholder | another placeholder | a third lovely placeholder |
@@ -82,6 +83,9 @@ Feature: Parsing specifications
     And scenario tags are associated with scenarios
       | @myScenarioLevelTag1 |
       | @myScenarioLevelTag2 |
+    And example tags are associated with examples
+      | @myExampleLevelTag1 |
+      | @myExampleLevelTag2 |
 
   @parsing
   Scenario: Parse comments
