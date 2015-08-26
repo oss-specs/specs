@@ -10,19 +10,23 @@
     {{#each features}}<!-- start feature -->
       {{comments}}<br>
       {{#each tags}}{{this}} {{/each}}<br>
-      {{keyword}}: {{name}}<br>
-      {{description}}<br>
+      {{keyword}}: {{name}}<br><br>
+      {{description}}<br><br>
       {{#each scenarios}}<!-- start scenario -->
         {{comments}}<br>
         {{#each tags}}{{this}} {{/each}}<br>
         {{keyword}}: {{name}}<br>
         {{#each steps}}<!-- start step -->
           {{keyword}} {{name}}<br>
-          {{#each rows}}{{content}}{{/each}}
+          {{#each rows}}
+            &nbsp;&nbsp;| {{content}} |<br>
+          {{/each}}
           {{#each docStrings}}
-            ``` {{contentType}}<br>
-            {{content}}<br>
-            ```<br>
+            <br>
+            """ {{contentType}}
+            <pre>{{content}}</pre>
+            """
+            <br>
           {{/each}}
         {{/each}}<!-- end step -->
         {{#each examples}}
@@ -31,7 +35,7 @@
           {{keyword}}: {{name}}<br>
           {{description}}<br>
           {{#each rows}}
-            {{content}}
+            &nbsp;&nbsp;| {{content}} |<br>
           {{/each}}
         {{/each}}
       {{/each}}<!-- end scenario -->

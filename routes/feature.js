@@ -14,16 +14,19 @@ router.get(/^\/(.+)/, function(req, res) {
 
   getFeatureFile(featureFilePath)
     .then(function(fileContents) {
+      var parser;
+      var features;
+      var isFeatureFile = /.*\.feature/.test(featureFilePath);
 
-      // Parse the feature from the file contents.
-      // var featureLines = fileContents.split('\n');
-      // res.render('feature', {featureLines: featureLines});
-
-      var parser = new GherkinParser();
-      var features = parser
-        .parse(fileContents)
-        .getFeatures();
-      res.render('feature', {features: features});
+      if (isFeatureFile) {
+        parser = new GherkinParser();
+        features = parser
+          .parse(fileContents)
+          .getFeatures();
+        res.render('feature', {features: features});
+      } else {
+        res.render('general-file', {contents: fileContents});
+      }
     })
     .catch(function(err) {
       var errorMessage = err.message || err;
