@@ -2,7 +2,7 @@
   {{comments}}<br>
   {{#each tags}}{{this}} {{/each}}<br>
   {{keyword}}: {{name}}<br>
-  <pre>{{description}}<pre><br><br>
+  {{> feature_description}}
   {{#each steps}}<!-- start step -->
     {{keyword}} {{name}}<br>
     {{#each rows}}
@@ -20,7 +20,7 @@
     <br>
     {{#each tags}}{{this}} {{/each}}<br>
     {{keyword}}: {{name}}<br>
-    <pre>{{description}}<pre><br><br>
+    {{> feature_description}}
     {{#each rows}}
       &nbsp;&nbsp;| {{content}} |<br>
     {{/each}}

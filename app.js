@@ -11,12 +11,15 @@ var indexRoute = require('./routes/index');
 var featuresRoute = require('./routes/features');
 var featureRoute = require('./routes/feature');
 
+var handlebarHelpers = require(path.join(__dirname,'views', 'helpers'));
+
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-hbs.registerPartials(__dirname + '/views/partials');
+hbs.registerPartials(path.join(__dirname,'views', 'partials'));
+hbs.registerHelper('newlines_to_breaks', handlebarHelpers.newlinesToBreaks);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
