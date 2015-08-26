@@ -14,11 +14,13 @@
 }
 
 .comments {
+  margin-bottom: 0.2em;
   color: darkgrey;
 }
 
 .feature-title,
 .scenario-title {
+    margin-bottom: 0.2em;
     color: darkblue;
 }
 
@@ -30,15 +32,24 @@
   margin-bottom: 2em;
 }
 
+.steps {
+  margin-left: 1em;
+}
 .step {
-  margin-bottom: 0.1em;
+  margin-bottom: 0.2em;
 }
 
 .step-keyword {
-  color: green;
+  color: darkorange;
 }
 
 .gherkin-table {
-  margin-left: 1em;
   margin-bottom: 0.5em;
+  margin-left: 1em;
+}
+
+.docstring > p {
+  margin-bottom: 0;
+  margin-left: 1em;
+  color: green;
 }

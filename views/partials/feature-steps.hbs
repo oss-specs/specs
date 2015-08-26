@@ -1,11 +1,9 @@
-{{#each steps}}
-  <h3 class="step"><span class="step-keyword">{{keyword}}</span> {{name}}<br></h3>
-  {{> feature_table}}
-  {{#each docStrings}}
-    <br>
-    """ {{contentType}}
-    <pre>{{content}}</pre>
-    """
-    <br>
-  {{/each}}
-{{/each}}
+{{#if steps}}
+  <section class="steps">
+    {{#each steps}}
+      {{> feature_step}}
+      {{> feature_table}}
+      {{> feature_docstring}}
+    {{/each}}
+  </section>
+{{/if}}

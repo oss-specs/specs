@@ -1,0 +1,7 @@
+{{#each docStrings}}
+  <section class="docstring">
+    <p>""" {{contentType}}</p>
+    {{#docstring_to_html content}}{{this}}{{/docstring_to_html}}
+    <p>"""</p>
+  </section>
+{{/each}}
