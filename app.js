@@ -8,7 +8,8 @@ var bodyParser = require('body-parser');
 var hbs = require('hbs');
 
 var indexRoute = require('./routes/index');
-var featuresRoutes = require('./routes/features');
+var featuresRoute = require('./routes/features');
+var featureRoute = require('./routes/feature');
 
 var app = express();
 
@@ -25,8 +26,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
+// Front page.
 app.use('/', indexRoute);
-app.use('/features', featuresRoutes);
+
+// List of features.
+app.use('/features', featuresRoute);
+
+// Individual feature.
+app.use('/features', featureRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

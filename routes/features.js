@@ -5,10 +5,6 @@ var express = require('express');
 var router = express.Router();
 
 var getFeatureFilePaths = require("../lib/specifications/getFeatureFilePaths");
-var getFeatureFile = require("../lib/specifications/getFeatureFile");
-
-
-// TODO post a new repo from which to extract features.
 
 // Default route for 'features' is the list of available features.
 router.get('/', function(req, res) {
@@ -38,25 +34,5 @@ router.get('/', function(req, res) {
         .send(err.message || err);
     });
 });
-
-// Match all routes with something after the slash
-// and display an individual feature.
-router.get(/^\/(.+)/, function(req, res) {
-  var featureFilePath = req.params[0];
-
-  getFeatureFile(featureFilePath)
-    .then(function(fileContents) {
-
-      // Parse the feature from the file contents.
-      // TODO move to a separate module.
-      var featureLines = fileContents.split('\n');
-      res.render('feature', {featureLines: featureLines});
-    })
-    .catch(function(err) {
-      res
-        .status(err.code === 'ENOENT' ? 404 : 500)
-        .send(err.message || err);
-    });
-})
 
 module.exports = router;
