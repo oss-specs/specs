@@ -1,1 +1,16 @@
+/**
+ * Styles for individual features.
+ *
+ * Vaguely following BEM naming conventions.
+ * http://getbem.com/introduction/
+ */
 
+.feature {}
+
+.feature--title {
+    color: darkorange;
+}
+
+.description {
+  color: grey;
+}

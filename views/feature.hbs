@@ -6,16 +6,18 @@
   <header>
     <h1>Your Feature</h1>
   </header>
-  <section>
+  <article>
     {{#each features}}<!-- start feature -->
-      {{comments}}<br>
-      {{#each tags}}{{this}} {{/each}}<br>
-      {{keyword}}: {{name}}<br><br>
-      {{> feature_description}}
-      {{> feature_scenario}}
+      <section class="feature">
+        {{comments}}<br>
+        {{#each tags}}{{this}} {{/each}}<br>
+        {{> feature_title}}
+        {{> feature_description}}
+        {{> feature_scenario}}
+      </section>
     {{else}}
       <p>Sorry, no feature found</p>
     {{/each}}<!-- end feature -->
-  </section>
+  </article>
 </main>
 {{> layout_end}}
