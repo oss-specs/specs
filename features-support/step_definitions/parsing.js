@@ -2,6 +2,8 @@
 /* eslint new-cap: 0 */
 
 require('should');
+var path = require('path');
+var fs = require('fs');
 
 var GherkinParser = require('../../lib/parser/gherkin.js');
 
@@ -93,8 +95,9 @@ module.exports = function() {
         .map(function(scenario) {return scenario.name});
   }
 
-  this.Given(/^the feature file\.?$/, function (string) {
-    featureText = string;
+  this.Given(/^an example feature file\.?$/, function () {
+    var exampleFeatureFilePath = path.join(__dirname, '..', 'test-data', 'example-feature-file.feature');
+    featureText = fs.readFileSync(exampleFeatureFilePath, {encoding: 'utf8'});
   });
 
   this.When(/^I parse this specification\.?$/, function () {
