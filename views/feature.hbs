@@ -1,5 +1,4 @@
 {{> layout_start_document}}
-<!--  Feature specific CSS -->
 <link rel="stylesheet" href="/public/css/feature.css">
 {{> layout_start_body}}
 <main>
@@ -7,7 +6,7 @@
     <h1 class="title">Your Feature</h1>
   </header>
   <article>
-    {{#each features}}<!-- start feature -->
+    {{#each features}}
       <section class="feature">
         {{> feature_comments}}
         {{> feature_tags}}
@@ -17,7 +16,7 @@
       </section>
     {{else}}
       <p>Sorry, no feature found</p>
-    {{/each}}<!-- end feature -->
+    {{/each}}
   </article>
 </main>
 {{> layout_end}}
