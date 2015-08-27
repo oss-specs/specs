@@ -69,3 +69,27 @@
 .gherkin-table tbody tr:nth-child(even) {
   background-color: #ddd;
 }
+
+/* Hide leading spaces by default (smallest view) */
+.leadingWhitespace {
+  font-size: 0;
+}
+
+/**
+ * Responsive styles
+ */
+
+/* Landscape and larger phones. */
+@media (min-width: 480px) {
+  .leadingWhitespace {
+    font-size: 0.2em;
+  }
+}
+/* Wideview port (e.g. landscape tablet). */
+@media (min-width: 800px) {
+  .leadingWhitespace {
+    font-size: inherit;
+  }
+}
+/* Wider viewport (e.g. monitor, tv). */
+@media (min-width: 1280px) {}

@@ -1,7 +1,7 @@
 {{#each docStrings}}
   <section class="docstring">
     <p>""" {{contentType}}</p>
-    {{#docstring_to_html content}}{{this}}{{/docstring_to_html}}
+    {{#newlines_to_paragraphs content}}{{this}}{{/newlines_to_paragraphs}}
     <p>"""</p>
   </section>
 {{/each}}
