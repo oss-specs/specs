@@ -7,6 +7,7 @@
 }
 
 .tags {
+  margin-bottom: 0.2em;
   color: darkgrey;
 }
 .tags--tag {
