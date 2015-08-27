@@ -11,7 +11,8 @@ Feature: Parsing specifications
   Rows can belong to Steps (data table) or Examples.
   Examples belong to Scenario Outlines.
   Doc Strings belong to Steps.
-  Tags and Comments belong to Features and Scenarios.
+  Tags can belong to Features, Scenarios and Examples.
+  Comments can belong to Features and Scenrios.
 
 
   # Slightly confusing because this is a feature about features.
