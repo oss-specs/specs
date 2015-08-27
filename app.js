@@ -57,12 +57,15 @@ if (app.get('env') === 'development') {
   });
 }
 
-// production error handler
-// no stacktraces leaked to user
+// Production error handler.
 app.use(function(err, req, res) {
+  var errorMessage = err.message || err;
+  var stack = err.stack || false;
   res.status(err.status || 500);
-  res.send(err);
+  res.render('error', {
+    message: errorMessage,
+    stack: stack
+  });
 });
-
 
 module.exports = app;

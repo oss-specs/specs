@@ -34,13 +34,11 @@ router.get(/^\/(.+)/, function(req, res) {
     .catch(function(err) {
       var errorMessage = err.message || err;
       var stack = err.stack || false;
-      res
-        .status(err.code === 'ENOENT' ? 404 : 500)
-        //.render('error', errorMessage);
-        res.render('error', {
-          message: errorMessage,
-          stack: stack
-        });
+      res.status(err.code === 'ENOENT' ? 404 : 500)
+      res.render('error', {
+        message: errorMessage,
+        stack: stack
+      });
     });
 })
 
