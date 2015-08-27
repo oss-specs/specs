@@ -12,13 +12,16 @@ var GherkinParser = require('../lib/parser/gherkin.js');
 router.get(/^\/(.+)/, function(req, res) {
   var featureFilePath = req.params[0];
 
+  // Skip the rendering for query param ?plain=true ?plain=1 etc.
+  var renderPlainFile = req.query.plain === 'true' || !!parseInt(req.query.plain);
+
   getFeatureFile(featureFilePath)
     .then(function(fileContents) {
       var parser;
       var features;
       var isFeatureFile = /.*\.feature/.test(featureFilePath);
 
-      if (isFeatureFile) {
+      if (isFeatureFile && !renderPlainFile) {
         parser = new GherkinParser();
         features = parser
           .parse(fileContents)
