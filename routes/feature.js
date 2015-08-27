@@ -4,6 +4,8 @@
 var express = require('express');
 var router = express.Router();
 
+var markdown = require( "markdown" ).markdown;
+
 var getFeatureFile = require("../lib/specifications/getFeatureFile");
 var GherkinParser = require('../lib/parser/gherkin.js');
 
@@ -20,6 +22,7 @@ router.get(/^\/(.+)/, function(req, res) {
       var parser;
       var features;
       var isFeatureFile = /.*\.feature/.test(featureFilePath);
+      var isMarkdownFile = /.*\.md/.test(featureFilePath);
 
       if (isFeatureFile && !renderPlainFile) {
         parser = new GherkinParser();
@@ -27,6 +30,8 @@ router.get(/^\/(.+)/, function(req, res) {
           .parse(fileContents)
           .getFeatures();
         res.render('feature', {features: features});
+      } else if (isMarkdownFile && !renderPlainFile) {
+        res.render('markdown-file', {markdownHtml: markdown.toHTML(fileContents)});
       } else {
         res.render('general-file', {contents: fileContents});
       }
