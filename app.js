@@ -40,7 +40,7 @@ app.use('/features', featuresRoute);
 // Individual feature.
 app.use('/features', featureRoute);
 
-// Special resources in node_modules routes
+// Special resources in node_modules routes.
 app.get('/github-markdown-css/github-markdown.css', function(req, res, next) {
   var cssPath = path.join(__dirname, 'node_modules','github-markdown-css','github-markdown.css');
   res.sendFile(cssPath, {}, function(err) {
