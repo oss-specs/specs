@@ -32,10 +32,12 @@ router.get(/^\/(.+)/, function(req, res) {
       }
     })
     .catch(function(err) {
+      var status = err.code === 'ENOENT' ? 404 : 500;
       var errorMessage = err.message || err;
       var stack = err.stack || false;
-      res.status(err.code === 'ENOENT' ? 404 : 500)
+      res.status(status)
       res.render('error', {
+        status: status,
         message: errorMessage,
         stack: stack
       });

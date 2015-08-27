@@ -39,7 +39,7 @@ app.use('/features', featuresRoute);
 // Individual feature.
 app.use('/features', featureRoute);
 
-// catch 404 and forward to error handler
+// Catch 404 and forward to error handler.
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
@@ -47,25 +47,32 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
+console.log(app.get('env'));
 
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res) {
+  app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.send(err);
   });
 }
 
 // Production error handler.
-app.use(function(err, req, res) {
+app.use(function(err, req, res, next) {
+  var status = err.status || 500;
   var errorMessage = err.message || err;
   var stack = err.stack || false;
-  res.status(err.status || 500);
-  res.render('error', {
-    message: errorMessage,
-    stack: stack
-  });
+  res.status(status)
+  if (status == 404) {
+    res.render('four-oh-four');
+  } else {
+    res.render('error', {
+      status: status,
+      message: errorMessage,
+      stack: stack
+    });
+  }
 });
 
 module.exports = app;
