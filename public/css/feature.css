@@ -42,9 +42,14 @@
 .step {
   margin-bottom: 0.2em;
 }
-
 .step-keyword {
   color: darkorange;
+}
+.step .quoted {
+  color: green;
+}
+.step .chevroned {
+  color: purple;
 }
 
 .docstring > p {

@@ -21,6 +21,7 @@ app.set('view engine', 'hbs');
 hbs.registerPartials(path.join(__dirname,'views', 'partials'));
 hbs.registerHelper('newlines_to_breaks', handlebarHelpers.newlinesToBreaks);
 hbs.registerHelper('newlines_to_paragraphs', handlebarHelpers.newlinesToParagraphs);
+hbs.registerHelper('step_content', handlebarHelpers.stepContent);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -46,11 +47,7 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-// error handlers
-console.log(app.get('env'));
-
-// development error handler
-// will print stacktrace
+// Development error handler.
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);

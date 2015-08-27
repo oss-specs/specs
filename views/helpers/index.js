@@ -3,7 +3,40 @@
 var handlebars = require('hbs').handlebars;
 var htmlEncode = require('ent/encode');
 
+/**
+ * Arguments are typically surround by double quotes
+ * or single quotes ('). Ignoring typographic left
+ * and right single quotes for simplicity.
+ *
+ * Strictly speaking parameters are defined by an
+ * arbitrary regex, but quotes are typical so
+ * highlighting them adds probable value.
+ *
+ * quote: &#34; &quot;
+ * mixed single quote/apostrophe: &#39 &apos ';
+ * left single quote: &#8216;
+ * right single quote: &#8217;
+ * <: &#60; &lt;
+ * >: &#61; &gt;
+ */
+function highlightStepParams(context, options) {
+  var safeContent = options.fn(context);
+  var ungreedyThingsInQuotes = /(?:&#34;|&quot;|&39;|&apos;).+?(?:&#34;|&quot;|&39;|&apos;)/g
+  var ungreedyThingsInChevrons = /(?:&#60;|&lt;).+?(?:&#61;|&gt;)/g
+
+  safeContent = safeContent.replace(ungreedyThingsInQuotes, function(match, offset, string) {
+    return '<span class="quoted">' + match + '</span>';
+  });
+
+  safeContent = safeContent.replace(ungreedyThingsInChevrons, function(match, offset, string) {
+    return '<span class="chevroned">' + match + '</span>';
+  });
+
+  return '<span class="step-name">' + safeContent + '</span>';
+}
+
 // http://www.2ality.com/2014/01/efficient-string-repeat.html
+// N.b. ES6 will do this with string.prototype.repeat.
 function stringRepeat(str, num) {
   num = Number(num);
   var result = '';
@@ -40,10 +73,11 @@ function getStringConverter(aggregator) {
 }
 
 module.exports = {
-  newlinesToBreaks: getStringConverter(function(safeContent) {
+  newlinesToBreaks: getStringConverter(function toBreaks(safeContent) {
     return safeContent + '<br>';
   }),
-  newlinesToParagraphs: getStringConverter(function(safeContent) {
+  newlinesToParagraphs: getStringConverter(function toParagraphs(safeContent) {
     return '<p>' + safeContent + '</p>';
-  })
+  }),
+  stepContent: highlightStepParams
 };
