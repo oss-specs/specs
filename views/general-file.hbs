@@ -1,0 +1,12 @@
+{{> layout_start_document}}
+<link rel="stylesheet" href="/public/css/general-file.css">
+{{> layout_start_body}}
+<main>
+  <header>
+    <h1>File contents</h1>
+  </header>
+  <p class="file-contents">
+    {{#newlines_to_breaks contents}}{{this}}{{/newlines_to_breaks}}
+  </p>
+</main>
+{{> layout_end}}

@@ -1,0 +1,16 @@
+{{> layout_start_document}}
+<link rel="stylesheet" href="/public/css/error.css">
+{{> layout_start_body}}
+<main>
+  <header>
+    <h1>It all went wrong...</h1>
+    <p>Please <a href="https://github.com/oss-specs/specs/issues">raise an issue</a> including the messages below<p>
+  </header>
+  <section>
+    <h2>{{status}}</h2>
+    <h3>Error Message</h3>
+    <p class="error">{{message}}</p>
+    <p class="error">{{stack}}</p>
+  </section>
+</main>
+{{> layout_end}}

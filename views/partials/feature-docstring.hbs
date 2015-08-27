@@ -1,0 +1,7 @@
+{{#each docStrings}}
+  <section class="docstring">
+    <p>""" {{contentType}}</p>
+    {{#newlines_to_paragraphs content}}{{this}}{{/newlines_to_paragraphs}}
+    <p>"""</p>
+  </section>
+{{/each}}

@@ -1,0 +1,101 @@
+/**
+ * Styles for individual features.
+ */
+
+.title {
+  color: darkblue;
+}
+
+.tags {
+  margin-bottom: 0.2em;
+  color: darkgrey;
+}
+.tags--tag {
+  margin-right: 0.5em;
+}
+
+.comments {
+  margin-bottom: 0.2em;
+  color: darkgrey;
+}
+
+.feature-title,
+.scenario-title {
+    margin-bottom: 0.2em;
+    color: darkblue;
+}
+
+.description {
+  color: black;
+}
+.feature > .description {
+  margin-bottom: 2em;
+}
+
+.scenario {
+  margin-bottom: 3em;
+}
+
+.steps {
+  margin-left: 1em;
+}
+.step {
+  margin-bottom: 0.2em;
+}
+.step-keyword {
+  color: darkorange;
+}
+.step .quoted {
+  color: green;
+}
+.step .chevroned {
+  color: purple;
+}
+
+.docstring > p {
+  font-family: monospace;
+  margin-bottom: 0;
+  margin-left: 1em;
+  color: green;
+}
+
+.gherkin-table {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+  margin-left: 2em;
+  border-collapse: collapse;
+  color: darkred;
+}
+.gherkin-table td,
+.gherkin-table th {
+  padding: 0.5em;
+  border-left: 1px solid;
+  border-right: 1px solid;
+}
+.gherkin-table tbody tr:nth-child(even) {
+  background-color: #ddd;
+}
+
+/* Hide leading spaces by default (smallest view) */
+.leadingWhitespace {
+  font-size: 0;
+}
+
+/**
+ * Responsive styles
+ */
+
+/* Landscape and larger phones. */
+@media (min-width: 480px) {
+  .leadingWhitespace {
+    font-size: 0.2em;
+  }
+}
+/* Wideview port (e.g. landscape tablet). */
+@media (min-width: 800px) {
+  .leadingWhitespace {
+    font-size: inherit;
+  }
+}
+/* Wider viewport (e.g. monitor, tv). */
+@media (min-width: 1280px) {}

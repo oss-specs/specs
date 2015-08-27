@@ -1,14 +1,22 @@
-{{> layout_start}}
+{{> layout_start_document}}
+<link rel="stylesheet" href="/public/css/feature.css">
+{{> layout_start_body}}
 <main>
   <header>
-    <h1>Your Feature</h1>
+    <h1 class="title">Your Feature</h1>
   </header>
-  <section>
-    {{#each featureLines}}
-      {{this}}<br>
+  <article>
+    {{#each features}}
+      <section class="feature">
+        {{> feature_comments}}
+        {{> feature_tags}}
+        {{> feature_keyword_title}}
+        {{> feature_description}}
+        {{> feature_scenario}}
+      </section>
     {{else}}
       <p>Sorry, no feature found</p>
     {{/each}}
-  </section>
+  </article>
 </main>
 {{> layout_end}}

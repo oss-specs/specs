@@ -1,0 +1,9 @@
+{{#if steps}}
+  <section class="steps">
+    {{#each steps}}
+      {{> feature_step}}
+      {{> feature_table}}
+      {{> feature_docstring}}
+    {{/each}}
+  </section>
+{{/if}}
