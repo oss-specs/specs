@@ -12,7 +12,7 @@ router.get('/', function(req, res) {
   // If there is no URL query param then
   // render the index page.
   if (!repoUrl) {
-    res.render('index');
+    res.render('get-features');
     return;
   }
 

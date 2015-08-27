@@ -7,7 +7,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('hbs');
 
-var indexRoute = require('./routes/index');
+var indexRoute = require('./routes/get-features');
 var featuresRoute = require('./routes/features');
 var featureRoute = require('./routes/feature');
 
@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
-// Front page.
+// Front page, currently the 'get features' page.
 app.use('/', indexRoute);
 
 // List of features.
