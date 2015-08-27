@@ -1,7 +1,6 @@
 'use strict';
 
 var handlebars = require('hbs').handlebars;
-var htmlEncode = require('ent/encode');
 
 /**
  * Arguments are typically surround by double quotes
@@ -65,7 +64,7 @@ function getStringConverter(aggregator) {
     content = content.reduce(function(previous, current) {
 
       // Gaurantee rendered content.
-      var safeContent = htmlEncode(current) || '&nbsp;';
+      var safeContent = options.fn(current) || '&nbsp;';
       return previous += aggregator(encodeLeadingWhitespace(safeContent));
     }, '');
     return new handlebars.SafeString(content);
