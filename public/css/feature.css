@@ -27,9 +27,12 @@
 .description {
   color: black;
 }
+.feature > .description {
+  margin-bottom: 2em;
+}
 
 .scenario {
-  margin-bottom: 2em;
+  margin-bottom: 3em;
 }
 
 .steps {
@@ -43,14 +46,26 @@
   color: darkorange;
 }
 
-.gherkin-table {
-  margin-bottom: 0.5em;
-  margin-left: 1em;
-}
-
 .docstring > p {
   font-family: monospace;
   margin-bottom: 0;
   margin-left: 1em;
   color: green;
+}
+
+.gherkin-table {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+  margin-left: 2em;
+  border-collapse: collapse;
+  color: darkred;
+}
+.gherkin-table td,
+.gherkin-table th {
+  padding: 0.5em;
+  border-left: 1px solid;
+  border-right: 1px solid;
+}
+.gherkin-table tbody tr:nth-child(even) {
+  background-color: #ddd;
 }
