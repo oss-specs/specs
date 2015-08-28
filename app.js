@@ -23,13 +23,21 @@ hbs.registerHelper('newlines_to_breaks', handlebarHelpers.newlinesToBreaks);
 hbs.registerHelper('newlines_to_paragraphs', handlebarHelpers.newlinesToParagraphs);
 hbs.registerHelper('step_content', handlebarHelpers.stepContent);
 
+
+/* HTTP logging middleware. */
+// Standard out.
+app.use(morgan('dev'));
+
+/* Other middleware */
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/public', express.static(path.join(__dirname, 'public')));
+
+
+/* Routes. */
 
 // Front page, currently the 'get features' page.
 app.use('/', indexRoute);
