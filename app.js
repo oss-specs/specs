@@ -2,7 +2,9 @@
 
 var express = require('express');
 var path = require('path');
-var logger = require('morgan');
+var morgan = require('morgan');
+var fs = require('fs');
+var FileStreamRotator = require('file-stream-rotator');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('hbs');
@@ -23,13 +25,38 @@ hbs.registerHelper('newlines_to_breaks', handlebarHelpers.newlinesToBreaks);
 hbs.registerHelper('newlines_to_paragraphs', handlebarHelpers.newlinesToParagraphs);
 hbs.registerHelper('step_content', handlebarHelpers.stepContent);
 
+
+/* HTTP logging middleware. */
+
+// Standard out.
+app.use(morgan('dev'));
+
+// Log to disk.
+if (app.get('env') !== 'development') {
+  var logDirectory = path.join(__dirname, 'log');
+  // ensure log directory exists
+  fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
+  // create a rotating write stream
+  var accessLogStream = FileStreamRotator.getStream({
+    filename: path.join(logDirectory, 'access-%DATE%.log'),
+    frequency: 'daily',
+    verbose: false
+  })
+  // setup the logger
+  app.use(morgan('combined', {stream: accessLogStream}))
+}
+
+/* Other middleware */
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use('/public', express.static(path.join(__dirname, 'public')));
+
+
+/* Routes. */
 
 // Front page, currently the 'get features' page.
 app.use('/', indexRoute);
@@ -65,7 +92,7 @@ if (app.get('env') === 'development') {
   });
 }
 
-// Production error handler.
+// Production error handler (won't hit this if the dev one is set).
 app.use(function(err, req, res, next) {
   var status = err.status || 500;
   var errorMessage = err.message || err;
