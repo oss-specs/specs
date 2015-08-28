@@ -71,7 +71,7 @@ module.exports = function () {
   });
 
   this.Then(/^the list of features will be visible\.?$/, function (callback) {
-    should.equal(this.statusCode, 200, "Bad HTTP status code.");
+    should.equal(this.statusCode, 200, "Bad HTTP status code: " + this.statusCode);
     should.equal(
       /\.feature/i.test(this.body) && /\.md/i.test(this.body),
       true,
@@ -94,6 +94,7 @@ module.exports = function () {
   this.When(/^an interested party wants to view the scenarios within that feature file\.?$/, function (callback) {
     var world = this; // the World variable is passed around the step defs as `this`.
     var featurePath = 'http://localhost:' + world.appPort + '/' + world.firstFeatureLink;
+
     request
       .get(featurePath, function(error, response, body) {
         if (error) {
@@ -107,7 +108,7 @@ module.exports = function () {
   });
 
   this.Then(/^the scenarios will be visible\.?$/, function (callback) {
-    should.equal(this.statusCode, 200, "Bad HTTP status code.");
+    should.equal(this.statusCode, 200, "Bad HTTP status code: " + this.statusCode);
     should.equal(/feature:/i.test(this.body),
       true,
       "The returned document body does not contain the word 'feature'");
