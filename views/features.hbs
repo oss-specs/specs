@@ -1,15 +1,24 @@
 {{> layout_start_document}}
+<link rel="stylesheet" href="/public/css/features.css">
 {{> layout_start_body}}
 <main>
   <header>
     <h1>Available Specifications</h1>
   </header>
-  <section>
-    {{#each paths}}
-      <p><a class="speclink" href="{{this.featurePath}}">{{this.featureName}}</a></p>
-    {{else}}
-      <p>No specifications found</p>
-    {{/each}}
-  </section>
+  {{#each projects}}
+    <section class="project">
+      <h2 id={{this.name}}><a class="quick-link" href="#{{this.name}}">&Rarr;</a> {{this.name}}</h2>
+      <span class="repo-link"><a href="{{this.url}}">(visit repository)</a></span>
+      <div class="link-container">
+        {{#each this.featureFilePaths}}
+          <p><a class="speclink" href="{{this.featurePath}}">{{this.featureName}}</a></p>
+        {{else}}
+          <p>Sorry, this project doesn not appear to contain any specifications</p>
+        {{/each}}
+      </div>
+    </section>
+  {{else}}
+    <p>Sorry, no projects were found</p>
+  {{/each}}
 </main>
 {{> layout_end}}

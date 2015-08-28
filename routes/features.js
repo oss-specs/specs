@@ -26,7 +26,7 @@ router.get('/', function(req, res, next) {
       return Q.all(promisesForData);
     })
     .then(function(projectData) {
-      res.render('features', {paths: projectData[0].featureFilePaths});
+      res.render('features', {projects: projectData});
     })
     .catch(function(err) {
       // Pass on to the error handling route.

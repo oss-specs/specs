@@ -1,0 +1,30 @@
+.quick-link {
+  text-decoration: none;
+}
+
+.quick-link:hover {
+  color: green;
+}
+
+.project > h2 {
+  display: inline-block;
+}
+
+.repo-link {
+  position: relative;
+  top: -0.1em;
+  font-size: 0.7em;
+  margin-left: 1em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.repo-link a {
+  text-decoration: none;
+}
+.repo-link:hover a {
+  text-decoration: underline;
+}
+
+.link-container {
+  margin-left: 3em;
+}

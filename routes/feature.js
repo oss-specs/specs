@@ -38,7 +38,7 @@ router.get(/^\/(.+)/, function(req, res, next) {
     })
     .catch(function(err) {
       // Pass on to the error handling route.
-      if (if !err.status && err.code === 'ENOENT') {
+      if (!err.status && err.code === 'ENOENT') {
         err.status = 404;
       }
       next(err);
