@@ -1,32 +1,41 @@
-.project-name {
+.project-title {
   display: inline-block;
 }
-
 .quick-link {
   text-decoration: none;
+  color: blue;
 }
-
-.project-name .quick-link-arrow {
+.project-title .quick-link-icon {
+  font-size: 1.3em;
   opacity: 0.4;
+  color: blue;
 }
-.project-name:hover .quick-link-arrow {
+.project-title:hover .quick-link-icon {
   opacity: 1;
   color: green;
+}
+.project-name {
+  margin-left: 0.5em;
+}
+
+.project-commit {
+  margin-left: 0.3em;
 }
 
 .repo-link {
   position: relative;
   top: -0.1em;
   font-size: 0.7em;
-  margin-left: 1em;
+  margin-left: 2em;
   font-weight: bold;
   text-transform: uppercase;
 }
 .repo-link a {
   text-decoration: none;
+  color: blue;
 }
 .repo-link:hover a {
-  text-decoration: underline;
+  color: green;
 }
 
 .links-container {
