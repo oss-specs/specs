@@ -7,7 +7,7 @@
 }
 
 .project-name .quick-link-arrow {
-  opacity: 0.5;
+  opacity: 0.4;
 }
 .project-name:hover .quick-link-arrow {
   opacity: 1;
