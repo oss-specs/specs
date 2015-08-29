@@ -7,13 +7,16 @@
   </header>
   {{#each projects}}
     <section class="project">
-      <h2 class="project-name" id={{this.name}}><a class="quick-link" href="#{{this.name}}"><span class="quick-link-arrow">&Rarr;</span> {{this.name}}</a></h2>
+      <h2 class="project-name" id={{this.name}}>
+        <a class="quick-link" href="#{{this.name}}"><span class="quick-link-arrow">&Rarr;</span> {{this.name}}</a>
+      </h2>
+      <span class="project-commit">&commat;{{this.commit}}</span>
       <span class="repo-link"><a href="{{this.url}}">(visit repository)</a></span>
-      <div class="link-container">
+      <div class="links-container">
         {{#each this.featureFilePaths}}
           <p><a class="spec-link" href="{{this.featureRoute}}">{{this.featureName}}</a></p>
         {{else}}
-          <p>Sorry, this project doesn not appear to contain any specifications</p>
+          <p>Sorry, this project does not appear to contain any specifications</p>
         {{/each}}
       </div>
     </section>
