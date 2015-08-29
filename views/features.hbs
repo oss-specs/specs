@@ -11,7 +11,7 @@
       <span class="repo-link"><a href="{{this.url}}">(visit repository)</a></span>
       <div class="link-container">
         {{#each this.featureFilePaths}}
-          <p><a class="speclink" href="{{this.featurePath}}">{{this.featureName}}</a></p>
+          <p><a class="spec-link" href="{{this.featureRoute}}">{{this.featureName}}</a></p>
         {{else}}
           <p>Sorry, this project doesn not appear to contain any specifications</p>
         {{/each}}

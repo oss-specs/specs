@@ -10,16 +10,19 @@ var getFeatureFilePaths = require("../lib/specifications/getFeatureFilePaths");
 
 // Configure the root for data storage.
 // TODO: This will also be needed for reading the data, we need in memory key-value peristence of configuration.
-var projectData = require('../lib/specifications/projectData');
+var projectDataStorage = require('../lib/specifications/projectDataStorage');
 
 // Default route for 'features' is the list of
 // available features in each known project.
 router.get('/', function(req, res, next) {
 
-  projectData.getNames()
+  projectDataStorage.getNames()
     .then(function(names) {
+
+      // TODO: POSSIBLE FEATURE. If there are no names, reparse the repos for project data.
+
       var promisesForData = names.map(function(name) {
-        return projectData.get(name);
+        return projectDataStorage.get(name);
       });
 
       // Convert to promise for array of values.
