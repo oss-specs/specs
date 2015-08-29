@@ -1,13 +1,17 @@
+.project-name {
+  display: inline-block;
+}
+
 .quick-link {
   text-decoration: none;
 }
 
-.quick-link:hover {
-  color: green;
+.project-name .quick-link-arrow {
+  opacity: 0.5;
 }
-
-.project > h2 {
-  display: inline-block;
+.project-name:hover .quick-link-arrow {
+  opacity: 1;
+  color: green;
 }
 
 .repo-link {
