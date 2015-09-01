@@ -1,13 +1,19 @@
 "use strict";
 
 var fs = require("q-io/fs"); // https://github.com/kriskowal/q-io
+var path = require('path');
+
+// Get the project metadata module so we can inject test data.
+var projectMetaData = require('../lib/specifications/projectMetaData');
+var featureFileRoot = path.join(__dirname, '..', 'public', 'feature-files');
 
 module.exports = function() {
   this.World = function World(callback) {
     this.appPort = process.env.PORT || 3000;
     this.paths = {
-      features: 'features',
-      public: 'public/feature-files/'
+      features: path.join('features'),
+      public: path.join('public', 'feature-files'),
+      data: path.join('project-data')
     };
 
     /**
@@ -21,15 +27,35 @@ module.exports = function() {
       return fs.makeTree(world.paths.public)
         .then(function() {
           return fs.copyTree(world.paths.features, world.paths.public);
+        })
+        .then(function() {
+
+          // Configure the metadata module with the feature file storage path.
+          var configuredDeriveAndStore = projectMetaData.deriveAndStore(featureFileRoot);
+
+          // Pass an object of made up repo data to be decorated with
+          // feature file paths and return a promise for completion
+          // of storage of that data.
+          return configuredDeriveAndStore({
+            repoName: 'made up',
+            repoUrl: 'http//example.com',
+            head: 'testing!',
+            localName: 'not a real repo'
+          });
         });
     };
 
     /**
+     * Remove any specs and data already in place.
+     *
      * @return promise for operation completion.
      */
     this.deleteTestSpecs = function() {
       var world = this;
       return fs.removeTree(world.paths.public)
+        .then(function() {
+          return fs.removeTree(world.paths.data);
+        })
         .catch(function(err) {
           // Ignore failure to unlink missing directory.
           if (err.code !== 'ENOENT') {

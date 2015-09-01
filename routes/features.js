@@ -4,34 +4,36 @@
 var express = require('express');
 var router = express.Router();
 
+var Q = require('q');
+
 var getFeatureFilePaths = require("../lib/specifications/getFeatureFilePaths");
 
-// Default route for 'features' is the list of available features.
-router.get('/', function(req, res) {
-  getFeatureFilePaths('public/feature-files')
-    .then(function(featureFilePaths) {
-      featureFilePaths = featureFilePaths.map(function(featurePath) {
+// Configure the root for data storage.
+// TODO: This will also be needed for reading the data, we need in memory key-value peristence of configuration.
+var projectDataStorage = require('../lib/specifications/projectDataStorage');
 
-        // Map from the storage directory to the Express route.
-        // TODO move inside getFeatureFilePaths and call it getFeatureFileRoutes.
-        featurePath = featurePath.replace('public/feature-files/', 'features/');
+// Default route for 'features' is the list of
+// available features in each known project.
+router.get('/', function(req, res, next) {
 
-        // Create a display name for the feature.
-        // TODO move inside getFeatureFilePaths and call it getFeatureFileRoutes.
-        var featureName = featurePath.replace('.feature', '').replace('features/', '');
+  projectDataStorage.getNames()
+    .then(function(names) {
 
-        return {
-          featurePath: featurePath,
-          featureName: featureName
-        };
+      // TODO: POSSIBLE FEATURE. If there are no names, reparse the repos for project data.
+
+      var promisesForData = names.map(function(name) {
+        return projectDataStorage.get(name);
       });
 
-      res.render('features', {paths: featureFilePaths});
+      // Convert to promise for array of values.
+      return Q.all(promisesForData);
+    })
+    .then(function(projectData) {
+      res.render('features', {projects: projectData});
     })
     .catch(function(err) {
-      res
-        .status(500)
-        .send(err.message || err);
+      // Pass on to the error handling route.
+      next(err);
     });
 });
 

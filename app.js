@@ -84,15 +84,6 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-// Development error handler.
-if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.send(err);
-  });
-}
-
-// Production error handler (won't hit this if the dev one is set).
 app.use(function(err, req, res, next) {
   var status = err.status || 500;
   var errorMessage = err.message || err;

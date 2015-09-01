@@ -4,9 +4,9 @@
 var express = require('express');
 var router = express.Router();
 
-var getProject = require("../lib/specifications/getProject");
+var getProject = require('../lib/specifications/getProject');
 
-router.get('/', function(req, res) {
+router.get('/', function(req, res, next) {
   var repoUrl = req.query.repo_url;
 
   // If there is no URL query param then
@@ -16,17 +16,16 @@ router.get('/', function(req, res) {
     return;
   }
 
+  // Else get the project and load the features page.
   getProject(repoUrl)
-    .then(function(headCommitHash) {
+    .then(function() {
 
       // Redirect to the features page.
-      // TODO features page per repo, then using the commit hash makes sense.
       res.redirect('/features');
     })
     .catch(function(err) {
-      res
-        .status(500)
-        .send(err.message || err);
+      // Pass on to the error handling route.
+      next(err);
     });
 });
 

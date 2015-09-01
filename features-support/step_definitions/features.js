@@ -32,13 +32,15 @@ module.exports = function () {
   this.Given(/^a set of specifications containing at least one feature file\.?$/, function (callback) {
     var world = this;
 
-    // Only generate the static test data once.
+    // Only generate the static test data once for the feature
+    // as opposed to the @cleanSlate tag which removes it for
+    // each scenario.
     if (staticTestDataExists) {
       callback();
       return;
     }
 
-    // Make sure the test data is clean.
+    // Make sure the test data is removed.
     world.deleteTestSpecs()
       .then(function() {
         return world.createSpecsForTesting();
@@ -71,7 +73,7 @@ module.exports = function () {
   });
 
   this.Then(/^the list of features will be visible\.?$/, function (callback) {
-    should.equal(this.statusCode, 200, "Bad HTTP status code.");
+    should.equal(this.statusCode, 200, "Bad HTTP status code: " + this.statusCode + "\nBody:\n" + this.body);
     should.equal(
       /\.feature/i.test(this.body) && /\.md/i.test(this.body),
       true,
@@ -86,7 +88,7 @@ module.exports = function () {
         callback(error);
         return;
       }
-      world.firstFeatureLink = (/class="speclink" href="([\w\/.-]+)\.feature"/.exec(body))[1];
+      world.firstFeatureLink = (/class="spec-link" href="([\w\/.-]+)\.feature"/.exec(body))[1];
       callback();
     });
   });
@@ -94,6 +96,7 @@ module.exports = function () {
   this.When(/^an interested party wants to view the scenarios within that feature file\.?$/, function (callback) {
     var world = this; // the World variable is passed around the step defs as `this`.
     var featurePath = 'http://localhost:' + world.appPort + '/' + world.firstFeatureLink;
+
     request
       .get(featurePath, function(error, response, body) {
         if (error) {
@@ -107,7 +110,7 @@ module.exports = function () {
   });
 
   this.Then(/^the scenarios will be visible\.?$/, function (callback) {
-    should.equal(this.statusCode, 200, "Bad HTTP status code.");
+    should.equal(this.statusCode, 200, "Bad HTTP status code: " + this.statusCode + "\nBody:\n" + this.body);
     should.equal(/feature:/i.test(this.body),
       true,
       "The returned document body does not contain the word 'feature'");

@@ -11,7 +11,7 @@ var GherkinParser = require('../lib/parser/gherkin.js');
 
 // Match all routes with something after the slash
 // and display an individual feature.
-router.get(/^\/(.+)/, function(req, res) {
+router.get(/^\/(.+)/, function(req, res, next) {
   var featureFilePath = req.params[0];
 
   // Skip the rendering for query param ?plain=true ?plain=1 etc.
@@ -37,15 +37,11 @@ router.get(/^\/(.+)/, function(req, res) {
       }
     })
     .catch(function(err) {
-      var status = err.code === 'ENOENT' ? 404 : 500;
-      var errorMessage = err.message || err;
-      var stack = err.stack || false;
-      res.status(status)
-      res.render('error', {
-        status: status,
-        message: errorMessage,
-        stack: stack
-      });
+      // Pass on to the error handling route.
+      if (!err.status && err.code === 'ENOENT') {
+        err.status = 404;
+      }
+      next(err);
     });
 })
 

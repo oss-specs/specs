@@ -3,7 +3,7 @@ Feature: Specifications are visible to users
   As an interested party
   I want specifications to be visible in a nice web UI.
 
-  The general idea is that anyone should be able to see the specifications stored in a project without having to understand how version control works. The 'server' tag means that test requires the server to be running.
+  The general idea is that anyone should be able to see the specifications stored in a project without having to understand how version control works. The 'server' tag means that test requires the server to be running. These tests copy features from this repo so don't need internet access.
 
   Background:
     Given a set of specifications containing at least one feature file
