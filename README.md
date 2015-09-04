@@ -22,4 +22,4 @@ For a full specification please see the [features](/features) folder, and hopefu
 
 ## Usage
 
-* Run the server in develop mode locally `DEBUG=specs:* npm start`.
+* Run the server locally `npm start`, default port is 3000, http://localhost:3000 .
