@@ -5,7 +5,7 @@ var express = require('express');
 var router = express.Router();
 
 var Q = require('q');
-var getProjectMetaData = require('../lib/specifications/projectMetaData').get;
+var getProjectMetaData = require('../lib/specifications/projectMetaData').getAll;
 var updateProject = require('../lib/specifications/getProject').update;
 
 // List of available features in each known project.

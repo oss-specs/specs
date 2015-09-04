@@ -5,7 +5,7 @@ var express = require('express');
 var router = express.Router();
 
 var getProject = require('../lib/specifications/getProject');
-var getProjectMetaData = require('../lib/specifications/projectMetaData').get;
+var getProjectMetaData = require('../lib/specifications/projectMetaData').getAll;
 
 router.get('/', function(req, res, next) {
   var repoUrl = req.query.repo_url;
