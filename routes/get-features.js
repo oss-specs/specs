@@ -30,7 +30,7 @@ router.get('/', function(req, res, next) {
   }
 
   // Else get the project and load the features page.
-  getProject(repoUrl)
+  getProject.get(repoUrl)
     .then(function() {
 
       // Redirect to the features page.
