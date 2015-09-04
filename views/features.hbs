@@ -7,11 +7,14 @@
   </header>
   {{#each projects}}
     <section class="project">
-      <h2 class="project-title" id={{this.name}}>
-        <a class="quick-link" href="#{{this.name}}"><span class="quick-link-icon">&elsdot;</span><span class="project-name">{{this.name}}</span></a>
-      </h2>
-      <span class="project-commit">&commat;{{this.shortCommit}}</span>
-      <span class="repo-link"><a href="{{this.scmUrl}}">(visit repository)</a></span>
+      <header>
+        <h2 class="project-title" id={{this.name}}>
+          <a class="quick-link" href="#{{this.name}}"><span class="quick-link-icon">&elsdot;</span><span class="project-name">{{this.name}}</span></a>
+        </h2>
+        <span class="project-commit">&commat;{{this.shortCommit}}</span>
+        <span class="repo-link"><a href="{{this.scmUrl}}">(visit repository)</a></span>
+        <button class="project-update call-to-action"><a href="features?update={{this.name}}">Update</a></button>
+      </header>
       <div class="links-container">
         {{#each this.featureFilePaths}}
           <p><a class="spec-link" href="{{this.featureRoute}}">{{this.featureName}}</a></p>
