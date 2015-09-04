@@ -11,7 +11,7 @@
         <a class="quick-link" href="#{{this.name}}"><span class="quick-link-icon">&elsdot;</span><span class="project-name">{{this.name}}</span></a>
       </h2>
       <span class="project-commit">&commat;{{this.shortCommit}}</span>
-      <span class="repo-link"><a href="{{this.url}}">(visit repository)</a></span>
+      <span class="repo-link"><a href="{{this.scmUrl}}">(visit repository)</a></span>
       <div class="links-container">
         {{#each this.featureFilePaths}}
           <p><a class="spec-link" href="{{this.featureRoute}}">{{this.featureName}}</a></p>

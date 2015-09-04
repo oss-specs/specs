@@ -11,7 +11,16 @@
     <div class="loader-container"><div class="loader"></div></div>
   </section>
   <section>
-    <h2><a href="/features">Features</a></h2>
+    <h2>Projects</h2>
+    {{#if projects}}
+      <ul class="projects">
+        {{#each projects}}
+          <li class="project"><a href="{{this.projectLink}}">{{this.name}}</a></li>
+        {{/each}}
+      </ul>
+    {{else}}
+      <p>No projects here yet, add some!</p>
+    {{/if}}
   </section>
 </main>
 {{> layout_end}}
