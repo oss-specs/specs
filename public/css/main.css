@@ -84,6 +84,9 @@ button.call-to-action {
   background-color: blue;
   color: white;
 }
+button.call-to-action a {
+  color: white;
+}
 button.call-to-action:hover {
   background-color: green;
 }

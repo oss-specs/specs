@@ -5,7 +5,7 @@ var express = require('express');
 var router = express.Router();
 
 var getProject = require('../lib/specifications/getProject');
-var getProjectMetaData = require('../lib/specifications/projectMetaData').get;
+var getProjectMetaData = require('../lib/specifications/projectMetaData').getAll;
 
 router.get('/', function(req, res, next) {
   var repoUrl = req.query.repo_url;
@@ -30,7 +30,7 @@ router.get('/', function(req, res, next) {
   }
 
   // Else get the project and load the features page.
-  getProject(repoUrl)
+  getProject.get(repoUrl)
     .then(function() {
 
       // Redirect to the features page.
