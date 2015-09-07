@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
         if (projectData.length) {
           data = {projects: projectData}
         }
-        res.render('get-features', data);
+        res.render('projects', data);
       })
       .catch(function(err) {
         // Pass on to the error handling route.

@@ -1,23 +1,23 @@
-.get-features > section {
+.projects > section {
   float: left;
   margin-right: 3em;
 }
 
-.get-features form {
+.projects form {
   display: inline-block;
 }
 
-.get-features form {
+.projects form {
   margin-bottom: 1.2em;
 }
 
-.get-features input {
+.projects input {
   margin-top: 1em;
   margin-right: 0.5em;
   margin-bottom: 1em;
 }
 
-.get-features button {
+.projects button {
   font-size: 1.1em;
 }
 
@@ -25,7 +25,7 @@
  * Wider viewport (e.g. monitor, tv).
  */
 @media (min-width: 1280px) {
-  .get-features input {
+  .projects input {
     margin-top: 0;
   }
 }

@@ -9,7 +9,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('hbs');
 
-var indexRoute = require('./routes/get-features');
+var indexRoute = require('./routes/projects');
 var featuresRoute = require('./routes/features');
 var featureRoute = require('./routes/feature');
 
