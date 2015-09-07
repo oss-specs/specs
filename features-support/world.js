@@ -26,7 +26,8 @@ module.exports = function() {
       var world = this;
       return fs.makeTree(world.paths.public)
         .then(function() {
-          return fs.copyTree(world.paths.features, world.paths.public);
+          var fakeProjectPath = path.join(world.paths.public, fakeProjectMetadata.repoName);
+          return fs.copyTree(world.paths.features, fakeProjectPath);
         })
         .then(function() {
 
