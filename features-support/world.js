@@ -22,11 +22,12 @@ module.exports = function() {
      *
      * @return Promise for operation completion.
      */
-    this.createSpecsForTesting = function createSpecsForTesting() {
+    this.createSpecsForTesting = function createSpecsForTesting(fakeProjectMetadata) {
       var world = this;
       return fs.makeTree(world.paths.public)
         .then(function() {
-          return fs.copyTree(world.paths.features, world.paths.public);
+          var fakeProjectPath = path.join(world.paths.public, fakeProjectMetadata.repoName);
+          return fs.copyTree(world.paths.features, fakeProjectPath);
         })
         .then(function() {
 
@@ -36,12 +37,7 @@ module.exports = function() {
           // Pass an object of made up repo data to be decorated with
           // feature file paths and return a promise for completion
           // of storage of that data.
-          return configuredDeriveAndStore({
-            repoName: 'made up',
-            repoUrl: 'http//example.com',
-            head: 'testing!',
-            localName: 'not a real repo'
-          });
+          return configuredDeriveAndStore(fakeProjectMetadata);
         });
     };
 

@@ -9,11 +9,17 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('hbs');
 
-var indexRoute = require('./routes/get-features');
-var featuresRoute = require('./routes/features');
+var handlebarHelpers = require(path.join(__dirname,'views', 'helpers'));
+
+// Projects route, current Index.
+var projectsRoute = require('./routes/projects');
+
+// The invidual project route.
+var projectRoute = require('./routes/project');
+
+// The individual feature/markdown file route.
 var featureRoute = require('./routes/feature');
 
-var handlebarHelpers = require(path.join(__dirname,'views', 'helpers'));
 
 var app = express();
 
@@ -58,16 +64,19 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 
 /* Routes. */
 
-// Front page, currently the 'get features' page.
-app.use('/', indexRoute);
+// Front page is the projects page.
+// http://host/
+app.use(projectsRoute);
 
-// List of features.
-app.use('/features', featuresRoute);
+// Individual project.
+// http://host/<project name>
+app.use(projectRoute);
 
-// Individual feature.
-app.use('/features', featureRoute);
+// Files of interest
+// htpp://host/<project name>/<root/to/file>
+app.use(featureRoute);
 
-// Special resources in node_modules routes.
+// Special resources in node_modules/ routes.
 app.get('/github-markdown-css/github-markdown.css', function(req, res, next) {
   var cssPath = path.join(__dirname, 'node_modules','github-markdown-css','github-markdown.css');
   res.sendFile(cssPath, {}, function(err) {

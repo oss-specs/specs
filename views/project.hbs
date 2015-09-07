@@ -1,0 +1,28 @@
+{{> layout_start_document}}
+<link rel="stylesheet" href="/public/css/project.css">
+{{> layout_start_body}}
+<main>
+  <header>
+    <h1>Specifications</h1>
+  </header>
+  {{#if project}}
+    <section class="project">
+      <header class="group">
+        <h2 class="project-name">{{project.name}}</h2>
+        <span class="project-commit">(&nbsp;&commat;{{project.shortCommit}}&nbsp;)</span>
+        <span class="repo-link"><a href="{{project.scmUrl}}">visit&nbsp;repository</a></span>
+        <button class="project-update call-to-action"><a href="?update=true">Update</a></button>
+      </header>
+      <div class="links-container">
+        {{#each project.featureFilePaths}}
+          <p><a class="spec-link" href="{{../project.name}}/{{this.featureRoute}}">{{this.featureName}}</a></p>
+        {{else}}
+          <p>Sorry, this project does not appear to contain any specifications</p>
+        {{/each}}
+      </div>
+    </section>
+  {{else}}
+    <p>Sorry, no project data was found</p>
+  {{/if}}
+</main>
+{{> layout_end}}
