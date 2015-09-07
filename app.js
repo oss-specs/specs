@@ -72,6 +72,9 @@ app.use(projectsRoute);
 // http://host/<project name>
 app.use(projectRoute);
 
+// Files of interest
+// htpp://host/<project name>/<root/to/file>
+app.use(featureRoute);
 
 // Special resources in node_modules/ routes.
 app.get('/github-markdown-css/github-markdown.css', function(req, res, next) {
