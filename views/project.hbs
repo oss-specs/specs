@@ -3,16 +3,14 @@
 {{> layout_start_body}}
 <main>
   <header>
-    <h1>Available Specifications</h1>
+    <h1>Specifications</h1>
   </header>
   {{#if project}}
     <section class="project">
-      <header>
-        <h2 class="project-title" id={{project.name}}>
-          <a class="quick-link" href="#{{project.name}}"><span class="quick-link-icon">&elsdot;</span><span class="project-name">{{project.name}}</span></a>
-        </h2>
-        <span class="project-commit">&commat;{{project.shortCommit}}</span>
-        <span class="repo-link"><a href="{{project.scmUrl}}">(visit repository)</a></span>
+      <header class="group">
+        <h2 class="project-name">{{project.name}}</h2>
+        <span class="project-commit">(&nbsp;&commat;{{project.shortCommit}}&nbsp;)</span>
+        <span class="repo-link"><a href="{{project.scmUrl}}">visit&nbsp;repository</a></span>
         <button class="project-update call-to-action"><a href="?update=true">Update</a></button>
       </header>
       <div class="links-container">
