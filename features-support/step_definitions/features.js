@@ -34,6 +34,10 @@ var fakeProjectMetadata =  {
   localName: 'not a real repo'
 };
 
+function getFakeProjectUrl(appPort, projectName) {
+  return 'http://localhost:' + appPort + '/' + projectName;
+}
+
 module.exports = function () {
 
   // Create static test data, only do this once.
@@ -64,8 +68,9 @@ module.exports = function () {
 
   this.When(/^an interested party attempts to view them\.?$/, function (callback) {
     var world = this;
+    var fakeProjectUrl = getFakeProjectUrl(world.appPort, fakeProjectMetadata.repoName);
     request
-      .get('http://localhost:' + world.appPort + '/features', function(error, response, body) {
+      .get(fakeProjectUrl, function(error, response, body) {
         if (error) {
           callback(error);
           return;
@@ -91,7 +96,8 @@ module.exports = function () {
 
   this.Given(/^a list of feature files is displayed\.?$/, function (callback) {
     var world = this;
-    request.get('http://localhost:' + world.appPort + '/features', function(error, response, body) {
+    var fakeProjectUrl = getFakeProjectUrl(world.appPort, fakeProjectMetadata.repoName);
+    request.get(fakeProjectUrl, function(error, response, body) {
       if (error) {
         callback(error);
         return;
