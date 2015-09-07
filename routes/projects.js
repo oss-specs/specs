@@ -4,15 +4,19 @@
 var express = require('express');
 var router = express.Router();
 
+
 var getProject = require('../lib/specifications/getProject');
 var getProjectMetaData = require('../lib/specifications/projectMetaData').getAll;
 
+
+// Projects page.
+// http://host/
 router.get('/', function(req, res, next) {
   var repoUrl = req.query.repo_url;
   var projects;
 
   // If there is no URL query param then
-  // render the index page.
+  // render the projects page.
   if (!repoUrl) {
     getProjectMetaData()
       .then(function(projectData) {
@@ -29,17 +33,18 @@ router.get('/', function(req, res, next) {
     return;
   }
 
-  // Else get the project and load the features page.
+  // Else get the project and load the individual project page.
   getProject.get(repoUrl)
-    .then(function() {
+    .then(function(projectMetadata) {
 
-      // Redirect to the features page.
-      res.redirect('/features');
+      // Redirect to the project page.
+      res.redirect(projectMetadata.projectLink);
     })
     .catch(function(err) {
       // Pass on to the error handling route.
       next(err);
     });
 });
+
 
 module.exports = router;

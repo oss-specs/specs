@@ -35,7 +35,7 @@ var fakeProjectMetadata =  {
 };
 
 function getFakeProjectUrl(appPort, projectName) {
-  return 'http://localhost:' + appPort + '/projects/' + projectName;
+  return 'http://localhost:' + appPort + '/' + projectName;
   // DEBUG
   //return 'http://localhost:' + appPort + '/features';
 }
