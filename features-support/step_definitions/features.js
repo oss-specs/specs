@@ -5,11 +5,11 @@ var request = require('request');
 var should = require('should');
 
 // Test helper.
-function getFeaturesFromUrl(callback) {
+function getProjectFromUrl(callback) {
   var world = this;
-  var projectFeaturesUrl = 'http://localhost:' + world.appPort + '/?repo_url=' + encodeURIComponent(world.repoUrl);
+  var projectRetrievalUrl = 'http://localhost:' + world.appPort + '/?repo_url=' + encodeURIComponent(world.repoUrl);
   request
-    .get(projectFeaturesUrl, function(error, response, body) {
+    .get(projectRetrievalUrl, function(error, response, body) {
       if (error) {
         callback(error);
         return;
@@ -24,7 +24,15 @@ function getFeaturesFromUrl(callback) {
     });
 }
 
-var staticTestDataExists = false;
+// Cache the state of the static test data
+// at the module level (on first require).
+var fakeProjectMetadataExists;
+var fakeProjectMetadata =  {
+  repoName: 'made-up',
+  repoUrl: 'http//example.com',
+  head: 'testing!',
+  localName: 'not a real repo'
+};
 
 module.exports = function () {
 
@@ -35,7 +43,7 @@ module.exports = function () {
     // Only generate the static test data once for the feature
     // as opposed to the @cleanSlate tag which removes it for
     // each scenario.
-    if (staticTestDataExists) {
+    if (fakeProjectMetadataExists) {
       callback();
       return;
     }
@@ -43,10 +51,10 @@ module.exports = function () {
     // Make sure the test data is removed.
     world.deleteTestSpecs()
       .then(function() {
-        return world.createSpecsForTesting();
+        return world.createSpecsForTesting(fakeProjectMetadata);
       })
       .then(function() {
-        staticTestDataExists = true;
+        fakeProjectMetadataExists = true;
         callback();
       })
       .catch(function(err) {
@@ -122,6 +130,6 @@ module.exports = function () {
     callback();
   });
 
-  this.When(/^an interested party wants to view the features in that repo\.?$/, getFeaturesFromUrl);
-  this.When(/^they request the features for the same repository again\.?$/, getFeaturesFromUrl);
+  this.When(/^an interested party wants to view the features in that repo\.?$/, getProjectFromUrl);
+  this.When(/^they request the features for the same repository again\.?$/, getProjectFromUrl);
 };
