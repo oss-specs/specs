@@ -2,16 +2,17 @@
 <link rel="stylesheet" href="/public/css/projects.css">
 {{> layout_start_body}}
 <main class="projects group">
-  <h1>Get features from a project</h1>
+  <h1>Projects</h1>
   <section>
+    <h2>Add a Project</h2>
     <form action="/" method="get">
-      <label>Project Git repo URL (https only please): <input type="text" name="repo_url" /></label>
+      <label>Project's Git URL (https only please): <input type="text" name="repo_url" /></label>
       <button class="call-to-action" onclick="document.body.classList.add('waiting')">Submit</button>
     </form>
     <div class="loader-container"><div class="loader"></div></div>
   </section>
   <section>
-    <h2>Projects</h2>
+    <h2>Available Projects</h2>
     {{#if projects}}
       <ul class="projects">
         {{#each projects}}
