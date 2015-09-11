@@ -13,8 +13,8 @@
           <span class="project-branch">
             <label for="project-branch-select">branch:</label>
             <select onchange="window.location.href = window.location.pathname + '?branch=' + this.value">
-              {{#each project.branches}}
-                <option value="{{this.safeName}}" {{#if this.current}}selected{{/if}} >{{this.name}}</option>
+              {{#each project.tagsAndBranches}}
+                <option value="{{this.urlEncodedName}}" {{#if this.current}}selected{{/if}} >{{this.name}}</option>
               {{else}}
                 <!--  DEBUG -->
                 <option value="1" selected>testing1</option>
@@ -24,7 +24,7 @@
           </span>
           <span class="project-commit">(&nbsp;&commat;{{project.shortCommit}}&nbsp;)</span>
         </span>
-        <span class="repo-link"><a href="{{project.scmUrl}}">visit&nbsp;repository</a></span>
+        <span class="repo-link"><a href="{{project.repoUrl}}">visit&nbsp;repository</a></span>
         <button class="project-update call-to-action"><a href="?update=true">Update</a></button>
       </header>
       <div class="links-container">
