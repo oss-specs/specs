@@ -4,13 +4,20 @@
 
 .project-name {
   font-size: 2.5em;
+  margin-right: 0.4em;
   display: inline-block;
 }
 
+.project-refs {
+    display: inline-block;
+    margin-top: 1em;
+}
+
+.project-branch {
+  margin-right: 0.4em;
+}
+
 .project-commit {
-  position: relative;
-  top: -0.1em;
-  margin-left: 0.5em;
   margin-right: 1em;
 }
 
