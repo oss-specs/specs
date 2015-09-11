@@ -12,9 +12,14 @@
         <span class="project-refs">
           <span class="project-branch">
             <label for="project-branch-select">branch:</label>
-            <select>
-              <option value="a">a</option>
-              <option value="b">b</option>
+            <select onchange="window.location.href = window.location.pathname + '?branch=' + this.value">
+              {{#each project.branches}}
+                <option value="{{this.safeName}}" {{#if this.current}}selected{{/if}} >{{this.name}}</option>
+              {{else}}
+                <!--  DEBUG -->
+                <option value="1" selected>testing1</option>
+                <option value="2">testing2</option>
+              {{/each}}
             </select>
           </span>
           <span class="project-commit">(&nbsp;&commat;{{project.shortCommit}}&nbsp;)</span>
