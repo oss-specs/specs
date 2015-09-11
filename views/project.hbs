@@ -16,9 +16,7 @@
               {{#each project.tagsAndBranches}}
                 <option value="{{this.urlEncodedName}}" {{#if this.current}}selected{{/if}} >{{this.name}}</option>
               {{else}}
-                <!--  DEBUG -->
-                <option value="1" selected>testing1</option>
-                <option value="2">testing2</option>
+                <option selected>No branch data found</option>
               {{/each}}
             </select>
           </span>
