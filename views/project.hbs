@@ -3,14 +3,26 @@
 {{> layout_start_body}}
 <main>
   <header>
-    <h1>Specifications</h1>
+    <h1>Project Specifications</h1>
   </header>
   {{#if project}}
     <section class="project">
       <header class="group">
         <h2 class="project-name">{{project.name}}</h2>
-        <span class="project-commit">(&nbsp;&commat;{{project.shortCommit}}&nbsp;)</span>
-        <span class="repo-link"><a href="{{project.scmUrl}}">visit&nbsp;repository</a></span>
+        <span class="project-refs">
+          <span class="project-branch">
+            <label for="project-branch-select">branch:</label>
+            <select onchange="window.location.href = window.location.pathname + '?branch=' + this.value">
+              {{#each project.tagsAndBranches}}
+                <option value="{{this.urlEncodedName}}" {{#if this.current}}selected{{/if}} >{{this.name}}</option>
+              {{else}}
+                <option selected>No branch data found</option>
+              {{/each}}
+            </select>
+          </span>
+          <span class="project-commit">(&nbsp;&commat;{{project.shortCommit}}&nbsp;)</span>
+        </span>
+        <span class="repo-link"><a href="{{project.repoUrl}}">visit&nbsp;repository</a></span>
         <button class="project-update call-to-action"><a href="?update=true">Update</a></button>
       </header>
       <div class="links-container">
