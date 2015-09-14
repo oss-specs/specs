@@ -31,7 +31,8 @@ var fakeProjectMetadata =  {
   repoName: 'made-up',
   repoUrl: 'http//example.com',
   head: 'testing!',
-  localPath: 'not/a/real/path'
+  localPath: 'not/a/real/path',
+  currentBranchName: 'notARealBranch'
 };
 
 function getFakeProjectUrl(appPort, projectName) {
