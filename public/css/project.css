@@ -1,16 +1,14 @@
-.project > header {
-  margin-bottom: 1em;
-}
-
 .project-name {
   font-size: 2.5em;
-  margin-right: 0.4em;
-  display: inline-block;
+  text-transform: capitalize;
+}
+
+.project .controls {
+  margin-bottom: 2em;
 }
 
 .project-refs {
-    display: inline-block;
-    margin-top: 1em;
+  margin-bottom: 1em;
 }
 
 .project-branch {
@@ -18,16 +16,29 @@
 }
 
 .project-branch select {
-  max-width: 50%;
+  min-width: 30%;
+  max-width: 60%;
 }
 
 .project-commit {
+  display: inline-block;
+  margin-top: 1em;
   margin-right: 1em;
+}
+
+
+.project-update {
+  margin-top: 1em;
+  margin-right: 2em;
+  margin-bottom: 1em;
+}
+.project-update a {
+  padding: 1em;
+  text-decoration: none;
 }
 
 .repo-link {
   font-size: 0.7em;
-  margin-right: 3em;
   font-weight: bold;
   text-transform: uppercase;
 }
@@ -40,22 +51,9 @@
   text-decoration: underline;
 }
 
-.project-update {
-  margin-top: 1em;
-  margin-bottom: 1em;
+.spec-links > h2 {
+  color: grey;
 }
-
-.project-update a {
-  padding: 1em;
-  text-decoration: none;
-}
-
-.links-container {
+.spec-links > div {
   margin-left: 3em;
-}
-
-@media (min-width: 800px) {
-  .project-update {
-    float: right;
-  }
 }
