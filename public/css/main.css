@@ -86,40 +86,14 @@ button.call-to-action {
 }
 button.call-to-action a {
   color: white;
+  padding: 1em;
+  text-decoration: none;
 }
 button.call-to-action:hover {
   background-color: green;
 }
 button.call-to-action:active {
   box-shadow: 1px 1px rgba(0, 0, 0, 0.4);
-}
-
-/* Top nav. */
-.header-nav {
-  width: 70%;
-  margin: 0 auto;
-  position: relative;
-  top: 0.8em;
-  text-align: left;
-  font-size: 1.2em;
-  list-style: none;
-}
-.header-nav a {
-  font-weight: bold;
-  color: blue;
-  text-decoration: none;
-}
-.header-nav li {
-  display: inline;
-  margin-left: 0.2em;
-}
-.header-nav li:hover a {
-  text-decoration: underline;
-  color: green;
-}
-.header-nav li.primary {
-  font-size: 1.2em;
-  margin-right: 1em;
 }
 
 /**
