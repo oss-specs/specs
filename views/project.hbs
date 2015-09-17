@@ -35,7 +35,7 @@
         <h2>Specifications</h2>
         <div>
           {{#each project.featureFilePaths}}
-            <p><a class="spec-link" href="{{../project.name}}/{{this.featureRoute}}">{{this.featureName}}</a></p>
+            <p><a class="spec-link" href="{{../project.name}}/{{this.featureRoute}}">{{#if ../../renderingOptions.hideLongPaths}}{{this.featureNameShort}}{{else}}{{this.featureName}}{{/if}}</a></p>
           {{else}}
             <p>Sorry, this project does not appear to contain any specifications</p>
           {{/each}}
