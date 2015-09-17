@@ -17,6 +17,10 @@
   margin-right: 0.4em;
 }
 
+.project-branch select {
+  max-width: 50%;
+}
+
 .project-commit {
   margin-right: 1em;
 }

@@ -12,7 +12,7 @@
         <span class="project-refs">
           <span class="project-branch">
             <label for="project-branch-select">branch:</label>
-            <select onchange="window.location.href = window.location.pathname + '?branch=' + this.value">
+            <select title="{{project.currentBranchNameShort}}" onchange="window.location.href = window.location.pathname + '?branch=' + this.value">
               {{#each project.tagsAndBranches}}
                 <option value="{{this.urlEncodedName}}" {{#if this.current}}selected{{/if}} >{{this.name}}</option>
               {{else}}
