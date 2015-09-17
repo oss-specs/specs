@@ -15,8 +15,11 @@ router.get('/:projectName', function(req, res, next) {
 
   var projectName = req.params.projectName;
 
-  // Query param casuing a Git update (pull).
-  var projectShouldUpdate = (req.query.update === 'true' || !!parseInt(req.query.update));
+  // Query param causing a Git update (pull).
+  var projectShouldUpdate = (req.query.update === 'true');
+
+  // Toggle for hiding paths to files.
+  var hideLongPaths = (req.query['long-paths'] === 'false');
 
   // Query param indicating that it should be attempted
   // to check out the specified branch.
@@ -24,10 +27,16 @@ router.get('/:projectName', function(req, res, next) {
 
   // Render the project page and send to client.
   function render(projectData) {
-    var data = {};
+    var data = {
+      renderingOptions: {
+        hideLongPaths: hideLongPaths
+      }
+    };
+
     if (projectData) {
-      data = {project: projectData}
+      data['project'] = projectData;
     }
+
     res.render('project', data);
   }
 

@@ -27,14 +27,11 @@
 }
 
 
-.project-update {
+.project-update,
+.toggle-paths {
   margin-top: 1em;
   margin-right: 2em;
   margin-bottom: 1em;
-}
-.project-update a {
-  padding: 1em;
-  text-decoration: none;
 }
 
 .repo-link {
