@@ -1,0 +1,42 @@
+{{> layout_start_document}}
+<link rel="stylesheet" href="/public/css/project.css">
+{{> layout_start_body}}
+<main>
+  <header>
+    <h1 class="project-name">{{project.name}}</h1>
+  </header>
+  {{#if project}}
+    <section class="project">
+      <section class="controls">
+        <div class="project-refs">
+          <span class="project-branch">
+            <label for="project-branch-select">Branch or tag:</label>
+            <select title="{{project.currentBranchNameShort}}" onchange="window.location.href = window.location.pathname + '?branch=' + this.value">
+              {{#each project.tagsAndBranches}}
+                <option value="{{this.urlEncodedName}}" {{#if this.current}}selected{{/if}} >{{this.name}}</option>
+              {{else}}
+                <option selected>No branch data found</option>
+              {{/each}}
+            </select>
+          </span>
+          <span class="project-commit">&commat;{{project.shortCommit}}</span>
+        </div>
+        <button class="project-update call-to-action"><a href="?update=true">Get Latest</a></button>
+        <span class="repo-link"><a href="{{project.repoUrl}}">(visit&nbsp;repository)</a></span>
+      </section>
+      <section class="spec-links">
+        <h2>Specifications</h2>
+        <div>
+          {{#each project.featureFilePaths}}
+            <p><a class="spec-link" href="{{../project.name}}/{{this.featureRoute}}">{{this.featureName}}</a></p>
+          {{else}}
+            <p>Sorry, this project does not appear to contain any specifications</p>
+          {{/each}}
+        </div>
+      </section>
+    </section>
+  {{else}}
+    <p>Sorry, no project data was found</p>
+  {{/if}}
+</main>
+{{> layout_end}}

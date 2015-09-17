@@ -84,37 +84,16 @@ button.call-to-action {
   background-color: blue;
   color: white;
 }
+button.call-to-action a {
+  color: white;
+  padding: 1em;
+  text-decoration: none;
+}
 button.call-to-action:hover {
   background-color: green;
 }
 button.call-to-action:active {
   box-shadow: 1px 1px rgba(0, 0, 0, 0.4);
-}
-
-/* Top nav. */
-.header-nav {
-  width: 100%;
-  position: relative;
-  top: 0.8em;
-  text-align: center;
-  font-size: 1.2em;
-  list-style: none;
-}
-.header-nav hr {
-  max-width: 70%;
-}
-.header-nav a {
-  font-weight: bold;
-  color: green;
-  text-decoration: none;
-}
-.header-nav li {
-  display: inline;
-  margin-left: 0.2em;
-}
-.header-nav li.primary {
-  font-size: 1.2em;
-  margin-right: 1em;
 }
 
 /**

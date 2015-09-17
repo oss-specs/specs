@@ -1,0 +1,27 @@
+{{> layout_start_document}}
+<link rel="stylesheet" href="/public/css/projects.css">
+{{> layout_start_body}}
+<main class="projects group">
+  <h1>Projects</h1>
+  <section>
+    <h2>Add Project</h2>
+    <form action="/" method="get">
+      <label>Project's Git URL (https only please): <input type="text" name="repo_url" /></label>
+      <button class="call-to-action" onclick="document.body.classList.add('waiting')">Submit</button>
+    </form>
+    <div class="loader-container"><div class="loader"></div></div>
+  </section>
+  <section>
+    <h2>Available Projects</h2>
+    {{#if projects}}
+      <ul class="projects">
+        {{#each projects}}
+          <li class="project"><a href="{{this.projectLink}}">{{this.name}}</a></li>
+        {{/each}}
+      </ul>
+    {{else}}
+      <p>No projects here yet, add some!</p>
+    {{/if}}
+  </section>
+</main>
+{{> layout_end}}

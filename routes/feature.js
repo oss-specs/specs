@@ -1,6 +1,8 @@
 "use strict";
 /* eslint new-cap: 0 */
 
+var path = require('path');
+
 var express = require('express');
 var router = express.Router();
 
@@ -9,20 +11,21 @@ var markdown = require( "markdown" ).markdown;
 var getFeatureFile = require("../lib/specifications/getFeatureFile");
 var GherkinParser = require('../lib/parser/gherkin.js');
 
-// Match all routes with something after the slash
-// and display an individual feature.
-router.get(/^\/(.+)/, function(req, res) {
-  var featureFilePath = req.params[0];
+// Display an individual feature in a project.
+// htpp://host/<project name>/<root/to/file>
+router.get('/:projectName/*', function(req, res, next) {
+  var projectName = req.params.projectName;
+  var filePath = req.params[0];
 
   // Skip the rendering for query param ?plain=true ?plain=1 etc.
   var renderPlainFile = req.query.plain === 'true' || !!parseInt(req.query.plain);
 
-  getFeatureFile(featureFilePath)
+  getFeatureFile(path.join(projectName, filePath))
     .then(function(fileContents) {
       var parser;
       var features;
-      var isFeatureFile = /.*\.feature/.test(featureFilePath);
-      var isMarkdownFile = /.*\.md/.test(featureFilePath);
+      var isFeatureFile = /.*\.feature/.test(filePath);
+      var isMarkdownFile = /.*\.md/.test(filePath);
 
       if (isFeatureFile && !renderPlainFile) {
         parser = new GherkinParser();
@@ -37,15 +40,11 @@ router.get(/^\/(.+)/, function(req, res) {
       }
     })
     .catch(function(err) {
-      var status = err.code === 'ENOENT' ? 404 : 500;
-      var errorMessage = err.message || err;
-      var stack = err.stack || false;
-      res.status(status)
-      res.render('error', {
-        status: status,
-        message: errorMessage,
-        stack: stack
-      });
+      // Pass on to the error handling route.
+      if (!err.status && err.code === 'ENOENT') {
+        err.status = 404;
+      }
+      next(err);
     });
 })
 

@@ -1,0 +1,54 @@
+.project-name {
+  font-size: 2.5em;
+  text-transform: capitalize;
+}
+
+.project .controls {
+  margin-bottom: 2em;
+}
+
+.project-refs {
+  margin-bottom: 1em;
+}
+
+.project-branch {
+  margin-right: 0.4em;
+}
+
+.project-branch select {
+  min-width: 30%;
+  max-width: 60%;
+}
+
+.project-commit {
+  display: inline-block;
+  margin-top: 1em;
+  margin-right: 1em;
+}
+
+.project-update {
+  margin-top: 1em;
+  margin-right: 2em;
+  margin-bottom: 1em;
+}
+
+.repo-link {
+  font-size: 0.7em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.repo-link a {
+  text-decoration: none;
+  color: blue;
+}
+.repo-link:hover a {
+  color: green;
+  text-decoration: underline;
+}
+
+.spec-links > h2 {
+  color: grey;
+}
+.spec-links > div {
+  margin-left: 3em;
+}

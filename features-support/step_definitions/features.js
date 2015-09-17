@@ -5,11 +5,11 @@ var request = require('request');
 var should = require('should');
 
 // Test helper.
-function getFeaturesFromUrl(callback) {
+function getProjectFromUrl(callback) {
   var world = this;
-  var projectFeaturesUrl = 'http://localhost:' + world.appPort + '/?repo_url=' + encodeURIComponent(world.repoUrl);
+  var projectRetrievalUrl = 'http://localhost:' + world.appPort + '/?repo_url=' + encodeURIComponent(world.repoUrl);
   request
-    .get(projectFeaturesUrl, function(error, response, body) {
+    .get(projectRetrievalUrl, function(error, response, body) {
       if (error) {
         callback(error);
         return;
@@ -24,7 +24,20 @@ function getFeaturesFromUrl(callback) {
     });
 }
 
-var staticTestDataExists = false;
+// Cache the state of the static test data
+// at the module level (on first require).
+var fakeProjectMetadataExists;
+var fakeProjectMetadata =  {
+  repoName: 'made-up',
+  repoUrl: 'http//example.com',
+  head: 'testing!',
+  localPath: 'not/a/real/path',
+  currentBranchName: 'notARealBranch'
+};
+
+function getFakeProjectUrl(appPort, projectName) {
+  return 'http://localhost:' + appPort + '/' + projectName;
+}
 
 module.exports = function () {
 
@@ -32,19 +45,21 @@ module.exports = function () {
   this.Given(/^a set of specifications containing at least one feature file\.?$/, function (callback) {
     var world = this;
 
-    // Only generate the static test data once.
-    if (staticTestDataExists) {
+    // Only generate the static test data once for the feature
+    // as opposed to the @cleanSlate tag which removes it for
+    // each scenario.
+    if (fakeProjectMetadataExists) {
       callback();
       return;
     }
 
-    // Make sure the test data is clean.
+    // Make sure the test data is removed.
     world.deleteTestSpecs()
       .then(function() {
-        return world.createSpecsForTesting();
+        return world.createSpecsForTesting(fakeProjectMetadata);
       })
       .then(function() {
-        staticTestDataExists = true;
+        fakeProjectMetadataExists = true;
         callback();
       })
       .catch(function(err) {
@@ -54,8 +69,9 @@ module.exports = function () {
 
   this.When(/^an interested party attempts to view them\.?$/, function (callback) {
     var world = this;
+    var fakeProjectUrl = getFakeProjectUrl(world.appPort, fakeProjectMetadata.repoName);
     request
-      .get('http://localhost:' + world.appPort + '/features', function(error, response, body) {
+      .get(fakeProjectUrl, function(error, response, body) {
         if (error) {
           callback(error);
           return;
@@ -71,7 +87,7 @@ module.exports = function () {
   });
 
   this.Then(/^the list of features will be visible\.?$/, function (callback) {
-    should.equal(this.statusCode, 200, "Bad HTTP status code.");
+    should.equal(this.statusCode, 200, "Bad HTTP status code: " + this.statusCode + "\nBody:\n" + this.body);
     should.equal(
       /\.feature/i.test(this.body) && /\.md/i.test(this.body),
       true,
@@ -81,12 +97,13 @@ module.exports = function () {
 
   this.Given(/^a list of feature files is displayed\.?$/, function (callback) {
     var world = this;
-    request.get('http://localhost:' + world.appPort + '/features', function(error, response, body) {
+    var fakeProjectUrl = getFakeProjectUrl(world.appPort, fakeProjectMetadata.repoName);
+    request.get(fakeProjectUrl, function(error, response, body) {
       if (error) {
         callback(error);
         return;
       }
-      world.firstFeatureLink = (/class="speclink" href="([\w\/.-]+)\.feature"/.exec(body))[1];
+      world.firstFeatureLink = (/class="spec-link" href="([\w\/.-]+)\.feature"/.exec(body))[1];
       callback();
     });
   });
@@ -94,6 +111,7 @@ module.exports = function () {
   this.When(/^an interested party wants to view the scenarios within that feature file\.?$/, function (callback) {
     var world = this; // the World variable is passed around the step defs as `this`.
     var featurePath = 'http://localhost:' + world.appPort + '/' + world.firstFeatureLink;
+
     request
       .get(featurePath, function(error, response, body) {
         if (error) {
@@ -107,7 +125,7 @@ module.exports = function () {
   });
 
   this.Then(/^the scenarios will be visible\.?$/, function (callback) {
-    should.equal(this.statusCode, 200, "Bad HTTP status code.");
+    should.equal(this.statusCode, 200, "Bad HTTP status code: " + this.statusCode + "\nBody:\n" + this.body);
     should.equal(/feature:/i.test(this.body),
       true,
       "The returned document body does not contain the word 'feature'");
@@ -119,6 +137,6 @@ module.exports = function () {
     callback();
   });
 
-  this.When(/^an interested party wants to view the features in that repo\.?$/, getFeaturesFromUrl);
-  this.When(/^they request the features for the same repository again\.?$/, getFeaturesFromUrl);
+  this.When(/^an interested party wants to view the features in that repo\.?$/, getProjectFromUrl);
+  this.When(/^they request the features for the same repository again\.?$/, getProjectFromUrl);
 };
