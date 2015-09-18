@@ -9,7 +9,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('hbs');
 
-var appConfiguration = require('./lib/configuration');
+// Set the config object for use elsewhere.
+// Until we move to dependency injection
+// this needs to happen before the
+// routes are required as they depend on
+// configuration state at require time.
+var appConfiguration = require('./lib/configuration').set(__dirname);
 
 var handlebarHelpers = require(path.join(__dirname,'views', 'helpers'));
 
@@ -24,9 +29,6 @@ var featureRoute = require('./routes/feature');
 
 
 var app = express();
-
-// Set the config object for use elsewhere.
-appConfiguration.set(__dirname);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -77,7 +79,7 @@ app.use(projectsRoute);
 // http://host/<project name>
 app.use(projectRoute);
 
-// Files of interest
+// Markdown and feature files within a project.
 // htpp://host/<project name>/<root/to/file>
 app.use(featureRoute);
 

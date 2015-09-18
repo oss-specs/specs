@@ -4,9 +4,8 @@
 var express = require('express');
 var router = express.Router();
 
-
-var getProject = require('../lib/specifications/getProject');
 var getProjectMetaData = require('../lib/specifications/projectMetaData').getAll;
+var getProject = require('../lib/specifications/getProject');
 
 
 // Projects page.
