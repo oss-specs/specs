@@ -46,7 +46,6 @@
     "body-parser": "~1.13.1",
     "cookie-parser": "~1.3.5",
     "express": "~4.13.0",
-    "poc-node-module": "git+https:git.baplc.com:javascript_testing/poc-node-module.git#v0.0.3",
     "file-stream-rotator": "0.0.6",
     "gherkin": "^2.12.1",
     "github-markdown-css": "^2.0.9",
