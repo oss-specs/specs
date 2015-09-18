@@ -14,7 +14,7 @@ var hbs = require('hbs');
 // this needs to happen before the
 // routes are required as they depend on
 // configuration state at require time.
-var appConfiguration = require('./lib/configuration').set(__dirname);
+var appConfiguration = require('./lib/configuration').set(process.env.SPECS_OUT_DIR || __dirname);
 
 var handlebarHelpers = require(path.join(__dirname,'views', 'helpers'));
 
