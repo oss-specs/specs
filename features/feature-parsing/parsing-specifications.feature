@@ -48,8 +48,6 @@ Feature: Parsing specifications
     When I parse this specification
     Then feature comments are associated with features
       | # A feature comment. |
-    And scenario comments are associated with scenarios
-      | # A scenario comment. |
 
   @parsing
   Scenario: Parse steps
