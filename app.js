@@ -9,6 +9,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('hbs');
 
+var appConfiguration = require('./lib/configuration');
+
 var handlebarHelpers = require(path.join(__dirname,'views', 'helpers'));
 
 // Projects route, current Index.
@@ -22,6 +24,9 @@ var featureRoute = require('./routes/feature');
 
 
 var app = express();
+
+// Set the config object for use elsewhere.
+appConfiguration.set(__dirname);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
