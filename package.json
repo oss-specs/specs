@@ -2,7 +2,7 @@
   "name": "oss-specs",
   "version": "0.8.0",
   "bin": {
-    "module-name": "./bin/www"
+    "oss-specs": "./bin/www"
   },
   "scripts": {
     "prestart": "npm stop",

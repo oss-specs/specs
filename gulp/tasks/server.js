@@ -9,7 +9,7 @@ var gulp = require('gulp-help')(require('gulp'));
 var server = require('gulp-develop-server');
 
 var packagejson = require('../../package.json');
-var binaryPath = packagejson.bin['module-name'];
+var binaryPath = packagejson.bin['oss-specs'];
 
 gulp.task('server:start', 'Start serving the app.', ['set-envs:test'], function(done) {
   server.listen({
