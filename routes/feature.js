@@ -23,16 +23,16 @@ router.get('/:projectName/*', function(req, res, next) {
   getFeatureFile(path.join(projectName, filePath))
     .then(function(fileContents) {
       var parser;
-      var features;
+      var feature;
       var isFeatureFile = /.*\.feature/.test(filePath);
       var isMarkdownFile = /.*\.md/.test(filePath);
 
       if (isFeatureFile && !renderPlainFile) {
         parser = new GherkinParser();
-        features = parser
+        feature = parser
           .parse(fileContents)
           .getFeatures();
-        res.render('feature', {features: features});
+        res.render('feature', {feature: feature});
       } else if (isMarkdownFile && !renderPlainFile) {
         res.render('markdown-file', {markdownHtml: markdown.toHTML(fileContents)});
       } else {

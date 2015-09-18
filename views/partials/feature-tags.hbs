@@ -1,1 +1,7 @@
-{{#if tags}}<p class="tags">{{#each tags}}<span class="tags--tag">{{this}}</span>{{/each}}</p>{{/if}}
+{{#if feature.tags}}
+<p class="tags">
+{{#each feature.tags}}
+  <span class="tags--tag">{{this.name}}</span>
+{{/each}}
+</p>
+{{/if}}

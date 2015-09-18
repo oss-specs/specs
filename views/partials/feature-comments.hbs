@@ -1,5 +1,5 @@
-{{#if comments}}
+{{#if feature.comments}}
   <p class="comments">
-    {{#each comments}}{{this}}</br>{{/each}}
+    {{#each feature.comments}}{{this.text}}</br>{{/each}}
   </p>
 {{/if}}

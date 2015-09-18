@@ -6,7 +6,7 @@
     <h1 class="title">Your Feature</h1>
   </header>
   <article>
-    {{#each features}}
+    {{#if feature}}
       <section class="feature">
         {{> feature_comments}}
         {{> feature_tags}}
@@ -16,7 +16,7 @@
       </section>
     {{else}}
       <p>Sorry, no feature found</p>
-    {{/each}}
+    {{/if}}
   </article>
 </main>
 {{> layout_end}}
