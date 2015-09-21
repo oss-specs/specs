@@ -1,4 +1,4 @@
-{{#each feature.scenarioDefinitions}}
+{{#if this}}
   <section class="scenario">
     {{> feature_comments}}
     {{> feature_tags}}
@@ -7,4 +7,4 @@
     {{> feature_steps}}
     {{> feature_examples}}
   </section>
-{{/each}}
+{{/if}}
