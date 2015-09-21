@@ -5,7 +5,8 @@ require('should');
 var path = require('path');
 var fs = require('fs');
 
-var GherkinParser = require('../../lib/parser/gherkin.js');
+var Gherkin = require('gherkin');
+var Parser = new Gherkin.Parser();
 
 function unwrapSingleColumnTable(singleColumnTable) {
   return (singleColumnTable.raw()).map(function (valueWrappedInArray) {return valueWrappedInArray[0]});
@@ -110,10 +111,7 @@ module.exports = function() {
   });
 
   this.When(/^I parse this specification\.?$/, function () {
-    var parser = new GherkinParser();
-    features = parser
-      .parse(featureText)
-      .getFeatures();
+    features = Parser.parse(featureText);
   });
 
   this.Then(/^I get a feature with title "([^"]*)"\.?$/, function (featureTitle) {
