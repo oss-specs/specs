@@ -34,8 +34,9 @@ module.exports = function() {
   function compareFeatureValues(key) {
     return function compare(table) {
       var featureValues = features[key].map(function(a) {
-        if(key === "comments")
+        if(key === "comments") {
           return a.text;
+        }
 
         return a.name;
       });
