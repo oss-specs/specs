@@ -2,8 +2,9 @@
   <section class="steps">
     {{#each steps}}
       {{> feature_step}}
-      {{> feature_table}}
-      {{> feature_docstring}}
+      {{#if this.argument}} <!-- arguments as in data tables and doc strings -->
+        {{> (lookup this.argument 'type') this.argument}} <!-- select the partial based on the argument type -->
+      {{/if}}
     {{/each}}
   </section>
 {{/if}}

@@ -3,6 +3,11 @@
     {{> feature_tags}}
     {{> scenario_keyword_title}}
     {{> feature_description}}
-    {{> feature_table}}
+    {{#if this.tableHeader}}
+      <table class="gherkin-datatable">
+        {{> example_table_header this.tableHeader}}
+        {{> example_table_body this.tableBody}}
+      </table>
+    {{/if}}
   </section>
 {{/each}}
