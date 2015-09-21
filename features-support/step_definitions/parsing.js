@@ -34,7 +34,7 @@ module.exports = function() {
   function compareFeatureValues(key) {
     return function compare(table) {
       var featureValues = features[key].map(function(a) {
-        if(key == "comments")
+        if(key === "comments")
           return a.text;
 
         return a.name;
@@ -181,7 +181,7 @@ module.exports = function() {
         .map(function(scenario) {
           return scenario.steps
             .filter(function(step) {
-              return step.argument && step.argument.type == 'DataTable';
+              return step.argument && step.argument.type === 'DataTable';
             })
             .map(function(step) {
               return step.argument.rows.map(function(row) {
@@ -206,7 +206,7 @@ module.exports = function() {
       .map(function(scenario) {
         return scenario.steps
           .filter(function(step) {
-            return step.argument && step.argument.type == 'DocString';
+            return step.argument && step.argument.type === 'DocString';
           })
           .map(function(step) {
             return step.argument.content;
