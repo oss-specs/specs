@@ -57,7 +57,8 @@
     "nodegit": "^0.4.1",
     "q": "^1.4.1",
     "q-io": "^1.13.1",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "underscore": "1.8.3"
   },
   "devDependencies": {
     "codeclimate-test-reporter": "^0.1.0",
