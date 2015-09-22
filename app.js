@@ -9,6 +9,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('hbs');
 
+
+var appVersion = require('./package.json').version;
+
 // Set the config object for use elsewhere.
 // Until we move to dependency injection
 // this needs to happen before the
@@ -109,6 +112,7 @@ app.use(function(err, req, res, next) {
     res.render('four-oh-four');
   } else {
     res.render('error', {
+      appVersion: appVersion,
       status: status,
       message: errorMessage,
       stack: stack

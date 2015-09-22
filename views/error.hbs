@@ -8,9 +8,12 @@
   </header>
   <section>
     <h2>{{status}}</h2>
-    <h3>Error Message</h3>
-    <p class="error">{{message}}</p>
-    <p class="error">{{stack}}</p>
+    <h3>Error Message:</h3>
+    <div class="error-container">
+      <p class="error">Specs version: {{appVersion}}</p>
+      <p class="error">{{message}}</p>
+      <p class="error">{{stack}}</p>
+    </div>
   </section>
 </main>
 {{> layout_end}}
