@@ -1,4 +1,4 @@
-# Specs
+# Specs - online specs app
 
 A service for exposing specifications expressed as Gherkin feature files via a nice web UI.
 
