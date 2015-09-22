@@ -1,3 +1,4 @@
+@parsing
 Feature: Parsing specifications
 
   So that I can easily identify different parts of specifications
@@ -19,7 +20,6 @@ Feature: Parsing specifications
   Background: A feature file exists
     Given an example feature file
 
-  @parsing
   Scenario: Parse titles
     When I parse this specification
     Then I get a feature with title "Feature title"
@@ -30,7 +30,6 @@ Feature: Parsing specifications
     And I get a scenario outline with the title "A collection of related examples"
     And I get a set of examples with the title "Examples with a title"
 
-  @parsing
   Scenario: Parse tags
     When I parse this specification
     Then feature tags are associated with features
@@ -43,15 +42,11 @@ Feature: Parsing specifications
       | @myExampleLevelTag1 |
       | @myExampleLevelTag2 |
 
-  @parsing
   Scenario: Parse comments
     When I parse this specification
     Then feature comments are associated with features
       | # A feature comment. |
-    And scenario comments are associated with scenarios
-      | # A scenario comment. |
 
-  @parsing
   Scenario: Parse steps
     When I parse this specification
     Then the "first" scenario has steps with the names
@@ -61,21 +56,18 @@ Feature: Parsing specifications
       | I have an "argument" |
       | I expect             |
 
-    @parsing
     Scenario: Parse example data
       When I parse this specification
       Then scenario outlines have example data
         | value1-1 |
         | value2-3 |
 
-    @parsing
     Scenario: Parse table data
       When I parse this specification
       Then steps with tables have that table data
         | a table value       |
         | another table value |
 
-    @parsing
     Scenario: Parse doc strings
       When I parse this specification
       Then steps with doc strings have that doc string content

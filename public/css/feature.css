@@ -59,20 +59,23 @@
   color: green;
 }
 
-.gherkin-table {
+.gherkin-datatable {
   margin-top: 0.8em;
   margin-bottom: 0.8em;
   margin-left: 2em;
   border-collapse: collapse;
   color: darkred;
 }
-.gherkin-table td,
-.gherkin-table th {
+.gherkin-datatable td {
   padding: 0.5em;
   border-left: 1px solid;
   border-right: 1px solid;
 }
-.gherkin-table tbody tr:nth-child(even) {
+.gherkin-datatable thead td {
+  border-bottom: 3px double;
+}
+.gherkin-datatable thead tr,
+.gherkin-datatable tbody tr:nth-child(even) {
   background-color: #ddd;
 }
 

@@ -8,8 +8,10 @@ var router = express.Router();
 
 var markdown = require( "markdown" ).markdown;
 
+var Gherkin = require('gherkin');
+var Parser = new Gherkin.Parser();
+
 var getFeatureFile = require("../lib/specifications/getFeatureFile");
-var GherkinParser = require('../lib/parser/gherkin.js');
 
 // Display an individual feature in a project.
 // htpp://host/<project name>/<root/to/file>
@@ -22,17 +24,14 @@ router.get('/:projectName/*', function(req, res, next) {
 
   getFeatureFile(path.join(projectName, filePath))
     .then(function(fileContents) {
-      var parser;
-      var features;
+      var feature;
       var isFeatureFile = /.*\.feature/.test(filePath);
       var isMarkdownFile = /.*\.md/.test(filePath);
 
       if (isFeatureFile && !renderPlainFile) {
-        parser = new GherkinParser();
-        features = parser
-          .parse(fileContents)
-          .getFeatures();
-        res.render('feature', {features: features});
+        feature = Parser.parse(fileContents);
+        
+        res.render('feature', {feature: feature});
       } else if (isMarkdownFile && !renderPlainFile) {
         res.render('markdown-file', {markdownHtml: markdown.toHTML(fileContents)});
       } else {

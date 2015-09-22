@@ -45,7 +45,6 @@ Feature: Feature title
       | value2-1    | value2-2            | value2-3                   |
       | value3-1    | value3-2            | value3-3                   |
 
-Feature: coping with multiple features in a file.
   Scenario: Complex doc strings
     Given a complex doc string
       """
