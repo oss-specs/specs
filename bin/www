@@ -19,12 +19,11 @@ var appName = require('../package.json').name || 'myLovelyApp';
 /**
  * Set a process name so we can kill this later.
  */
- process.title = appName;
+process.title = appName;
 
 /**
  * Get port from environment and store in Express.
  */
-
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 

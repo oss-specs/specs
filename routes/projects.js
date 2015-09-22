@@ -7,6 +7,7 @@ var router = express.Router();
 var getProjectMetaData = require('../lib/specifications/projectMetaData').getAll;
 var getProject = require('../lib/specifications/getProject');
 
+var appVersion = require('../package.json').version;
 
 // Projects page.
 // http://host/
@@ -19,9 +20,11 @@ router.get('/', function(req, res, next) {
   if (!repoUrl) {
     getProjectMetaData()
       .then(function(projectData) {
-        var data = {};
+        var data = {
+          appVersion: appVersion
+        };
         if (projectData.length) {
-          data = {projects: projectData}
+          data.projects = projectData;
         }
         res.render('projects', data);
       })
