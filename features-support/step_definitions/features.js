@@ -36,7 +36,7 @@ var fakeProjectMetadata =  {
 };
 
 function getFakeProjectUrl(appPort, projectName) {
-  return 'http://localhost:' + appPort + '/' + projectName;
+  return 'http://localhost:' + appPort + '/project/' + projectName;
 }
 
 module.exports = function () {
@@ -110,7 +110,7 @@ module.exports = function () {
 
   this.When(/^an interested party wants to view the scenarios within that feature file\.?$/, function (callback) {
     var world = this; // the World variable is passed around the step defs as `this`.
-    var featurePath = 'http://localhost:' + world.appPort + '/' + world.firstFeatureLink;
+    var featurePath = 'http://localhost:' + world.appPort + '/project/' + world.firstFeatureLink;
 
     request
       .get(featurePath, function(error, response, body) {

@@ -25,6 +25,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   var projectData = {
     repoName: projectName,
     name: projectName,
+    projectLink: path.join('/project', projectName),
     localPath: path.join(appConfig.projectsPath, projectName)
   };
 
