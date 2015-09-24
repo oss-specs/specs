@@ -17,12 +17,12 @@ var getFeatureFile = require("../lib/specifications/getFeatureFile");
 // htpp://host/<project name>/<root/to/file>
 router.get('/:projectName/*', function(req, res, next) {
   var projectName = req.params.projectName;
-  var filePath = req.params[0];
+  var filePath = req.params[0].replace(projectName, "");
 
   // Skip the rendering for query param ?plain=true ?plain=1 etc.
   var renderPlainFile = req.query.plain === 'true' || !!parseInt(req.query.plain);
 
-  getFeatureFile(path.join(projectName, filePath))
+  getFeatureFile(projectName, path.normalize(filePath))
     .then(function(fileContents) {
       var feature;
       var isFeatureFile = /.*\.feature/.test(filePath);
@@ -30,7 +30,7 @@ router.get('/:projectName/*', function(req, res, next) {
 
       if (isFeatureFile && !renderPlainFile) {
         feature = Parser.parse(fileContents);
-        
+
         res.render('feature', {feature: feature});
       } else if (isMarkdownFile && !renderPlainFile) {
         res.render('markdown-file', {markdownHtml: markdown.toHTML(fileContents)});
