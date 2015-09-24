@@ -23,11 +23,11 @@ var handlebarHelpers = require(path.join(__dirname,'views', 'helpers'));
 // Projects route, current Index.
 var projectsRoute = require('./routes/projects');
 
-// The invidual project route.
-var projectRoute = require('./routes/project');
-
 // The individual feature/markdown file route.
 var featureRoute = require('./routes/feature');
+
+// The invidual project route.
+var projectRoute = require('./routes/project');
 
 
 var app = express();
@@ -40,6 +40,7 @@ app.set('view engine', 'hbs');
 hbs.registerPartials(path.join(__dirname,'views', 'partials'));
 hbs.registerHelper('newlines_to_breaks', handlebarHelpers.newlinesToBreaks);
 hbs.registerHelper('newlines_to_paragraphs', handlebarHelpers.newlinesToParagraphs);
+hbs.registerHelper('projectLink', handlebarHelpers.projectLink);
 hbs.registerHelper('step_content', handlebarHelpers.stepContent);
 
 
@@ -80,12 +81,12 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(projectsRoute);
 
 // Individual project.
-// http://host/<project name>
-app.use(projectRoute);
+// http://host/project/<project name>
+app.use('/project', projectRoute);
 
 // Markdown and feature files within a project.
-// htpp://host/<project name>/<root/to/file>
-app.use(featureRoute);
+// htpp://host/project/<project name>/<root/to/file>
+app.use('/project', featureRoute);
 
 // Special resources in node_modules/ routes.
 app.get('/github-markdown-css/github-markdown.css', function(req, res, next) {

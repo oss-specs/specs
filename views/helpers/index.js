@@ -34,6 +34,10 @@ function highlightStepParams(context, options) {
   return '<span class="step-name">' + safeContent + '</span>';
 }
 
+function projectLink(name) {
+  return "/project/" + name;
+}
+
 // http://www.2ality.com/2014/01/efficient-string-repeat.html
 // N.b. ES6 will do this with string.prototype.repeat.
 function stringRepeat(str, num) {
