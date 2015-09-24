@@ -1,6 +1,8 @@
 "use strict";
 
 var express = require('express');
+var session = require('express-session')
+var FileStore = require('session-file-store')(session);
 var path = require('path');
 var morgan = require('morgan');
 var fs = require('fs');
@@ -29,6 +31,8 @@ var featureRoute = require('./routes/feature');
 
 
 var app = express();
+
+app.use(session({store: new FileStore(), secret: '1234567890QWERTY'}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

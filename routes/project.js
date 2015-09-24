@@ -7,11 +7,15 @@ var router = express.Router();
 var Q = require('q');
 
 var getProjectMetaDataByName = require('../lib/specifications/projectMetaData').getByName;
+var getRefInformation = require('../lib/specifications/projectGitInteractions').getRefInformation;
 var updateProject = require('../lib/specifications/getProject').update;
 var changeBranch = require('../lib/specifications/getProject').changeBranch;
 
 // List of available features in a project.
 router.get('/:projectName', function(req, res, next) {
+  if(!req.session.branches) req.session.branches = {};
+
+  var branches = req.session.branches;
 
   var projectName = req.params.projectName;
 
@@ -50,16 +54,20 @@ router.get('/:projectName', function(req, res, next) {
 
   // Change the branch.
   } else if (targetBranchName) {
-    changeBranch(projectName, targetBranchName)
-      .then(function() {
-        return getProjectMetaDataByName(projectName);
+    branches[projectName] = targetBranchName;
+    getProjectMetaDataByName(projectName)
+      .then(function(projectData) {
+          return getRefInformation(projectData, targetBranchName)
       })
       .then(render)
       .catch(passError);
 
   // Else, generate the metadata and render the page.
   } else {
-    getProjectMetaDataByName(projectName)
+    getProjectMetaDataByName(projectName, branches[projectName])
+      .then(function(projectData) {
+        return getRefInformation(projectData, branches[projectName])
+      })
       .then(render)
       .catch(passError);
   }
