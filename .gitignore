@@ -5,6 +5,9 @@ public/feature-files/*
 # Repo meta data
 project-data
 
+# Session data
+sessions
+
 # Logs
 logs
 *.log
