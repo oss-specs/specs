@@ -22,7 +22,7 @@ Start the server, in the UI specify a https URL for a Git repo, and if that repo
 
 ## Installing from npm
 
-To install the latest version from npm
+To install the latest version from npm:
 * `npm install -g oss-specs`.
 * To start the server `oss-specs`
 
