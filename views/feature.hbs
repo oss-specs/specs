@@ -2,24 +2,24 @@
 <link rel="stylesheet" href="/public/css/feature.css">
 {{> layout_start_body}}
 <main>
+  {{#if feature}}
   <header>
-    <h1 class="title">Your Feature</h1>
+    <h1 class="title">{{feature.name}}</h1>
   </header>
   <article>
-    {{#if feature}}
-      <section class="feature">
-        {{> feature_comments feature}}
-        {{> feature_tags feature}}
-        {{> feature_keyword_title feature}}
-        {{> feature_description feature}}
-        {{> feature_scenario feature.background}}
-        {{#each feature.scenarioDefinitions}}
-          {{> feature_scenario this}}
-        {{/each}}
-      </section>
-    {{else}}
-      <p>Sorry, no feature found</p>
-    {{/if}}
+    <section class="feature">
+      {{> feature_comments feature}}
+      {{> feature_tags feature}}
+      {{> feature_keyword_title feature}}
+      {{> feature_description feature}}
+      {{> feature_scenario feature.background}}
+      {{#each feature.scenarioDefinitions}}
+        {{> feature_scenario this}}
+      {{/each}}
+    </section>
   </article>
+  {{else}}
+    <p>Sorry, no feature found</p>
+  {{/if}}
 </main>
 {{> layout_end}}

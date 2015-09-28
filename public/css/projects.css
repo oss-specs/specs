@@ -21,6 +21,15 @@
   font-size: 1.1em;
 }
 
+footer .app-version {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding-bottom: 1em;
+  padding-right: 1.3em;
+  color: #999;
+}
+
 /**
  * Wider viewport (e.g. monitor, tv).
  */

@@ -1,9 +1,25 @@
 {
   "name": "oss-specs",
-  "version": "0.8.3",
+  "version": "0.8.7",
   "bin": {
     "oss-specs": "./bin/www"
   },
+  "directories": {
+    "lib": "./lib"
+  },
+  "repository": "oss-specs/specs",
+  "license": "MIT",
+  "contributors": [
+    "Jim Cresswell <jim@jimcresswell.net> (jimcresswell.net)",
+    "Stanislaw Wozniak <swozniak@sponte.uk>"
+  ],
+  "keywords": [
+    "cucumber",
+    "specification by example",
+    "bdd",
+    "specifications",
+    "living documentation"
+  ],
   "scripts": {
     "prestart": "npm stop",
     "start": "node ./bin/www",
@@ -15,13 +31,6 @@
     "posttest-with-coverage": "npm stop",
     "upload-coverage-data": "node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info",
     "lint": "node_modules/.bin/eslint ./"
-  },
-  "contributors": [
-    "Jim Cresswell <jimCresswell>",
-    "Stanislaw Wozniak <swozniak@sponte.uk>"
-  ],
-  "directories": {
-    "lib": "./lib"
   },
   "paths": {
     "server-js": [
