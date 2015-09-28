@@ -29,8 +29,6 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
         currentBranchName: ref
     };
 
-    console.log(projectData);
-
     // Skip the rendering for query param ?plain=true ?plain=1 etc.
     var renderPlainFile = req.query.plain === 'true' || !!parseInt(req.query.plain);
 

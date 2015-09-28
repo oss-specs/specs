@@ -21,11 +21,11 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   var projectName = req.params[0];
 
-
+  // TODO: Have one place this object is created.
   var projectData = {
     repoName: projectName,
     name: projectName,
-    projectLink: path.join('/project', projectName),
+    projectLink: path.posix.join('/project', projectName),
     localPath: path.join(appConfig.projectsPath, projectName)
   };
 

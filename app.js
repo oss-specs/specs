@@ -43,7 +43,6 @@ app.set('view engine', 'hbs');
 hbs.registerPartials(path.join(__dirname,'views', 'partials'));
 hbs.registerHelper('newlines_to_breaks', handlebarHelpers.newlinesToBreaks);
 hbs.registerHelper('newlines_to_paragraphs', handlebarHelpers.newlinesToParagraphs);
-hbs.registerHelper('projectLink', handlebarHelpers.projectLink);
 hbs.registerHelper('step_content', handlebarHelpers.stepContent);
 
 

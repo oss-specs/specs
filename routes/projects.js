@@ -4,7 +4,7 @@
 var express = require('express');
 var router = express.Router();
 
-var getProjectMetaData = require('../lib/specifications/projectMetaData').getAll;
+var getAllProjectMetaData = require('../lib/specifications/projectMetaData').getAll;
 var getProject = require('../lib/specifications/getProject');
 
 var appVersion = require('../package.json').version;
@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
   // If there is no URL query param then
   // render the projects page.
   if (!repoUrl) {
-    getProjectMetaData()
+    getAllProjectMetaData()
       .then(function(projectData) {
         var data = {
           appVersion: appVersion
@@ -36,7 +36,8 @@ router.get('/', function(req, res, next) {
   }
 
   // Else get the project and load the individual project page.
-  getProject.get(repoUrl)
+  var projectRoute = '/project';
+  getProject.get(repoUrl, projectRoute)
     .then(function(projectMetadata) {
 
       // Redirect to the project page.
