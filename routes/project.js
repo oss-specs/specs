@@ -19,14 +19,13 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   var branches = req.session.branches;
 
-  var projectName = req.params[0];
+  var repoName = req.params[0];
 
   // TODO: Have one place this object is created.
   var projectData = {
-    repoName: projectName,
-    name: projectName,
-    projectLink: path.posix.join('/project', projectName),
-    localPath: path.join(appConfig.projectsPath, projectName)
+    repoName: repoName,
+    projectLink: path.posix.join('/project', repoName),
+    localPath: path.join(appConfig.projectsPath, repoName)
   };
 
   // Query param causing a Git update (pull).
@@ -55,7 +54,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   // If the update flag is set then branch change requests will be ingored.
   if (projectShouldUpdate) {
-    updateProject(projectName)
+    updateProject(repoName)
       .then(function() {
         return getProjectMetaDataByName(projectData);
       })
@@ -64,7 +63,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   // Change the branch.
   } else if (targetBranchName) {
-    branches[projectName] = targetBranchName;
+    branches[repoName] = targetBranchName;
     getProjectMetaDataByName(projectData)
       .then(function(projectData) {
           return getRefInformation(projectData, targetBranchName)
@@ -74,10 +73,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   // Else, generate the metadata and render the page.
   } else {
-    getProjectMetaDataByName(projectData, branches[projectName])
-      .then(function(projectData) {
-        return getRefInformation(projectData, branches[projectName])
-      })
+    getProjectMetaDataByName(projectData, branches[repoName])
       .then(render)
       .catch(passError);
   }
