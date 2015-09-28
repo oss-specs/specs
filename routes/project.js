@@ -25,7 +25,8 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   var projectData = {
     repoName: repoName,
     projectLink: path.posix.join('/project', repoName),
-    localPath: path.join(appConfig.projectsPath, repoName)
+    localPath: path.join(appConfig.projectsPath, repoName),
+    currentBranchName: branches[repoName]
   };
 
   // Query param causing a Git update (pull).
@@ -54,7 +55,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   // If the update flag is set then branch change requests will be ingored.
   if (projectShouldUpdate) {
-    updateProject(projectData)
+    updateProject(projectData, branches[repoName])
       .then(render)
       .catch(passError);
 
