@@ -16,7 +16,7 @@ var updateProject = require('../lib/specifications/getProject').update;
 router.get(/^\/([^\/]+)$/, function(req, res, next) {
   if(!req.session.branches) req.session.branches = {};
 
-
+  // Session variable.
   var branches = req.session.branches;
 
   var repoName = req.params[0];
@@ -54,14 +54,12 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   // If the update flag is set then branch change requests will be ingored.
   if (projectShouldUpdate) {
-    updateProject(repoName)
-      .then(function() {
-        return getProjectMetaDataByName(projectData);
-      })
+    updateProject(projectData)
       .then(render)
       .catch(passError);
 
   // Change the branch.
+  // TODO: this should not know about Git refs.
   } else if (targetBranchName) {
     branches[repoName] = targetBranchName;
     getProjectMetaDataByName(projectData)
