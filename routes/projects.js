@@ -3,9 +3,11 @@
 
 var express = require('express');
 var router = express.Router();
+var path = require('path');
+var appConfig = require('../lib/configuration').get();
 
-var getProjectMetaData = require('../lib/specifications/projectMetaData').getAll;
-var getProject = require('../lib/specifications/getProject');
+var getAllProjects = require('../lib/specifications/projectData').getAll;
+var getProject = require('../lib/specifications/projectData').get;
 
 var appVersion = require('../package.json').version;
 
@@ -18,9 +20,10 @@ router.get('/', function(req, res, next) {
   // If there is no URL query param then
   // render the projects page.
   if (!repoUrl) {
-    getProjectMetaData()
+    getAllProjects()
       .then(function(projectData) {
         var data = {
+          projectRoute: appConfig.projectRoute,
           appVersion: appVersion
         };
         if (projectData.length) {
@@ -36,7 +39,22 @@ router.get('/', function(req, res, next) {
   }
 
   // Else get the project and load the individual project page.
-  getProject.get(repoUrl)
+  var projectRoute = appConfig.projectRoute;
+
+  var repoName = /\/([^\/]+?)(?:\.git)?\/?$/.exec(repoUrl);
+  repoName = (repoName && repoName.length ? repoName[1] : false);
+  if (!repoName) {
+    throw new TypeError("Could not determine repository name.");
+  }
+
+  var projectData = {
+    repoName: repoName,
+    repoUrl: repoUrl,
+    localPath: path.join(appConfig.projectsPath, repoName),
+    projectLink: path.posix.join(projectRoute, repoName)
+  };
+
+  getProject(projectData)
     .then(function(projectMetadata) {
 
       // Redirect to the project page.

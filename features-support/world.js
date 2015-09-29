@@ -6,7 +6,7 @@ var path = require('path');
 var appConfig = require('../lib/configuration').set(path.join(__dirname, '..'));
 
 // Get the project metadata module so we can inject test data.
-var projectMetaData = require('../lib/specifications/projectMetaData');
+var projectMetaData = require('../lib/specifications/projectData');
 
 module.exports = function() {
   this.World = function World(callback) {

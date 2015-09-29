@@ -1,6 +1,8 @@
 "use strict";
 
 var express = require('express');
+var session = require('express-session')
+var FileStore = require('session-file-store')(session);
 var path = require('path');
 var morgan = require('morgan');
 var fs = require('fs');
@@ -9,7 +11,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('hbs');
 
-
 var appVersion = require('./package.json').version;
 
 // Set the config object for use elsewhere.
@@ -17,21 +18,31 @@ var appVersion = require('./package.json').version;
 // this needs to happen before the
 // routes are required as they depend on
 // configuration state at require time.
-var appConfiguration = require('./lib/configuration').set(process.env.SPECS_OUT_DIR || __dirname);
+var appConfig = require('./lib/configuration').set(process.env.SPECS_OUT_DIR || __dirname);
 
 var handlebarHelpers = require(path.join(__dirname,'views', 'helpers'));
 
 // Projects route, current Index.
 var projectsRoute = require('./routes/projects');
 
-// The invidual project route.
-var projectRoute = require('./routes/project');
-
 // The individual feature/markdown file route.
 var featureRoute = require('./routes/feature');
 
+// The invidual project route.
+var projectRoute = require('./routes/project');
+
 
 var app = express();
+
+app.use(session({
+  store: new FileStore(),
+  secret: 'jkdsf8978#*&*E&R(DFk',
+
+  // Have to be set, best values depend on the store being used.
+  // https://github.com/expressjs/session#options
+  resave: true,
+  saveUninitialized: true
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -79,12 +90,12 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use(projectsRoute);
 
 // Individual project.
-// http://host/<project name>
-app.use(projectRoute);
+// http://host/project/<project name>
+app.use(appConfig.projectRoute, projectRoute);
 
 // Markdown and feature files within a project.
-// htpp://host/<project name>/<root/to/file>
-app.use(featureRoute);
+// htpp://host/project/<project name>/<root/to/file>
+app.use(appConfig.projectRoute, featureRoute);
 
 // Special resources in node_modules/ routes.
 app.get('/github-markdown-css/github-markdown.css', function(req, res, next) {

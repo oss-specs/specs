@@ -3,24 +3,39 @@
 
 var express = require('express');
 var router = express.Router();
+var appConfig = require('../lib/configuration').get();
+var path = require('path');
 
-var Q = require('q');
-
-var getProjectMetaDataByName = require('../lib/specifications/projectMetaData').getByName;
-var updateProject = require('../lib/specifications/getProject').update;
-var changeBranch = require('../lib/specifications/getProject').changeBranch;
+var getProject = require('../lib/specifications/projectData').get;
 
 // List of available features in a project.
-router.get('/:projectName', function(req, res, next) {
+router.get(/^\/([^\/]+)$/, function(req, res, next) {
+  if(!req.session.branches) req.session.branches = {};
 
-  var projectName = req.params.projectName;
-
-  // Query param causing a Git update (pull).
-  var projectShouldUpdate = (req.query.update === 'true');
+  // Session variable.
+  var branches = req.session.branches;
 
   // Query param indicating that it should be attempted
   // to check out the specified branch.
   var targetBranchName = req.query.branch || false;
+
+  var repoName = req.params[0];
+
+  if(targetBranchName) {
+    branches[repoName] = targetBranchName;
+  }
+
+  // TODO: Have one place this object is created.
+  var projectData = {
+    repoName: repoName,
+    projectLink: path.posix.join(appConfig.projectRoute, repoName),
+    localPath: path.join(appConfig.projectsPath, repoName),
+    currentBranchName: branches[repoName]
+  };
+
+  // Query param causing a Git update (pull).
+  var projectShouldUpdate = (req.query.update === 'true');
+
 
   // Render the project page and send to client.
   function render(projectData) {
@@ -32,6 +47,10 @@ router.get('/:projectName', function(req, res, next) {
       data['project'] = projectData;
     }
 
+    data.project.featureFilePaths.forEach(function(featureFile) {
+      featureFile.featureRoute = path.posix.join(appConfig.projectRoute, projectData.repoName, featureFile.featureName);
+    });
+
     res.render('project', data);
   }
 
@@ -41,25 +60,24 @@ router.get('/:projectName', function(req, res, next) {
 
   // If the update flag is set then branch change requests will be ingored.
   if (projectShouldUpdate) {
-    updateProject(projectName)
-      .then(function() {
-        return getProjectMetaDataByName(projectName);
-      })
+    getProject(projectData)
       .then(render)
       .catch(passError);
 
   // Change the branch.
+  // TODO: this should not know about Git refs.
   } else if (targetBranchName) {
-    changeBranch(projectName, targetBranchName)
-      .then(function() {
-        return getProjectMetaDataByName(projectName);
+    branches[repoName] = targetBranchName;
+    getProject(projectData)
+      .then(function(projectData) {
+          return getProject(projectData, targetBranchName)
       })
       .then(render)
       .catch(passError);
 
   // Else, generate the metadata and render the page.
   } else {
-    getProjectMetaDataByName(projectName)
+    getProject(projectData, branches[repoName])
       .then(render)
       .catch(passError);
   }
