@@ -35,7 +35,15 @@ var projectRoute = require('./routes/project');
 
 var app = express();
 
-app.use(session({store: new FileStore(), secret: '1234567890QWERTY'}));
+app.use(session({
+  store: new FileStore(),
+  secret: '1234567890QWERTY',
+
+  // Have to be set, best values depend on the store being used.
+  // https://github.com/expressjs/session#options
+  resave: true,
+  saveUninitialized: true
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
