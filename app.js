@@ -37,7 +37,7 @@ var app = express();
 
 app.use(session({
   store: new FileStore(),
-  secret: '1234567890QWERTY',
+  secret: 'jkdsf8978#*&*E&R(DFk',
 
   // Have to be set, best values depend on the store being used.
   // https://github.com/expressjs/session#options
