@@ -56,48 +56,7 @@ function getScenarioFromProject(callback, world) {
   }
 }
 
-// Cache the state of the static test data
-// at the module level (on first require).
-var fakeProjectMetadataExists;
-var fakeProjectMetadata =  {
-  repoName: 'made-up',
-  repoUrl: 'http//example.com',
-  head: 'testing!',
-  localPath: 'not/a/real/path',
-  currentBranchName: 'notARealBranch'
-};
-
-function getFakeProjectUrl(appPort, projectName) {
-  return 'http://localhost:' + appPort + '/project/' + projectName;
-}
-
 module.exports = function () {
-
-  // Create static test data, only do this once.
-  this.Given(/^a set of specifications containing at least one feature file\.?$/, function (callback) {
-    var world = this;
-
-    // Only generate the static test data once for the feature
-    // as opposed to the @cleanSlate tag which removes it for
-    // each scenario.
-    if (fakeProjectMetadataExists) {
-      callback();
-      return;
-    }
-
-    // Make sure the test data is removed.
-    world.deleteTestSpecs()
-      .then(function() {
-        return world.createSpecsForTesting(fakeProjectMetadata);
-      })
-      .then(function() {
-        fakeProjectMetadataExists = true;
-        callback();
-      })
-      .catch(function(err) {
-        callback(err);
-      });
-  });
 
   this.Then(/^the list of features will be visible\.?$/, function (callback) {
     should.equal(this.statusCode, 200, "Bad HTTP status code: " + this.statusCode + "\nBody:\n" + this.body);
@@ -124,6 +83,7 @@ module.exports = function () {
 
   this.When(/^an interested party wants to view the features in that repo\.?$/, getProjectFromUrl);
   this.When(/^they request the features for the same repository again\.?$/, getProjectFromUrl);
+
   this.When(/^an interested party wants to view the scenarios within a feature\.?$/, function (callback) {
     var world = this;
     getProjectFromUrl.bind(world)(getScenarioFromProject(callback, world));

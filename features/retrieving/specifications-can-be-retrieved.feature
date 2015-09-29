@@ -18,7 +18,7 @@ Feature: Specifications can be retrieved from remote Git repositories.
     And they request the features for the same repository again
     Then the list of features will be visible.
 
-  @internet @server @cleanSlate @dev
+  @internet @server @cleanSlate
   Scenario: It is simple to see the scenarios within with a feature file.
     Given a URL representing a remote Git repo "https://github.com/oss-specs/specs"
     When an interested party wants to view the scenarios within a feature
