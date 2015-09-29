@@ -8,8 +8,8 @@ var path = require('path');
 var router = express.Router();
 
 var markdown = require("markdown").markdown;
-var getProjectMetaDataByName = require('../lib/specifications/projectMetaData').getByName;
-var getFileContents = require('../lib/specifications/projectGitInteractions').getFileContents;
+var getProject = require('../lib/specifications/projectData').get;
+var getFileContents = require('../lib/specifications/repositoryTypes/git').getFileContents;
 var appConfig = require('../lib/configuration').get();
 
 var Gherkin = require('gherkin');
@@ -32,7 +32,7 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
     // Skip the rendering for query param ?plain=true ?plain=1 etc.
     var renderPlainFile = req.query.plain === 'true' || !!parseInt(req.query.plain);
 
-    getProjectMetaDataByName(projectData, ref)
+    getProject(projectData, ref)
         .then(function (projectData) {
             return getFileContents(projectData, filePath);
         })
