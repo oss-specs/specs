@@ -28,7 +28,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   // TODO: Have one place this object is created.
   var projectData = {
     repoName: repoName,
-    projectLink: path.posix.join('/project', repoName),
+    projectLink: path.posix.join(appConfig.projectRoute, repoName),
     localPath: path.join(appConfig.projectsPath, repoName),
     currentBranchName: branches[repoName]
   };
@@ -46,6 +46,10 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
     if (projectData) {
       data['project'] = projectData;
     }
+
+    data.project.featureFilePaths.forEach(function(featureFile) {
+      featureFile.featureRoute = path.posix.join(appConfig.projectRoute, projectData.repoName, featureFile.featureName);
+    });
 
     res.render('project', data);
   }

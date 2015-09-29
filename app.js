@@ -11,7 +11,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('hbs');
 
-
 var appVersion = require('./package.json').version;
 
 // Set the config object for use elsewhere.
@@ -19,7 +18,7 @@ var appVersion = require('./package.json').version;
 // this needs to happen before the
 // routes are required as they depend on
 // configuration state at require time.
-var appConfiguration = require('./lib/configuration').set(process.env.SPECS_OUT_DIR || __dirname);
+var appConfig = require('./lib/configuration').set(process.env.SPECS_OUT_DIR || __dirname);
 
 var handlebarHelpers = require(path.join(__dirname,'views', 'helpers'));
 
@@ -92,11 +91,11 @@ app.use(projectsRoute);
 
 // Individual project.
 // http://host/project/<project name>
-app.use('/project', projectRoute);
+app.use(appConfig.projectRoute, projectRoute);
 
 // Markdown and feature files within a project.
 // htpp://host/project/<project name>/<root/to/file>
-app.use('/project', featureRoute);
+app.use(appConfig.projectRoute, featureRoute);
 
 // Special resources in node_modules/ routes.
 app.get('/github-markdown-css/github-markdown.css', function(req, res, next) {

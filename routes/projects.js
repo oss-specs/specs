@@ -23,6 +23,7 @@ router.get('/', function(req, res, next) {
     getAllProjects()
       .then(function(projectData) {
         var data = {
+          projectRoute: appConfig.projectRoute,
           appVersion: appVersion
         };
         if (projectData.length) {
@@ -38,7 +39,7 @@ router.get('/', function(req, res, next) {
   }
 
   // Else get the project and load the individual project page.
-  var projectRoute = '/project';
+  var projectRoute = appConfig.projectRoute;
 
   var repoName = /\/([^\/]+?)(?:\.git)?\/?$/.exec(repoUrl);
   repoName = (repoName && repoName.length ? repoName[1] : false);
