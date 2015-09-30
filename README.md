@@ -28,4 +28,9 @@ To install the latest version from npm
 
 The default storage directory for repos and derived data is `project-data/` within the install/clone location. To override this location, for example to allow easy updates of versions without losing existing data, set the environment variable `SPECS_OUT_DIR` to your preferred path.
 
+## Environment variables
+
+SPECS_OUT_DIR - specifies location of project-data folder, by default this lives in the root of the project
+SPECS_ALLOW_INSECURE_SSL - disables SSL certificate verification when cloning repos
+
 (C) 2015

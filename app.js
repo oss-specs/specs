@@ -18,7 +18,10 @@ var appVersion = require('./package.json').version;
 // this needs to happen before the
 // routes are required as they depend on
 // configuration state at require time.
-var appConfig = require('./lib/configuration').set(process.env.SPECS_OUT_DIR || __dirname);
+var appConfig = require('./lib/configuration').set({
+  rootPath: process.env.SPECS_OUT_DIR || __dirname,
+  allowInsecureSSL: process.env.SPECS_ALLOW_INSECURE_SSL || false
+});
 
 var handlebarHelpers = require(path.join(__dirname,'views', 'helpers'));
 
