@@ -34,13 +34,15 @@ function getProjectFromUrl(callback) {
 // The returned function is passed as a callback to getProjectFromUrl.
 function getScenarioFromProject(callback, world) {
   return function(error) {
+    var firstFeatureLink;
+
     if (error) {
       callback(error)
     }
 
     // Get a link to an individual feature.
     try {
-      var firstFeatureLink = (/class="spec-link" href="([\w\/.?=-]+\.feature[\w\/.?=-]+)"/.exec(world.body))[1];
+      firstFeatureLink = (/class="spec-link" href="([\w\/.?=-]+\.feature[\w\/.?=-]+)"/.exec(world.body))[1];
     } catch(error) {
       callback(error);
     }
