@@ -20,14 +20,14 @@ var handlebars = require('hbs').handlebars;
  */
 function highlightStepParams(context, options) {
   var safeContent = options.fn(context);
-  var ungreedyThingsInQuotes = /(?:&#34;|&quot;|&39;|&apos;).+?(?:&#34;|&quot;|&39;|&apos;)/g
-  var ungreedyThingsInChevrons = /(?:&#60;|&lt;).+?(?:&#61;|&gt;)/g
+  var ungreedyThingsInQuotes = /(?:&#34;|&quot;|&39;|&apos;).+?(?:&#34;|&quot;|&39;|&apos;)/g;
+  var ungreedyThingsInChevrons = /(?:&#60;|&lt;).+?(?:&#61;|&gt;)/g;
 
-  safeContent = safeContent.replace(ungreedyThingsInQuotes, function(match, offset, string) {
+  safeContent = safeContent.replace(ungreedyThingsInQuotes, function(match) {
     return '<span class="quoted">' + match + '</span>';
   });
 
-  safeContent = safeContent.replace(ungreedyThingsInChevrons, function(match, offset, string) {
+  safeContent = safeContent.replace(ungreedyThingsInChevrons, function(match) {
     return '<span class="chevroned">' + match + '</span>';
   });
 
@@ -36,6 +36,7 @@ function highlightStepParams(context, options) {
 
 // http://www.2ality.com/2014/01/efficient-string-repeat.html
 // N.b. ES6 will do this with string.prototype.repeat.
+/*eslint-disable no-constant-condition */
 function stringRepeat(str, num) {
   num = Number(num);
   var result = '';
@@ -49,10 +50,11 @@ function stringRepeat(str, num) {
   }
   return result;
 }
+/*eslint-enable no-constant-condition */
 
 // Render leading whitespace characters.
 function encodeLeadingWhitespace(content) {
-  return content.replace(/^\s+/, function(match, offset, string) {
+  return content.replace(/^\s+/, function(match) {
     var nbsp = '<span class="leadingWhitespace">&nbsp;</span>';
     return stringRepeat(nbsp, match.length);
   });
@@ -68,7 +70,7 @@ function getStringConverter(aggregator) {
       return previous += aggregator(encodeLeadingWhitespace(safeContent));
     }, '');
     return new handlebars.SafeString(content);
-  }
+  };
 }
 
 module.exports = {
