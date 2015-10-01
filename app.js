@@ -1,7 +1,7 @@
 "use strict";
 
 var express = require('express');
-var session = require('express-session')
+var session = require('express-session');
 var FileStore = require('session-file-store')(session);
 var path = require('path');
 var morgan = require('morgan');
@@ -56,24 +56,29 @@ hbs.registerHelper('newlines_to_paragraphs', handlebarHelpers.newlinesToParagrap
 hbs.registerHelper('step_content', handlebarHelpers.stepContent);
 
 
-/* HTTP logging middleware. */
-
-// Standard out.
+/**
+ * LOGGING.
+ *
+ * Log to standard out and to a file.
+ */
 app.use(morgan('dev'));
-
-// Log to disk.
 if (app.get('env') !== 'development') {
   var logDirectory = path.join(__dirname, 'log');
+
   // ensure log directory exists
-  fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
+  if (!fs.existsSync(logDirectory)) {
+    fs.mkdirSync(logDirectory);
+  }
+
   // create a rotating write stream
   var accessLogStream = FileStreamRotator.getStream({
     filename: path.join(logDirectory, 'access-%DATE%.log'),
     frequency: 'daily',
     verbose: false
-  })
+  });
+
   // setup the logger
-  app.use(morgan('combined', {stream: accessLogStream}))
+  app.use(morgan('combined', {stream: accessLogStream}));
 }
 
 /* Other middleware */
@@ -121,8 +126,8 @@ app.use(function(err, req, res, next) {
   var status = err.status || 500;
   var errorMessage = err.message || err;
   var stack = err.stack || false;
-  res.status(status)
-  if (status == 404) {
+  res.status(status);
+  if (parseInt(status, 10) === 404) {
     res.render('four-oh-four');
   } else {
     res.render('error', {
