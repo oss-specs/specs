@@ -1,5 +1,4 @@
 'use strict';
-/* eslint new-cap: 0 */
 
 var express = require('express');
 var router = express.Router();
@@ -15,7 +14,6 @@ var appVersion = require('../package.json').version;
 // http://host/
 router.get('/', function(req, res, next) {
   var repoUrl = req.query.repo_url;
-  var projects;
 
   // If there is no URL query param then
   // render the projects page.
@@ -44,7 +42,7 @@ router.get('/', function(req, res, next) {
   var repoName = /\/([^\/]+?)(?:\.git)?\/?$/.exec(repoUrl);
   repoName = (repoName && repoName.length ? repoName[1] : false);
   if (!repoName) {
-    throw new TypeError("Could not determine repository name.");
+    throw new TypeError('Could not determine repository name.');
   }
 
   var projectData = {

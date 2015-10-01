@@ -26,7 +26,7 @@ gulp.task('server:stop', 'Stop serving the app.', function(done) {
 });
 
 gulp.task('server:restart', 'Restart the server.', function(done) {
-    server.restart(function(error) {
-      done(error);
-    });
+  server.restart(function(error) {
+    done(error);
+  });
 });

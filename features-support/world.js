@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-var fs = require("q-io/fs"); // https://github.com/kriskowal/q-io
+var fs = require('q-io/fs'); // https://github.com/kriskowal/q-io
 var path = require('path');
 
 var appConfig = require('../lib/configuration').set({
@@ -15,7 +15,7 @@ module.exports = function() {
   this.World = function World(callback) {
     this.appPort = process.env.PORT || 3000;
     this.paths = {
-      features: path.join('features'),
+      features: path.join('features')
     };
 
     /**
@@ -49,7 +49,6 @@ module.exports = function() {
      * @return promise for operation completion.
      */
     this.deleteTestSpecs = function() {
-      var world = this;
       return fs.removeTree(appConfig.projectsPath)
         .then(function() {
           return fs.removeTree(appConfig.derivedDataPath);

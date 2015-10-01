@@ -1,5 +1,4 @@
-"use strict";
-/* eslint new-cap: 0 */
+'use strict';
 
 module.exports = function beforeHooks() {
 
