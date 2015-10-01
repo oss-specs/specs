@@ -37,7 +37,7 @@ function getScenarioFromProject(callback, world) {
     var firstFeatureLink;
 
     if (error) {
-      callback(error)
+      callback(error);
     }
 
     // Get a link to an individual feature.
@@ -60,7 +60,7 @@ function getScenarioFromProject(callback, world) {
       world.body = body;
       callback();
     });
-  }
+  };
 }
 
 module.exports = function () {
