@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var express = require('express');
 var session = require('express-session');
@@ -122,7 +122,7 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-app.use(function(err, req, res, next) {
+app.use(function(err, req, res) {
   var status = err.status || 500;
   var errorMessage = err.message || err;
   var stack = err.stack || false;
