@@ -1,13 +1,12 @@
-"use strict";
+'use strict';
 /* eslint new-cap: 0 */
 
 var path = require('path');
 
 var express = require('express');
-var path = require('path');
 var router = express.Router();
 
-var markdown = require("markdown").markdown;
+var markdown = require('markdown').markdown;
 var getProject = require('../lib/specifications/projectData').get;
 var getFileContents = require('../lib/specifications/repositoryTypes/git').getFileContents;
 var appConfig = require('../lib/configuration').get();
@@ -58,6 +57,6 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
             }
             next(err);
         });
-})
+});
 
 module.exports = router;
