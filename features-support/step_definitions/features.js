@@ -1,5 +1,4 @@
-"use strict";
-/* eslint new-cap: 0 */
+'use strict';
 
 var request = require('request');
 var should = require('should');
@@ -20,7 +19,7 @@ function getProjectFromUrl(callback) {
       world.body = body;
 
       if (world.statusCode === 500 || world.statusCode === 404) {
-        var responseError = new Error("Project retrieval error.\n" + world.body);
+        var responseError = new Error('Project retrieval error.\n' + world.body);
         responseError.code = world.statusCode;
         callback(responseError);
         return;
@@ -66,20 +65,20 @@ function getScenarioFromProject(callback, world) {
 module.exports = function () {
 
   this.Then(/^the list of features will be visible\.?$/, function (callback) {
-    should.equal(this.statusCode, 200, "Bad HTTP status code: " + this.statusCode + "\nBody:\n" + this.body);
+    should.equal(this.statusCode, 200, 'Bad HTTP status code: ' + this.statusCode + '\nBody:\n' + this.body);
     should.equal(
       /\.feature/i.test(this.body) && /\.md/i.test(this.body),
       true,
-      "The returned document body does not contain the strings '.feature' and '.md'");
+      'The returned document body does not contain the strings \'.feature\' and \'.md\'');
     callback();
   });
 
   this.Then(/^the scenarios will be visible\.?$/, function (callback) {
-    should.equal(this.statusCode, 200, "Bad HTTP status code: " + this.statusCode + "\nBody:\n" + this.body);
+    should.equal(this.statusCode, 200, 'Bad HTTP status code: ' + this.statusCode + '\nBody:\n' + this.body);
 
     should.equal(/feature:/i.test(this.body),
       true,
-      "The returned document body does not contain the word 'feature'");
+      'The returned document body does not contain the word \'feature\'');
     callback();
   });
 

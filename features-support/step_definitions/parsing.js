@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /* eslint new-cap: 0 */
 
 require('should');
@@ -19,11 +19,11 @@ function firstRowFirstCell(table) {
 // Important because need to check that steps
 // have been assigned to the correct scenario.
 var scenarioNumberToIndex = {
-  "default": 0,
-  "first": 0,
-  "second": 1,
-  "third": 2,
-  "fourth": 3
+  'default': 0,
+  'first': 0,
+  'second': 1,
+  'third': 2,
+  'fourth': 3
 };
 
 module.exports = function() {
@@ -34,7 +34,7 @@ module.exports = function() {
   function compareFeatureValues(key) {
     return function compare(table) {
       var featureValues = features[key].map(function(a) {
-        if(key === "comments") {
+        if(key === 'comments') {
           return a.text;
         }
 
@@ -42,7 +42,7 @@ module.exports = function() {
       });
       var expectedValues = unwrapSingleColumnTable(table);
       featureValues.should.containDeepOrdered(expectedValues);
-    }
+    };
   }
 
   // TODO: FAR TOO COMPLICATED! Maybe remove the conditionals
@@ -61,10 +61,10 @@ module.exports = function() {
        * should be dependent on a callback by counting the number
        * of arguments, so we have to cope with that.
        **/
-      if (typeof scenarioNumber === "object") {
+      if (typeof scenarioNumber === 'object') {
         done = table;
         table = scenarioNumber;
-        scenarioNumber = "default";
+        scenarioNumber = 'default';
       }
 
       var scenarioIndex = scenarioNumberToIndex[scenarioNumber];
@@ -86,10 +86,10 @@ module.exports = function() {
       // Do the test.
       scenarioValues.should.containDeepOrdered(expectedValues);
 
-      if (typeof done === "function") {
+      if (typeof done === 'function') {
         done();
       }
-    }
+    };
   }
 
   // Get scenarios etc and properties of such.
@@ -102,8 +102,8 @@ module.exports = function() {
     return getScenarios(feature, 'ScenarioOutline');
   }
   function getScenarioNames(feature, tokenType) {
-      return getScenarios(feature, tokenType)
-        .map(function(scenario) {return scenario.name});
+    return getScenarios(feature, tokenType)
+      .map(function(scenario) {return scenario.name;});
   }
 
   this.Given(/^an example feature file\.?$/, function () {
@@ -166,35 +166,35 @@ module.exports = function() {
 
     var exampleDataValues = scenarioOutlines[0].examples[0].tableBody
       .map(function(row) { return row.cells.map(function(a) {
-        return a.value
+        return a.value;
       }); })
       .reduce(function(a, b) { return a.concat(b); });
     exampleDataValues.should.containDeep(expectedExampleDataValues);
   });
 
   this.Then(/^steps with tables have that table data\.?$/, function (table) {
-      var expectedTableDataValues = unwrapSingleColumnTable(table);
-      var scenarios = getScenarios(features);
+    var expectedTableDataValues = unwrapSingleColumnTable(table);
+    var scenarios = getScenarios(features);
 
-      // Dig the relevant values out of the data structure.
-      // TODO: too complicated, abstract or find another solution.
-      var scenarioTableData = scenarios
-        .map(function(scenario) {
-          return scenario.steps
-            .filter(function(step) {
-              return step.argument && step.argument.type === 'DataTable';
-            })
-            .map(function(step) {
-              return step.argument.rows.map(function(row) {
-                return row.cells.map(function(cell) {
-                  return cell.value;
-                });
-              })
-              .reduce(function(a, b) { return a.concat(b) }, []);
-            }).reduce(function(a, b) { return a.concat(b) }, []);
-        }).reduce(function(a, b) { return a.concat(b) }, []);
+    // Dig the relevant values out of the data structure.
+    // TODO: too complicated, abstract or find another solution.
+    var scenarioTableData = scenarios
+    .map(function(scenario) {
+      return scenario.steps
+      .filter(function(step) {
+        return step.argument && step.argument.type === 'DataTable';
+      })
+      .map(function(step) {
+        return step.argument.rows.map(function(row) {
+          return row.cells.map(function(cell) {
+            return cell.value;
+          });
+        })
+        .reduce(function(a, b) { return a.concat(b); }, []);
+      }).reduce(function(a, b) { return a.concat(b); }, []);
+    }).reduce(function(a, b) { return a.concat(b); }, []);
 
-      scenarioTableData.should.containDeep(expectedTableDataValues);
+    scenarioTableData.should.containDeep(expectedTableDataValues);
   });
 
   this.Then(/^steps with doc strings have that doc string content\.?$/, function (table) {
@@ -211,9 +211,9 @@ module.exports = function() {
           })
           .map(function(step) {
             return step.argument.content;
-          })
+          });
       }).reduce(function(a, b) {
-            return a.concat(b);
+        return a.concat(b);
       })[0];
 
 
