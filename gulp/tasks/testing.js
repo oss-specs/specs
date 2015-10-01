@@ -39,16 +39,16 @@ var jUnitXmlReporter = new jasmineReporters.JUnitXmlReporter({
 
 function createCucumberOptions(tags, reporter) {
   return {
-      support: projectPaths['cucumber-support-js'],
-      tags: tags,
-      format: reporter || 'summary'
-    }
+    support: projectPaths['cucumber-support-js'],
+    tags: tags,
+    format: reporter || 'summary'
+  };
 }
 
 // Run all the Cucumber features, doesn't start server
 gulp.task('test:cucumber', 'Run Cucumber alone, output to stdout', function() {
   return gulp.src(projectPaths['feature-files'])
-    .pipe(cucumber(createCucumberOptions(tags, reporter)));
+  .pipe(cucumber(createCucumberOptions(tags, reporter)));
 }, {
   options: {'tags': 'Supports optional tags argument e.g.\n\t\t\t--tags @parsing\n\t\t\t--tags @tag1,orTag2\n\t\t\t--tags @tag1 --tags @andTag2\n\t\t\t--tags @tag1 --tags ~@andNotTag2'}
 });
@@ -62,37 +62,37 @@ gulp.task('test:cucumber', 'Run Cucumber alone, output to stdout', function() {
 // results could be put in file in the normal Gulp way
 // https://github.com/vgamula/gulp-cucumber/issues/17
 gulp.task('test:cucumber:fileoutput', 'Run Cucumber, only output JSON to file.', function(done) {
-    var baseEncoding = 'utf8';
-    var outPath = path.join(projectPaths['test-output-dir'], 'cucumber.json');
-    var fileStream = fs.createWriteStream(outPath, {
-        encoding: baseEncoding
-    });
+  var baseEncoding = 'utf8';
+  var outPath = path.join(projectPaths['test-output-dir'], 'cucumber.json');
+  var fileStream = fs.createWriteStream(outPath, {
+    encoding: baseEncoding
+  });
 
-    // The command args to run.
-    // Use Cucumber JSON reporter with the intent to feed it to the Cucumber XML converter.
-    // Use the Gulp --silent option to reduce the output to Cucumber JSON only.
-    var commandArgs = ['test:cucumber', '--silent', '--reporter', 'json'];
+  // The command args to run.
+  // Use Cucumber JSON reporter with the intent to feed it to the Cucumber XML converter.
+  // Use the Gulp --silent option to reduce the output to Cucumber JSON only.
+  var commandArgs = ['test:cucumber', '--silent', '--reporter', 'json'];
 
-    // Pass through any tags arguments.
-    // Can be string or array so use
-    // concat to gaurantee array.
-    if (tags) {
-      tags = [].concat(tags);
-      commandArgs = tags.reduce(function(previous, current) {
-        return previous.concat(['--tags', current]);
-      }, commandArgs);
-    }
+  // Pass through any tags arguments.
+  // Can be string or array so use
+  // concat to gaurantee array.
+  if (tags) {
+    tags = [].concat(tags);
+    commandArgs = tags.reduce(function(previous, current) {
+      return previous.concat(['--tags', current]);
+    }, commandArgs);
+  }
 
-    var stream = spawn('./node_modules/.bin/gulp', commandArgs);
+  var stream = spawn('./node_modules/.bin/gulp', commandArgs);
 
-    stream.stdout.setEncoding(baseEncoding);
-    stream.stderr.setEncoding(baseEncoding);
-    stream.stderr.pipe(fileStream);
-    stream.stdout.pipe(fileStream);
-    stream.on('close', function(e) {
-        fileStream.end();
-        done(e);
-    });
+  stream.stdout.setEncoding(baseEncoding);
+  stream.stderr.setEncoding(baseEncoding);
+  stream.stderr.pipe(fileStream);
+  stream.stdout.pipe(fileStream);
+  stream.on('close', function(e) {
+    fileStream.end();
+    done(e);
+  });
 }, {
   options: {'tags': 'Supports same optional tags arguments as \'test:cucumber\' task.'}
 });
@@ -100,10 +100,10 @@ gulp.task('test:cucumber:fileoutput', 'Run Cucumber, only output JSON to file.',
 // The default Cucumber test run requires the server to be running.
 gulp.task('test:features', 'Everything necessesary to test the features.', function(done) {
   runSequence('set-envs:test',
-              'server:start',
-              'test:cucumber',
-              'server:stop',
-              done);
+  'server:start',
+  'test:cucumber',
+  'server:stop',
+  done);
 }, {
   options: {'tags': 'Supports same optional tags arguments as \'test:cucumber\' task.'}
 });
@@ -111,21 +111,21 @@ gulp.task('test:features', 'Everything necessesary to test the features.', funct
 // The default Cucumber test run requires server to be running.
 gulp.task('test:features:fileoutput', 'Everything necessesary to test the features and send the output to file.', function(done) {
   runSequence('set-envs:test',
-              'server:start',
-              'test:cucumber:fileoutput',
-              'server:stop',
-              done);
+  'server:start',
+  'test:cucumber:fileoutput',
+  'server:stop',
+  done);
 }, {
   options: {'tags': 'Supports same optional tags arguments as \'test:cucumber\' task.'}
 });
 
 // Run the unit tests, report to terminal and disk.
 gulp.task('test:unit', 'Run the unit tests.', function () {
-    return gulp.src(projectPaths['unit-test-js'])
-        .pipe(jasmine({
-          reporter: [
-            terminalReporter,
-            jUnitXmlReporter
-          ]
-        }));
+  return gulp.src(projectPaths['unit-test-js'])
+  .pipe(jasmine({
+    reporter: [
+      terminalReporter,
+      jUnitXmlReporter
+    ]
+  }));
 });

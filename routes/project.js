@@ -1,5 +1,4 @@
-"use strict";
-/* eslint new-cap: 0 */
+'use strict';
 
 var express = require('express');
 var router = express.Router();
@@ -55,7 +54,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   }
 
   function passError(err) {
-    next(err)
+    next(err);
   }
 
   // If the update flag is set then branch change requests will be ingored.
@@ -70,7 +69,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
     branches[repoName] = targetBranchName;
     getProject(projectData)
       .then(function(projectData) {
-          return getProject(projectData, targetBranchName)
+        return getProject(projectData, targetBranchName);
       })
       .then(render)
       .catch(passError);
