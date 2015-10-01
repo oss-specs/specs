@@ -11,15 +11,10 @@ var projectPaths = require('../../package.json')['paths'];
 var fs = require('fs');
 var lintingOutputPath = path.join(projectPaths['test-output-dir'], 'lintingResults.xml');
 
-var eslintGlobs = [].concat(projectPaths['server-js'], projectPaths['client-js']);
-var eslintOptions = {
-  'useEslintrc': true
-};
-
-gulp.task('analyse:lint', 'Lint the server and client JavaScript files.', function() {
+gulp.task('lint', 'Lint JavaScript and write to standard out and file.', function() {
   var lintResultsFileStream = fs.createWriteStream(lintingOutputPath);
-  return gulp.src(eslintGlobs)
-    .pipe(eslint(eslintOptions))
+  return gulp.src(['**/*.js', '!node_modules/**'])
+    .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.format('junit', lintResultsFileStream));
 });
