@@ -1,15 +1,11 @@
 'use strict';
 
 var fs = require('q-io/fs'); // https://github.com/kriskowal/q-io
-var path = require('path');
 
 var appConfig = require('../lib/configuration').set({
   rootPath: process.env.SPECS_OUT_DIR || __dirname,
   allowInsecureSSL: process.env.SPECS_ALLOW_INSECURE_SSL || false
 });
-
-// Get the project metadata module so we can inject test data.
-var project = require('../lib/specifications/project');
 
 module.exports = function() {
   this.World = function World(callback) {
