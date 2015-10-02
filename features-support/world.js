@@ -14,41 +14,13 @@ var project = require('../lib/specifications/project');
 module.exports = function() {
   this.World = function World(callback) {
     this.appPort = process.env.PORT || 3000;
-    this.paths = {
-      features: path.join('features')
-    };
-
-    /**
-     * Copy this repo's features files to a public directory
-     * for use as test data.
-     *
-     * @return Promise for operation completion.
-     */
-    this.createSpecsForTesting = function createSpecsForTesting(fakeProjectMetadata) {
-      var world = this;
-      return fs.makeTree(appConfig.projectsPath)
-        .then(function() {
-          var fakeProjectPath = path.join(appConfig.projectsPath, fakeProjectMetadata.repoName);
-          return fs.copyTree(world.paths.features, fakeProjectPath);
-        })
-        .then(function() {
-
-          // Configure the metadata module with the feature file storage path.
-          var configuredDeriveAndStore = project.deriveAndStore(appConfig.projectsPath);
-
-          // Pass an object of made up repo data to be decorated with
-          // feature file paths and return a promise for completion
-          // of storage of that data.
-          return configuredDeriveAndStore(fakeProjectMetadata);
-        });
-    };
 
     /**
      * Remove any specs and data already in place.
      *
      * @return promise for operation completion.
      */
-    this.deleteTestSpecs = function() {
+    this.deleteProjectData = function() {
       return fs.removeTree(appConfig.projectsPath)
         .then(function() {
           return fs.removeTree(appConfig.derivedDataPath);

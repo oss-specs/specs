@@ -5,7 +5,7 @@ module.exports = function beforeHooks() {
   // Remove any old test data.
   this.Before('@cleanSlate', function(callback) {
     var world = this;
-    world.deleteTestSpecs()
+    world.deleteProjectData()
       .then(function() {
         callback();
       })
