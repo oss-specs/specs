@@ -52,8 +52,11 @@ router.get('/', function(req, res, next) {
     projectLink: path.posix.join(projectRoute, repoName)
   };
 
-  // Done like this rather than in the project route so that there is no blank
-  // page while the repo is cloned.
+  // Done like this rather than in the project route
+  // so that there is no blank page while the repo
+  // is cloned.
+  // If the project repo does not exist it will be cloned
+  // if it does exist it will be updated.
   getProject(projectData)
     .then(function(projectMetadata) {
 

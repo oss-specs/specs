@@ -6,6 +6,7 @@ var appConfig = require('../lib/configuration').get();
 var path = require('path');
 
 var getProject = require('../lib/specifications/projectData').get;
+var getProjectData = require('../lib/specifications/projectData').getData;
 
 // Render the project page and send to client.
 function getRender(res, appConfig) {
@@ -83,7 +84,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
     // Set the current branch name which will be used in the update.
     projectData.currentBranchName = targetBranchName;
 
-    getProject(projectData)
+    getProjectData(projectData, projectData.currentBranchName)
       .then(function(projectData) {
 
         // The data for the target branch was retrieved succesfully,
@@ -102,7 +103,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
     projectData.currentBranchName = sessionBranches[repoName] || false;
 
     // BUG: Currently causes an update. Should get the data only.
-    getProject(projectData)
+    getProjectData(projectData, projectData.currentBranchName)
       .then(configuredRender)
       .catch(configuredPassError);
   }
