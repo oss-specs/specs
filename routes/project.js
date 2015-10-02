@@ -5,8 +5,8 @@ var router = express.Router();
 var appConfig = require('../lib/configuration').get();
 var path = require('path');
 
-var getProject = require('../lib/specifications/projectData').get;
-var getProjectData = require('../lib/specifications/projectData').getData;
+var getProject = require('../lib/specifications/project').get;
+var getProjectData = require('../lib/specifications/project').getData;
 
 // Render the project page and send to client.
 function getRender(res, appConfig) {

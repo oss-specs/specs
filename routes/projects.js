@@ -5,8 +5,8 @@ var router = express.Router();
 var path = require('path');
 var appConfig = require('../lib/configuration').get();
 
-var getAllProjects = require('../lib/specifications/projectData').getAll;
-var getProject = require('../lib/specifications/projectData').get;
+var getAllProjects = require('../lib/specifications/project').getAll;
+var getProject = require('../lib/specifications/project').get;
 
 var appVersion = require('../package.json').version;
 

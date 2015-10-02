@@ -9,7 +9,7 @@ var appConfig = require('../lib/configuration').set({
 });
 
 // Get the project metadata module so we can inject test data.
-var projectMetaData = require('../lib/specifications/projectData');
+var project = require('../lib/specifications/project');
 
 module.exports = function() {
   this.World = function World(callback) {
@@ -34,7 +34,7 @@ module.exports = function() {
         .then(function() {
 
           // Configure the metadata module with the feature file storage path.
-          var configuredDeriveAndStore = projectMetaData.deriveAndStore(appConfig.projectsPath);
+          var configuredDeriveAndStore = project.deriveAndStore(appConfig.projectsPath);
 
           // Pass an object of made up repo data to be decorated with
           // feature file paths and return a promise for completion
