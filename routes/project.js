@@ -7,6 +7,33 @@ var path = require('path');
 
 var getProject = require('../lib/specifications/projectData').get;
 
+// Render the project page and send to client.
+function getRender(res, appConfig) {
+  return function render(projectData) {
+    var data = {
+      renderingOptions: {}
+    };
+
+    if (projectData) {
+      data['project'] = projectData;
+    }
+
+    // Construct the routes for each file of interest.
+    data.project.featureFilePaths.forEach(function(featureFile) {
+      featureFile.featureRoute = path.posix.join(appConfig.projectRoute, projectData.repoName, featureFile.featureName);
+    });
+
+    res.render('project', data);
+  };
+}
+
+// Pass errors to the next Express middleware for handling.
+function getPassError(next) {
+  return function passError(err) {
+    next(err);
+  };
+}
+
 // List of available features in a project.
 router.get(/^\/([^\/]+)$/, function(req, res, next) {
   if(!req.session.branches) req.session.branches = {};
@@ -14,15 +41,22 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   // Session variable.
   var branches = req.session.branches;
 
+  // The repository name from the URL.
+  var repoName = req.params[0];
+
   // Query param indicating that it should be attempted
   // to check out the specified branch.
   var targetBranchName = req.query.branch || false;
-
-  var repoName = req.params[0];
-
   if(targetBranchName) {
     branches[repoName] = targetBranchName;
   }
+
+  // Query param causing a Git update (pull).
+  var projectShouldUpdate = (req.query.update === 'true');
+
+  // Create the render and passError functions.
+  var configuredRender = getRender(res, appConfig);
+  var configuredPassError = getPassError(next);
 
   // TODO: Have one place this object is created.
   var projectData = {
@@ -32,36 +66,11 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
     currentBranchName: branches[repoName]
   };
 
-  // Query param causing a Git update (pull).
-  var projectShouldUpdate = (req.query.update === 'true');
-
-
-  // Render the project page and send to client.
-  function render(projectData) {
-    var data = {
-      renderingOptions: {}
-    };
-
-    if (projectData) {
-      data['project'] = projectData;
-    }
-
-    data.project.featureFilePaths.forEach(function(featureFile) {
-      featureFile.featureRoute = path.posix.join(appConfig.projectRoute, projectData.repoName, featureFile.featureName);
-    });
-
-    res.render('project', data);
-  }
-
-  function passError(err) {
-    next(err);
-  }
-
   // If the update flag is set then branch change requests will be ingored.
   if (projectShouldUpdate) {
     getProject(projectData)
-      .then(render)
-      .catch(passError);
+      .then(configuredRender)
+      .catch(configuredPassError);
 
   // Change the branch.
   // TODO: this should not know about Git refs.
@@ -71,14 +80,14 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
       .then(function(projectData) {
         return getProject(projectData, targetBranchName);
       })
-      .then(render)
-      .catch(passError);
+      .then(configuredRender)
+      .catch(configuredPassError);
 
   // Else, generate the metadata and render the page.
   } else {
     getProject(projectData, branches[repoName])
-      .then(render)
-      .catch(passError);
+      .then(configuredRender)
+      .catch(configuredPassError);
   }
 });
 
