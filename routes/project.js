@@ -44,12 +44,9 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   // The repository name from the URL.
   var repoName = req.params[0];
 
-  // Query param indicating that it should be attempted
-  // to check out the specified branch.
+  // Query param indicating a particular ref should
+  // be used when retrieving repo data.
   var targetBranchName = req.query.branch || false;
-  if(targetBranchName) {
-    branches[repoName] = targetBranchName;
-  }
 
   // Query param causing a Git update (pull).
   var projectShouldUpdate = (req.query.update === 'true');
@@ -62,30 +59,42 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   var projectData = {
     repoName: repoName,
     projectLink: path.posix.join(appConfig.projectRoute, repoName),
-    localPath: path.join(appConfig.projectsPath, repoName),
-    currentBranchName: branches[repoName]
+    localPath: path.join(appConfig.projectsPath, repoName)
   };
 
-  // If the update flag is set then branch change requests will be ingored.
+  // Perform a fetch on the repo then get the data.
+  // If this switch is set then the branch will not change.
   if (projectShouldUpdate) {
+
+    projectData.currentBranchName = branches[repoName];
+
+    // Correct, performs an update.
     getProject(projectData)
       .then(configuredRender)
       .catch(configuredPassError);
 
   // Change the branch.
-  // TODO: this should not know about Git refs.
   } else if (targetBranchName) {
+
+    // BUG Performs two updates. Shouldn't update, should just get data.
+
+    // Update the session variable.
     branches[repoName] = targetBranchName;
+    projectData.currentBranchName = branches[repoName];
+
+    console.log(projectData);
+
     getProject(projectData)
-      .then(function(projectData) {
-        return getProject(projectData, targetBranchName);
-      })
       .then(configuredRender)
       .catch(configuredPassError);
 
   // Else, generate the metadata and render the page.
   } else {
-    getProject(projectData, branches[repoName])
+
+    projectData.currentBranchName = branches[repoName];
+
+    // BUG: Currently causes an update. Needs the data only.
+    getProject(projectData)
       .then(configuredRender)
       .catch(configuredPassError);
   }
