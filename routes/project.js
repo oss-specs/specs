@@ -36,10 +36,10 @@ function getPassError(next) {
 
 // List of available features in a project.
 router.get(/^\/([^\/]+)$/, function(req, res, next) {
-  if(!req.session.branches) req.session.branches = {};
 
   // Session variable.
-  var branches = req.session.branches;
+  if(!req.session.branches) req.session.branches = {};
+  var sessionBranches = req.session.branches;
 
   // The repository name from the URL.
   var repoName = req.params[0];
@@ -62,38 +62,46 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
     localPath: path.join(appConfig.projectsPath, repoName)
   };
 
-  // Perform a fetch on the repo then get the data.
+  // Perform a clone or fetch on the repo then get the data.
   // If this switch is set then the branch will not change.
   if (projectShouldUpdate) {
 
-    projectData.currentBranchName = branches[repoName];
+    // Set the current branch name which will be used in the update.
+    // If not supplied the repo default branch will be used.
+    projectData.currentBranchName = sessionBranches[repoName] || false;
 
-    // Correct, performs an update.
+    // Update the repo and get the repo data.
     getProject(projectData)
       .then(configuredRender)
       .catch(configuredPassError);
 
   // Change the branch.
-  } else if (targetBranchName) {
+  } else if (targetBranchName && targetBranchName !== sessionBranches[repoName]) {
 
-    // BUG Performs two updates. Shouldn't update, should just get data.
+    // BUG: Currently causes an update. Should get the data only.
 
-    // Update the session variable.
-    branches[repoName] = targetBranchName;
-    projectData.currentBranchName = branches[repoName];
-
-    console.log(projectData);
+    // Set the current branch name which will be used in the update.
+    projectData.currentBranchName = targetBranchName;
 
     getProject(projectData)
+      .then(function(projectData) {
+
+        // The data for the target branch was retrieved succesfully,
+        // Update the branch session variable. Done here rather than
+        // earlier to avoid bad requests (nonsense refs) persisting.
+        sessionBranches[repoName] = projectData.currentBranchName;
+        return projectData;
+      })
       .then(configuredRender)
       .catch(configuredPassError);
 
   // Else, generate the metadata and render the page.
   } else {
 
-    projectData.currentBranchName = branches[repoName];
+    // BUG: should be removed once this calls getData rather than getProject.
+    projectData.currentBranchName = sessionBranches[repoName] || false;
 
-    // BUG: Currently causes an update. Needs the data only.
+    // BUG: Currently causes an update. Should get the data only.
     getProject(projectData)
       .then(configuredRender)
       .catch(configuredPassError);

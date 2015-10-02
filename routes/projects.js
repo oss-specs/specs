@@ -52,6 +52,8 @@ router.get('/', function(req, res, next) {
     projectLink: path.posix.join(projectRoute, repoName)
   };
 
+  // Done like this rather than in the project route so that there is no blank
+  // page while the repo is cloned.
   getProject(projectData)
     .then(function(projectMetadata) {
 
@@ -59,6 +61,7 @@ router.get('/', function(req, res, next) {
       res.redirect(projectMetadata.projectLink);
     })
     .catch(function(err) {
+
       // Pass on to the error handling route.
       next(err);
     });
