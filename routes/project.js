@@ -5,39 +5,12 @@ var router = express.Router();
 var appConfig = require('../lib/configuration').get();
 var path = require('path');
 
-var getProject = require('../lib/specifications/projectData').get;
+var getProject = require('../lib/specifications/project').get;
+var getProjectData = require('../lib/specifications/project').getData;
 
-// List of available features in a project.
-router.get(/^\/([^\/]+)$/, function(req, res, next) {
-  if(!req.session.branches) req.session.branches = {};
-
-  // Session variable.
-  var branches = req.session.branches;
-
-  // Query param indicating that it should be attempted
-  // to check out the specified branch.
-  var targetBranchName = req.query.branch || false;
-
-  var repoName = req.params[0];
-
-  if(targetBranchName) {
-    branches[repoName] = targetBranchName;
-  }
-
-  // TODO: Have one place this object is created.
-  var projectData = {
-    repoName: repoName,
-    projectLink: path.posix.join(appConfig.projectRoute, repoName),
-    localPath: path.join(appConfig.projectsPath, repoName),
-    currentBranchName: branches[repoName]
-  };
-
-  // Query param causing a Git update (pull).
-  var projectShouldUpdate = (req.query.update === 'true');
-
-
-  // Render the project page and send to client.
-  function render(projectData) {
+// Render the project page and send to client.
+function getRender(res, appConfig) {
+  return function render(projectData) {
     var data = {
       renderingOptions: {}
     };
@@ -46,39 +19,93 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
       data['project'] = projectData;
     }
 
+    // Construct the routes for each file of interest.
     data.project.featureFilePaths.forEach(function(featureFile) {
       featureFile.featureRoute = path.posix.join(appConfig.projectRoute, projectData.repoName, featureFile.featureName);
     });
 
     res.render('project', data);
-  }
+  };
+}
 
-  function passError(err) {
+// Pass errors to the next Express middleware for handling.
+function getPassError(next) {
+  return function passError(err) {
     next(err);
-  }
+  };
+}
 
-  // If the update flag is set then branch change requests will be ingored.
+// List of available features in a project.
+router.get(/^\/([^\/]+)$/, function(req, res, next) {
+
+  // Session variable.
+  if(!req.session.branches) req.session.branches = {};
+  var sessionBranches = req.session.branches;
+
+  // The repository name from the URL.
+  var repoName = req.params[0];
+
+  // Query param indicating a particular ref should
+  // be used when retrieving repo data.
+  var targetBranchName = req.query.branch || false;
+
+  // Query param causing a Git update (pull).
+  var projectShouldUpdate = (req.query.update === 'true');
+
+  // Create the render and passError functions.
+  var configuredRender = getRender(res, appConfig);
+  var configuredPassError = getPassError(next);
+
+  // TODO: Have one place this object is created.
+  var projectData = {
+    repoName: repoName,
+    projectLink: path.posix.join(appConfig.projectRoute, repoName),
+    localPath: path.join(appConfig.projectsPath, repoName)
+  };
+
+  // Perform a clone or fetch on the repo then get the data.
+  // If this switch is set then the branch will not change.
   if (projectShouldUpdate) {
+
+    // Set the current branch name which will be used in the update.
+    // If not supplied the repo default branch will be used.
+    projectData.currentBranchName = sessionBranches[repoName] || false;
+
+    // Update the repo and get the repo data.
     getProject(projectData)
-      .then(render)
-      .catch(passError);
+      .then(configuredRender)
+      .catch(configuredPassError);
 
   // Change the branch.
-  // TODO: this should not know about Git refs.
-  } else if (targetBranchName) {
-    branches[repoName] = targetBranchName;
-    getProject(projectData)
+  } else if (targetBranchName && targetBranchName !== sessionBranches[repoName]) {
+
+    // BUG: Currently causes an update. Should get the data only.
+
+    // Set the current branch name which will be used in the update.
+    projectData.currentBranchName = targetBranchName;
+
+    getProjectData(projectData, projectData.currentBranchName)
       .then(function(projectData) {
-        return getProject(projectData, targetBranchName);
+
+        // The data for the target branch was retrieved succesfully,
+        // Update the branch session variable. Done here rather than
+        // earlier to avoid bad requests (nonsense refs) persisting.
+        sessionBranches[repoName] = projectData.currentBranchName;
+        return projectData;
       })
-      .then(render)
-      .catch(passError);
+      .then(configuredRender)
+      .catch(configuredPassError);
 
   // Else, generate the metadata and render the page.
   } else {
-    getProject(projectData, branches[repoName])
-      .then(render)
-      .catch(passError);
+
+    // BUG: should be removed once this calls getData rather than getProject.
+    projectData.currentBranchName = sessionBranches[repoName] || false;
+
+    // BUG: Currently causes an update. Should get the data only.
+    getProjectData(projectData, projectData.currentBranchName)
+      .then(configuredRender)
+      .catch(configuredPassError);
   }
 });
 

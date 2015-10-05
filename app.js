@@ -122,7 +122,11 @@ app.use(function(req, res, next) {
   next(err);
 });
 
-app.use(function(err, req, res) {
+// Don't delete the unused `next` argument, express inspects
+// the arguments to determine behaviour (horrible).
+/*eslint-disable no-unused-vars */
+app.use(function(err, req, res, next) {
+/*eslint-enable no-unused-vars */
   var status = err.status || 500;
   var errorMessage = err.message || err;
   var stack = err.stack || false;

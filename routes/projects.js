@@ -5,8 +5,8 @@ var router = express.Router();
 var path = require('path');
 var appConfig = require('../lib/configuration').get();
 
-var getAllProjects = require('../lib/specifications/projectData').getAll;
-var getProject = require('../lib/specifications/projectData').get;
+var getAllProjects = require('../lib/specifications/project').getAll;
+var getProject = require('../lib/specifications/project').get;
 
 var appVersion = require('../package.json').version;
 
@@ -52,6 +52,11 @@ router.get('/', function(req, res, next) {
     projectLink: path.posix.join(projectRoute, repoName)
   };
 
+  // Done like this rather than in the project route
+  // so that there is no blank page while the repo
+  // is cloned.
+  // If the project repo does not exist it will be cloned
+  // if it does exist it will be updated.
   getProject(projectData)
     .then(function(projectMetadata) {
 
@@ -59,6 +64,7 @@ router.get('/', function(req, res, next) {
       res.redirect(projectMetadata.projectLink);
     })
     .catch(function(err) {
+
       // Pass on to the error handling route.
       next(err);
     });

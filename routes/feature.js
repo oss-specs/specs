@@ -7,7 +7,7 @@ var express = require('express');
 var router = express.Router();
 
 var markdown = require('markdown').markdown;
-var getProject = require('../lib/specifications/projectData').get;
+var getProjectData = require('../lib/specifications/project').getData;
 var getFileContents = require('../lib/specifications/repositoryTypes/git').getFileContents;
 var appConfig = require('../lib/configuration').get();
 
@@ -31,7 +31,7 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
   // Skip the rendering for query param ?plain=true ?plain=1 etc.
   var renderPlainFile = req.query.plain === 'true' || !!parseInt(req.query.plain);
 
-  getProject(projectData, ref)
+  getProjectData(projectData, ref)
   .then(function (projectData) {
     return getFileContents(projectData, filePath);
   })
