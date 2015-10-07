@@ -1,16 +1,25 @@
 'use strict';
 
-var express = require('express');
-var router = express.Router();
-var appConfig = require('../lib/configuration').get();
 var path = require('path');
 
+var express = require('express');
+var router = express.Router();
+var Q = require('q');
+
+var Gherkin = require('gherkin');
+var Parser = new Gherkin.Parser();
+var markdown = require('markdown').markdown;
+
+var appConfig = require('../lib/configuration').get();
 var getProject = require('../lib/specifications/project').get;
 var getProjectData = require('../lib/specifications/project').getData;
+var getFileContents = require('../lib/specifications/project').getFileContents;
 
 // Render the project page and send to client.
 function getRender(res, appConfig) {
   return function render(projectData) {
+    var fileContentsPromises = [];
+
     var data = {
       renderingOptions: {}
     };
@@ -21,10 +30,31 @@ function getRender(res, appConfig) {
 
     // Construct the routes for each file of interest.
     data.project.files.forEach(function(file) {
-      file.route = path.posix.join(appConfig.projectRoute, projectData.repoName, file.fileName);
+      var fileName = file.fileName;
+      file.route = path.posix.join(appConfig.projectRoute, projectData.repoName, fileName);
+      file.isFeatureFile = /.*\.feature/.test(fileName);
+      file.isMarkdownFile = /.*\.md/.test(fileName);
+      if (file.isFeatureFile || file.isMarkdownFile) {
+        fileContentsPromises.push(getFileContents(projectData, fileName));
+      } else {
+        fileContentsPromises.push(undefined);
+      }
     });
 
-    res.render('project', data);
+    Q.all(fileContentsPromises)
+      .then(function(fileContents) {
+        data.project.files.forEach(function(file, index) {
+          if (file.isFeatureFile) {
+            file.data = Parser.parse(fileContents[index]);
+          } else if(file.isMarkdownFile) {
+            file.data = markdown.parse(fileContents[index]);
+          } else {
+            file.data = false;
+          }
+        });
+
+        res.render('project', data);
+      });
   };
 }
 

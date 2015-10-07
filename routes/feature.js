@@ -8,7 +8,7 @@ var router = express.Router();
 
 var markdown = require('markdown').markdown;
 var getProjectData = require('../lib/specifications/project').getData;
-var getFileContents = require('../lib/specifications/repositoryTypes/git').getFileContents;
+var getFileContents = require('../lib/specifications/project').getFileContents;
 var appConfig = require('../lib/configuration').get();
 
 var Gherkin = require('gherkin');
