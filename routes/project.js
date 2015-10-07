@@ -20,8 +20,8 @@ function getRender(res, appConfig) {
     }
 
     // Construct the routes for each file of interest.
-    data.project.featureFilePaths.forEach(function(featureFile) {
-      featureFile.featureRoute = path.posix.join(appConfig.projectRoute, projectData.repoName, featureFile.featureName);
+    data.project.files.forEach(function(file) {
+      file.route = path.posix.join(appConfig.projectRoute, projectData.repoName, file.fileName);
     });
 
     res.render('project', data);
@@ -78,13 +78,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   // Change the branch.
   } else if (targetBranchName && targetBranchName !== sessionBranches[repoName]) {
-
-    // BUG: Currently causes an update. Should get the data only.
-
-    // Set the current branch name which will be used in the update.
-    projectData.currentBranchName = targetBranchName;
-
-    getProjectData(projectData, projectData.currentBranchName)
+    getProjectData(projectData, targetBranchName)
       .then(function(projectData) {
 
         // The data for the target branch was retrieved succesfully,
@@ -98,12 +92,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   // Else, generate the metadata and render the page.
   } else {
-
-    // BUG: should be removed once this calls getData rather than getProject.
-    projectData.currentBranchName = sessionBranches[repoName] || false;
-
-    // BUG: Currently causes an update. Should get the data only.
-    getProjectData(projectData, projectData.currentBranchName)
+    getProjectData(projectData, sessionBranches[repoName])
       .then(configuredRender)
       .catch(configuredPassError);
   }
