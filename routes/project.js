@@ -67,10 +67,6 @@ function getRender(res, appConfig) {
     Q.all(fileContentsPromises)
       .then(function(fileContents) {
         renderingData.project.files.forEach(getProcessFileContent(fileContents));
-
-        // DEBUG
-        console.log(renderingData.project);
-
         res.render('project', renderingData);
       });
   };
