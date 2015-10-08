@@ -36,7 +36,7 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
     return getFileContents(projectData, filePath);
   })
   .then(function (fileContents) {
-    var feature;
+    var feature = {};
     var isFeatureFile = /.*\.feature/.test(filePath);
     var isMarkdownFile = /.*\.md/.test(filePath);
 
@@ -45,6 +45,7 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
       try {
         feature = Parser.parse(fileContents);
       } catch (err) {
+        feature.plainFileUrl = req.originalUrl + '&plain=true';
         feature.error = err;
       }
 
