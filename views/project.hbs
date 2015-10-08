@@ -33,7 +33,7 @@
         <div>
           {{#each project.files}}
             {{#if this.empty}}
-              <p class="empty-file">{{this.fileNameShort}}</p>
+              <p class="empty-file" title="This file is empty" >&#x2205;&nbsp;&nbsp;{{this.fileNameShort}}</p>
             {{else}}
               <p><a class="spec-link" href="{{this.route}}?ref={{../../project.currentBranchName}}">{{this.fileNameShort}}</a></p>
             {{/if}}

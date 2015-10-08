@@ -46,9 +46,13 @@
   text-decoration: underline;
 }
 
-.spec-links > h2 {
+.spec-links {
   color: grey;
 }
 .spec-links > div {
   margin-left: 3em;
+}
+
+.empty-file {
+  color: #999;
 }
