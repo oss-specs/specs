@@ -46,18 +46,23 @@
   text-decoration: underline;
 }
 
-.spec-link {
-  color: black;
-}
 
 .file-list li {
   display: inline-block;
   max-width: 100%;
 }
 
+.spec-link {
+  display: inline-block;
+  max-width: 100%;
+  color: black;
+}
+
 .file-container {
   display: inline-block;
+  box-sizing: border-box;
   font-size: 1.2em;
+  max-width: 100%;
   padding: 1em;
   margin-bottom: 1.5em;
   margin-left: 1.5em;
@@ -76,6 +81,7 @@
 }
 
 .file-details {
+  word-wrap: break-word;
   margin-bottom: 0.8em;
 }
 .file-name {
