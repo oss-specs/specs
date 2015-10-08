@@ -41,7 +41,12 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
     var isMarkdownFile = /.*\.md/.test(filePath);
 
     if (isFeatureFile && !renderPlainFile) {
-      feature = Parser.parse(fileContents);
+
+      try {
+        feature = Parser.parse(fileContents);
+      } catch (err) {
+        feature.error = err;
+      }
 
       res.render('feature', {feature: feature});
     } else if (isMarkdownFile && !renderPlainFile) {

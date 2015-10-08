@@ -33,7 +33,11 @@ function getRender(res, appConfig) {
       file.isFeatureFile = /.*\.feature/.test(fileName);
       file.isMarkdownFile = /.*\.md/.test(fileName);
       if (file.isFeatureFile || file.isMarkdownFile) {
-        fileContentsPromises.push(getFileContents(projectData, fileName));
+        try {
+          fileContentsPromises.push(getFileContents(projectData, fileName));
+        } catch (err) {
+          file.error = err;
+        }
       } else {
         fileContentsPromises.push(undefined);
       }
