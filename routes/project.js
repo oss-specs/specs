@@ -20,16 +20,14 @@ function getRender(res, appConfig) {
   return function render(projectData) {
     var fileContentsPromises = [];
 
-    var data = {
-      renderingOptions: {}
-    };
+    var renderingData = {};
 
     if (projectData) {
-      data['project'] = projectData;
+      renderingData['project'] = projectData;
     }
 
     // Construct the routes for each file of interest.
-    data.project.files.forEach(function(file) {
+    renderingData.project.files.forEach(function(file) {
       var fileName = file.fileName;
       file.route = path.posix.join(appConfig.projectRoute, projectData.repoName, fileName);
       file.isFeatureFile = /.*\.feature/.test(fileName);
@@ -43,7 +41,7 @@ function getRender(res, appConfig) {
 
     Q.all(fileContentsPromises)
       .then(function(fileContents) {
-        data.project.files.forEach(function(file, index) {
+        renderingData.project.files.forEach(function(file, index) {
           if (file.isFeatureFile) {
             file.data = Parser.parse(fileContents[index]);
           } else if(file.isMarkdownFile) {
@@ -53,7 +51,7 @@ function getRender(res, appConfig) {
           }
         });
 
-        res.render('project', data);
+        res.render('project', renderingData);
       });
   };
 }
