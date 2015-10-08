@@ -52,12 +52,12 @@ function getRender(res, appConfig) {
     // Construct the routes for each file of interest
     // and get promises for the file content.
     renderingData.project.files.forEach(function(file) {
-      var fileName = file.fileName;
-      file.route = path.posix.join(appConfig.projectRoute, projectData.repoName, fileName);
-      file.isFeatureFile = /.*\.feature/.test(fileName);
-      file.isMarkdownFile = /.*\.md/.test(fileName);
+      var filePath = file.filePath;
+      file.route = path.posix.join(appConfig.projectRoute, projectData.repoName, filePath);
+      file.isFeatureFile = /.*\.feature/.test(filePath);
+      file.isMarkdownFile = /.*\.md/.test(filePath);
       if (file.isFeatureFile || file.isMarkdownFile) {
-        fileContentsPromises.push(getFileContents(projectData, fileName));
+        fileContentsPromises.push(getFileContents(projectData, filePath));
       } else {
         fileContentsPromises.push(undefined);
       }
@@ -67,6 +67,10 @@ function getRender(res, appConfig) {
     Q.all(fileContentsPromises)
       .then(function(fileContents) {
         renderingData.project.files.forEach(getProcessFileContent(fileContents));
+
+        // DEBUG
+        console.log(renderingData.project);
+
         res.render('project', renderingData);
       });
   };

@@ -33,9 +33,9 @@
         <div>
           {{#each project.files}}
             {{#if this.empty}}
-              <p class="empty-file" title="This file is empty" >&#x2205;&nbsp;&nbsp;{{this.fileNameShort}}</p>
+              <p class="empty-file" title="This file is empty" >&#x2205;&nbsp;&nbsp;{{this.filePath}}</p>
             {{else}}
-              <p><a class="spec-link" href="{{this.route}}?ref={{../../project.currentBranchName}}">{{this.fileNameShort}}</a></p>
+              <p><a class="spec-link" href="{{this.route}}?ref={{../../project.currentBranchName}}">{{this.filePath}}</a></p>
             {{/if}}
           {{else}}
             <p>Sorry, this project does not appear to contain any specifications</p>
