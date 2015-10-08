@@ -7,7 +7,7 @@
 {{> layout_start_body}}
 <main>
   <header>
-    <h1 class="project-name">{{project.name}}</h1>
+    <h1 class="project-name">{{project.repoName}}</h1>
   </header>
   {{#if project}}
     <section class="project">
@@ -27,20 +27,18 @@
         </div>
         <a href="?update=true"><button class="project-update call-to-action">Get Latest</button></a>
         <span class="repo-link"><a href="{{project.repoUrl}}">(visit&nbsp;repository)</a></span>
+        <hr>
       </section>
       <section class="spec-links">
-        <h2>Specifications</h2>
-        <div>
-          {{#if project.files}}
-            <ul>
-            {{#each project.files}}
-              {{> project_file this currentBranchName=../../project.currentBranchName}}
-            {{/each}}
-            </ul>
-          {{else}}
-            <p>Sorry, this project does not appear to contain any specifications</p>
-          {{/if}}
-        </div>
+        {{#if project.files}}
+          <ul class="file-list">
+          {{#each project.files}}
+            {{> project_file this currentBranchName=../../project.currentBranchName}}
+          {{/each}}
+          </ul>
+        {{else}}
+          <p>Sorry, this project does not appear to contain any specifications</p>
+        {{/if}}
       </section>
     </section>
   {{else}}
