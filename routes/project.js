@@ -15,6 +15,29 @@ var getProject = require('../lib/specifications/project').get;
 var getProjectData = require('../lib/specifications/project').getData;
 var getFileContents = require('../lib/specifications/project').getFileContents;
 
+function getProcessFileContent(fileContents) {
+  return function processFileContent(file, index) {
+    var fileContent = fileContents[index];
+
+    if (!fileContent || !fileContent.length) {
+      file.empty = true;
+    }
+
+    if (file.isFeatureFile) {
+      try {
+        file.data = Parser.parse(fileContent);
+      } catch (err) {
+        file.error = err;
+      }
+    } else if(file.isMarkdownFile) {
+      file.data = markdown.parse(fileContent);
+    } else {
+      file.data = false;
+    }
+  }
+}
+
+
 // Render the project page and send to client.
 function getRender(res, appConfig) {
   return function render(projectData) {
@@ -26,35 +49,24 @@ function getRender(res, appConfig) {
       renderingData['project'] = projectData;
     }
 
-    // Construct the routes for each file of interest.
+    // Construct the routes for each file of interest
+    // and get promises for the file content.
     renderingData.project.files.forEach(function(file) {
       var fileName = file.fileName;
       file.route = path.posix.join(appConfig.projectRoute, projectData.repoName, fileName);
       file.isFeatureFile = /.*\.feature/.test(fileName);
       file.isMarkdownFile = /.*\.md/.test(fileName);
       if (file.isFeatureFile || file.isMarkdownFile) {
-        try {
-          fileContentsPromises.push(getFileContents(projectData, fileName));
-        } catch (err) {
-          file.error = err;
-        }
+        fileContentsPromises.push(getFileContents(projectData, fileName));
       } else {
         fileContentsPromises.push(undefined);
       }
     });
 
+    // Mix in the resolved file content and render.
     Q.all(fileContentsPromises)
       .then(function(fileContents) {
-        renderingData.project.files.forEach(function(file, index) {
-          if (file.isFeatureFile) {
-            file.data = Parser.parse(fileContents[index]);
-          } else if(file.isMarkdownFile) {
-            file.data = markdown.parse(fileContents[index]);
-          } else {
-            file.data = false;
-          }
-        });
-
+        renderingData.project.files.forEach(getProcessFileContent(fileContents));
         res.render('project', renderingData);
       });
   };
