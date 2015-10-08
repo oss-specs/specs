@@ -46,8 +46,8 @@
   text-decoration: underline;
 }
 
-.spec-links {
-  color: grey;
+.spec-link {
+  color: black;
 }
 
 .file-list li {
@@ -71,7 +71,7 @@
   color: #555;
 }
 
-.parse-error a {
+.parse-error {
   color: darkred;
 }
 
@@ -80,6 +80,7 @@
 }
 .file-name {
   margin-bottom: 0.3em;
+  color: darkblue;
 }
 .file-path {
   font-size: 0.6em;
@@ -87,11 +88,10 @@
 }
 
 .feature-summary {
-  padding: 0.8em;
+  padding: 0.3em 0.5em 0.5em 0.5em;
   background: linear-gradient(180deg, rgba(240, 240, 240, 1) 0%, rgba(255, 255, 255, 0) 100%);
 }
 .feature-summary p {
-  font-size: 0.9em;
   margin-bottom: 0.5em;
   margin-left: 0.5em;
 }
