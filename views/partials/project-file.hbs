@@ -1,0 +1,13 @@
+<li>
+  <section class="file-container">
+    {{#if this.empty}}
+      <span class="empty-file" title="This file is empty" >&#x2205;&nbsp;&nbsp;{{this.fileName}}</span>
+    {{else}}
+      {{#if this.error}}
+        <span class="parse-error" title="Error parsing file.">&#x1F645;&nbsp;&nbsp;<a class="spec-link" href="{{this.route}}?ref={{currentBranchName}}">{{this.fileName}}</a></span>
+      {{else}}
+        <span><a class="spec-link" href="{{this.route}}?ref={{currentBranchName}}">{{this.fileName}}</a></span>
+      {{/if}}
+    {{/if}}
+  </section>
+</li>

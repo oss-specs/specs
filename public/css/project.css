@@ -53,6 +53,15 @@
   margin-left: 3em;
 }
 
+.file-container {
+  font-size: 1.2em;
+  margin-bottom: 1em;
+}
+
 .empty-file {
   color: #999;
+}
+
+.parse-error a {
+  color: darkred;
 }
