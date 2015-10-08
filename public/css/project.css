@@ -60,9 +60,16 @@
 
 .file-container {
   display: inline-block;
-  box-sizing: border-box;
   font-size: 1.2em;
+
+  /*
+   * Make max-width:100% constrain the width out
+   * to the edge of the border rather than the
+   * content.
+   */
+  box-sizing: border-box;
   max-width: 100%;
+
   padding: 1em;
   margin-bottom: 1.5em;
   margin-left: 1.5em;
@@ -81,7 +88,7 @@
 }
 
 .file-details {
-  word-wrap: break-word;
+  word-wrap: break-word; /* break long file names and paths */
   margin-bottom: 0.8em;
 }
 .file-name {
@@ -107,6 +114,8 @@
 .feature-summary .feature-description {
   font-size: 0.8em;
   max-width: 30em;
+
+  /* Truncate the feature descriptions. */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
