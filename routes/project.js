@@ -34,7 +34,7 @@ function getProcessFileContent(fileContents) {
     } else {
       file.data = false;
     }
-  }
+  };
 }
 
 
