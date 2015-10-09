@@ -45,22 +45,40 @@ function getRender(res, appConfig) {
 
     var renderingData = {};
 
-    if (projectData) {
-      renderingData['project'] = projectData;
+    // Handle no project data being found.
+    if (!projectData) {
+      res.render('project', renderingData);
+      return;
     }
 
-    // Construct the routes for each file of interest
-    // and get promises for the file content.
-    renderingData.project.files.forEach(function(file) {
-      var filePath = file.filePath;
+    renderingData['project'] = projectData;
+
+    // If there are no files in the project then don't
+    // try and get file contents.
+    if (!projectData.files.length) {
+      res.render('project', renderingData);
+      return;
+    }
+
+    // Construct additional data from each file Path
+    projectData.files = projectData.files.map(function(filePath) {
+      var file = {};
+
+      file.filePath = filePath;
+      file.fileName = path.basename(filePath);
+
       file.route = path.posix.join(appConfig.projectRoute, projectData.repoName, filePath);
+
       file.isFeatureFile = /.*\.feature/.test(filePath);
       file.isMarkdownFile = /.*\.md/.test(filePath);
+
       if (file.isFeatureFile || file.isMarkdownFile) {
         fileContentsPromises.push(getFileContents(projectData, filePath));
       } else {
         fileContentsPromises.push(undefined);
       }
+
+      return file;
     });
 
     // Mix in the resolved file content and render.
