@@ -5,7 +5,7 @@ var router = express.Router();
 var path = require('path');
 var appConfig = require('../lib/configuration').get();
 
-var getAllProjects = require('../lib/specifications/project').getAll;
+var getProjectsNames = require('../lib/specifications/project').getNames;
 var getProject = require('../lib/specifications/project').get;
 
 var appVersion = require('../package.json').version;
@@ -18,14 +18,14 @@ router.get('/', function(req, res, next) {
   // If there is no URL query param then
   // render the projects page.
   if (!repoUrl) {
-    getAllProjects()
-      .then(function(projectData) {
+    getProjectsNames()
+      .then(function(projectNames) {
         var data = {
           projectRoute: appConfig.projectRoute,
           appVersion: appVersion
         };
-        if (projectData.length) {
-          data.projects = projectData;
+        if (projectNames.length) {
+          data.projects = projectNames;
         }
         res.render('projects', data);
       })
