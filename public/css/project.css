@@ -89,7 +89,7 @@
 
 .file-details {
   word-wrap: break-word; /* break long file names and paths */
-  margin-bottom: 0.8em;
+  margin-bottom: 1em;
 }
 .file-name {
   margin-bottom: 0.3em;
@@ -101,8 +101,9 @@
 }
 
 .feature-summary {
-  padding: 0.3em 0.5em 0.5em 0.5em;
-  background: linear-gradient(180deg, rgba(240, 240, 240, 1) 0%, rgba(255, 255, 255, 0) 100%);
+  padding: 0.8em 0.5em 0.5em 0.5em;
+  border-radius: 1em;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 2%, rgba(240, 240, 240, 1) 16%, rgba(255, 255, 255, 0) 100%);
 }
 .feature-summary p {
   margin-bottom: 0.5em;
