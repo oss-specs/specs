@@ -10,18 +10,21 @@ var Gherkin = require('gherkin');
 var Parser = new Gherkin.Parser();
 var markdown = require('markdown').markdown;
 
+var arrrayToTree = require('file-tree');
+
 var appConfig = require('../lib/configuration').get();
 var getProject = require('../lib/specifications/project').get;
 var getProjectData = require('../lib/specifications/project').getData;
 var getFileContents = require('../lib/specifications/project').getFileContents;
 
 
+// Given a file path, generate additional data or promises for data.
 function getFilePathToFileData(appConfig, projectData, getFileContents) {
   return function filePathToFileData(filePath) {
     var file = {};
 
+    file.name = path.basename(filePath);
     file.filePath = filePath;
-    file.fileName = path.basename(filePath);
 
     file.route = path.posix.join(appConfig.projectRoute, projectData.repoName, filePath);
 
@@ -83,8 +86,21 @@ function getRender(res, appConfig) {
       return;
     }
 
-    // Construct additional data from each file Path
-    projectData.files = projectData.files.map(getFilePathToFileData(appConfig, projectData, getFileContents));
+    var pathToData = getFilePathToFileData(appConfig, projectData, getFileContents);
+
+    // DEMO: Generate a tree with all the required data.
+    arrrayToTree(projectData.files.slice(), function(filePath, next) {
+      var fileData = pathToData(filePath);
+
+      next(null, fileData);
+    }, function(err, fileTree) {
+      console.log('*******');
+      console.log(JSON.stringify(fileTree));
+      console.log('*******');
+    })
+
+    // Construct additional data from each file Path the old way.
+    projectData.files = projectData.files.map(pathToData);
 
     // Mix in the resolved file content and render.
     var promisesForFileContent = projectData.files.map(function(f) {return f.contentsPromise;});
