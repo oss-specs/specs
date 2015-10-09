@@ -15,6 +15,30 @@ var getProject = require('../lib/specifications/project').get;
 var getProjectData = require('../lib/specifications/project').getData;
 var getFileContents = require('../lib/specifications/project').getFileContents;
 
+
+function getFilePathToFileData(appConfig, projectData, getFileContents) {
+  return function filePathToFileData(filePath) {
+    var file = {};
+
+    file.filePath = filePath;
+    file.fileName = path.basename(filePath);
+
+    file.route = path.posix.join(appConfig.projectRoute, projectData.repoName, filePath);
+
+    file.isFeatureFile = /.*\.feature/.test(filePath);
+    file.isMarkdownFile = /.*\.md/.test(filePath);
+
+    if (file.isFeatureFile || file.isMarkdownFile) {
+      file.contentsPromise = getFileContents(projectData, filePath);
+    } else {
+      file.contentsPromise = undefined;
+    }
+
+    return file;
+  };
+}
+
+// Given some file content process it into the relevant data structure.
 function getProcessFileContent(fileContents) {
   return function processFileContent(file, index) {
     var fileContent = fileContents[index];
@@ -34,15 +58,14 @@ function getProcessFileContent(fileContents) {
     } else {
       file.data = false;
     }
+
+    return file;
   };
 }
-
 
 // Render the project page and send to client.
 function getRender(res, appConfig) {
   return function render(projectData) {
-    var fileContentsPromises = [];
-
     var renderingData = {};
 
     // Handle no project data being found.
@@ -61,30 +84,13 @@ function getRender(res, appConfig) {
     }
 
     // Construct additional data from each file Path
-    projectData.files = projectData.files.map(function(filePath) {
-      var file = {};
-
-      file.filePath = filePath;
-      file.fileName = path.basename(filePath);
-
-      file.route = path.posix.join(appConfig.projectRoute, projectData.repoName, filePath);
-
-      file.isFeatureFile = /.*\.feature/.test(filePath);
-      file.isMarkdownFile = /.*\.md/.test(filePath);
-
-      if (file.isFeatureFile || file.isMarkdownFile) {
-        fileContentsPromises.push(getFileContents(projectData, filePath));
-      } else {
-        fileContentsPromises.push(undefined);
-      }
-
-      return file;
-    });
+    projectData.files = projectData.files.map(getFilePathToFileData(appConfig, projectData, getFileContents));
 
     // Mix in the resolved file content and render.
-    Q.all(fileContentsPromises)
+    var promisesForFileContent = projectData.files.map(function(f) {return f.contentsPromise;});
+    Q.all(promisesForFileContent)
       .then(function(fileContents) {
-        renderingData.project.files.forEach(getProcessFileContent(fileContents));
+        projectData.files = projectData.files.map(getProcessFileContent(fileContents));
         res.render('project', renderingData);
       });
   };
