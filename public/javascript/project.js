@@ -1,4 +1,5 @@
-/*global $*/
+/* eslint-env browser */
+/* global $ */
 
 // Branch changing select element logic.
 $(function() {
@@ -49,6 +50,6 @@ $(function() {
   [].forEach.call(els, function(el) {
     el.addEventListener('click', function() {
       this.classList.toggle('expand'); this.nextElementSibling.classList.toggle('hidden');
-    })
+    });
   });
 });

@@ -116,7 +116,7 @@ function getRender(res, appConfig) {
             name: filePath,
             file: currentFile,
             isFile: true
-          }
+          };
 
           // Continue to generate the tree.
           next(null, leaf);
@@ -155,7 +155,7 @@ function getRender(res, appConfig) {
 
           // Render the page.
           res.render('project', renderingData);
-        })
+        });
       });
   };
 }
