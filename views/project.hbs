@@ -30,15 +30,18 @@
         <hr>
       </section>
       <section class="spec-links">
-        {{#if project.files}}
-          <ul class="file-list">
-          {{#each project.files}}
-            {{> project_file this currentBranchName=../../project.currentBranchName}}
-          {{/each}}
-          </ul>
+        {{#each project.filesByDir as |files directoryPath|}}
+          <section>
+            <h2>{{directoryPath}}</h2>
+            <ul class="file-list">
+              {{#each files}}
+                {{> project_file this currentBranchName=../../project.currentBranchName}}
+              {{/each}}
+            </ul>
+          </section>
         {{else}}
           <p>Sorry, this project does not appear to contain any specifications</p>
-        {{/if}}
+        {{/each}}
       </section>
     </section>
   {{else}}

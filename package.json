@@ -56,6 +56,7 @@
     "express": "^4.13.3",
     "express-session": "^1.11.3",
     "file-stream-rotator": "0.0.6",
+    "file-tree": "git+https://github.com/jimCresswell/file-tree#v1.0.1-rc1",
     "gherkin": "^3.1.1",
     "github-markdown-css": "^2.0.10",
     "hbs": "^3.1.1",
@@ -68,8 +69,8 @@
     "q-io": "^1.13.1",
     "serve-favicon": "^2.3.0",
     "session-file-store": "0.0.20",
-    "underscore": "1.8.3",
-    "file-tree": "git+https://github.com/jimCresswell/file-tree#v1.0.1-rc1"
+    "tree-model": "^1.0.2",
+    "underscore": "1.8.3"
   },
   "devDependencies": {
     "codeclimate-test-reporter": "^0.1.1",

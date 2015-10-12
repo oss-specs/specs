@@ -11,6 +11,7 @@ var Parser = new Gherkin.Parser();
 var markdown = require('markdown').markdown;
 
 var arrrayToTree = require('file-tree');
+var TreeModel = require('tree-model');
 
 var appConfig = require('../lib/configuration').get();
 var getProject = require('../lib/specifications/project').get;
@@ -98,7 +99,7 @@ function getRender(res, appConfig) {
     // Wait for content promises to resolve then mix
     // in the resolved file content.
     var promisesForFileContent = projectData.files.map(function(f) {return f.contentsPromise;});
-    Q.all(promisesForFileContent)
+    return Q.all(promisesForFileContent)
       .then(function(fileContents) {
 
         // Mix in the file content.
@@ -113,16 +114,44 @@ function getRender(res, appConfig) {
           // Link the file list and the tree structure by reference.
           var leaf = {
             name: filePath,
-            file: currentFile
+            file: currentFile,
+            isFile: true
           }
 
           // Continue to generate the tree.
           next(null, leaf);
         }, function(err, fileTree) {
+
           // Tree generation is complete.
+          // Wrap in tree model convenience object.
+          var treeRoot = (new TreeModel()).parse({name: 'root', children: fileTree});
+
+          // Use the tree to construct a set of files by directory.
+          var filesByDir = {};
+          var fileNodes = treeRoot.all(function(node) { return node.model.isFile; });
+          fileNodes.forEach(function(fileNode) {
+            var pathToNode = fileNode.getPath();
+
+            // Derive a directory path.
+            var directoryNames = pathToNode
+                                  .map(function(node) {
+                                    var model = node.model;
+                                    if (!node.isRoot() && !model.isFile) {
+                                      return node.model.name;
+                                    }
+                                    return '';
+                                  });
+            var directoryPath = path.join.apply(path, directoryNames);
+
+            // Store the file data keyed by containing directory.
+            if (!filesByDir[directoryPath]) {
+              filesByDir[directoryPath] = [];
+            }
+            filesByDir[directoryPath].push(fileNode.model.file);
+          });
 
           // Reference the finished file tree on the rendering data object.
-          renderingData.fileTree = fileTree;
+          renderingData['project'].filesByDir = filesByDir;
 
           // Render the page.
           res.render('project', renderingData);
