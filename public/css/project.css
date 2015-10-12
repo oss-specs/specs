@@ -58,6 +58,14 @@
   color: black;
 }
 
+/* Minus and plus signs for expandable directories */
+.directory-path::before {
+  content: '\2296\2003';
+}
+.directory-path.expand::before {
+  content: '\2295\2003';
+}
+
 .file-container {
   display: inline-block;
   font-size: 1.2em;

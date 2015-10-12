@@ -32,7 +32,7 @@
       <section class="spec-links">
         {{#each project.filesByDir as |files directoryPath|}}
           <section>
-            <h2>{{directoryPath}}</h2>
+            <h2 class="directory-path" onclick="this.classList.toggle('expand'); this.nextElementSibling.classList.toggle('hidden')">{{directoryPath}}</h2>
             <ul class="file-list">
               {{#each files}}
                 {{> project_file this currentBranchName=../../project.currentBranchName}}
