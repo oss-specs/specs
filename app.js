@@ -11,6 +11,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('hbs');
 
+// Pull in polyfills.
+require('./polyfill');
+
 var appVersion = require('./package.json').version;
 
 // Set the config object for use elsewhere.

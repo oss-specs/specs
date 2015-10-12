@@ -86,28 +86,47 @@ function getRender(res, appConfig) {
       return;
     }
 
+    // Configure function for mapping file paths to file data.
     var pathToData = getFilePathToFileData(appConfig, projectData, getFileContents);
 
-    // DEMO: Generate a tree with all the required data.
-    arrrayToTree(projectData.files.slice(), function(filePath, next) {
-      var fileData = pathToData(filePath);
+    // Make a copy of the simple file list before modifying it.
+    var fileList = projectData.files.slice();
 
-      next(null, fileData);
-    }, function(err, fileTree) {
-      console.log('*******');
-      console.log(JSON.stringify(fileTree));
-      console.log('*******');
-    })
-
-    // Construct additional data from each file Path the old way.
+    // Map list of file paths to list of file data objects.
     projectData.files = projectData.files.map(pathToData);
 
-    // Mix in the resolved file content and render.
+    // Wait for content promises to resolve then mix
+    // in the resolved file content.
     var promisesForFileContent = projectData.files.map(function(f) {return f.contentsPromise;});
     Q.all(promisesForFileContent)
       .then(function(fileContents) {
+
+        // Mix in the file content.
         projectData.files = projectData.files.map(getProcessFileContent(fileContents));
-        res.render('project', renderingData);
+
+        // Generate a file tree data structure.
+        arrrayToTree(fileList, function(filePath, next) {
+
+          // Use a loop to find the file matching this part of the tree.
+          var currentFile = projectData.files.filter(function(file) {return filePath.endsWith(file.filePath);})[0];
+
+          // Link the file list and the tree structure by reference.
+          var leaf = {
+            name: filePath,
+            file: currentFile
+          }
+
+          // Continue to generate the tree.
+          next(null, leaf);
+        }, function(err, fileTree) {
+          // Tree generation is complete.
+
+          // Reference the finished file tree on the rendering data object.
+          renderingData.fileTree = fileTree;
+
+          // Render the page.
+          res.render('project', renderingData);
+        })
       });
   };
 }
