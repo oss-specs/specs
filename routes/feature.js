@@ -8,7 +8,7 @@ var router = express.Router();
 
 var markdown = require('markdown').markdown;
 var getProjectData = require('../lib/specifications/project').getData;
-var getFileContents = require('../lib/specifications/repositoryTypes/git').getFileContents;
+var getFileContents = require('../lib/specifications/project').getFileContents;
 var appConfig = require('../lib/configuration').get();
 
 var Gherkin = require('gherkin');
@@ -36,12 +36,18 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
     return getFileContents(projectData, filePath);
   })
   .then(function (fileContents) {
-    var feature;
+    var feature = {};
     var isFeatureFile = /.*\.feature/.test(filePath);
     var isMarkdownFile = /.*\.md/.test(filePath);
 
     if (isFeatureFile && !renderPlainFile) {
-      feature = Parser.parse(fileContents);
+
+      try {
+        feature = Parser.parse(fileContents);
+      } catch (err) {
+        feature.plainFileUrl = req.originalUrl + '&plain=true';
+        feature.error = err;
+      }
 
       res.render('feature', {feature: feature});
     } else if (isMarkdownFile && !renderPlainFile) {

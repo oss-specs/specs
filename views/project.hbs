@@ -7,7 +7,7 @@
 {{> layout_start_body}}
 <main>
   <header>
-    <h1 class="project-name">{{project.name}}</h1>
+    <h1 class="project-name">{{project.repoName}}</h1>
   </header>
   {{#if project}}
     <section class="project">
@@ -15,7 +15,7 @@
         <div class="project-refs">
           <span class="project-branch">
             <label for="project-branch-select">Branch or tag:</label>
-            <select title="{{project.currentBranchNameShort}}" onchange="window.location.href = window.location.pathname + '?branch=' + this.value">
+            <select id="change-branch-control" title="{{project.currentBranchName}}">
               {{#each project.tagsAndBranches}}
                 <option value="{{this.urlEncodedName}}" {{#if this.current}}selected{{/if}} >{{this.name}}</option>
               {{else}}
@@ -27,16 +27,29 @@
         </div>
         <a href="?update=true"><button class="project-update call-to-action">Get Latest</button></a>
         <span class="repo-link"><a href="{{project.repoUrl}}">(visit&nbsp;repository)</a></span>
+        <hr>
       </section>
       <section class="spec-links">
-        <h2>Specifications</h2>
-        <div>
-          {{#each project.featureFilePaths}}
-            <p><a class="spec-link" href="{{this.featureRoute}}?ref={{this.ref}}">{{this.featureNameShort}}</a></p>
-          {{else}}
-            <p>Sorry, this project does not appear to contain any specifications</p>
-          {{/each}}
-        </div>
+          <button id="expand-collapse-all" class="call-to-action"><span>Expand/Collapse All</span></button>
+        {{#each project.filesByDir as |files directoryPath|}}
+          <section class="directory">
+            <h2 class="directory-path">{{directoryPath}}</h2>
+            <ul class="file-list">
+              {{#each files}}
+                {{#if this.isFeatureFile}}
+                  {{log ../../../project.currentBranchName}}
+                  {{> project_file_feature this currentBranchName=../../../project.currentBranchName}}
+                {{else if this.isMarkdownFile}}
+                  {{> project_file_markdown this currentBranchName=../../../../project.currentBranchName}}
+                {{else}}
+                  {{> project_file this currentBranchName=../../../../project.currentBranchName}}
+                {{/if}}
+              {{/each}}
+            </ul>
+          </section>
+        {{else}}
+          <p>Sorry, this project does not appear to contain any specifications</p>
+        {{/each}}
       </section>
     </section>
   {{else}}

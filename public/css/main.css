@@ -136,6 +136,13 @@ button.call-to-action:active {
 }
 
 /**
+ * Hide things.
+ */
+ .hidden {
+   display: none;
+ }
+
+/**
  * Semantic clearfix.
  */
 .group:after {

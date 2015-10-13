@@ -46,9 +46,86 @@
   text-decoration: underline;
 }
 
-.spec-links > h2 {
-  color: grey;
+
+.file-list li {
+  max-width: 100%;
 }
-.spec-links > div {
-  margin-left: 3em;
+
+a.spec-link {
+  max-width: 100%;
+  color: black;
+  text-decoration: none;
+}
+
+.directory {
+  margin: 1em;
+}
+/* Minus and plus signs for expandable directories */
+.directory-path::before {
+  content: '\2296\2003';
+}
+.directory-path.expand::before {
+  content: '\2295\2003';
+}
+
+.file-container {
+  font-size: 1.2em;
+
+  /*
+   * M ke max-width:100% constrain the width out
+   * to the edge of the border rather than the
+   * content.
+   */
+  box-sizing: border-box;
+  max-width: 100%;
+
+  padding: 0.8em;
+  margin-bottom: 1.5em;
+  margin-left: 1.5em;
+  background-color: #FAFAFA;
+  border: 2px solid rgba(100, 100, 100, 0.5);
+  border-radius: 0.8em;
+  box-shadow: -0.1em 0.1em 0.2em 0.1em rgba(100, 100, 100, 0.5);
+}
+
+.empty-file {
+  color: #555;
+}
+
+.parse-error {
+  color: darkred;
+}
+
+.file-details {
+  word-wrap: break-word; /* break long file names and paths */
+  padding: 0.6em;
+}
+.file-name {
+  margin-bottom: 0.3em;
+  color: darkblue;
+}
+.file-path {
+  font-size: 0.6em;
+  margin-bottom: 0;
+}
+
+.feature-summary {
+  padding: 1em;
+  border-radius: 1em;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 2%, rgba(240, 240, 240, 1) 16%, rgba(255, 255, 255, 0) 100%);
+}
+.feature-summary p {
+  margin-bottom: 0.5em;
+  margin-left: 0.5em;
+}
+.feature-summary .feature-name {
+  color: blue;
+}
+.feature-summary .feature-description {
+  font-size: 0.8em;
+
+  /* Truncate the feature descriptions. */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

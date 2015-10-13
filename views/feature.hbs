@@ -2,24 +2,30 @@
 <link rel="stylesheet" href="/public/css/feature.css">
 {{> layout_start_body}}
 <main>
-  {{#if feature}}
-  <header>
-    <h1 class="title">{{feature.name}}</h1>
-  </header>
-  <article>
+  {{#if feature.error}}
+    <header>
+      <h1 class="title">Error parsing feature</h1>
+    </header>
     <section class="feature">
-      {{> feature_comments feature}}
-      {{> feature_tags feature}}
-      {{> feature_keyword_title feature}}
-      {{> feature_description feature}}
-      {{> feature_scenario feature.background}}
-      {{#each feature.scenarioDefinitions}}
-        {{> feature_scenario this}}
-      {{/each}}
+      <p>We are sorry, that feature file could not be understood, this is likely an issue with the file contents. If you would like to see the unprocessed file contents please click <a href="{{feature.plainFileUrl}}">here</a>. The error encountered is given below.</p>
+      <p>{{feature.error.message}}</p>
     </section>
-  </article>
   {{else}}
-    <p>Sorry, no feature found</p>
+    <header>
+      <h1 class="title">{{feature.name}}</h1>
+    </header>
+    <article>
+      <section class="feature">
+        {{> feature_comments feature}}
+        {{> feature_tags feature}}
+        {{> feature_keyword_title feature}}
+        {{> feature_description feature}}
+        {{> feature_scenario feature.background}}
+        {{#each feature.scenarioDefinitions}}
+          {{> feature_scenario this}}
+        {{/each}}
+      </section>
+    </article>
   {{/if}}
 </main>
 {{> layout_end}}
