@@ -23,7 +23,8 @@ var appVersion = require('./package.json').version;
 // configuration state at require time.
 var appConfig = require('./lib/configuration').set({
   rootPath: process.env.SPECS_OUT_DIR || __dirname,
-  allowInsecureSSL: process.env.SPECS_ALLOW_INSECURE_SSL || false
+  allowInsecureSSL: process.env.SPECS_ALLOW_INSECURE_SSL || false,
+  excludedPaths: process.env.SPECS_EXCLUDED_PATHS || ["RANDOMNOBODYWILLHAVAafoldErLikeThis"]
 });
 
 var handlebarHelpers = require(path.join(__dirname,'views', 'helpers'));
