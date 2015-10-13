@@ -36,7 +36,14 @@
             <h2 class="directory-path">{{directoryPath}}</h2>
             <ul class="file-list">
               {{#each files}}
-                {{> project_file this currentBranchName=../../project.currentBranchName}}
+                {{#if this.isFeatureFile}}
+                  {{log ../../../project.currentBranchName}}
+                  {{> project_file_feature this currentBranchName=../../../project.currentBranchName}}
+                {{else if this.isMarkdownFile}}
+                  {{> project_file_markdown this currentBranchName=../../../../project.currentBranchName}}
+                {{else}}
+                  {{> project_file this currentBranchName=../../../../project.currentBranchName}}
+                {{/if}}
               {{/each}}
             </ul>
           </section>

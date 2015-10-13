@@ -48,14 +48,13 @@
 
 
 .file-list li {
-  display: inline-block;
   max-width: 100%;
 }
 
-.spec-link {
-  display: inline-block;
+a.spec-link {
   max-width: 100%;
   color: black;
+  text-decoration: none;
 }
 
 .directory {
@@ -70,18 +69,17 @@
 }
 
 .file-container {
-  display: inline-block;
   font-size: 1.2em;
 
   /*
-   * Make max-width:100% constrain the width out
+   * M ke max-width:100% constrain the width out
    * to the edge of the border rather than the
    * content.
    */
   box-sizing: border-box;
   max-width: 100%;
 
-  padding: 1em;
+  padding: 0.8em;
   margin-bottom: 1.5em;
   margin-left: 1.5em;
   background-color: #FAFAFA;
@@ -100,7 +98,7 @@
 
 .file-details {
   word-wrap: break-word; /* break long file names and paths */
-  margin-bottom: 1em;
+  padding: 0.6em;
 }
 .file-name {
   margin-bottom: 0.3em;
@@ -112,7 +110,7 @@
 }
 
 .feature-summary {
-  padding: 0.8em 0.5em 0.5em 0.5em;
+  padding: 1em;
   border-radius: 1em;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 2%, rgba(240, 240, 240, 1) 16%, rgba(255, 255, 255, 0) 100%);
 }
@@ -125,7 +123,6 @@
 }
 .feature-summary .feature-description {
   font-size: 0.8em;
-  max-width: 30em;
 
   /* Truncate the feature descriptions. */
   overflow: hidden;
