@@ -1,4 +1,4 @@
-# STAN IS AWEsOME TEST
+# JIM
 #
 # Specs
 
