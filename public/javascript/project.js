@@ -16,14 +16,12 @@ $(function() {
 
 // Hide/collapse all button logic.
 $(function() {
-  var expanded = 0;
+  var doExpand = 0;
   function expandCollapseAll() {
-    // Toggle expansion on alternative executions.
-    expanded = expanded ^ 1;
     var els;
     els = this.parentElement.getElementsByClassName('directory-path');
     [].forEach.call(els, function(el) {
-      if (expanded) {
+      if (doExpand) {
         el.classList.remove('expand');
       } else {
         el.classList.add('expand');
@@ -32,12 +30,15 @@ $(function() {
 
     els = this.parentElement.getElementsByClassName('file-list');
     [].forEach.call(els, function(el) {
-      if (expanded) {
+      if (doExpand) {
         el.classList.remove('hidden');
       } else {
         el.classList.add('hidden');
       }
     });
+
+    // Toggle expansion on alternative executions.
+    doExpand = doExpand ^ 1;
   }
 
   var expandCollapseAlEl = window.document.getElementById('expand-collapse-all');
