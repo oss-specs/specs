@@ -37,11 +37,12 @@
             <ul class="file-list">
               {{#each files}}
                 {{#if this.isFeatureFile}}
-                  {{> project_file_feature this currentBranchName=../../project.currentBranchName}}
+                  {{log ../../../project.currentBranchName}}
+                  {{> project_file_feature this currentBranchName=../../../project.currentBranchName}}
                 {{else if this.isMarkdownFile}}
-                  {{> project_file_markdown this currentBranchName=../../project.currentBranchName}}
+                  {{> project_file_markdown this currentBranchName=../../../../project.currentBranchName}}
                 {{else}}
-                  {{> project_file this currentBranchName=../../project.currentBranchName}}
+                  {{> project_file this currentBranchName=../../../../project.currentBranchName}}
                 {{/if}}
               {{/each}}
             </ul>
