@@ -6,9 +6,7 @@ var path = require('path');
 // This config is purely to get correct directories for deletion, it
 // does not affect how the app is configured.
 var appConfig = require('../lib/configuration').set({
-  rootPath: path.join(__dirname, '../'),
-  allowInsecureSSL: false,
-  excludedPaths: false
+  rootPath: path.join(__dirname, '../')
 });
 
 module.exports = function() {
