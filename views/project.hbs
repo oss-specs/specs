@@ -4,6 +4,7 @@
 <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
 <script src="/public/javascript/project.js"></script>
+<script src="/public/javascript/loader.js"></script>
 {{> layout_start_body}}
 <main>
   <header>
@@ -24,7 +25,6 @@
             <ul class="file-list">
               {{#each files}}
                 {{#if this.isFeatureFile}}
-                  {{log ../../../project.currentBranchName}}
                   {{> project_file_feature this currentBranchName=../../../project.currentBranchName}}
                 {{else if this.isMarkdownFile}}
                   {{> project_file_markdown this currentBranchName=../../../../project.currentBranchName}}
@@ -44,21 +44,22 @@
   {{/if}}
   <section class="repository-controls">
     <h3>Repository controls</h3>
-  <div class="project-refs">
-    <span class="project-branch">
-      <label for="project-branch-select">Branch or tag:</label>
-      <select id="change-branch-control" title="{{project.currentBranchName}}">
-        {{#each project.tagsAndBranches}}
-          <option value="{{this.urlEncodedName}}" {{#if this.current}}selected{{/if}} >{{this.name}}</option>
-        {{else}}
-          <option selected>No branch data found</option>
-        {{/each}}
-      </select>
-    </span>
-    <span class="project-commit">&commat;{{project.shortCommit}}</span>
-    <span class="repo-link"><a href="{{project.repoUrl}}">(visit&nbsp;repository)</a></span>
-    <a href="?update=true"><button class="project-update call-to-action">Get Latest</button></a>
+    <div class="project-refs">
+      <span class="project-branch">
+        <label for="project-branch-select">Branch or tag:</label>
+        <select id="change-branch-control" title="{{project.currentBranchName}}">
+          {{#each project.tagsAndBranches}}
+            <option value="{{this.urlEncodedName}}" {{#if this.current}}selected{{/if}} >{{this.name}}</option>
+          {{else}}
+            <option selected>No branch data found</option>
+          {{/each}}
+        </select>
+      </span>
+      <span class="project-commit">&commat;{{project.shortCommit}}</span>
     </div>
+    <a href="?update=true"><button class="project-update call-to-action loader-button">Get Latest</button></a>
+    <span class="repo-link"><a href="{{project.repoUrl}}">(visit&nbsp;repository)</a></span>
+    <div class="loader-container"><div class="loader"></div></div>
   </section>
 </main>
 {{> layout_end}}

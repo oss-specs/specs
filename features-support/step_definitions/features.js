@@ -33,20 +33,27 @@ function getProjectFromUrl(callback) {
 // The returned function is passed as a callback to getProjectFromUrl.
 function getScenarioFromProject(callback, world) {
   return function(error) {
-    var firstFeatureLink;
+    var featureLinks = [];
+    var featureLink;
 
     if (error) {
       callback(error);
+      return;
     }
 
-    // Get a link to an individual feature.
+    // Get a link to the last feature on the page.
     try {
-      firstFeatureLink = (/class="spec-link" href="([\w\/.?=-]+\.feature[\w\/.?=-]+)"/.exec(world.body))[1];
+      var featureLinkRegex = /class="spec-link" href="([\w\/.?=-]+\.feature[\w\/.?=-]+)"/g;
+      while((featureLink = featureLinkRegex.exec(world.body)) !== null) {
+        featureLinks.push(featureLink[1]);
+      }
+      featureLink = featureLinks[featureLinks.length - 1];
     } catch(error) {
       callback(error);
+      return;
     }
 
-    var featureUrl = 'http://localhost:' + world.appPort + firstFeatureLink;
+    var featureUrl = 'http://localhost:' + world.appPort + featureLink;
 
     // Follow the link.
     request.get(featureUrl, function(error, response, body) {
