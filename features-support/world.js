@@ -4,7 +4,8 @@ var fs = require('q-io/fs'); // https://github.com/kriskowal/q-io
 
 var appConfig = require('../lib/configuration').set({
   rootPath: process.env.SPECS_OUT_DIR || __dirname,
-  allowInsecureSSL: process.env.SPECS_ALLOW_INSECURE_SSL || false
+  allowInsecureSSL: process.env.SPECS_ALLOW_INSECURE_SSL || false,
+  excludedPaths: process.env.SPECS_EXCLUDED_PATHS || false
 });
 
 module.exports = function() {

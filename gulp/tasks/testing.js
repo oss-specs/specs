@@ -102,7 +102,6 @@ gulp.task('test:features', 'Everything necessesary to test the features.', funct
   runSequence('set-envs:test',
   'server:start',
   'test:cucumber',
-  'server:stop',
   function () {
       runSequence(
       'server:stop',
