@@ -24,7 +24,6 @@
             <ul class="file-list">
               {{#each files}}
                 {{#if this.isFeatureFile}}
-                  {{log ../../../project.currentBranchName}}
                   {{> project_file_feature this currentBranchName=../../../project.currentBranchName}}
                 {{else if this.isMarkdownFile}}
                   {{> project_file_markdown this currentBranchName=../../../../project.currentBranchName}}
