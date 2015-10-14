@@ -32,5 +32,6 @@ The default storage directory for repos and derived data is `project-data/` with
 
 SPECS_OUT_DIR - specifies location of project-data folder, by default this lives in the root of the project
 SPECS_ALLOW_INSECURE_SSL - disables SSL certificate verification when cloning repos
+SPECS_EXCLUDED_PATHS - excludes certain paths (globally) from projects
 
 (C) 2015

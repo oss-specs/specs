@@ -102,8 +102,11 @@ gulp.task('test:features', 'Everything necessesary to test the features.', funct
   runSequence('set-envs:test',
   'server:start',
   'test:cucumber',
-  'server:stop',
-  done);
+  function () {
+      runSequence(
+      'server:stop',
+      done);
+  });
 }, {
   options: {'tags': 'Supports same optional tags arguments as \'test:cucumber\' task.'}
 });
@@ -113,8 +116,12 @@ gulp.task('test:features:fileoutput', 'Everything necessesary to test the featur
   runSequence('set-envs:test',
   'server:start',
   'test:cucumber:fileoutput',
-  'server:stop',
-  done);
+  function () {
+      runSequence(
+      'server:stop',
+      done);
+  });
+
 }, {
   options: {'tags': 'Supports same optional tags arguments as \'test:cucumber\' task.'}
 });

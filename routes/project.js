@@ -4,7 +4,6 @@ var path = require('path');
 
 var express = require('express');
 var router = express.Router();
-var Q = require('q');
 
 var Gherkin = require('gherkin');
 var Parser = new Gherkin.Parser();
@@ -99,7 +98,7 @@ function getRender(res, appConfig) {
     // Wait for content promises to resolve then mix
     // in the resolved file content.
     var promisesForFileContent = projectData.files.map(function(f) {return f.contentsPromise;});
-    return Q.all(promisesForFileContent)
+    return Promise.all(promisesForFileContent)
       .then(function(fileContents) {
 
         // Mix in the file content.

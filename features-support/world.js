@@ -1,10 +1,12 @@
 'use strict';
 
 var fs = require('q-io/fs'); // https://github.com/kriskowal/q-io
+var path = require('path');
 
+// This config is purely to get correct directories for deletion, it
+// does not affect how the app is configured.
 var appConfig = require('../lib/configuration').set({
-  rootPath: process.env.SPECS_OUT_DIR || __dirname,
-  allowInsecureSSL: process.env.SPECS_ALLOW_INSECURE_SSL || false
+  rootPath: path.join(__dirname, '../')
 });
 
 module.exports = function() {
@@ -18,10 +20,8 @@ module.exports = function() {
      */
     this.deleteProjectData = function() {
       return fs.removeTree(appConfig.projectsPath)
-        .then(function() {
-          return fs.removeTree(appConfig.derivedDataPath);
-        })
         .catch(function(err) {
+
           // Ignore failure to unlink missing directory.
           if (err.code !== 'ENOENT') {
             throw err;
