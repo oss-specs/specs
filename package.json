@@ -24,10 +24,10 @@
     "prestart": "npm stop",
     "start": "node ./bin/www",
     "stop": "pkill specs || true",
-    "test": "PORT=1337 node_modules/.bin/gulp test:features:fileoutput --silent",
+    "test": "node_modules/.bin/gulp test:features:fileoutput --silent",
     "posttest": "cat test-results/cucumber.json | node_modules/.bin/cucumber-junit > test-results/cucumber.xml",
     "pretest-with-coverage": "PORT=1337 npm start &",
-    "test-with-coverage": "PORT=1337 node_modules/.bin/istanbul cover node_modules/.bin/cucumber-js --report teamcity --report lcov -- --require features-support -f progress",
+    "test-with-coverage": "node_modules/.bin/istanbul cover node_modules/.bin/cucumber-js --report teamcity --report lcov -- --require features-support -f progress",
     "posttest-with-coverage": "npm stop",
     "upload-coverage-data": "node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info"
   },
