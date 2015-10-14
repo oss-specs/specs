@@ -22,18 +22,19 @@ $(function() {
     els = this.parentElement.getElementsByClassName('directory-path');
     [].forEach.call(els, function(el) {
       if (doExpand) {
-        el.classList.remove('expand');
+        el.classList.remove('can-expand');
       } else {
-        el.classList.add('expand');
+        el.classList.add('can-expand');
       }
     });
 
+    // Expand or collapse the file list.
     els = this.parentElement.getElementsByClassName('file-list');
     [].forEach.call(els, function(el) {
       if (doExpand) {
-        el.classList.remove('hidden');
+        el.classList.remove('collapse');
       } else {
-        el.classList.add('hidden');
+        el.classList.add('collapse');
       }
     });
 
@@ -50,7 +51,10 @@ $(function() {
   var els = window.document.getElementsByClassName('directory-path');
   [].forEach.call(els, function(el) {
     el.addEventListener('click', function() {
-      this.classList.toggle('expand'); this.nextElementSibling.classList.toggle('hidden');
+      this.classList.toggle('can-expand');
+
+      // Expand or collapse the file list.
+      this.nextElementSibling.classList.toggle('collapse');
     });
   });
 });

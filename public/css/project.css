@@ -46,6 +46,27 @@
   text-decoration: underline;
 }
 
+.directory {
+  margin: 1em;
+}
+/* Minus and plus signs for expandable directories */
+.directory-path::before {
+  content: '\2296\2003';
+}
+.directory-path.can-expand::before {
+  content: '\2295\2003';
+}
+
+.file-list {
+  height: 100%;
+  transition: height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+.file-list.collapse {
+  height: 0;
+  opacity: 0;
+  transition: height 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  pointer-events: none;
+}
 
 .file-list li {
   max-width: 100%;
@@ -55,17 +76,6 @@ a.spec-link {
   max-width: 100%;
   color: black;
   text-decoration: none;
-}
-
-.directory {
-  margin: 1em;
-}
-/* Minus and plus signs for expandable directories */
-.directory-path::before {
-  content: '\2296\2003';
-}
-.directory-path.expand::before {
-  content: '\2295\2003';
 }
 
 .file-container {

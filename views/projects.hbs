@@ -1,5 +1,7 @@
 {{> layout_start_document}}
 <link rel="stylesheet" href="/public/css/projects.css">
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="/public/javascript/loader.js"></script>
 {{> layout_start_body}}
 <main class="projects group">
   <h1>Projects</h1>
@@ -7,7 +9,7 @@
     <h2>Add Project</h2>
     <form action="/" method="get">
       <label>Project's Git URL (https only please): <input type="text" name="repo_url" /></label>
-      <button class="call-to-action" onclick="document.body.classList.add('waiting')">Submit</button>
+      <button class="call-to-action loader-button">Submit</button>
     </form>
     <div class="loader-container"><div class="loader"></div></div>
   </section>
