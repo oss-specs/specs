@@ -103,9 +103,7 @@ gulp.task('test:features', 'Everything necessesary to test the features.', funct
   'server:start',
   'test:cucumber',
   function () {
-      runSequence(
-      'server:stop',
-      done);
+    runSequence('server:stop', done);
   });
 }, {
   options: {'tags': 'Supports same optional tags arguments as \'test:cucumber\' task.'}
@@ -117,9 +115,7 @@ gulp.task('test:features:fileoutput', 'Everything necessesary to test the featur
   'server:start',
   'test:cucumber:fileoutput',
   function () {
-      runSequence(
-      'server:stop',
-      done);
+    runSequence('server:stop', done);
   });
 
 }, {
