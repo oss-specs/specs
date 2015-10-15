@@ -19,6 +19,10 @@ ul.file-list {
   padding: 1em;
 }
 
+.project .controls .burger-menu {
+  float: right;
+}
+
 .project-refs {
   margin-bottom: 1em;
 }
@@ -70,11 +74,11 @@ ul.file-list {
   content: '\2295\2003';
 }
 
-.file-list {
+.collapsable {
   height: 100%;
   transition: height 0.5s ease-in-out, opacity 0.5s ease-in-out;
 }
-.file-list.collapse {
+.collapsable.collapse {
   height: 0;
   opacity: 0;
   transition: height 0.2s ease-in-out, opacity 0.2s ease-in-out;
