@@ -14,7 +14,18 @@ $(function() {
   });
 });
 
-// Hide/collapse all button logic.
+// Expand/collapse repository controls.
+$(function() {
+  function expandCollapseRepoControls() {
+    var repoControlsEl = window.document.getElementById('repository-controls');
+    repoControlsEl.classList.toggle('collapse');
+  }
+
+  var expandCollapseRepoControlsEl = window.document.getElementById('expand-collapse-repository-controls');
+  expandCollapseRepoControlsEl.addEventListener('click', expandCollapseRepoControls);
+});
+
+// Expand/collapse file lists button logic.
 $(function() {
   var doExpand = 0;
   function expandCollapseAll() {
@@ -43,7 +54,7 @@ $(function() {
     doExpand = doExpand ^ 1;
   }
 
-  var expandCollapseAlEl = window.document.getElementById('expand-collapse-all');
+  var expandCollapseAlEl = window.document.getElementById('expand-collapse-file-lists');
   expandCollapseAlEl.addEventListener('click', expandCollapseAll);
 });
 
