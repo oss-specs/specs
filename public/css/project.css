@@ -1,10 +1,22 @@
+select {
+  width: 30%;
+}
+
+ul.file-list {
+    margin-bottom: 2em;
+}
+
+.project {
+  padding: 0;
+}
+
 .project-name {
-  font-size: 2.5em;
   text-transform: capitalize;
 }
 
 .project .controls {
   margin-bottom: 2em;
+  padding: 1em;
 }
 
 .project-refs {
@@ -36,6 +48,7 @@
   font-size: 0.7em;
   font-weight: bold;
   text-transform: uppercase;
+  margin-right: 2em;
 }
 .repo-link a {
   text-decoration: none;
@@ -78,24 +91,41 @@ a.spec-link {
   text-decoration: none;
 }
 
-.file-container {
-  font-size: 1.2em;
+.directory {
+  margin: 1em;
+}
 
+h2.directory-path {
+  font-size: 1.2em;
+  font-weight: normal;
+  word-break: break-word;
+  color: #555;
+  margin-bottom: 0.5em;
+}
+
+/* Minus and plus signs for expandable directories */
+.directory-path::before {
+  content: '\2296\2003';
+}
+.directory-path.expand::before {
+  content: '\2295\2003';
+}
+
+.file-container {
   /*
    * M ke max-width:100% constrain the width out
    * to the edge of the border rather than the
    * content.
    */
+
   box-sizing: border-box;
   max-width: 100%;
 
-  padding: 0.8em;
-  margin-bottom: 1.5em;
-  margin-left: 1.5em;
+  margin-bottom: 0.8em;
   background-color: #FAFAFA;
-  border: 2px solid rgba(100, 100, 100, 0.5);
-  border-radius: 0.8em;
-  box-shadow: -0.1em 0.1em 0.2em 0.1em rgba(100, 100, 100, 0.5);
+  border: 1px solid rgb(220, 220, 220);
+  border-radius: 0.3em;
+  box-shadow: 0.05em 0.1em 0.2em 0.01em rgb(220, 220, 220);
 }
 
 .empty-file {
@@ -111,8 +141,8 @@ a.spec-link {
   padding: 0.6em;
 }
 .file-name {
-  margin-bottom: 0.3em;
-  color: darkblue;
+  margin-bottom: 0;
+  color: rgb(80, 134, 60);
 }
 .file-path {
   font-size: 0.6em;
@@ -120,19 +150,20 @@ a.spec-link {
 }
 
 .feature-summary {
-  padding: 1em;
-  border-radius: 1em;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 2%, rgba(240, 240, 240, 1) 16%, rgba(255, 255, 255, 0) 100%);
+  padding: 0.8em 0.5em 0.3em 0.5em;
 }
 .feature-summary p {
   margin-bottom: 0.5em;
   margin-left: 0.5em;
 }
 .feature-summary .feature-name {
-  color: blue;
+  color: rgb(80, 134, 60);
+  font-size: 1.1em;
 }
 .feature-summary .feature-description {
   font-size: 0.8em;
+
+  color: #999;
 
   /* Truncate the feature descriptions. */
   overflow: hidden;

@@ -19,7 +19,8 @@ $(function() {
   var doExpand = 0;
   function expandCollapseAll() {
     var els;
-    els = this.parentElement.getElementsByClassName('directory-path');
+    var parent = document.getElementsByClassName('spec-links')[0];
+    els = parent.getElementsByClassName('directory-path');
     [].forEach.call(els, function(el) {
       if (doExpand) {
         el.classList.remove('can-expand');
@@ -28,8 +29,8 @@ $(function() {
       }
     });
 
-    // Expand or collapse the file list.
-    els = this.parentElement.getElementsByClassName('file-list');
+
+    els = parent.getElementsByClassName('file-list');
     [].forEach.call(els, function(el) {
       if (doExpand) {
         el.classList.remove('collapse');
