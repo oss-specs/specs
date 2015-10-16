@@ -1,6 +1,6 @@
 {
   "name": "oss-specs",
-  "version": "0.11.3",
+  "version": "0.12.0",
   "bin": {
     "oss-specs": "./bin/www"
   },
