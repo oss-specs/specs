@@ -8,7 +8,9 @@ A service for exposing specifications expressed as Gherkin feature files via a n
 [![Test Coverage](https://codeclimate.com/github/oss-specs/specs/badges/coverage.svg)](https://codeclimate.com/github/oss-specs/specs/coverage)
 
 
-Start the server, in the UI specify a https URL for a Git repo, and if that repo contains markdown or feature files they will be displayed. The idea is to make specifications stored in a repo visible and searchable, for people who aren't familiar with version control systems, as part of a living documentation system.
+Start the server, in the UI specify a https URL for a Git repo, and if that repo contains markdown or feature files they will be displayed. The idea is to make specifications stored in a repo visible and searchable, for people who aren't familiar with version control systems, and as part of a living documentation system.
+
+If you want to run Specs as a service we recommend you use the Docker instructions given below.
 
 
 ## Development installation instructions
@@ -20,13 +22,20 @@ Start the server, in the UI specify a https URL for a Git repo, and if that repo
 * Build tasks are defined in [Gulp](http://gulpjs.com/) so if you want to use them install Gulp globally `npm install --global gulp`. If you would like to see a list of available tasks just type `gulp`. There are some other tasks defined in the package.json which are currently used for CI purposes.
 
 
-## Installing from npm
+## Installing as a service using npm
 
 To install the latest version from npm
 * `npm install -g oss-specs`.
-* To start the server `oss-specs`
+* To start the server `oss-specs`.
+* The service should be running and visible at [http://localhost:3000/](http://localhost:3000/).
 
-The default storage directory for repos and derived data is `project-data/` within the install/clone location. To override this location, for example to allow easy updates of versions without losing existing data, set the environment variable `SPECS_OUT_DIR` to your preferred path.
+## Installing as a service using Docker
+
+* If you haven't already then [install Docker](https://docs.docker.com/installation/).
+* On the Docker command line `docker run -Pd specs/specs` to run the container in the background and map ports from the container to the containing VM.
+* The service should be running and visible at the IP of the Docker VM on whatever port Docker mapped the to.
+
+Alternatively, get the container image here https://hub.docker.com/r/specs/specs/ and start it in whatever way you prefer.
 
 ## Environment variables
 
