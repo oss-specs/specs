@@ -30,8 +30,9 @@ The default storage directory for repos and derived data is `project-data/` with
 
 ## Environment variables
 
-SPECS_OUT_DIR - specifies location of project-data folder, by default this lives in the root of the project
-SPECS_ALLOW_INSECURE_SSL - disables SSL certificate verification when cloning repos
-SPECS_EXCLUDED_PATHS - excludes certain paths (globally) from projects
+* SPECS_OUT_DIR - Specifies location of project-data folder, by default this lives in the root of the project.
+* SPECS_ALLOW_INSECURE_SSL - Disables SSL certificate verification when cloning repos.
+* SPECS_EXCLUDED_PATHS - Excludes certain paths (globally) from projects.
+* SPECS_PATHS_TO_HIDE - Specify beginnings of directory paths to hide on the project page. E.g. if you specified 'src/test/specs' then a directory 'src/test/specs/my_wondeful_feature' would be displayed in the directory list as 'my_wonderful_feature'. This only affects display logic, not the underlying data.
 
 (C) 2015
