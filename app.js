@@ -24,7 +24,8 @@ var appVersion = require('./package.json').version;
 var appConfig = require('./lib/configuration').set({
   rootPath: process.env.SPECS_OUT_DIR || __dirname,
   allowInsecureSSL: process.env.SPECS_ALLOW_INSECURE_SSL,
-  excludedPaths: process.env.SPECS_EXCLUDED_PATHS
+  excludedPaths: process.env.SPECS_EXCLUDED_PATHS,
+  pathsToHide: process.env.PATHS_TO_HIDE,
 });
 
 var handlebarHelpers = require(path.join(__dirname,'views', 'helpers'));
@@ -58,7 +59,7 @@ hbs.registerPartials(path.join(__dirname,'views', 'partials'));
 hbs.registerHelper('newlines_to_breaks', handlebarHelpers.newlinesToBreaks);
 hbs.registerHelper('newlines_to_paragraphs', handlebarHelpers.newlinesToParagraphs);
 hbs.registerHelper('step_content', handlebarHelpers.stepContent);
-
+hbs.registerHelper('directory_path', handlebarHelpers.directoryPath);
 
 /**
  * LOGGING.

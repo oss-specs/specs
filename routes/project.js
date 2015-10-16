@@ -86,6 +86,11 @@ function getRender(res, appConfig) {
       return;
     }
 
+    // Grab any paths that should be hidden in the UI.
+    // This won't hide any features, just the part of the path
+    // to the features that is specified.
+    renderingData.pathsToHideRegex = appConfig.regex.pathsToHide;
+
     // Configure function for mapping file paths to file data.
     var pathToData = getFilePathToFileData(appConfig, projectData, getFileContents);
 

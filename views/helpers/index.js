@@ -73,6 +73,13 @@ function getStringConverter(aggregator) {
   };
 }
 
+function parseDirectoryPath(context, options) {
+  var path = context;
+  var pathsToHideRegex = options.hash.pathsToHideRegex;
+
+  return path.replace(pathsToHideRegex, '');
+}
+
 module.exports = {
   newlinesToBreaks: getStringConverter(function toBreaks(safeContent) {
     return safeContent + '<br>';
@@ -80,5 +87,6 @@ module.exports = {
   newlinesToParagraphs: getStringConverter(function toParagraphs(safeContent) {
     return '<p>' + safeContent + '</p>';
   }),
-  stepContent: highlightStepParams
+  stepContent: highlightStepParams,
+  directoryPath: parseDirectoryPath
 };

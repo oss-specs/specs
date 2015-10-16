@@ -41,7 +41,7 @@
       <section class="spec-links">
         {{#each project.filesByDir as |files directoryPath|}}
           <section class="directory">
-            <h2 class="directory-path">{{directoryPath}}</h2>
+            <h2 class="directory-path" title="{{directoryPath}}">{{#directory_path directoryPath pathsToHideRegex=../pathsToHideRegex}}{{this}}{{/directory_path}}</h2>
             <ul class="file-list collapsable">
               {{#each files}}
                 {{#if this.isFeatureFile}}
