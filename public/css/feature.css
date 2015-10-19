@@ -4,11 +4,11 @@
 
 .content-controls {
   text-align: left;
+  margin-bottom: 0;
 }
 
 .title {
   color: darkblue;
-  margin-bottom: 1.2em;
 }
 
 .tags {
