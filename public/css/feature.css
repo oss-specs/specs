@@ -44,6 +44,14 @@
   margin-left: 2em;
 }
 
+.scenario hr {
+  max-width: 80%;
+  height: 1px;
+  margin-left: 0;
+  background-color: lightgrey;
+  border: none;
+}
+
 .steps {
   margin-left: 1em;
 }
