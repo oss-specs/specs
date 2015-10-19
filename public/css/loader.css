@@ -3,15 +3,14 @@
  */
 
 .loader-container {
+  display: none;
   position: relative;
-  display: inline-block;
-  visibility: hidden;
-  margin-left: 2em;
+  margin: 0 2em;
   top : -1.5em;
 }
 
 .waiting .loader-container {
-  visibility: visible;
+  display: inline-block;
 }
 
 .loader,

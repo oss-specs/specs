@@ -14,7 +14,7 @@
     <section class="project">
       <section class="controls">
         <button id="expand-collapse-repository-controls" class="burger-menu"></button>
-        <section id="repository-controls" class="repository-controls collapsable collapse">
+        <section id="repository-controls" class="repository-controls collapsible collapse">
           <h3>Repository controls</h3>
           <div class="project-refs">
             <span class="project-branch">
@@ -41,8 +41,8 @@
       <section class="spec-links">
         {{#each project.filesByDir as |files directoryPath|}}
           <section class="directory">
-            <h2 class="directory-path">{{directoryPath}}</h2>
-            <ul class="file-list collapsable">
+            <h2 class="directory-path" title="{{directoryPath}}">{{#directory_path directoryPath pathsToHideRegex=../pathsToHideRegex}}{{this}}{{/directory_path}}</h2>
+            <ul class="file-list collapsible">
               {{#each files}}
                 {{#if this.isFeatureFile}}
                   {{> project_file_feature this currentBranchName=../../../project.currentBranchName}}

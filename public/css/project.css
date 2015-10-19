@@ -74,17 +74,6 @@ ul.file-list {
   content: '\2295\2003';
 }
 
-.collapsable {
-  height: 100%;
-  transition: height 0.5s ease-in-out, opacity 0.5s ease-in-out;
-}
-.collapsable.collapse {
-  height: 0;
-  opacity: 0;
-  transition: height 0.2s ease-in-out, opacity 0.2s ease-in-out;
-  pointer-events: none;
-}
-
 .file-list li {
   max-width: 100%;
 }
@@ -115,9 +104,10 @@ h2.directory-path {
   content: '\2295\2003';
 }
 
+/* TODO: standardise and reuse styling via pre-processor */
 .file-container {
   /*
-   * M ke max-width:100% constrain the width out
+   * Make max-width:100% constrain the width out
    * to the edge of the border rather than the
    * content.
    */
@@ -130,6 +120,9 @@ h2.directory-path {
   border: 1px solid rgb(220, 220, 220);
   border-radius: 0.3em;
   box-shadow: 0.05em 0.1em 0.2em 0.01em rgb(220, 220, 220);
+}
+.file-container:hover {
+  background-color: #FFF;
 }
 
 .empty-file {

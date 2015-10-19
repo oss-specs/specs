@@ -28,6 +28,7 @@ main {
 
 main > header,
 main > section,
+main > article,
 main > footer {
   padding: 1em;
 }
@@ -35,7 +36,7 @@ main > footer {
 main > header,
 main > h1,
 main > section {
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 }
 
 main > header,
@@ -147,11 +148,12 @@ button.burger-menu::before {
   }
 
   main {
-    max-width: 60em;
+    max-width: 65em;
     padding-left: 1em;
     padding-right: 1em;
   }
 }
+
 
 /**
  * Hide things.
@@ -159,6 +161,17 @@ button.burger-menu::before {
  .hidden {
    display: none;
  }
+ .collapsible {
+   height: 100%;
+   transition: height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+ }
+ .collapsible.collapse {
+   height: 0;
+   opacity: 0;
+   transition: height 0.2s ease-in-out, opacity 0.2s ease-in-out;
+   pointer-events: none;
+ }
+
 
 /**
  * Semantic clearfix.
