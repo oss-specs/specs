@@ -86,6 +86,11 @@ function getRender(res, appConfig) {
       return;
     }
 
+    // Grab any paths that should be hidden in the UI.
+    // This won't hide any features, just the part of the path
+    // to the features that is specified.
+    renderingData.pathsToHideRegex = appConfig.regex.pathsToHide;
+
     // Configure function for mapping file paths to file data.
     var pathToData = getFilePathToFileData(appConfig, projectData, getFileContents);
 
@@ -107,8 +112,14 @@ function getRender(res, appConfig) {
         // Generate a file tree data structure.
         arrrayToTree(fileList, function(filePath, next) {
 
+          // Fix the assumption in file-tree that we are dealing with actual
+          // files on disk.
+          filePath = path.relative(appConfig.rootPath, filePath);
+
           // Use a loop to find the file matching this part of the tree.
-          var currentFile = projectData.files.filter(function(file) {return filePath.endsWith(file.filePath);})[0];
+          var currentFile = projectData.files.filter(function(file) {
+            return filePath === file.filePath;
+          })[0];
 
           // Link the file list and the tree structure by reference.
           var leaf = {
