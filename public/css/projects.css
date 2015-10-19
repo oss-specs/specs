@@ -1,6 +1,7 @@
 .projects > section {
-  float: left;
-  margin-right: 3em;
+  text-align: center;
+  padding: 0.5em 1em;
+  margin-bottom: 1em;
 }
 
 .projects form {
@@ -8,7 +9,7 @@
 }
 
 .projects form {
-  margin-bottom: 1.2em;
+  margin-bottom: 1em;
 }
 
 .projects input {
@@ -28,6 +29,18 @@ footer .app-version {
   padding-bottom: 1em;
   padding-right: 1.3em;
   color: #999;
+}
+
+
+/**
+ * Wideview port (e.g. landscape tablet).
+ */
+@media (min-width: 800px) {
+  .projects > section {
+    text-align: inherit;
+    float: left;
+    margin-right: 3em;
+  }
 }
 
 /**
