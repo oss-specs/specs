@@ -18,9 +18,15 @@
   <section>
     <h2>Available Projects</h2>
     {{#if projects}}
-      <ul class="projects">
+      <ul class="projects-list">
         {{#each projects}}
-          <li class="project"><a href="{{../projectRoute}}/{{this}}">{{this}}</a></li>
+          <li class="project">
+            <a href="{{../projectRoute}}/{{this}}">
+              <section class="project-link">
+                <p>{{this}}</p>
+              </section>
+            </a>
+          </li>
         {{/each}}
       </ul>
     {{else}}
