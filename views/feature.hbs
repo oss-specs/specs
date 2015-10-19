@@ -15,12 +15,11 @@
   {{else}}
     <header>
       <h1 class="title">{{feature.name}}</h1>
-    </header>
-    <article>
       <section class="content-controls">
         <button id="expand-collapse-tags" class="call-to-action"><span>Expand/Collapse Tags</span></button>
       </section>
-      <section class="feature">
+    </header>
+    <article class="feature">
         {{> feature_comments feature}}
         {{> feature_tags feature}}
         {{> feature_keyword_title feature}}
@@ -29,7 +28,6 @@
         {{#each feature.scenarioDefinitions}}
           {{> feature_scenario this}}
         {{/each}}
-      </section>
     </article>
   {{/if}}
 </main>
