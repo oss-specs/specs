@@ -4,6 +4,10 @@
   margin-bottom: 1em;
 }
 
+.projects h2 {
+  font-size: 1.8em;
+}
+
 .projects form {
   display: inline-block;
 }
@@ -20,6 +24,29 @@
 
 .projects button {
   font-size: 1.1em;
+}
+
+.projects-list a {
+  text-decoration: none;
+}
+
+.project-link {
+  text-align: center;
+  max-width: 100%;
+  margin-bottom: 0.8em;
+  background-color: #FAFAFA;
+  border: 1px solid rgb(220, 220, 220);
+  border-radius: 0.3em;
+  box-shadow: 0.05em 0.1em 0.2em 0.01em rgb(220, 220, 220);
+  color: blue;
+}
+.project-link:hover {
+  background-color: #FFF;
+}
+
+.project-link p {
+  margin: 0;
+  padding: 0.5em;
 }
 
 footer .app-version {
