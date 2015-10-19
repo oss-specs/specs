@@ -153,12 +153,24 @@ button.burger-menu::before {
   }
 }
 
+
 /**
  * Hide things.
  */
  .hidden {
    display: none;
  }
+ .collapsible {
+   height: 100%;
+   transition: height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+ }
+ .collapsible.collapse {
+   height: 0;
+   opacity: 0;
+   transition: height 0.2s ease-in-out, opacity 0.2s ease-in-out;
+   pointer-events: none;
+ }
+
 
 /**
  * Semantic clearfix.

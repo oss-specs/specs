@@ -2,6 +2,10 @@
  * Styles for individual features.
  */
 
+.content-controls {
+  margin-bottom: 1em;
+}
+
 .title {
   color: darkblue;
   margin-bottom: 1.2em;

@@ -1,5 +1,7 @@
 {{> layout_start_document}}
 <link rel="stylesheet" href="/public/css/feature.css">
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="/public/javascript/feature.js"></script>
 {{> layout_start_body}}
 <main>
   {{#if feature.error}}
@@ -15,6 +17,9 @@
       <h1 class="title">{{feature.name}}</h1>
     </header>
     <article>
+      <section class="content-controls">
+        <button id="expand-collapse-tags" class="call-to-action"><span>Expand/Collapse Tags</span></button>
+      </section>
       <section class="feature">
         {{> feature_comments feature}}
         {{> feature_tags feature}}
