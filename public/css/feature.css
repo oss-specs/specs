@@ -38,7 +38,10 @@
 }
 
 .scenario {
-  margin-bottom: 3em;
+  margin-bottom: 2em;
+}
+.example {
+  margin-left: 2em;
 }
 
 .steps {

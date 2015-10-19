@@ -1,10 +1,14 @@
 {{#if this}}
   <section class="scenario">
-    {{> feature_comments}}
-    {{> feature_tags}}
+    <section class="scenario-details collapsible collapse">
+      {{> feature_comments}}
+      {{> feature_tags}}
+    </section>
     {{> scenario_keyword_title}}
-    {{> feature_description}}
-    {{> feature_steps}}
-    {{> feature_examples}}
+    <section class="scenario-details collapsible collapse">
+      {{> feature_description}}
+      {{> feature_steps}}
+      {{> feature_examples}}
+    </section>
   </section>
 {{/if}}
