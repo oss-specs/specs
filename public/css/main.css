@@ -111,6 +111,10 @@ button.burger-menu::before {
   content: '\2630';
 }
 
+button.back-button::before {
+  content: '\21A9';
+}
+
 /**
  * Landscape and larger phones
  */
