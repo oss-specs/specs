@@ -2,32 +2,19 @@
 
 var request = require('request');
 var should = require('should');
+var By = require('selenium-webdriver').By;
 
 // Test helper.
 function getProjectFromUrl(callback) {
   var world = this;
   var projectRetrievalUrl = 'http://localhost:' + world.appPort + '/?repo_url=' + encodeURIComponent(world.repoUrl);
-  request
-    .get(projectRetrievalUrl, function(error, response, body) {
-      if (error) {
-        callback(error);
-        return;
-      }
 
-      // Store the relevant information on the world object for testing.
-      world.statusCode = response.statusCode;
+  world.browser.get(projectRetrievalUrl)
+  .then(world.browser.getPageSource.bind(world.browser))
+  .then(function (body) {
       world.body = body;
-
-      if (world.statusCode === 500 || world.statusCode === 404) {
-        var responseError = new Error('Project retrieval error.\n' + world.body);
-        responseError.code = world.statusCode;
-        callback(responseError);
-        return;
-      }
-
-      // We're done.
       callback();
-    });
+  });
 }
 
 // The returned function is passed as a callback to getProjectFromUrl.
@@ -41,30 +28,18 @@ function getScenarioFromProject(callback, world) {
       return;
     }
 
-    // Get a link to the last feature on the page.
-    try {
-      var featureLinkRegex = /class="spec-link" href="([\w\/.?=-]+\.feature[\w\/.?=-]+)"/g;
-      while((featureLink = featureLinkRegex.exec(world.body)) !== null) {
-        featureLinks.push(featureLink[1]);
-      }
-      featureLink = featureLinks[featureLinks.length - 1];
-    } catch(error) {
-      callback(error);
-      return;
-    }
+    world.browser.findElements(By.css('.spec-link'))
+    .then(function (specLinks) {
+      var featureUrl = 'http://localhost:' + world.appPort + featureLink;
 
-    var featureUrl = 'http://localhost:' + world.appPort + featureLink;
+      var featureLink = specLinks[specLinks.length - 1];
 
-    // Follow the link.
-    request.get(featureUrl, function(error, response, body) {
-      if (error) {
-        callback(error);
-        return;
-      }
-
-      world.statusCode = response.statusCode;
-      world.body = body;
-      callback();
+      return world.browser.get(featureLink.getAttribute('href'))
+    })
+    .then(world.browser.getPageSource.bind(world.browser))
+    .then(function (body) {
+        world.body = body;
+        callback();
     });
   };
 }
@@ -72,7 +47,7 @@ function getScenarioFromProject(callback, world) {
 module.exports = function () {
 
   this.Then(/^the list of features will be visible\.?$/, function (callback) {
-    should.equal(this.statusCode, 200, 'Bad HTTP status code: ' + this.statusCode + '\nBody:\n' + this.body);
+
     should.equal(
       /\.feature/i.test(this.body) && /\.md/i.test(this.body),
       true,
@@ -81,8 +56,6 @@ module.exports = function () {
   });
 
   this.Then(/^the scenarios will be visible\.?$/, function (callback) {
-    should.equal(this.statusCode, 200, 'Bad HTTP status code: ' + this.statusCode + '\nBody:\n' + this.body);
-
     should.equal(/feature:/i.test(this.body),
       true,
       'The returned document body does not contain the word \'feature\'');

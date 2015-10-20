@@ -1,3 +1,4 @@
+@ui-automation
 Feature: Specifications can be retrieved from remote Git repositories.
   In order to make specifications more accessible
   As someone interested in the specification for a project stored on a remote Git server
