@@ -115,6 +115,11 @@ button.back-button::before {
   content: '\21A9';
 }
 
+/* Other interactice things */
+.interactive {
+  cursor: pointer;
+}
+
 /**
  * Landscape and larger phones
  */

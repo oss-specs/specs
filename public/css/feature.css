@@ -11,6 +11,12 @@
   color: darkblue;
 }
 
+ul.scenarios {
+  margin-top: 2em;
+  margin-left: 0.5em;
+  list-style: none;
+}
+
 .tags {
   margin-bottom: 0.2em;
   color: darkgrey;
@@ -25,9 +31,22 @@
 }
 
 .feature-title,
-.scenario-title {
+.scenario-title,
+.example-title {
     margin-bottom: 0.2em;
     color: darkblue;
+}
+
+/* Minus and plus signs for expandable directories */
+.scenario .scenario-title::before,
+.feature-title::before {
+  position: relative;
+  top: -0.05em;
+  content: '\2296\2003';
+}
+.scenario.can-expand .scenario-title::before,
+.feature-title.can-expand::before {
+  content: '\2295\2003';
 }
 
 .description {
@@ -38,7 +57,19 @@
 }
 
 .scenario {
-  margin-bottom: 3em;
+  margin-bottom: 1.8em;
+}
+.example {
+  margin-left: 2em;
+}
+
+.scenario hr {
+  max-width: 80%;
+  height: 1px;
+  margin-top: 1em;
+  margin-left: 0;
+  background-color: lightgrey;
+  border: none;
 }
 
 .steps {

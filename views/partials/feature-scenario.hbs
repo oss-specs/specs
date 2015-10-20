@@ -1,10 +1,18 @@
 {{#if this}}
-  <section class="scenario">
-    {{> feature_comments}}
-    {{> feature_tags}}
-    {{> scenario_keyword_title}}
-    {{> feature_description}}
-    {{> feature_steps}}
-    {{> feature_examples}}
-  </section>
+  {{!-- Start each scenario collapsed. --}}
+  <li>
+    <section class="scenario can-expand">
+      <section class="scenario-details collapsible collapse">
+        {{> feature_comments}}
+        {{> feature_tags}}
+      </section>
+      <h3 class="scenario-title interactive">{{keyword}}: {{name}}</h3>
+      <section class="scenario-details collapsible collapse">
+        {{> feature_description}}
+        {{> feature_steps}}
+        {{> feature_examples}}
+      </section>
+      <hr>
+    </section>
+  </li>
 {{/if}}
