@@ -111,6 +111,11 @@ button.burger-menu::before {
   content: '\2630';
 }
 
+/* Other interactice things */
+.interactive {
+  cursor: pointer;
+}
+
 /**
  * Landscape and larger phones
  */
