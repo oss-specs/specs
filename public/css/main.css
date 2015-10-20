@@ -103,8 +103,10 @@ button.call-to-action:active {
 button.burger-menu {
   padding: 0.1em 0.5em;
   font-size: 1.4em;
+  font-weight: bolder;
   margin-left: 0.5em;
   margin-bottom: 0.5em;
+  background-color: #BABABA;
 }
 
 button.burger-menu::before {
