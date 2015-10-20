@@ -8,6 +8,9 @@
     <header>
       <h1 class="title">Error parsing feature</h1>
     </header>
+    <section class="content-controls">
+      <button class="back-button call-to-action" onclick="window.history.back()"></button>
+    </section>
     <section class="feature">
       <p>We are sorry, that feature file could not be understood, this is likely an issue with the file contents. If you would like to see the unprocessed file contents please click <a href="{{feature.plainFileUrl}}">here</a>. The error encountered is given below.</p>
       <p>{{feature.error.message}}</p>
@@ -17,6 +20,7 @@
       <h1 class="title">{{feature.name}}</h1>
     </header>
     <section class="content-controls">
+      <button class="back-button call-to-action" onclick="window.history.back()"></button>
       <button id="expand-collapse-details" class="call-to-action"><span>Expand/Collapse Details</span></button>
       <button id="expand-collapse-tags" class="call-to-action"><span>Expand/Collapse Tags</span></button>
     </section>

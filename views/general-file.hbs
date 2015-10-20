@@ -5,6 +5,9 @@
   <header>
     <h1>File contents</h1>
   </header>
+  <section class="content-controls">
+    <button class="back-button call-to-action" onclick="window.history.back()"></button>
+  </section>
   <p class="file-contents">
     {{#newlines_to_breaks contents}}{{this}}{{/newlines_to_breaks}}
   </p>
