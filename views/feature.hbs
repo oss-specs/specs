@@ -17,17 +17,25 @@
       <h1 class="title">{{feature.name}}</h1>
     </header>
     <section class="content-controls">
+      <button id="expand-collapse-details" class="call-to-action"><span>Expand/Collapse Details</span></button>
       <button id="expand-collapse-tags" class="call-to-action"><span>Expand/Collapse Tags</span></button>
     </section>
     <article class="feature">
-        {{> feature_comments feature}}
-        {{> feature_tags feature}}
-        {{> feature_keyword_title feature}}
-        {{> feature_description feature}}
-        {{> feature_scenario feature.background}}
-        {{#each feature.scenarioDefinitions}}
-          {{> feature_scenario this}}
-        {{/each}}
+        {{!-- Start the feature details collapsed. --}}
+        <section class="feature-details collapsible collapse">
+          {{> feature_comments feature}}
+          {{> feature_tags feature}}
+        </section>
+        <h2 id="feature-title" class="feature-title can-expand interactive">{{feature.type}}: {{feature.name}}</h2>
+        <section class="feature-details collapsible collapse">
+          {{> feature_description feature}}
+        </section>
+        <ul class="scenarios">
+          {{> feature_scenario feature.background}}
+          {{#each feature.scenarioDefinitions}}
+            {{> feature_scenario this}}
+          {{/each}}
+        </ul>
     </article>
   {{/if}}
 </main>

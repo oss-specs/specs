@@ -66,6 +66,7 @@ ul.file-list {
 .directory {
   margin: 1em;
 }
+
 /* Minus and plus signs for expandable directories */
 .directory-path::before {
   content: '\2296\2003';
