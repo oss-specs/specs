@@ -5,8 +5,15 @@ $(function() {
   var doExpand = true;
 
   function expandCollapseDetails() {
+    var featureTitleEl = window.document.getElementById('feature-title');
     var featureDetailsEls = window.document.getElementsByClassName('feature-details');
     var scenarioDetailsEls = window.document.getElementsByClassName('scenario-details');
+
+    if (doExpand) {
+      featureTitleEl.classList.remove('can-expand');
+    } else {
+      featureTitleEl.classList.add('can-expand');
+    }
 
     [].forEach.call(featureDetailsEls, function(el) {
       if (doExpand) {
@@ -72,6 +79,18 @@ $(function() {
       [].forEach.call(scenarioDetailsEls, function(detailsEl) {
         detailsEl.classList.toggle('collapse');
       });
+    });
+  });
+});
+
+// Expand/collapse the Feature details.
+$(function() {
+  var featureTitleEl = window.document.getElementById('feature-title');
+  featureTitleEl.addEventListener('click', function() {
+    this.classList.toggle('can-expand');
+    var featureDetailsEls = this.parentNode.getElementsByClassName('feature-details');
+    [].forEach.call(featureDetailsEls, function(el) {
+      el.classList.toggle('collapse');
     });
   });
 });

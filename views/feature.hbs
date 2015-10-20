@@ -21,16 +21,21 @@
       <button id="expand-collapse-tags" class="call-to-action"><span>Expand/Collapse Tags</span></button>
     </section>
     <article class="feature">
+        {{!-- Start the feature details collapsed. --}}
         <section class="feature-details collapsible collapse">
           {{> feature_comments feature}}
           {{> feature_tags feature}}
         </section>
-        {{> feature_keyword_title feature}}
-        {{> feature_description feature}}
-        {{> feature_scenario feature.background}}
-        {{#each feature.scenarioDefinitions}}
-          {{> feature_scenario this}}
-        {{/each}}
+        <h2 id="feature-title" class="feature-title can-expand">{{feature.type}}: {{feature.name}}</h2>
+        <section class="feature-details collapsible collapse">
+          {{> feature_description feature}}
+        </section>
+        <ul class="scenarios">
+          {{> feature_scenario feature.background}}
+          {{#each feature.scenarioDefinitions}}
+            {{> feature_scenario this}}
+          {{/each}}
+        </ul>
     </article>
   {{/if}}
 </main>

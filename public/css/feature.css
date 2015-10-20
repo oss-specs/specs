@@ -11,6 +11,12 @@
   color: darkblue;
 }
 
+ul.scenarios {
+  margin-top: 2em;
+  margin-left: 0.5em;
+  list-style: none;
+}
+
 .tags {
   margin-bottom: 0.2em;
   color: darkgrey;
@@ -31,6 +37,18 @@
     color: darkblue;
 }
 
+/* Minus and plus signs for expandable directories */
+.scenario .scenario-title::before,
+.feature-title::before {
+  position: relative;
+  top: -0.05em;
+  content: '\2296\2003';
+}
+.scenario.can-expand .scenario-title::before,
+.feature-title.can-expand::before {
+  content: '\2295\2003';
+}
+
 .description {
   color: black;
 }
@@ -39,7 +57,7 @@
 }
 
 .scenario {
-  margin-bottom: 2em;
+  margin-bottom: 1.8em;
 }
 .example {
   margin-left: 2em;
@@ -52,16 +70,6 @@
   margin-left: 0;
   background-color: lightgrey;
   border: none;
-}
-
-/* Minus and plus signs for expandable directories */
-.scenario .scenario-title::before {
-  position: relative;
-  top: -0.05em;
-  content: '\2296\2003';
-}
-.scenario.can-expand .scenario-title::before {
-  content: '\2295\2003';
 }
 
 .steps {
