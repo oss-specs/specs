@@ -27,7 +27,8 @@ $(function() {
 
 // Expand/collapse file lists button logic.
 $(function() {
-  var doExpand = 0;
+  var doExpand = false;
+
   function expandCollapseAll() {
     var els;
     var parent = document.getElementsByClassName('spec-links')[0];
@@ -51,14 +52,14 @@ $(function() {
     });
 
     // Toggle expansion on alternative executions.
-    doExpand = doExpand ^ 1;
+    doExpand = !doExpand;
   }
 
   var expandCollapseAlEl = window.document.getElementById('expand-collapse-file-lists');
   expandCollapseAlEl.addEventListener('click', expandCollapseAll);
 });
 
-// Directory path heading logic.
+// Expand/collapse individual directories.
 $(function() {
   var els = window.document.getElementsByClassName('directory-path');
   [].forEach.call(els, function(el) {

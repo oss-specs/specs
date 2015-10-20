@@ -1,8 +1,8 @@
 'use strict';
 
-// Expand/collapse details.
+// Expand/collapse all details.
 $(function() {
-  var doExpand = 1
+  var doExpand = true;
 
   function expandCollapseDetails() {
     var featureDetailsEls = window.document.getElementsByClassName('feature-details');
@@ -16,15 +16,29 @@ $(function() {
       }
     });
     [].forEach.call(scenarioDetailsEls, function(el) {
+
+      // Only toggle the can-expand class once per scenario
+      // (a scenario can have multiple scenario-detail children).
+      var nextSibling = el.nextElementSibling;
+      var titleParent = null;
+      if (nextSibling.classList.contains('scenario-title')) {
+        titleParent = nextSibling.parentNode;
+      }
+
       if (doExpand) {
         el.classList.remove('collapse');
+
+        // The `can-expand` class drives the UI display of the
+        // symbols hinting that an element is expandable.
+        if (titleParent) titleParent.classList.remove('can-expand');
       } else {
         el.classList.add('collapse');
+        if (titleParent) titleParent.classList.add('can-expand');
       }
     });
 
     // Toggle expansion on alternative executions.
-    doExpand = doExpand ^ 1;
+    doExpand = !doExpand;
   }
 
   var expandCollapseDetailsEl = window.document.getElementById('expand-collapse-details');
@@ -32,7 +46,7 @@ $(function() {
 });
 
 
-// Expand/collapse tags.
+// Expand/collapse all tags.
 $(function() {
   function expandCollapseTags() {
     var tagEls = window.document.getElementsByClassName('tags');
@@ -43,4 +57,21 @@ $(function() {
 
   var expandCollapseTagsEl = window.document.getElementById('expand-collapse-tags');
   expandCollapseTagsEl.addEventListener('click', expandCollapseTags);
+});
+
+// Expand/collapse individual scenarios.
+$(function() {
+  var scenarioTitleEls = window.document.getElementsByClassName('scenario-title');
+  [].forEach.call(scenarioTitleEls, function(scenarioTitleEl) {
+    scenarioTitleEl.addEventListener('click', function() {
+      // Get scenario-details children of the scenario.
+      var scenarioEl = this.parentNode;
+      var scenarioDetailsEls = scenarioEl.getElementsByClassName('scenario-details');
+
+      scenarioEl.classList.toggle('can-expand');
+      [].forEach.call(scenarioDetailsEls, function(detailsEl) {
+        detailsEl.classList.toggle('collapse');
+      });
+    });
+  });
 });
