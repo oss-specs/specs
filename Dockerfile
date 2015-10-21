@@ -1,15 +1,22 @@
-FROM node:0.12.4
+FROM node:4.2.1
+
+ENV NODE_ENV production
+ENV SPECS_ALLOW_INSECURE_SSL false
+ENV SPECS_EXCLUDED_PATHS false
+
+WORKDIR /app
 
 ADD . /app
 
-WORKDIR /app
+RUN mkdir -p /app/project-data && useradd -d /app specs && chown -R specs:specs /app
+
+VOLUME /app/project-data
+
+
+USER specs
 
 RUN npm install
 
 EXPOSE 3000
-VOLUME /app/project-data
-
-ENV SPECS_ALLOW_INSECURE_SSL false
-ENV SPECS_EXCLUDED_PATHS false
 
 CMD npm start
