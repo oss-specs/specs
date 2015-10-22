@@ -8,10 +8,11 @@ A service for exposing specifications expressed as Gherkin feature files via a n
 [![Test Coverage](https://codeclimate.com/github/oss-specs/specs/badges/coverage.svg)](https://codeclimate.com/github/oss-specs/specs/coverage)
 
 
-Start the server, in the UI specify a https URL for a Git repo, and if that repo contains markdown or feature files they will be displayed. The idea is to make specifications stored in a repo visible and searchable, for people who aren't familiar with version control systems, and as part of a living documentation system.
+In the UI specify a https URL for a Git repo, and if that repo contains markdown or feature files they will be displayed. The idea is to make specifications stored in a repo visible and searchable, for people who aren't familiar with version control systems, and as part of a living documentation system.
 
 If you want to run Specs as a service we recommend you use the Docker instructions given below.
 
+We're trying out continuous delivery on this project so in theory the `master` branch is always stable.
 
 ## Development installation instructions
 
