@@ -12,7 +12,7 @@ In the UI specify a https URL for a Git repo, and if that repo contains markdown
 
 If you want to run Specs as a service we recommend you use the Docker instructions given below.
 
-We're trying out continuous delivery on this project so in theory the `master` branch is always stable.
+We're trying out continuous delivery on this project so in theory the `master` branch is always stable. A demo is available at http://specs.sponte.uk/ , it may take a few seconds to spin up and will not persist data for long.
 
 ## Development installation instructions
 
