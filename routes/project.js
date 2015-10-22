@@ -182,7 +182,7 @@ function getPassError(next) {
 router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   // Cookie variables.
-  var openBurgerMenu = !!req.cookies.openBurgerMenu;
+  var openBurgerMenu = (req.cookies.specsOpenBurgerMenu === 'true');
 
   // Session variable.
   if(!req.session.branches) req.session.branches = {};
