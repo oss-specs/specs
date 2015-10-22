@@ -85,6 +85,7 @@ button {
 }
 
 button.call-to-action {
+  margin: 0.1em;
   background-color: blue;
   color: white;
 }
