@@ -32,17 +32,25 @@ ul.file-list {
   margin: 0;
 }
 
-.project .repository-controls-container {
-  margin-bottom: 0.8em;
+.project .repository-controls {
+  box-sizing: border-box;
+  background-color: #FAFAFA;
+  padding: 0.5em;
+  border-radius: 0.3em;
+  border: 1px solid rgb(220, 220, 220);
 }
 
 .project .burger-menu {
+  position: relative;
+  z-index: 99;
   display: block;
-  margin: 0 0 0.5em 0;
+  margin: 0;
+  float:right;
+  border: 1px solid darkgrey;
 }
 
 .project .content-controls {
-  margin-top: 0.8em;
+  margin-top: 0.4em;
 }
 
 .project-refs {
