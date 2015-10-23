@@ -15,12 +15,42 @@ ul.file-list {
 }
 
 .project .controls {
-  margin-bottom: 2em;
+  margin-bottom: 0;
   padding: 1em;
 }
 
-.project .controls .burger-menu {
-  float: right;
+/**
+ * Wideview port (e.g. landscape tablet).
+ */
+@media (min-width: 800px) {
+  .project .controls {
+    margin-bottom: 2em;
+  }
+}
+
+.project .controls button.call-to-action {
+  margin: 0;
+}
+
+.project .repository-controls {
+  box-sizing: border-box;
+  background-color: #FAFAFA;
+  padding: 0.5em;
+  border-radius: 0.3em;
+  border: 1px solid rgb(220, 220, 220);
+}
+
+.project .burger-menu {
+  position: relative;
+  z-index: 99;
+  display: block;
+  margin: 0;
+  float:right;
+  border: 1px solid darkgrey;
+}
+
+.project .content-controls {
+  margin-top: 0.4em;
 }
 
 .project-refs {
@@ -65,6 +95,9 @@ ul.file-list {
 
 .directory {
   margin: 1em;
+}
+.directory:first-child {
+  margin-top: 0;
 }
 
 /* Minus and plus signs for expandable directories */

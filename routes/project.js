@@ -67,9 +67,10 @@ function getProcessFileContent(fileContents) {
 }
 
 // Render the project page and send to client.
-function getRender(res, appConfig) {
+function getRender(res, appConfig, renderOptions) {
   return function render(projectData) {
     var renderingData = {};
+    renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
 
     // Handle no project data being found.
     if (!projectData) {
@@ -180,6 +181,9 @@ function getPassError(next) {
 // List of available features in a project.
 router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
+  // Cookie variables.
+  var openBurgerMenu = (req.cookies.specsOpenBurgerMenu === 'true');
+
   // Session variable.
   if(!req.session.branches) req.session.branches = {};
   var sessionBranches = req.session.branches;
@@ -194,8 +198,13 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   // Query param causing a Git update (pull).
   var projectShouldUpdate = (req.query.update === 'true');
 
+  // Create rendering options.
+  var renderOptions = {
+    openBurgerMenu: openBurgerMenu
+  };
+
   // Create the render and passError functions.
-  var configuredRender = getRender(res, appConfig);
+  var configuredRender = getRender(res, appConfig, renderOptions);
   var configuredPassError = getPassError(next);
 
   // TODO: Have one place this object is created.

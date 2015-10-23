@@ -19,9 +19,15 @@
 
   // Expand/collapse repository controls.
   $(function() {
+    var openBurgerMenu;
+
     function expandCollapseRepoControls() {
       var repoControlsEl = window.document.getElementById('repository-controls');
       repoControlsEl.classList.toggle('collapse');
+      openBurgerMenu = !repoControlsEl.classList.contains('collapse');
+
+      // Persist the burger menu state in a cookie for five minutes.
+      window.document.cookie = "specsOpenBurgerMenu=" + openBurgerMenu + ";max-age=" + 5 * 60;
     }
 
     var expandCollapseRepoControlsEl = window.document.getElementById('expand-collapse-repository-controls');
