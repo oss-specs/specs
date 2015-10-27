@@ -22,9 +22,11 @@
     var selectEl = $('#change-views-control');
 
     // On change, reload the page with a new query param dictating configured view.
-    selectEl.on('change', function() {
-      window.location.href = window.location.pathname + '?view=' + this.value;
-    });
+    if (selectEl) {
+      selectEl.on('change', function() {
+        window.location.href = window.location.pathname + '?view=' + this.value;
+      });
+    }
   });
 
   // Expand/collapse repository controls.
