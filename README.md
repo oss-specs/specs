@@ -37,11 +37,21 @@ To install the latest version from npm
 
 Alternatively, get the container image here https://hub.docker.com/r/specs/specs/ and start it in whatever way you prefer.
 
-## Environment variables
+## Configuration
+
+There are two types of possible configuration:
+
+### App wide configuration through environment variables
 
 * SPECS_OUT_DIR - Specifies location of project-data folder, by default this lives in the root of the project.
 * SPECS_ALLOW_INSECURE_SSL - Disables SSL certificate verification when cloning repos.
-* SPECS_EXCLUDED_PATHS - Excludes certain paths (globally) from projects.
-* SPECS_PATHS_TO_HIDE - Specify beginnings of directory paths to hide on the project page. E.g. if you specified 'src/test/specs' then a directory 'src/test/specs/my_wondeful_feature' would be displayed in the directory list as 'my_wonderful_feature'. This only affects display logic, not the underlying data.
+
+### Project specific configuration via a specs.json file in your project route.
+See the specs.json file in the root of this repository for an example.
+
+Keys:
+ * views: An object with keys specifying named view configurations. Allowed keys are:
+   * excludedPaths - An array of folder paths to exclude from the UI on the project page.
+   * pathsToHide - Specify beginnings of directory paths to hide on the project page. E.g. if you specified 'src/test/specs' then a directory 'src/test/specs/my_wondeful_feature' would be displayed in the directory list as '... my_wonderful_feature'.
 
 (C) 2015
