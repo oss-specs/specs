@@ -46,8 +46,8 @@ There are two types of possible configuration:
 * SPECS_OUT_DIR - Specifies location of project-data folder, by default this lives in the root of the project.
 * SPECS_ALLOW_INSECURE_SSL - Disables SSL certificate verification when cloning repos.
 
-### Project specific configuration via a specs.json file in your project route.
-See the specs.json file in the root of this repository for an example.
+### Project specific configuration via a specs.json file
+The file should be in the root of your repository. See the [specs.json](specs.json) file in the root of this repository for an example.
 
 Keys:
  * views: An object with keys specifying named view configurations. Allowed keys are:
