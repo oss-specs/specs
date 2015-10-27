@@ -70,11 +70,9 @@ function getProcessFileContent(fileContents) {
 function getRender(res, appConfig, renderOptions) {
   return function render(projectData) {
     var renderingData = {};
+    var view;
 
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
-
-    // Grab any view config that might have been specified in the project config.
-    var view = renderingData.view = projectData.config.views[renderOptions.currentView];
 
     // Handle no project data being found.
     if (!projectData) {
@@ -91,9 +89,25 @@ function getRender(res, appConfig, renderOptions) {
       return;
     }
 
-    // Filter the file list based on the excludedPaths in project config.
-    if (view && view.hasExcludedPaths) {
-      projectData.files = projectData.files.filter(view.helpers.isIncludedPath);
+    // If the project config contains specified views use them.
+    var viewNames = Object.keys(projectData.config.views);
+    if (viewNames.length > 0) {
+      renderingData.hasViews = true;
+      renderingData.viewNames = viewNames.map(function (viewName) {
+        return {
+          name: viewName,
+          urlEncodedName: encodeURIComponent(viewName),
+          isCurrent: viewName === renderOptions.currentView
+        };
+      });
+
+      // Grab any view config that might have been specified in the project config.
+      view = renderingData.view = projectData.config.views[renderOptions.currentView];
+
+      // Filter the file list based on the excludedPaths in project config.
+      if (view && view.hasExcludedPaths) {
+        projectData.files = projectData.files.filter(view.helpers.isIncludedPath);
+      }
     }
 
     // Configure function for mapping file paths to file data.

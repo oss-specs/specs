@@ -29,28 +29,33 @@ ul.file-list {
 }
 
 .project .controls button.call-to-action {
-  margin: 0;
+  margin: 0 0.6em 0 0;
 }
 
 .project .repository-controls {
   box-sizing: border-box;
-  background-color: #FAFAFA;
+  margin-bottom: 1em;
   padding: 0.5em;
+  background-color: #FAFAFA;
   border-radius: 0.3em;
   border: 1px solid rgb(220, 220, 220);
+}
+
+.project .content-controls .config-views {
+  display: inline-block;
+  margin: 1em 0 1em 0;
+}
+.project .content-controls .config-views select {
+  min-width: 10em;
 }
 
 .project .burger-menu {
   position: relative;
   z-index: 99;
   display: block;
-  margin: 0;
+  margin: 0 0 0 0.5em;
   float:right;
   border: 1px solid darkgrey;
-}
-
-.project .content-controls {
-  margin-top: 0.4em;
 }
 
 .project-refs {
