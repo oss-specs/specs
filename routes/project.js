@@ -70,7 +70,8 @@ function getProcessFileContent(fileContents) {
 function getRender(res, appConfig, renderOptions) {
   return function render(projectData) {
     var renderingData = {};
-    var view;
+    var view = {};
+    var viewNames = [];
 
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
 
@@ -90,7 +91,9 @@ function getRender(res, appConfig, renderOptions) {
     }
 
     // If the project config contains specified views use them.
-    var viewNames = Object.keys(projectData.config.views);
+    if (projectData.config) {
+      viewNames = Object.keys(projectData.config.views);
+    }
     if (viewNames.length > 0) {
       renderingData.hasViews = true;
       renderingData.viewNames = viewNames.map(function (viewName) {
