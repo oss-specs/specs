@@ -73,7 +73,8 @@ function getRender(res, appConfig, renderOptions) {
 
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
 
-    renderingData.view = projectData.config.views[renderOptions.currentView];
+    // Grab any view config that might have been specified in the project config.
+    var view = renderingData.view = projectData.config.views[renderOptions.currentView];
 
     // Handle no project data being found.
     if (!projectData) {
@@ -90,7 +91,10 @@ function getRender(res, appConfig, renderOptions) {
       return;
     }
 
-    // TODO: filter the file list based on the excludedPaths in project config.
+    // Filter the file list based on the excludedPaths in project config.
+    if (view && view.hasExcludedPaths) {
+      projectData.files = projectData.files.filter(view.helpers.isIncludedPath);
+    }
 
     // Configure function for mapping file paths to file data.
     var pathToData = getFilePathToFileData(appConfig, projectData, getFileContents);
