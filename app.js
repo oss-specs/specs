@@ -11,9 +11,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('hbs');
 
-// Pull in polyfills.
-require('./polyfill');
-
 var appVersion = require('./package.json').version;
 
 // Set the config object for use elsewhere.
@@ -23,9 +20,7 @@ var appVersion = require('./package.json').version;
 // configuration state at require time.
 var appConfig = require('./lib/configuration').set({
   rootPath: process.env.SPECS_OUT_DIR || __dirname,
-  allowInsecureSSL: process.env.SPECS_ALLOW_INSECURE_SSL,
-  excludedPaths: process.env.SPECS_EXCLUDED_PATHS,
-  pathsToHide: process.env.SPECS_PATHS_TO_HIDE
+  allowInsecureSSL: process.env.SPECS_ALLOW_INSECURE_SSL
 });
 
 var handlebarHelpers = require(path.join(__dirname,'views', 'helpers'));

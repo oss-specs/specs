@@ -12,11 +12,11 @@ var markdown = require('markdown').markdown;
 var arrrayToTree = require('file-tree');
 var TreeModel = require('tree-model');
 
-var appConfig = require('../lib/configuration').get();
 var getProject = require('../lib/specifications/project').get;
 var getProjectData = require('../lib/specifications/project').getData;
 var getFileContents = require('../lib/specifications/project').getFileContents;
 
+var appConfig = require('../lib/configuration').get();
 
 // Given a file path, generate additional data or promises for data.
 function getFilePathToFileData(appConfig, projectData, getFileContents) {
