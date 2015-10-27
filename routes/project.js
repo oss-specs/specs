@@ -70,7 +70,10 @@ function getProcessFileContent(fileContents) {
 function getRender(res, appConfig, renderOptions) {
   return function render(projectData) {
     var renderingData = {};
+
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
+
+    renderingData.view = projectData.config.views[renderOptions.currentView];
 
     // Handle no project data being found.
     if (!projectData) {
@@ -87,10 +90,7 @@ function getRender(res, appConfig, renderOptions) {
       return;
     }
 
-    // Grab any paths that should be hidden in the UI.
-    // This won't hide any features, just the part of the path
-    // to the features that is specified.
-    renderingData.pathsToHideRegex = appConfig.regex.pathsToHide;
+    // TODO: filter the file list based on the excludedPaths in project config.
 
     // Configure function for mapping file paths to file data.
     var pathToData = getFilePathToFileData(appConfig, projectData, getFileContents);
@@ -195,12 +195,16 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   // be used when retrieving repo data.
   var targetBranchName = req.query.branch || false;
 
-  // Query param causing a Git update (pull).
+  // Query param causing a Git fetch.
   var projectShouldUpdate = (req.query.update === 'true');
+
+  // Query parameter containing desired named view from project config.
+  var currentView = req.query.view || false;
 
   // Create rendering options.
   var renderOptions = {
-    openBurgerMenu: openBurgerMenu
+    openBurgerMenu: openBurgerMenu,
+    currentView: currentView
   };
 
   // Create the render and passError functions.

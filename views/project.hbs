@@ -42,7 +42,7 @@
       <section class="spec-links">
         {{#each project.filesByDir as |files directoryPath|}}
           <section class="directory">
-            <h2 class="directory-path interactive" title="{{directoryPath}}">{{#directory_path directoryPath pathsToHideRegex=../pathsToHideRegex}}{{this}}{{/directory_path}}</h2>
+            <h2 class="directory-path interactive" title="{{directoryPath}}">{{#directory_path directoryPath pathsToHideRegex=../view.regex.pathsToHide}}{{this}}{{/directory_path}}</h2>
             <ul class="file-list collapsible">
               {{#each files}}
                 {{#if this.isFeatureFile}}
