@@ -17,6 +17,16 @@
     });
   });
 
+  // View changing select element logic change-branch-control
+  $(function() {
+    var selectEl = $('#change-views-control');
+
+    // On change, reload the page with a new query param dictating configured view.
+    selectEl.on('change', function() {
+      window.location.href = window.location.pathname + '?view=' + this.value;
+    });
+  });
+
   // Expand/collapse repository controls.
   $(function() {
     var openBurgerMenu;
