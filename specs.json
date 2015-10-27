@@ -1,7 +1,6 @@
 {
-  "views": [
-    {
-      "name": "tidy",
+  "views": {
+    "tidy": {
       "excludedPaths": [
         "features-support/test-data/a/long/path/to/unwanted",
         "features-support/test-data/a/long/path/to/also_unwanted"
@@ -10,5 +9,5 @@
         "features-support/test-data/a/long/path/to/wanted"
       ]
     }
-  ]
+  }
 }
