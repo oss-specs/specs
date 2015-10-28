@@ -9,6 +9,9 @@
       "pathsToHide": [
         "features-support/test-data/a/long/path/to/wanted"
       ]
+    },
+    "testDataOnly": {
+      "anchor": "features-support/test-data"
     }
   }
 }
