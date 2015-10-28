@@ -10,13 +10,16 @@
 
     function expandCollapseDetails() {
       var featureTitleEl = window.document.getElementById('feature-title');
+      var tagsButtonEl = window.document.getElementById('expand-collapse-tags');
       var featureDetailsEls = window.document.getElementsByClassName('feature-details');
       var scenarioDetailsEls = window.document.getElementsByClassName('scenario-details');
 
       if (doExpand) {
         featureTitleEl.classList.remove('can-expand');
+        tagsButtonEl.classList.remove('collapse');
       } else {
         featureTitleEl.classList.add('can-expand');
+        tagsButtonEl.classList.add('collapse');
       }
 
       [].forEach.call(featureDetailsEls, function(el) {
@@ -56,6 +59,59 @@
     expandCollapseDetailsEl.addEventListener('click', expandCollapseDetails);
   });
 
+  // Expand/collapse individual scenarios.
+  $(function() {
+    var tagsButtonEl = window.document.getElementById('expand-collapse-tags');
+    var scenarioTitleEls = window.document.getElementsByClassName('scenario-title');
+    [].forEach.call(scenarioTitleEls, function(scenarioTitleEl) {
+      scenarioTitleEl.addEventListener('click', function() {
+        // Get scenario-details children of the scenario.
+        var scenarioEl = this.parentNode;
+        var scenarioDetailsEls = scenarioEl.getElementsByClassName('scenario-details');
+
+        var isCollapsed = scenarioEl.classList.contains('can-expand');
+        if (isCollapsed) {
+          // Expand.
+          scenarioEl.classList.remove('can-expand');
+
+          // Show tags button
+          tagsButtonEl.classList.remove('collapse');
+        } else {
+          // Collapse.
+          scenarioEl.classList.add('can-expand');
+        }
+
+        [].forEach.call(scenarioDetailsEls, function(detailsEl) {
+          detailsEl.classList.toggle('collapse');
+        });
+      });
+    });
+  });
+
+  // Expand/collapse the Feature details.
+  $(function() {
+    var tagsButtonEl = window.document.getElementById('expand-collapse-tags');
+    var featureTitleEl = window.document.getElementById('feature-title');
+    featureTitleEl.addEventListener('click', function() {
+
+      var isCollapsed = this.classList.contains('can-expand');
+      if (isCollapsed) {
+        // Expand.
+        this.classList.remove('can-expand');
+
+        // Show tags button
+        tagsButtonEl.classList.remove('collapse');
+      } else {
+        // Collapse.
+        this.classList.add('can-expand');
+      }
+
+      var featureDetailsEls = window.document.getElementsByClassName('feature-details');
+      [].forEach.call(featureDetailsEls, function(el) {
+        el.classList.toggle('collapse');
+      });
+    });
+  });
 
   // Expand/collapse all tags.
   $(function() {
@@ -68,35 +124,6 @@
 
     var expandCollapseTagsEl = window.document.getElementById('expand-collapse-tags');
     expandCollapseTagsEl.addEventListener('click', expandCollapseTags);
-  });
-
-  // Expand/collapse individual scenarios.
-  $(function() {
-    var scenarioTitleEls = window.document.getElementsByClassName('scenario-title');
-    [].forEach.call(scenarioTitleEls, function(scenarioTitleEl) {
-      scenarioTitleEl.addEventListener('click', function() {
-        // Get scenario-details children of the scenario.
-        var scenarioEl = this.parentNode;
-        var scenarioDetailsEls = scenarioEl.getElementsByClassName('scenario-details');
-
-        scenarioEl.classList.toggle('can-expand');
-        [].forEach.call(scenarioDetailsEls, function(detailsEl) {
-          detailsEl.classList.toggle('collapse');
-        });
-      });
-    });
-  });
-
-  // Expand/collapse the Feature details.
-  $(function() {
-    var featureTitleEl = window.document.getElementById('feature-title');
-    featureTitleEl.addEventListener('click', function() {
-      this.classList.toggle('can-expand');
-      var featureDetailsEls = window.document.getElementsByClassName('feature-details');
-      [].forEach.call(featureDetailsEls, function(el) {
-        el.classList.toggle('collapse');
-      });
-    });
   });
 
 })();
