@@ -1,6 +1,7 @@
 {
   "views": {
     "tidy": {
+      "default": true,
       "excludedPaths": [
         "features-support/test-data/a/long/path/to/unwanted",
         "features-support/test-data/a/long/path/to/also_unwanted"
