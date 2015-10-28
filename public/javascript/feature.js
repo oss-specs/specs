@@ -4,6 +4,14 @@
 (function() {
   'use strict';
 
+  // Is everything except the tags button collapsed?
+  function everythingIsCollapsed() {
+    var collapsableEls = window.document.getElementsByClassName('collapsible');
+    return [].every.call(collapsableEls, function(el) {
+      return el.classList.contains('collapse') || el.id === 'expand-collapse-tags';
+    });
+  }
+
   // Expand/collapse all details.
   $(function() {
     var doExpand = true;
@@ -73,17 +81,24 @@
         if (isCollapsed) {
           // Expand.
           scenarioEl.classList.remove('can-expand');
+          [].forEach.call(scenarioDetailsEls, function(detailsEl) {
+            detailsEl.classList.remove('collapse');
+          });
 
           // Show tags button
           tagsButtonEl.classList.remove('collapse');
         } else {
           // Collapse.
           scenarioEl.classList.add('can-expand');
-        }
+          [].forEach.call(scenarioDetailsEls, function(detailsEl) {
+            detailsEl.classList.add('collapse');
+          });
 
-        [].forEach.call(scenarioDetailsEls, function(detailsEl) {
-          detailsEl.classList.toggle('collapse');
-        });
+          // Conditionally hide the tags button.
+          if (everythingIsCollapsed()) {
+            tagsButtonEl.classList.add('collapse');
+          }
+        }
       });
     });
   });
@@ -93,23 +108,30 @@
     var tagsButtonEl = window.document.getElementById('expand-collapse-tags');
     var featureTitleEl = window.document.getElementById('feature-title');
     featureTitleEl.addEventListener('click', function() {
+      var featureDetailsEls = window.document.getElementsByClassName('feature-details');
 
       var isCollapsed = this.classList.contains('can-expand');
       if (isCollapsed) {
         // Expand.
         this.classList.remove('can-expand');
+        [].forEach.call(featureDetailsEls, function(el) {
+          el.classList.remove('collapse');
+        });
 
         // Show tags button
         tagsButtonEl.classList.remove('collapse');
       } else {
         // Collapse.
         this.classList.add('can-expand');
-      }
+        [].forEach.call(featureDetailsEls, function(el) {
+          el.classList.add('collapse');
+        });
 
-      var featureDetailsEls = window.document.getElementsByClassName('feature-details');
-      [].forEach.call(featureDetailsEls, function(el) {
-        el.classList.toggle('collapse');
-      });
+        // Conditionally hide the tags button.
+        if (everythingIsCollapsed()) {
+          tagsButtonEl.classList.add('collapse');
+        }
+      }
     });
   });
 
