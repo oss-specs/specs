@@ -76,8 +76,10 @@ function getStringConverter(aggregator) {
 function parseDirectoryPath(context, options) {
   var path = context;
   var pathsToHideRegex = options.hash.pathsToHideRegex;
-
-  return path.replace(pathsToHideRegex, '');
+  if (pathsToHideRegex) {
+    path = path.replace(pathsToHideRegex, ' ... ');
+  }
+  return path;
 }
 
 module.exports = {
