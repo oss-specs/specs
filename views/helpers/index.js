@@ -76,6 +76,10 @@ function getStringConverter(aggregator) {
 function parseDirectoryPath(context, options) {
   var path = context;
   var pathsToHideRegex = options.hash.pathsToHideRegex;
+  var anchorRegex = options.hash.anchorRegex;
+  if (anchorRegex) {
+    path = path.replace(anchorRegex, '');
+  }
   if (pathsToHideRegex) {
     path = path.replace(pathsToHideRegex, '<span class="redacted"></span>');
   }

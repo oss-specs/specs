@@ -127,16 +127,26 @@ a.spec-link {
   text-decoration: none;
 }
 
-.directory {
-  margin: 1em;
-}
-
+.anchor,
 h2.directory-path {
   font-size: 1.2em;
   font-weight: normal;
   word-break: break-word;
   color: #555;
   margin-bottom: 0.5em;
+}
+
+.anchor {
+  font-size: 0.9em;
+  margin: 0 1em 0 1em;
+}
+/**
+ * Wideview port (e.g. landscape tablet).
+ */
+@media (min-width: 800px) {
+  .anchor {
+    margin-bottom: 2em;
+  }
 }
 
 /* Minus and plus signs for expandable directories */
