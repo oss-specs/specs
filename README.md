@@ -51,6 +51,7 @@ The file should be in the root of your repository. The file an be named `specs.j
 
 Keys:
  * views: An object with keys specifying named view configurations. Allowed keys are:
+   * default - A boolean, if true this view will be used by default in the UI. 
    * excludedPaths - An array of folder paths to exclude from the UI on the project page.
    * pathsToHide - Specify beginnings of directory paths to hide on the project page. E.g. if you specified 'src/test/specs' then a directory 'src/test/specs/my_wondeful_feature' would be displayed in the directory list as '... my_wonderful_feature'.
 
