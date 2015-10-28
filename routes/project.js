@@ -73,7 +73,6 @@ function getRender(res, appConfig, renderOptions) {
     var view = {};
     var viewNames = [];
     var currentView;
-    var defaultName;
 
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
 
@@ -131,6 +130,11 @@ function getRender(res, appConfig, renderOptions) {
       // Filter the file list based on the excludedPaths in project config.
       if (view && view.hasExcludedPaths) {
         projectData.files = projectData.files.filter(view.helpers.isIncludedPath);
+      }
+
+      // Filter the file list based on the anchor path in the project config.
+      if (view && view.hasAnchor) {
+        projectData.files = projectData.files.filter(view.helpers.isWithinAnchor);
       }
     }
 
