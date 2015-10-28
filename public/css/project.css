@@ -19,6 +19,10 @@ ul.file-list {
   padding: 1em;
 }
 
+.project .controls .loader-container {
+  margin: 2em 2em 1em 2em;
+}
+
 /**
  * Wideview port (e.g. landscape tablet).
  */

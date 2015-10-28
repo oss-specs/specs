@@ -3,7 +3,8 @@
  */
 
 .loader-container {
-  display: none;
+  display: inline-block;
+  visibility: hidden;
   position: relative;
   margin: 0 2em;
   top : -1.5em;
@@ -11,6 +12,7 @@
 
 .waiting .loader-container {
   display: inline-block;
+  visibility: inherit;
 }
 
 .loader,
@@ -19,35 +21,43 @@
   position: absolute;
   display: inline-block;
   background: #ffffff;
-  -webkit-animation: load1 1s infinite ease-in-out;
-  animation: load1 1s infinite ease-in-out;
+  animation: loading 1s infinite ease-in-out;
   width: 1em;
   height: 4em;
 }
+
+.loader.dark,
+.loader.dark:before,
+.loader.dark:after {
+  background: #333;
+  animation: loadingdark 1s infinite ease-in-out;
+}
+
 .loader:before,
 .loader:after {
   top: 0;
   content: '';
 }
-.loader:before {
+.loader:before,
+.loader.dark:before {
   left: -1.5em;
-  -webkit-animation-delay: -0.32s;
   animation-delay: -0.32s;
 }
-.loader {
+.loader,
+.loader.dark {
   text-indent: -9999em;
   /*margin: 88px auto;*/
   font-size: 11px;
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);
   transform: translateZ(0);
-  -webkit-animation-delay: -0.16s;
   animation-delay: -0.16s;
 }
 .loader:after {
   left: 1.5em;
 }
-@-webkit-keyframes load1 {
+
+@keyframes loading {
   0%,
   80%,
   100% {
@@ -59,15 +69,16 @@
     height: 5em;
   }
 }
-@keyframes load1 {
+
+@keyframes loadingdark {
   0%,
   80%,
   100% {
-    box-shadow: 0 0 #ffffff;
+    box-shadow: 0 0 #333;
     height: 4em;
   }
   40% {
-    box-shadow: 0 -2em #ffffff;
+    box-shadow: 0 -2em #333;
     height: 5em;
   }
 }
