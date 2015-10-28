@@ -81,7 +81,7 @@ function parseDirectoryPath(context, options) {
     path = path.replace(anchorRegex, '');
   }
   if (pathsToHideRegex) {
-    path = path.replace(pathsToHideRegex, ' ... ');
+    path = path.replace(pathsToHideRegex, '<span class="redacted"></span>');
   }
   return path;
 }

@@ -157,6 +157,14 @@ h2.directory-path {
   content: '\2295\2003';
 }
 
+.directory-path .redacted {
+  font-size: 0.6em;
+  margin-right: 0.5em;
+}
+.directory-path .redacted::before {
+  content: '\2026';
+}
+
 /* TODO: standardise and reuse styling via pre-processor */
 .file-container {
   /*
