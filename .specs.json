@@ -10,7 +10,7 @@
         "features-support/test-data/a/long/path/to/wanted"
       ]
     },
-    "testDataOnly": {
+    "test data only": {
       "anchor": "features-support/test-data"
     }
   }
