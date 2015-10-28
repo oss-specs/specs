@@ -3,16 +3,21 @@
  */
 
 .content-controls {
-  text-align: left;
+  text-align: center;
   margin-bottom: 0;
 }
 
-.title {
+.feature header {
+  text-align: center;
+  margin-bottom: 1.4em;
+}
+.feature .title {
+  font-size: 3em;
   color: darkblue;
 }
 
 ul.scenarios {
-  margin-top: 3em;
+  margin-top: 1em;
   margin-left: 1em;
   list-style: none;
 }
@@ -30,7 +35,6 @@ ul.scenarios {
   color: darkgrey;
 }
 
-.feature-title,
 .scenario-title,
 .example-title {
     margin-bottom: 0.2em;
@@ -43,6 +47,12 @@ ul.scenarios {
   position: relative;
   top: -0.05em;
   content: '\2296\2003';
+}
+.feature-title::before {
+  font-size: 0.3em;
+  top: 0.1em;
+  left: 0.3em;
+  vertical-align: text-top;
 }
 .scenario.can-expand .scenario-title::before,
 .feature-title.can-expand::before {

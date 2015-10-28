@@ -92,7 +92,7 @@
     var featureTitleEl = window.document.getElementById('feature-title');
     featureTitleEl.addEventListener('click', function() {
       this.classList.toggle('can-expand');
-      var featureDetailsEls = this.parentNode.getElementsByClassName('feature-details');
+      var featureDetailsEls = window.document.getElementsByClassName('feature-details');
       [].forEach.call(featureDetailsEls, function(el) {
         el.classList.toggle('collapse');
       });
