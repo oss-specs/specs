@@ -72,6 +72,8 @@ function getRender(res, appConfig, renderOptions) {
     var renderingData = {};
     var view = {};
     var viewNames = [];
+    var currentView;
+    var defaultName;
 
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
 
@@ -91,21 +93,40 @@ function getRender(res, appConfig, renderOptions) {
     }
 
     // If the project config contains specified views use them.
+    currentView = renderOptions.currentView;
     if (projectData.config) {
       viewNames = Object.keys(projectData.config.views);
     }
+
     if (viewNames.length > 0) {
       renderingData.hasViews = true;
+
+      // No view specified, attempt to use a DEFAULT view.
+      if (currentView === false) {
+        // The defaultView value may be undefined, that will result in no view logic being applied.
+        currentView = viewNames
+                        .filter(function(name) {
+                          return !!projectData.config.views[name].default;
+                        })[0] || false;
+      }
+
+      // Generate view name data for the UI.
       renderingData.viewNames = viewNames.map(function (viewName) {
         return {
           name: viewName,
           urlEncodedName: encodeURIComponent(viewName),
-          isCurrent: viewName === renderOptions.currentView
+          isCurrent: viewName === currentView
         };
       });
 
+      // Explicit request for no view logic to be applied.
+      if (currentView === 'none') {
+        view = renderingData.view = false;
+
       // Grab any view config that might have been specified in the project config.
-      view = renderingData.view = projectData.config.views[renderOptions.currentView];
+      } else {
+        view = renderingData.view = projectData.config.views[currentView];
+      }
 
       // Filter the file list based on the excludedPaths in project config.
       if (view && view.hasExcludedPaths) {
