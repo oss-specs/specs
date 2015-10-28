@@ -12,11 +12,11 @@ var markdown = require('markdown').markdown;
 var arrrayToTree = require('file-tree');
 var TreeModel = require('tree-model');
 
-var appConfig = require('../lib/configuration').get();
 var getProject = require('../lib/specifications/project').get;
 var getProjectData = require('../lib/specifications/project').getData;
 var getFileContents = require('../lib/specifications/project').getFileContents;
 
+var appConfig = require('../lib/configuration').get();
 
 // Given a file path, generate additional data or promises for data.
 function getFilePathToFileData(appConfig, projectData, getFileContents) {
@@ -70,6 +70,11 @@ function getProcessFileContent(fileContents) {
 function getRender(res, appConfig, renderOptions) {
   return function render(projectData) {
     var renderingData = {};
+    var view = {};
+    var viewNames = [];
+    var currentView;
+    var defaultName;
+
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
 
     // Handle no project data being found.
@@ -87,10 +92,47 @@ function getRender(res, appConfig, renderOptions) {
       return;
     }
 
-    // Grab any paths that should be hidden in the UI.
-    // This won't hide any features, just the part of the path
-    // to the features that is specified.
-    renderingData.pathsToHideRegex = appConfig.regex.pathsToHide;
+    // If the project config contains specified views use them.
+    currentView = renderOptions.currentView;
+    if (projectData.config) {
+      viewNames = Object.keys(projectData.config.views);
+    }
+
+    if (viewNames.length > 0) {
+      renderingData.hasViews = true;
+
+      // No view specified, attempt to use a DEFAULT view.
+      if (currentView === false) {
+        // The defaultView value may be undefined, that will result in no view logic being applied.
+        currentView = viewNames
+                        .filter(function(name) {
+                          return !!projectData.config.views[name].default;
+                        })[0] || false;
+      }
+
+      // Generate view name data for the UI.
+      renderingData.viewNames = viewNames.map(function (viewName) {
+        return {
+          name: viewName,
+          urlEncodedName: encodeURIComponent(viewName),
+          isCurrent: viewName === currentView
+        };
+      });
+
+      // Explicit request for no view logic to be applied.
+      if (currentView === 'none') {
+        view = renderingData.view = false;
+
+      // Grab any view config that might have been specified in the project config.
+      } else {
+        view = renderingData.view = projectData.config.views[currentView];
+      }
+
+      // Filter the file list based on the excludedPaths in project config.
+      if (view && view.hasExcludedPaths) {
+        projectData.files = projectData.files.filter(view.helpers.isIncludedPath);
+      }
+    }
 
     // Configure function for mapping file paths to file data.
     var pathToData = getFilePathToFileData(appConfig, projectData, getFileContents);
@@ -195,12 +237,16 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   // be used when retrieving repo data.
   var targetBranchName = req.query.branch || false;
 
-  // Query param causing a Git update (pull).
+  // Query param causing a Git fetch.
   var projectShouldUpdate = (req.query.update === 'true');
+
+  // Query parameter containing desired named view from project config.
+  var currentView = req.query.view || false;
 
   // Create rendering options.
   var renderOptions = {
-    openBurgerMenu: openBurgerMenu
+    openBurgerMenu: openBurgerMenu,
+    currentView: currentView
   };
 
   // Create the render and passError functions.
