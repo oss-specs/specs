@@ -9,6 +9,16 @@
       "pathsToHide": [
         "features-support/test-data/a/long/path/to/wanted"
       ]
+    },
+    "test": {
+      "excludedPaths": [
+        "features-support/test-data/a/long/path/to/unwanted",
+        "features-support/test-data/a/long/path/to/also_unwanted"
+      ],
+      "pathsToHide": [
+        "features-support/test-data/a/long/path/to/wanted",
+        "features"
+      ]
     }
   }
 }
