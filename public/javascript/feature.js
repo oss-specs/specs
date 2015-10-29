@@ -4,19 +4,30 @@
 (function() {
   'use strict';
 
+  // Is everything except the tags button collapsed?
+  function everythingIsCollapsed() {
+    var collapsableEls = window.document.getElementsByClassName('collapsible');
+    return [].every.call(collapsableEls, function(el) {
+      return el.classList.contains('collapse') || el.id === 'expand-collapse-tags';
+    });
+  }
+
   // Expand/collapse all details.
   $(function() {
     var doExpand = true;
 
     function expandCollapseDetails() {
       var featureTitleEl = window.document.getElementById('feature-title');
+      var tagsButtonEl = window.document.getElementById('expand-collapse-tags');
       var featureDetailsEls = window.document.getElementsByClassName('feature-details');
       var scenarioDetailsEls = window.document.getElementsByClassName('scenario-details');
 
       if (doExpand) {
         featureTitleEl.classList.remove('can-expand');
+        tagsButtonEl.classList.remove('collapse');
       } else {
         featureTitleEl.classList.add('can-expand');
+        tagsButtonEl.classList.add('collapse');
       }
 
       [].forEach.call(featureDetailsEls, function(el) {
@@ -56,6 +67,73 @@
     expandCollapseDetailsEl.addEventListener('click', expandCollapseDetails);
   });
 
+  // Expand/collapse individual scenarios.
+  $(function() {
+    var tagsButtonEl = window.document.getElementById('expand-collapse-tags');
+    var scenarioTitleEls = window.document.getElementsByClassName('scenario-title');
+    [].forEach.call(scenarioTitleEls, function(scenarioTitleEl) {
+      scenarioTitleEl.addEventListener('click', function() {
+        // Get scenario-details children of the scenario.
+        var scenarioEl = this.parentNode;
+        var scenarioDetailsEls = scenarioEl.getElementsByClassName('scenario-details');
+
+        var isCollapsed = scenarioEl.classList.contains('can-expand');
+        if (isCollapsed) {
+          // Expand.
+          scenarioEl.classList.remove('can-expand');
+          [].forEach.call(scenarioDetailsEls, function(detailsEl) {
+            detailsEl.classList.remove('collapse');
+          });
+
+          // Show tags button
+          tagsButtonEl.classList.remove('collapse');
+        } else {
+          // Collapse.
+          scenarioEl.classList.add('can-expand');
+          [].forEach.call(scenarioDetailsEls, function(detailsEl) {
+            detailsEl.classList.add('collapse');
+          });
+
+          // Conditionally hide the tags button.
+          if (everythingIsCollapsed()) {
+            tagsButtonEl.classList.add('collapse');
+          }
+        }
+      });
+    });
+  });
+
+  // Expand/collapse the Feature details.
+  $(function() {
+    var tagsButtonEl = window.document.getElementById('expand-collapse-tags');
+    var featureTitleEl = window.document.getElementById('feature-title');
+    featureTitleEl.addEventListener('click', function() {
+      var featureDetailsEls = window.document.getElementsByClassName('feature-details');
+
+      var isCollapsed = this.classList.contains('can-expand');
+      if (isCollapsed) {
+        // Expand.
+        this.classList.remove('can-expand');
+        [].forEach.call(featureDetailsEls, function(el) {
+          el.classList.remove('collapse');
+        });
+
+        // Show tags button
+        tagsButtonEl.classList.remove('collapse');
+      } else {
+        // Collapse.
+        this.classList.add('can-expand');
+        [].forEach.call(featureDetailsEls, function(el) {
+          el.classList.add('collapse');
+        });
+
+        // Conditionally hide the tags button.
+        if (everythingIsCollapsed()) {
+          tagsButtonEl.classList.add('collapse');
+        }
+      }
+    });
+  });
 
   // Expand/collapse all tags.
   $(function() {
@@ -68,35 +146,6 @@
 
     var expandCollapseTagsEl = window.document.getElementById('expand-collapse-tags');
     expandCollapseTagsEl.addEventListener('click', expandCollapseTags);
-  });
-
-  // Expand/collapse individual scenarios.
-  $(function() {
-    var scenarioTitleEls = window.document.getElementsByClassName('scenario-title');
-    [].forEach.call(scenarioTitleEls, function(scenarioTitleEl) {
-      scenarioTitleEl.addEventListener('click', function() {
-        // Get scenario-details children of the scenario.
-        var scenarioEl = this.parentNode;
-        var scenarioDetailsEls = scenarioEl.getElementsByClassName('scenario-details');
-
-        scenarioEl.classList.toggle('can-expand');
-        [].forEach.call(scenarioDetailsEls, function(detailsEl) {
-          detailsEl.classList.toggle('collapse');
-        });
-      });
-    });
-  });
-
-  // Expand/collapse the Feature details.
-  $(function() {
-    var featureTitleEl = window.document.getElementById('feature-title');
-    featureTitleEl.addEventListener('click', function() {
-      this.classList.toggle('can-expand');
-      var featureDetailsEls = window.document.getElementsByClassName('feature-details');
-      [].forEach.call(featureDetailsEls, function(el) {
-        el.classList.toggle('collapse');
-      });
-    });
   });
 
 })();

@@ -39,7 +39,7 @@
       openBurgerMenu = !repoControlsEl.classList.contains('collapse');
 
       // Persist the burger menu state in a cookie for five minutes.
-      window.document.cookie = "specsOpenBurgerMenu=" + openBurgerMenu + ";max-age=" + 5 * 60;
+      window.document.cookie = 'specsOpenBurgerMenu=' + openBurgerMenu + ';max-age=' + 5 * 60;
     }
 
     var expandCollapseRepoControlsEl = window.document.getElementById('expand-collapse-repository-controls');
