@@ -2,6 +2,7 @@
   "views": {
     "tidy": {
       "default": true,
+      "start collapsed": true,
       "excludedPaths": [
         "features-support/test-data/a/long/path/to/unwanted",
         "features-support/test-data/a/long/path/to/also_unwanted"
