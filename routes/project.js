@@ -16,7 +16,11 @@ var getProject = require('../lib/specifications/project').get;
 var getProjectData = require('../lib/specifications/project').getData;
 var getFileContents = require('../lib/specifications/project').getFileContents;
 
+var countTags = require('../lib/specifications/tags').count;
+
 var appConfig = require('../lib/configuration').get();
+
+var projectTags = {};
 
 // Given a file path, generate additional data or promises for data.
 function getFilePathToFileData(appConfig, projectData, getFileContents) {
@@ -53,6 +57,11 @@ function getProcessFileContent(fileContents) {
     if (file.isFeatureFile) {
       try {
         file.data = Parser.parse(fileContent);
+
+        // Count tags
+        projectTags = countTags(file.data, projectTags);
+        console.log(projectTags);
+
       } catch (err) {
         file.error = err;
       }
