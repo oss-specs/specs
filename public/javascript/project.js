@@ -48,7 +48,8 @@
 
   // Expand/collapse file lists button logic.
   $(function() {
-    var doExpand = false;
+    var directoryEls = window.document.getElementsByClassName('directory-path');
+    var doExpand = [].every.call(directoryEls, function(el) { return el.classList.contains('can-expand'); });
 
     function expandCollapseAll() {
       var els;
