@@ -48,7 +48,15 @@ ul.file-list {
 
 .project .content-controls .config-views {
   display: inline-block;
-  margin: 1em 0 1em 0;
+  margin-top: 1em;
+}
+/**
+ * Wideview port (e.g. landscape tablet).
+ */
+@media (min-width: 800px) {
+  .project .content-controls .config-views {
+    margin: 0;
+  }
 }
 .project .content-controls .config-views select {
   min-width: 10em;
