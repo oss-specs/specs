@@ -103,7 +103,10 @@
 
     // On change, reload the page with a new query param dictating target branch.
     selectEl.on('change', function() {
-      //window.location.href = window.location.pathname + '?branch=' + this.value;
+      var tag = this.value;
+      var tagUrlFragment = this.dataset.tagUrlFragment;
+      var featureByTagUrl = window.location.pathname + tagUrlFragment + '?tags=' + tag;
+      console.log(featureByTagUrl);
     });
   });
 })();
