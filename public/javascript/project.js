@@ -94,4 +94,16 @@
     });
   });
 
+  // Tag selecting element logic.
+  $(function() {
+    var selectEl = $('#select-tag-control');
+
+    // Set up the searchable select box jquery widget.
+    selectEl.select2();
+
+    // On change, reload the page with a new query param dictating target branch.
+    selectEl.on('change', function() {
+      //window.location.href = window.location.pathname + '?branch=' + this.value;
+    });
+  });
 })();

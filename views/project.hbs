@@ -48,6 +48,20 @@
             </div>
           {{/if}}
         </section>
+        {{#if project.hasTags}}
+          <section class="tag-controls">
+            <div class="select-tag-container">
+              <label for="select-tag-control">Go to tag view:</label>
+              <select id="select-tag-control">
+                <option value="none">none</option>
+                {{log "tags" project.tags}}
+                {{#each project.tags}}
+                  <option value="{{this.urlEncodedName}}">{{@key}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </section>
+        {{/if}}
         <hr>
       </section>
       <section class="spec-links">

@@ -54,6 +54,20 @@ ul.file-list {
   min-width: 10em;
 }
 
+.project .tag-controls select {
+  min-width: 15em;
+}
+/**
+ * Wideview port (e.g. landscape tablet).
+ */
+@media (min-width: 800px) {
+  .project .tag-controls {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+}
+
+
 .project .burger-menu {
   position: relative;
   z-index: 99;

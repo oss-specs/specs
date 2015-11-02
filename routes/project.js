@@ -168,8 +168,8 @@ function getRender(res, appConfig, renderOptions) {
 
           projectTags = countTags(file.data, projectTags);
         });
+        projectData.hasTags = !!Object.keys(projectTags).length;
         projectData.tags = projectTags;
-        console.log(projectData.tags);
 
         // Generate a file tree data structure.
         arrrayToTree(fileList, function(filePath, next) {
