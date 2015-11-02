@@ -170,7 +170,6 @@ function getRender(res, appConfig, renderOptions) {
         });
         projectData.hasTags = !!Object.keys(projectTags).length;
         projectData.tags = projectTags;
-        projectData.featureByTagRoute = appConfig.featureByTagRoute;
 
         // Generate a file tree data structure.
         arrrayToTree(fileList, function(filePath, next) {

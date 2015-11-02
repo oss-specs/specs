@@ -18,7 +18,7 @@
           <h3>Repository controls</h3>
           <div class="project-refs">
             <span class="project-branch">
-              <label for="project-branch-select">Branch or tag:</label>
+              <label for="project-branch-select" title="Version control system branch or tag">Branch or tag:</label>
               <select id="change-branch-control" title="{{project.currentBranchName}}">
                 {{#each project.tagsAndBranches}}
                   <option value="{{this.urlEncodedName}}" {{#if this.current}}selected{{/if}}>{{this.name}}</option>
@@ -51,8 +51,8 @@
         {{#if project.hasTags}}
           <section class="tag-controls">
             <div class="select-tag-container">
-              <label for="select-tag-control">Go to tag view:</label>
-              <select id="select-tag-control" data-tag-url-fragment="{{project.featureByTagRoute}}">
+              <label for="select-tag-control" title="Select feature file tags">Go to tag view:</label>
+              <select id="select-tag-control">
                 <option value="none">none</option>
                 {{#each project.tags}}
                   <option value="{{this.urlEncodedName}}">{{@key}}</option>

@@ -104,8 +104,9 @@
     // On change, reload the page with a new query param dictating target branch.
     selectEl.on('change', function() {
       var tag = this.value;
-      var tagUrlFragment = this.dataset.tagUrlFragment;
-      var featureByTagUrl = window.location.pathname + tagUrlFragment + '?tags=' + tag;
+      var tagSearch = 'tags=' + tag;
+      var searchParams = window.location.search;
+      var featureByTagUrl = window.location.pathname + (searchParams ? searchParams + '&' + tagSearch : '?' + tagSearch);
       console.log(featureByTagUrl);
     });
   });
