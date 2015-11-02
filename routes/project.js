@@ -57,11 +57,6 @@ function getProcessFileContent(fileContents) {
     if (file.isFeatureFile) {
       try {
         file.data = Parser.parse(fileContent);
-
-        // Count tags
-        projectTags = countTags(file.data, projectTags);
-        console.log(projectTags);
-
       } catch (err) {
         file.error = err;
       }
@@ -164,6 +159,17 @@ function getRender(res, appConfig, renderOptions) {
 
         // Mix in the file content.
         projectData.files = projectData.files.map(getProcessFileContent(fileContents));
+
+        // Count the tags.
+        projectData.files.forEach(function(file) {
+          if (!file.isFeatureFile || file.error) {
+            return;
+          }
+
+          projectTags = countTags(file.data, projectTags);
+        });
+        projectData.tags = projectTags;
+        console.log(projectData.tags);
 
         // Generate a file tree data structure.
         arrrayToTree(fileList, function(filePath, next) {
