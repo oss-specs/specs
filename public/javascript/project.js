@@ -4,6 +4,17 @@
 (function() {
   'use strict';
 
+  function getQueryParams() {
+    var vars = {}, hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++)
+    {
+        hash = hashes[i].split('=');
+        vars[hash[0]] = hash[1];
+    }
+    return vars;
+  }
+
   // Branch changing select element logic.
   $(function() {
     var selectEl = $('#change-branch-control');
@@ -104,10 +115,27 @@
     // On change, reload the page with a new query param dictating target branch.
     selectEl.on('change', function() {
       var tag = this.value;
-      var tagSearch = 'tags=' + tag;
-      var searchParams = window.location.search;
-      var featureByTagUrl = window.location.pathname + (searchParams ? searchParams + '&' + tagSearch : '?' + tagSearch);
-      console.log(featureByTagUrl);
+      var queryParams = getQueryParams();
+      var searchUrlFragment;
+      var featureByTagUrl;
+
+      queryParams['tags'] = tag;
+      searchUrlFragment = Object.keys(queryParams).reduce(function(soFar, key, index, keys) {
+        var value = queryParams[key];
+        var isFinal = (index === keys.length-1);
+        var param;
+        if (value !== undefined) {
+          param = soFar + key + '=' + value;
+        } else {
+          param = soFar + key;
+        }
+        if (!isFinal) {
+          param += '&';
+        }
+        return param;
+      }, '?');
+      featureByTagUrl = window.location.pathname + searchUrlFragment;
+      window.location.href = featureByTagUrl;
     });
   });
 })();

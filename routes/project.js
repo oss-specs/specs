@@ -20,8 +20,6 @@ var countTags = require('../lib/specifications/tags').count;
 
 var appConfig = require('../lib/configuration').get();
 
-var projectTags = {};
-
 // Given a file path, generate additional data or promises for data.
 function getFilePathToFileData(appConfig, projectData, getFileContents) {
   return function filePathToFileData(filePath) {
@@ -77,6 +75,7 @@ function getRender(res, appConfig, renderOptions) {
     var view = {};
     var viewNames = [];
     var currentView;
+    var projectTags = {};
 
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
 
@@ -94,6 +93,10 @@ function getRender(res, appConfig, renderOptions) {
       res.render('project', renderingData);
       return;
     }
+
+    /*
+      Applying views from configuration.
+     */
 
     // If the project config contains specified views use them.
     currentView = renderOptions.currentView;
@@ -142,6 +145,11 @@ function getRender(res, appConfig, renderOptions) {
       }
     }
 
+
+    /*
+      Getting file content and rendering.
+     */
+
     // Configure function for mapping file paths to file data.
     var pathToData = getFilePathToFileData(appConfig, projectData, getFileContents);
 
@@ -156,19 +164,30 @@ function getRender(res, appConfig, renderOptions) {
     var promisesForFileContent = projectData.files.map(function(f) {return f.contentsPromise;});
     return Promise.all(promisesForFileContent)
       .then(function(fileContents) {
+        var tagNames = [];
 
         // Mix in the file content.
         projectData.files = projectData.files.map(getProcessFileContent(fileContents));
 
+        /*
+          Applying filtering based on feature and scenario tags.
+         */
         // Count the tags.
         projectData.files.forEach(function(file) {
           if (!file.isFeatureFile || file.error) {
             return;
           }
-
           projectTags = countTags(file.data, projectTags);
         });
-        projectData.hasTags = !!Object.keys(projectTags).length;
+        tagNames = Object.keys(projectTags);
+        projectData.hasTags = !!tagNames.length;
+        // Mark current tag if any.
+        tagNames.forEach(function(name) {
+          // Currently on one tag is passed in the query parameter.
+          if (name === renderOptions.currentTags) {
+            projectTags[name].isCurrent = true;
+          }
+        });
         projectData.tags = projectTags;
 
         // Generate a file tree data structure.
@@ -262,10 +281,14 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   // Query parameter containing desired named view from project config.
   var currentView = req.query.view || false;
 
+  // Query parameter containing desired feature tags to filer on.
+  var currentTags = req.query.tags || false;
+
   // Create rendering options.
   var renderOptions = {
     openBurgerMenu: openBurgerMenu,
-    currentView: currentView
+    currentView: currentView,
+    currentTags: currentTags
   };
 
   // Create the render and passError functions.
