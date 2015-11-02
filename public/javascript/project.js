@@ -138,4 +138,27 @@
       window.location.href = featureByTagUrl;
     });
   });
+
+  // Override clicking on feature links when
+  // a scenario summary has been clicked so
+  // that a hash-fragment can be appended.
+  $(function() {
+    var specLinkEls = window.document.getElementsByClassName('spec-link');
+    [].forEach.call(specLinkEls, function(el) {
+      el.addEventListener('click', function(event) {
+        var sourceEl = event.srcElement;
+        var targetScenarioId;
+        var newUrl;
+        if (sourceEl.classList.contains('scenario-summary')) {
+          targetScenarioId = sourceEl.dataset.scenarioEncodedName;
+          if (targetScenarioId !== undefined) {
+            event.preventDefault();
+            newUrl = el.href + '#' + targetScenarioId;
+            window.location.href = newUrl;
+          }
+        }
+      });
+    });
+  });
+
 })();
