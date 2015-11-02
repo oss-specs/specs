@@ -6,7 +6,7 @@
         {{> feature_comments}}
         {{> feature_tags}}
       </section>
-      <h3 class="scenario-title interactive">{{keyword}}: {{name}}</h3>
+      <h3 class="scenario-title interactive" id="{{#uri_encode name}}{{this}}{{/uri_encode}}">{{keyword}}: {{name}}</h3>
       <section class="scenario-details collapsible collapse">
         {{> feature_description}}
         {{> feature_steps}}

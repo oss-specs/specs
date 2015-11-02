@@ -55,6 +55,7 @@ hbs.registerHelper('newlines_to_breaks', handlebarHelpers.newlinesToBreaks);
 hbs.registerHelper('newlines_to_paragraphs', handlebarHelpers.newlinesToParagraphs);
 hbs.registerHelper('step_content', handlebarHelpers.stepContent);
 hbs.registerHelper('directory_path', handlebarHelpers.directoryPath);
+hbs.registerHelper('uri_encode', handlebarHelpers.uriEncodeString);
 
 /**
  * LOGGING.
