@@ -26,6 +26,7 @@ function markTargetedFeature(feature, targetedScenarioName) {
   scenarios.forEach(function(scenario) {
     if (scenario.name === targetedScenarioName) {
       scenario.requested = true;
+      scenario.defaultOpen = true;
     }
   });
 
