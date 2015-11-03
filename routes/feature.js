@@ -74,7 +74,8 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
         feature.error = err;
       }
 
-      // Determin if a particular scenario was targeted.
+      // Determine if a particular scenario was targeted and mark
+      // it so that it can be rendered accordingly.
       if (targetedScenarioName) {
         feature = markTargetedFeature(feature, targetedScenarioName);
       }
