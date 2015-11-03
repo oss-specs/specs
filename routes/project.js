@@ -153,9 +153,6 @@ function getRender(res, appConfig, renderOptions) {
     // Configure function for mapping file paths to file data.
     var pathToData = getFilePathToFileData(appConfig, projectData, getFileContents);
 
-    // Make a copy of the simple file list before modifying it.
-    var fileList = projectData.files.slice();
-
     // Map list of file paths to list of file data objects.
     projectData.files = projectData.files.map(pathToData);
 
@@ -172,25 +169,82 @@ function getRender(res, appConfig, renderOptions) {
         /*
           Applying filtering based on feature and scenario tags.
          */
-        // Count the tags.
+
+         var currentTags = renderOptions.currentTags;
+        // Count the tags in the project.
         projectData.files.forEach(function(file) {
           if (!file.isFeatureFile || file.error) {
             return;
           }
-          projectTags = countTags(file.data, projectTags);
+
+          // This counts tags and marks when an
+          // object contains the requested tag.
+          projectTags = countTags(file.data, projectTags, currentTags);
         });
         tagNames = Object.keys(projectTags);
         projectData.hasTags = !!tagNames.length;
-        // Mark current tag if any.
+        // Mark the currently requested tag if any,
+        // this is used to set the selected option
+        // in the tag select box.
         tagNames.forEach(function(name) {
           // Currently on one tag is passed in the query parameter.
-          if (name === renderOptions.currentTags) {
+          if (name === currentTags) {
             projectTags[name].isCurrent = true;
           }
         });
         projectData.tags = projectTags;
 
-        // Generate a file tree data structure.
+        // Filter the features and scenarios based on
+        // whether they contain the requested tag.
+        if (currentTags) {
+          projectData.files = projectData.files.filter(function(file) {
+            var feature;
+            var featureScenarioContainsTag = false;
+
+            // Filter out non-feature or erroring files.
+            if (!file.isFeatureFile || file.error) {
+              return false;
+            }
+
+            // If the feature contains the tag keep it and take no
+            // further action.
+            feature = file.data;
+            if (feature.containsRequestedTag) {
+              return true;
+            }
+
+            feature.scenarioDefinitions.forEach(function (scenario, index, defs) {
+
+              // if any example contains the tag keep all examples.
+              if (scenario.type === 'ScenarioOutline') {
+                scenario.examples.forEach(function(example) {
+                  if (example.containsRequestedTag) {
+                    scenario.containsRequestedTag = true;
+                  }
+                });
+              }
+              if (scenario.containsRequestedTag) {
+                featureScenarioContainsTag = true;
+              } else {
+                // Set the scenario to undefined so it won't be rendered.
+                defs[index] = undefined;
+              }
+            });
+            // Remove undefined scenarios because handlbars' `each`
+            // helper doen't ignore undefined array elements.
+            feature.scenarioDefinitions = feature.scenarioDefinitions.filter(function(scenario) { return scenario !== undefined; });
+
+            // Retain or lose the feature depending on whether a scenario
+            // contained the requested tag.
+            return featureScenarioContainsTag;
+          });
+        }
+
+
+        /*
+          Generate a tree data structure from the flat file list.
+         */
+        var fileList = projectData.files.map(function(file) { return file.filePath; });
         arrrayToTree(fileList, function(filePath, next) {
 
           // Fix the assumption in file-tree that we are dealing with actual
@@ -217,7 +271,7 @@ function getRender(res, appConfig, renderOptions) {
           // Wrap in tree model convenience object.
           var treeRoot = (new TreeModel()).parse({name: 'root', children: fileTree});
 
-          // Use the tree to construct a set of files by directory.
+          // Use the tree to construct sets of files grouped by parent directory.
           var filesByDir = {};
           var fileNodes = treeRoot.all(function(node) { return node.model.isFile; });
           fileNodes.forEach(function(fileNode) {
@@ -283,6 +337,9 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   // Query parameter containing desired feature tags to filer on.
   var currentTags = req.query.tags || false;
+  if (currentTags === 'none') {
+    currentTags = false;
+  }
 
   // Create rendering options.
   var renderOptions = {
