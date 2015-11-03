@@ -1,6 +1,9 @@
 {
   "name": "oss-specs",
   "version": "0.14.00",
+  "engines": {
+    "node": "4.2.1"
+  },
   "description": "A service for exposing specification files in version control via a nice web UI",
   "bin": {
     "oss-specs": "./bin/www"
