@@ -170,7 +170,7 @@ function getRender(res, appConfig, renderOptions) {
           Applying filtering based on feature and scenario tags.
          */
 
-         var currentTags = renderOptions.currentTags;
+        var currentTags = renderOptions.currentTags;
         // Count the tags in the project.
         projectData.files.forEach(function(file) {
           if (!file.isFeatureFile || file.error) {
