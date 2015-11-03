@@ -5,14 +5,19 @@
   'use strict';
 
   function getQueryParams(urlString) {
-    var vars = {}, hash;
-    var hashes = urlString.slice(urlString.indexOf('?') + 1).split('&');
-    for(var i = 0; i < hashes.length; i++)
-    {
-        hash = hashes[i].split('=');
-        vars[hash[0]] = hash[1];
+    var url = new window.URL(urlString);
+    var search = url.search.replace(/^\?/,'');
+    var params = [];
+    var parsedParams = {};
+    if (!search.length) {
+      return parsedParams;
     }
-    return vars;
+    params = search.split('&');
+    params.forEach(function(param) {
+      param = param.split('=');
+      parsedParams[param[0]] = param[1];
+    });
+    return parsedParams;
   }
 
   function generateQueryString(queryParams) {
