@@ -4,15 +4,32 @@
 (function() {
   'use strict';
 
-  function getQueryParams() {
+  function getQueryParams(urlString) {
     var vars = {}, hash;
-    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    var hashes = urlString.slice(urlString.indexOf('?') + 1).split('&');
     for(var i = 0; i < hashes.length; i++)
     {
         hash = hashes[i].split('=');
         vars[hash[0]] = hash[1];
     }
     return vars;
+  }
+
+  function generateQueryString(queryParams) {
+    return Object.keys(queryParams).reduce(function(soFar, key, index, keys) {
+      var value = queryParams[key];
+      var isFinal = (index === keys.length-1);
+      var param;
+      if (value !== undefined) {
+        param = soFar + key + '=' + value;
+      } else {
+        param = soFar + key;
+      }
+      if (!isFinal) {
+        param += '&';
+      }
+      return param;
+    }, '?');
   }
 
   // Branch changing select element logic.
@@ -112,49 +129,49 @@
     // Set up the searchable select box jquery widget.
     selectEl.select2();
 
-    // On change, reload the page with a new query param dictating target branch.
+    // On change, reload the page with a query param
+    // determining feature tag to filter on.
     selectEl.on('change', function() {
       var tag = this.value;
-      var queryParams = getQueryParams();
-      var searchUrlFragment;
-      var featureByTagUrl;
+      var queryParams = getQueryParams(window.location.href);
 
+      // Modify the query params to replace or create on for the current tag.
       queryParams['tags'] = tag;
-      searchUrlFragment = Object.keys(queryParams).reduce(function(soFar, key, index, keys) {
-        var value = queryParams[key];
-        var isFinal = (index === keys.length-1);
-        var param;
-        if (value !== undefined) {
-          param = soFar + key + '=' + value;
-        } else {
-          param = soFar + key;
-        }
-        if (!isFinal) {
-          param += '&';
-        }
-        return param;
-      }, '?');
-      featureByTagUrl = window.location.pathname + searchUrlFragment;
-      window.location.href = featureByTagUrl;
+
+      window.location.href = window.location.pathname + generateQueryString(queryParams);
     });
   });
 
-  // Override clicking on feature links when
-  // a scenario summary has been clicked so
-  // that a hash-fragment can be appended.
+  // Override clicking on feature links when a scenario summary has been
+  // clicked so that a query param and hash-fragment can be appended.
   $(function() {
     var specLinkEls = window.document.getElementsByClassName('spec-link');
     [].forEach.call(specLinkEls, function(el) {
       el.addEventListener('click', function(event) {
         var sourceEl = event.srcElement;
         var targetScenarioId;
-        var newUrl;
+        var targetUrl;
+        var queryParams;
         if (sourceEl.classList.contains('scenario-summary')) {
           targetScenarioId = sourceEl.dataset.scenarioEncodedName;
+
+          // This click originated on a scenario summary and the requested
+          // URL should be modified.
           if (targetScenarioId !== undefined) {
             event.preventDefault();
-            newUrl = el.href + '#' + targetScenarioId;
-            window.location.href = newUrl;
+
+            targetUrl = new window.URL(el.href);
+            queryParams = getQueryParams(targetUrl.href);
+
+            // Modify the query params so the server can know which scenario
+            // was requested.
+            queryParams['scenario'] = targetScenarioId;
+            targetUrl.search = generateQueryString(queryParams);
+
+            // Add a hash fragment so that the named scenario is brought
+            // into view on navigation.
+            targetUrl.hash = '#' + targetScenarioId;
+            window.location.href = targetUrl.toString();
           }
         }
       });
