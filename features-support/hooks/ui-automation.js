@@ -3,7 +3,7 @@
  */
 'use strict';
 
-var WebDriver;
+var webdriver;
 
 // To be invoked in the context of a string.
 function toCamelCase() {
@@ -33,19 +33,29 @@ function getCustomCapabilitiesFromEnvironment() {
   return saucelabsProperties;
 }
 
+function getCapabilities(webdriver) {
+  var caps = getCustomCapabilitiesFromEnvironment();
+  var browserKey = webdriver.Capability.BROWSER_NAME;
+  var firefoxKey = webdriver.Browser.FIREFOX;
+
+  // Default to Firefox
+  caps[browserKey] = caps[browserKey] || firefoxKey;
+
+  return caps;
+}
+
 module.exports = function seleniumHooks() {
   this.Before('@ui-automation', function(callback) {
     var world = this;
 
     // Lazy require WebDriver so it isn't pulled in for non-selenium tests.
-    WebDriver = require('selenium-webdriver');
+    webdriver = require('selenium-webdriver');
 
     // this is defaults, can be overriden through environment variables
     // http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver_builder_class_Builder.html
     try {
-      world.browser = new WebDriver.Builder()
-        .forBrowser('firefox')
-        //.withCapabilities(getCustomCapabilitiesFromEnvironment())
+      world.browser = new webdriver.Builder()
+        .withCapabilities(getCapabilities(webdriver))
         .build();
     } catch (error) {
       callback(error);
