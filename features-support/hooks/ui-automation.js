@@ -34,7 +34,20 @@ function getCustomCapabilitiesFromEnvironment() {
         .toCamelCase();
       saucelabsProperties[sanitisedKey] = process.env[key];
     }
+    if(/^SAUCE_.*/.test(key)) {
+      saucelabsProperties[key] = process.env[key];
+    }
   });
+
+  // Set up sauce labs credentials.
+  // This will fail unless SauceConnect is running.
+  var user = saucelabsProperties['SAUCE_USERNAME'];
+  var accessKey = saucelabsProperties['SAUCE_ACCESS_KEY'];
+  var remoteURL = process.env['SELENIUM_REMOTE_URL'];
+  if (user && accessKey && remoteURL) {
+    remoteURL = remoteURL.replace(/^http:\/\//, 'http://' + user + ':' + accessKey + '@');
+    process.env['SELENIUM_REMOTE_URL'] = remoteURL;
+  }
 
   return saucelabsProperties;
 }
