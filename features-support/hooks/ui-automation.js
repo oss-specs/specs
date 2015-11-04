@@ -41,6 +41,8 @@ function getCustomCapabilitiesFromEnvironment() {
 
   // Set up sauce labs credentials.
   // This will fail unless SauceConnect is running.
+  // And possibly fail if sauce connect is working
+  // because the credentials are in the URL.
   var user = saucelabsProperties['SAUCE_USERNAME'];
   var accessKey = saucelabsProperties['SAUCE_ACCESS_KEY'];
   var remoteURL = process.env['SELENIUM_REMOTE_URL'];
