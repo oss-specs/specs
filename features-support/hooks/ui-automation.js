@@ -5,13 +5,13 @@
 
 var webdriver;
 
-/**
+/*
  * Convert a string to camel case.
- * @this the string on which the function is to be invoked.
- * @return String thge modified string.
+ * @param  String string The string to modify.
+ * @return String        The modified string.
  */
-function toCamelCase() {
-  return this.replace(/^([A-Z])|\s(\w)/g, function(match, p1, p2) {
+function toCamelCase(string) {
+  return string.replace(/^([A-Z])|\s(\w)/g, function(match, p1, p2) {
     if (p2) {
       return p2.toUpperCase();
     }
@@ -25,13 +25,12 @@ function getCustomCapabilitiesFromEnvironment() {
   // Loop over enumerable keys without going up the prototype chain.
   Object.keys(process.env).forEach(function(key) {
     if(/^SAUCELABS_.*/.test(key)) {
-      key.toCamelCase = toCamelCase;
       var sanitisedKey = key
         .replace(/^SAUCELABS_/, '')
         .split(/_/)
         .map(function (item) { return item.toLowerCase(); })
-        .join(' ')
-        .toCamelCase();
+        .join(' ');
+      sanitisedKey = toCamelCase(sanitisedKey);
       saucelabsProperties[sanitisedKey] = process.env[key];
     }
     if(/^SAUCE_.*/.test(key)) {
