@@ -85,6 +85,7 @@ button {
 }
 
 button.call-to-action {
+  margin: 0.1em;
   background-color: blue;
   color: white;
 }
@@ -174,13 +175,15 @@ button.back-button::before {
  }
  .collapsible {
    height: 100%;
-   transition: height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+   transition: all 0.4s ease-in-out;
  }
  .collapsible.collapse {
-   height: 0;
-   opacity: 0;
-   transition: height 0.2s ease-in-out, opacity 0.2s ease-in-out;
-   pointer-events: none;
+   height: 0 !important;
+   opacity: 0 !important;
+   margin: 0 !important;
+   padding: 0 !important;
+   border: none !important;
+   pointer-events: none !important;
  }
 
 

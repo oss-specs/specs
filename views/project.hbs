@@ -1,8 +1,8 @@
 {{> layout_start_document}}
 <link rel="stylesheet" href="/public/css/project.css">
-<link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
-<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
+<link href="/bower/select2/dist/css/select2.min.css" rel="stylesheet" />
+<script src="/bower/jquery/dist/jquery.min.js"></script>
+<script src="/bower/select2/dist/js/select2.min.js"></script>
 <script src="/public/javascript/project.js"></script>
 <script src="/public/javascript/loader.js"></script>
 {{> layout_start_body}}
@@ -14,14 +14,14 @@
     <section class="project">
       <section class="controls">
         <button id="expand-collapse-repository-controls" class="burger-menu"></button>
-        <section id="repository-controls" class="repository-controls collapsible collapse">
+        <section id="repository-controls" class="repository-controls collapsible {{#unless openBurgerMenu}}collapse{{/unless}}">
           <h3>Repository controls</h3>
           <div class="project-refs">
             <span class="project-branch">
               <label for="project-branch-select">Branch or tag:</label>
               <select id="change-branch-control" title="{{project.currentBranchName}}">
                 {{#each project.tagsAndBranches}}
-                  <option value="{{this.urlEncodedName}}" {{#if this.current}}selected{{/if}} >{{this.name}}</option>
+                  <option value="{{this.urlEncodedName}}" {{#if this.current}}selected{{/if}}>{{this.name}}</option>
                 {{else}}
                   <option selected>No branch data found</option>
                 {{/each}}
@@ -31,19 +31,33 @@
           </div>
           <a href="?update=true"><button class="project-update call-to-action loader-button">Get Latest</button></a>
           <span class="repo-link"><a href="{{project.repoUrl}}">(visit&nbsp;repository)</a></span>
-          <div class="loader-container"><div class="loader"></div></div>
+          <div class="loader-container"><div class="loader dark"></div></div>
         </section>
         <section class="content-controls">
           <button class="back-button call-to-action" onclick="window.history.back()"></button>
           <button id="expand-collapse-file-lists" class="call-to-action"><span>Expand/Collapse All</span></button>
+          {{#if hasViews}}
+            <div class="config-views">
+              <label for="change-views-control">View:</label>
+              <select id="change-views-control">
+                <option value="none">none</option>
+                {{#each viewNames}}
+                  <option value="{{this.urlEncodedName}}" {{#if this.isCurrent}}selected{{/if}}>{{this.name}}</option>
+                {{/each}}
+              </select>
+            </div>
+          {{/if}}
         </section>
         <hr>
       </section>
       <section class="spec-links">
+        {{#if view.hasAnchor}}
+          <section class="anchor"><p>File root: {{view.anchor}}</p></section>
+        {{/if}}
         {{#each project.filesByDir as |files directoryPath|}}
           <section class="directory">
-            <h2 class="directory-path interactive" title="{{directoryPath}}">{{#directory_path directoryPath pathsToHideRegex=../pathsToHideRegex}}{{this}}{{/directory_path}}</h2>
-            <ul class="file-list collapsible">
+            <h2 class="directory-path interactive {{#if ../view.[start collapsed]}}can-expand{{/if}}" title="{{directoryPath}}">{{#directory_path directoryPath pathsToHideRegex=../view.regex.pathsToHide}}{{this}}{{/directory_path}}</h2>
+            <ul class="file-list collapsible {{#if ../view.[start collapsed]}}collapse{{/if}}">
               {{#each files}}
                 {{#if this.isFeatureFile}}
                   {{> project_file_feature this currentBranchName=../../../project.currentBranchName}}

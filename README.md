@@ -8,10 +8,11 @@ A service for exposing specifications expressed as Gherkin feature files via a n
 [![Test Coverage](https://codeclimate.com/github/oss-specs/specs/badges/coverage.svg)](https://codeclimate.com/github/oss-specs/specs/coverage)
 
 
-Start the server, in the UI specify a https URL for a Git repo, and if that repo contains markdown or feature files they will be displayed. The idea is to make specifications stored in a repo visible and searchable, for people who aren't familiar with version control systems, and as part of a living documentation system.
+In the UI specify a https URL for a Git repo, and if that repo contains markdown or feature files they will be displayed. The idea is to make specifications stored in a repo visible and searchable, for people who aren't familiar with version control systems, and as part of a living documentation system.
 
 If you want to run Specs as a service we recommend you use the Docker instructions given below.
 
+We're trying out continuous delivery on this project so in theory the `master` branch is always stable. A demo is available at http://specs.sponte.uk/ , it may take a few seconds to spin up and will not persist data for long.
 
 ## Development installation instructions
 
@@ -37,11 +38,22 @@ To install the latest version from npm
 
 Alternatively, get the container image here https://hub.docker.com/r/specs/specs/ and start it in whatever way you prefer.
 
-## Environment variables
+## Configuration
+
+There are two types of possible configuration:
+
+### App wide configuration through environment variables
 
 * SPECS_OUT_DIR - Specifies location of project-data folder, by default this lives in the root of the project.
 * SPECS_ALLOW_INSECURE_SSL - Disables SSL certificate verification when cloning repos.
-* SPECS_EXCLUDED_PATHS - Excludes certain paths (globally) from projects.
-* SPECS_PATHS_TO_HIDE - Specify beginnings of directory paths to hide on the project page. E.g. if you specified 'src/test/specs' then a directory 'src/test/specs/my_wondeful_feature' would be displayed in the directory list as 'my_wonderful_feature'. This only affects display logic, not the underlying data.
+
+### Project specific configuration via a specs.json file
+The file should be in the root of your repository. The file an be named `specs.json` or `.specs.json` .See the [.specs.json](.specs.json) file in the root of this repository for an example.
+
+Keys:
+ * views: An object with keys specifying named view configurations. Allowed keys are:
+   * default - A boolean, if true this view will be used by default in the UI. 
+   * excludedPaths - An array of folder paths to exclude from the UI on the project page.
+   * pathsToHide - Specify beginnings of directory paths to hide on the project page. E.g. if you specified 'src/test/specs' then a directory 'src/test/specs/my_wondeful_feature' would be displayed in the directory list as '... my_wonderful_feature'.
 
 (C) 2015

@@ -4,6 +4,6 @@ var gulp = require('gulp-help')(require('gulp'));
 
 gulp.task('set-envs:test', 'Set testing environment variables.', function(done) {
   process.env.NODE_ENV = 'development';
-  process.env.PORT = 2222;
+  process.env.PORT = process.env.PORT || 2222;
   done();
 });

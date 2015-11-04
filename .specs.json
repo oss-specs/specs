@@ -1,0 +1,28 @@
+{
+  "views": {
+    "tidy": {
+      "default": true,
+      "start collapsed": true,
+      "excludedPaths": [
+        "features-support/test-data/a/long/path/to/unwanted",
+        "features-support/test-data/a/long/path/to/also_unwanted"
+      ],
+      "pathsToHide": [
+        "features-support/test-data/a/long/path/to/wanted"
+      ]
+    },
+    "test data only": {
+      "anchor": "features-support/test-data"
+    },
+    "hiding more things": {
+      "excludedPaths": [
+        "features-support/test-data/a/long/path/to/unwanted",
+        "features-support/test-data/a/long/path/to/also_unwanted"
+      ],
+      "pathsToHide": [
+        "features-support/test-data/a/long/path/to/wanted",
+        "features"
+      ]
+    }
+  }
+}

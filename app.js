@@ -11,9 +11,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var hbs = require('hbs');
 
-// Pull in polyfills.
-require('./polyfill');
-
 var appVersion = require('./package.json').version;
 
 // Set the config object for use elsewhere.
@@ -23,9 +20,7 @@ var appVersion = require('./package.json').version;
 // configuration state at require time.
 var appConfig = require('./lib/configuration').set({
   rootPath: process.env.SPECS_OUT_DIR || __dirname,
-  allowInsecureSSL: process.env.SPECS_ALLOW_INSECURE_SSL,
-  excludedPaths: process.env.SPECS_EXCLUDED_PATHS,
-  pathsToHide: process.env.SPECS_PATHS_TO_HIDE
+  allowInsecureSSL: process.env.SPECS_ALLOW_INSECURE_SSL
 });
 
 var handlebarHelpers = require(path.join(__dirname,'views', 'helpers'));
@@ -98,6 +93,27 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 
 /* Routes. */
 
+// Vendor resources in node_modules/ routes.
+app.get('/github-markdown-css/github-markdown.css', function(req, res, next) {
+  var cssPath = path.join(__dirname, 'node_modules','github-markdown-css','github-markdown.css');
+  res.sendFile(cssPath, {}, function(err) {
+    if (err) {
+      next(err);
+    }
+  });
+});
+
+// Vendor resources in bower_components/ routes.
+app.get('/bower/*', function(req, res, next) {
+  var filePath = path.join(__dirname, 'bower_components', req.params[0]);
+  console.log(filePath);
+  res.sendFile(filePath, {}, function(err) {
+    if (err) {
+      next(err);
+    }
+  });
+});
+
 // Front page is the projects page.
 // http://host/
 app.use(projectsRoute);
@@ -110,22 +126,13 @@ app.use(appConfig.projectRoute, projectRoute);
 // htpp://host/project/<project name>/<root/to/file>
 app.use(appConfig.projectRoute, featureRoute);
 
-// Special resources in node_modules/ routes.
-app.get('/github-markdown-css/github-markdown.css', function(req, res, next) {
-  var cssPath = path.join(__dirname, 'node_modules','github-markdown-css','github-markdown.css');
-  res.sendFile(cssPath, {}, function(err) {
-    if (err) {
-      next(err);
-    }
-  });
-});
-
 // Catch 404 and forward to error handler.
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
+
 
 // Don't delete the unused `next` argument, express inspects
 // the arguments to determine behaviour (horrible).

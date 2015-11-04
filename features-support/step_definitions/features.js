@@ -56,9 +56,10 @@ module.exports = function () {
   });
 
   this.Then(/^the scenarios will be visible\.?$/, function (callback) {
-    should.equal(/feature:/i.test(this.body),
+    should.equal(this.statusCode, 200, 'Bad HTTP status code: ' + this.statusCode + '\nBody:\n' + this.body);
+    should.equal(/feature-title/i.test(this.body),
       true,
-      'The returned document body does not contain the word \'feature\'');
+      'The returned document body does not contain a feature title');
     callback();
   });
 

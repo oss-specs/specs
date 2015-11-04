@@ -1,6 +1,7 @@
 {
   "name": "oss-specs",
-  "version": "0.12.10",
+  "version": "0.13.13",
+  "description": "A service for exposing specification files in version control via a nice web UI",
   "bin": {
     "oss-specs": "./bin/www"
   },
@@ -21,6 +22,7 @@
     "living documentation"
   ],
   "scripts": {
+    "postinstall": "node_modules/.bin/bower install",
     "prestart": "npm stop",
     "start": "node ./bin/www",
     "stop": "pkill specs || true",
@@ -71,7 +73,8 @@
     "serve-favicon": "^2.3.0",
     "session-file-store": "0.0.20",
     "tree-model": "^1.0.2",
-    "underscore": "1.8.3"
+    "underscore": "1.8.3",
+    "bower": "^1.6.3"
   },
   "devDependencies": {
     "codeclimate-test-reporter": "^0.1.1",

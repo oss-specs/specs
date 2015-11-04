@@ -15,12 +15,52 @@ ul.file-list {
 }
 
 .project .controls {
-  margin-bottom: 2em;
+  margin-bottom: 0;
   padding: 1em;
 }
 
-.project .controls .burger-menu {
-  float: right;
+.project .controls .loader-container {
+  margin: 2em 2em 1em 2em;
+  top: -0.5em;
+}
+
+/**
+ * Wideview port (e.g. landscape tablet).
+ */
+@media (min-width: 800px) {
+  .project .controls {
+    margin-bottom: 2em;
+  }
+}
+
+.project .controls button.call-to-action {
+  margin: 0 0.6em 0 0;
+}
+
+.project .repository-controls {
+  box-sizing: border-box;
+  margin-bottom: 1em;
+  padding: 2em;
+  background-color: #FAFAFA;
+  border-radius: 0.3em;
+  border: 1px solid rgb(220, 220, 220);
+}
+
+.project .content-controls .config-views {
+  display: inline-block;
+  margin: 1em 0 1em 0;
+}
+.project .content-controls .config-views select {
+  min-width: 10em;
+}
+
+.project .burger-menu {
+  position: relative;
+  z-index: 99;
+  display: block;
+  margin: 0 0 0 0.5em;
+  float:right;
+  border: 1px solid darkgrey;
 }
 
 .project-refs {
@@ -66,6 +106,9 @@ ul.file-list {
 .directory {
   margin: 1em;
 }
+.directory:first-child {
+  margin-top: 0;
+}
 
 /* Minus and plus signs for expandable directories */
 .directory-path::before {
@@ -85,10 +128,7 @@ a.spec-link {
   text-decoration: none;
 }
 
-.directory {
-  margin: 1em;
-}
-
+.anchor,
 h2.directory-path {
   font-size: 1.2em;
   font-weight: normal;
@@ -97,12 +137,33 @@ h2.directory-path {
   margin-bottom: 0.5em;
 }
 
+.anchor {
+  font-size: 0.9em;
+  margin: 0 1em 0 1em;
+}
+/**
+ * Wideview port (e.g. landscape tablet).
+ */
+@media (min-width: 800px) {
+  .anchor {
+    margin-bottom: 2em;
+  }
+}
+
 /* Minus and plus signs for expandable directories */
 .directory-path::before {
   content: '\2296\2003';
 }
 .directory-path.expand::before {
   content: '\2295\2003';
+}
+
+.directory-path .redacted {
+  font-size: 0.6em;
+  margin-right: 0.5em;
+}
+.directory-path .redacted::before {
+  content: '\2026';
 }
 
 /* TODO: standardise and reuse styling via pre-processor */

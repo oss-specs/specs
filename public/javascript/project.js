@@ -17,11 +17,29 @@
     });
   });
 
+  // View changing select element logic change-branch-control
+  $(function() {
+    var selectEl = $('#change-views-control');
+
+    // On change, reload the page with a new query param dictating configured view.
+    if (selectEl) {
+      selectEl.on('change', function() {
+        window.location.href = window.location.pathname + '?view=' + this.value;
+      });
+    }
+  });
+
   // Expand/collapse repository controls.
   $(function() {
+    var openBurgerMenu;
+
     function expandCollapseRepoControls() {
       var repoControlsEl = window.document.getElementById('repository-controls');
       repoControlsEl.classList.toggle('collapse');
+      openBurgerMenu = !repoControlsEl.classList.contains('collapse');
+
+      // Persist the burger menu state in a cookie for five minutes.
+      window.document.cookie = 'specsOpenBurgerMenu=' + openBurgerMenu + ';max-age=' + 5 * 60;
     }
 
     var expandCollapseRepoControlsEl = window.document.getElementById('expand-collapse-repository-controls');
@@ -30,7 +48,8 @@
 
   // Expand/collapse file lists button logic.
   $(function() {
-    var doExpand = false;
+    var directoryEls = window.document.getElementsByClassName('directory-path');
+    var doExpand = [].every.call(directoryEls, function(el) { return el.classList.contains('can-expand'); });
 
     function expandCollapseAll() {
       var els;

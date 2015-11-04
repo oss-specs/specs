@@ -1,45 +1,42 @@
 {{> layout_start_document}}
 <link rel="stylesheet" href="/public/css/feature.css">
-<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="/bower/jquery/dist/jquery.min.js"></script>
 <script src="/public/javascript/feature.js"></script>
 {{> layout_start_body}}
 <main>
   {{#if feature.error}}
-    <header>
-      <h1 class="title">Error parsing feature</h1>
-    </header>
     <section class="content-controls">
       <button class="back-button call-to-action" onclick="window.history.back()"></button>
     </section>
     <section class="feature">
+      <header>
+        <h1 class="title">Error parsing feature</h1>
+      </header>
       <p>We are sorry, that feature file could not be understood, this is likely an issue with the file contents. If you would like to see the unprocessed file contents please click <a href="{{feature.plainFileUrl}}">here</a>. The error encountered is given below.</p>
       <p>{{feature.error.message}}</p>
     </section>
   {{else}}
-    <header>
-      <h1 class="title">{{feature.name}}</h1>
-    </header>
     <section class="content-controls">
       <button class="back-button call-to-action" onclick="window.history.back()"></button>
       <button id="expand-collapse-details" class="call-to-action"><span>Expand/Collapse Details</span></button>
-      <button id="expand-collapse-tags" class="call-to-action"><span>Expand/Collapse Tags</span></button>
+      <button id="expand-collapse-tags" class="call-to-action collapsible collapse"><span>Expand/Collapse Tags</span></button>
     </section>
     <article class="feature">
-        {{!-- Start the feature details collapsed. --}}
-        <section class="feature-details collapsible collapse">
-          {{> feature_comments feature}}
-          {{> feature_tags feature}}
-        </section>
-        <h2 id="feature-title" class="feature-title can-expand interactive">{{feature.type}}: {{feature.name}}</h2>
-        <section class="feature-details collapsible collapse">
-          {{> feature_description feature}}
-        </section>
-        <ul class="scenarios">
-          {{> feature_scenario feature.background}}
-          {{#each feature.scenarioDefinitions}}
-            {{> feature_scenario this}}
-          {{/each}}
-        </ul>
+      <header>
+        <h1 id="feature-title" class="title feature-title can-expand">{{feature.name}}</h1>
+      </header>
+      {{!-- Start the feature details collapsed. --}}
+      <section class="feature-details collapsible collapse">
+        {{> feature_comments feature}}
+        {{> feature_tags feature}}
+        {{> feature_description feature}}
+      </section>
+      <ul class="scenarios">
+        {{> feature_scenario feature.background}}
+        {{#each feature.scenarioDefinitions}}
+          {{> feature_scenario this}}
+        {{/each}}
+      </ul>
     </article>
   {{/if}}
 </main>
