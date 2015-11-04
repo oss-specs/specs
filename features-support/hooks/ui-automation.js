@@ -5,13 +5,19 @@
 
 var webdriver;
 
-// To be invoked in the context of a string.
+/**
+ * Convert a string to camel case.
+ * @this the string on which the function is to be invoked.
+ * @return String thge modified string.
+ */
 function toCamelCase() {
-  return this.replace(/^([A-Z])|\s(\w)/g, function(match, p1, p2, offset) {
-    if (p2) return p2.toUpperCase();
+  return this.replace(/^([A-Z])|\s(\w)/g, function(match, p1, p2) {
+    if (p2) {
+      return p2.toUpperCase();
+    }
     return p1.toLowerCase();
   });
-};
+}
 
 function getCustomCapabilitiesFromEnvironment() {
   var saucelabsProperties = {};
@@ -24,7 +30,7 @@ function getCustomCapabilitiesFromEnvironment() {
         .replace(/^SAUCELABS_/, '')
         .split(/_/)
         .map(function (item) { return item.toLowerCase(); })
-        .join(" ")
+        .join(' ')
         .toCamelCase();
       saucelabsProperties[sanitisedKey] = process.env[key];
     }
@@ -73,4 +79,4 @@ module.exports = function seleniumHooks() {
     }
     callback();
   });
-}
+};

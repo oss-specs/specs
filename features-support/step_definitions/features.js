@@ -1,6 +1,5 @@
 'use strict';
 
-var request = require('request');
 var should = require('should');
 var By = require('selenium-webdriver').By;
 
@@ -12,17 +11,14 @@ function getProjectFromUrl(callback) {
   world.browser.get(projectRetrievalUrl)
   .then(world.browser.getPageSource.bind(world.browser))
   .then(function (body) {
-      world.body = body;
-      callback();
+    world.body = body;
+    callback();
   });
 }
 
 // The returned function is passed as a callback to getProjectFromUrl.
 function getScenarioFromProject(callback, world) {
   return function(error) {
-    var featureLinks = [];
-    var featureLink;
-
     if (error) {
       callback(error);
       return;
@@ -30,16 +26,13 @@ function getScenarioFromProject(callback, world) {
 
     world.browser.findElements(By.css('.spec-link'))
     .then(function (specLinks) {
-      var featureUrl = 'http://localhost:' + world.appPort + featureLink;
-
       var featureLink = specLinks[specLinks.length - 1];
-
-      return world.browser.get(featureLink.getAttribute('href'))
+      return world.browser.get(featureLink.getAttribute('href'));
     })
     .then(world.browser.getPageSource.bind(world.browser))
     .then(function (body) {
-        world.body = body;
-        callback();
+      world.body = body;
+      callback();
     });
   };
 }
@@ -47,7 +40,6 @@ function getScenarioFromProject(callback, world) {
 module.exports = function () {
 
   this.Then(/^the list of features will be visible\.?$/, function (callback) {
-
     should.equal(
       /\.feature/i.test(this.body) && /\.md/i.test(this.body),
       true,
