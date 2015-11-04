@@ -51,7 +51,7 @@ module.exports = function () {
     should.equal(
       /\.feature/i.test(this.body) && /\.md/i.test(this.body),
       true,
-      'The returned document body does not contain the strings \'.feature\' and \'.md\'');
+      'The returned document body does not contain the strings \'.feature\' and \'.md\'' + this.body);
     callback();
   });
 
