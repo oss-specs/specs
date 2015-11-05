@@ -94,4 +94,13 @@
     });
   });
 
+  // Edit button functionality
+  $(function() {
+    $('.feature-edit').click(function(event) {
+      event.preventDefault();
+      var editUrl = this.dataset.editUrl;
+      window.location.href = editUrl;
+    });
+  });
+
 })();

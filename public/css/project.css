@@ -208,6 +208,12 @@ h2.directory-path {
   margin-bottom: 0;
 }
 
+.file-container .feature-edit {
+  font-size: 0.9em;
+  float: right;
+  margin: 0.5em;
+}
+
 .feature-summary {
   padding: 0.8em 0.5em 0.3em 0.5em;
 }

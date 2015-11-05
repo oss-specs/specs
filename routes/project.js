@@ -5,6 +5,8 @@ var path = require('path');
 var express = require('express');
 var router = express.Router();
 
+var handlebars = require('hbs').handlebars;
+
 var Gherkin = require('gherkin');
 var Parser = new Gherkin.Parser();
 var markdown = require('markdown').markdown;
@@ -155,6 +157,25 @@ function getRender(res, appConfig, renderOptions) {
 
         // Mix in the file content.
         projectData.files = projectData.files.map(getProcessFileContent(fileContents));
+
+        // If the project config contains a URL format
+        // for creating links to edit files then grab it.
+        if (projectData.config.editUrlFormat) {
+          projectData.files.forEach(function(file) {
+            var editUrlTemplate = handlebars.compile(projectData.config.editUrlFormat);
+            var editUrl = editUrlTemplate({
+              repoUrl: projectData.repoUrl,
+              branchName: projectData.currentShortBranchName,
+              pathToFile: file.filePath
+            });
+            editUrl = path.posix.normalize(editUrl);
+
+            file.editUrl = editUrl
+
+            console.log('****');
+            console.log(editUrl);
+          });
+        }
 
         // Generate a file tree data structure.
         arrrayToTree(fileList, function(filePath, next) {
