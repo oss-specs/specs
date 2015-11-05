@@ -44,15 +44,17 @@ function getCustomCapabilitiesFromEnvironment() {
   // because the credentials are in the URL.
   var user = saucelabsProperties['SAUCE_USERNAME'];
   var accessKey = saucelabsProperties['SAUCE_ACCESS_KEY'];
-  var remoteURL = process.env['SELENIUM_REMOTE_URL'];
-  if (user && accessKey && remoteURL) {
-    remoteURL = remoteURL.replace(/^http:\/\//, 'http://' + user + ':' + accessKey + '@');
+  var remoteSauceURL = process.env['SELENIUM_REMOTE_URL'];
+  if (user && accessKey && remoteSauceURL) {
+    remoteSauceURL = remoteSauceURL.replace(/^http:\/\//, 'http://' + user + ':' + accessKey + '@');
 
     console.log('****');
-    console.log(remoteURL);
+    console.log(remoteSauceURL);
     console.log('*****');
 
-    process.env['SELENIUM_REMOTE_URL'] = remoteURL;
+    //process.env['SELENIUM_REMOTE_URL'] = remoteSauceURL;
+
+    saucelabsProperties.remoteServer = remoteSauceURL;
   }
 
   return saucelabsProperties;
@@ -66,6 +68,10 @@ function getCapabilities(webdriver) {
   // Default to Firefox
   caps[browserKey] = caps[browserKey] || firefoxKey;
 
+  console.log('$$$$$');
+  console.log(caps);
+  console.log('$$$$$');
+
   return caps;
 }
 
@@ -76,12 +82,21 @@ module.exports = function seleniumHooks() {
     // Lazy require WebDriver so it isn't pulled in for non-selenium tests.
     webdriver = require('selenium-webdriver');
 
+    var capabilities = getCapabilities(webdriver);
+
     // this is defaults, can be overriden through environment variables
     // http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver_builder_class_Builder.html
     try {
-      world.browser = new webdriver.Builder()
-        .withCapabilities(getCapabilities(webdriver))
-        .build();
+      if (capabilities.remoteServer) {
+        world.browser = new webdriver.Builder()
+          .withCapabilities(capabilities)
+          .usingServer(capabilities.remoteServer)
+          .build();
+      } else {
+        world.browser = new webdriver.Builder()
+          .withCapabilities(capabilities)
+          .build();
+      }
     } catch (error) {
       callback(error);
     }
