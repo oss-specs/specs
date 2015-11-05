@@ -1,4 +1,5 @@
 {
+  "editUrl": "{{repoUrl}}/edit/{{branchName}}/{{pathToFile}}",
   "views": {
     "tidy": {
       "default": true,
