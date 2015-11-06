@@ -12,16 +12,15 @@
   list-style: none;
 }
 
-.header-nav a {
+.header-nav li {
   display: inline-block;
-  font-weight: bold;
-  color: blue;
-  text-decoration: none;
+  margin-left: 0.2em;
 }
 
-.header-nav li {
-  display: inline;
-  margin-left: 0.2em;
+.header-nav a {
+  display: inline-block;
+  color: blue;
+  text-decoration: none;
 }
 
 .header-nav li:hover a {
@@ -29,12 +28,19 @@
   color: green;
 }
 
+.header-nav a span {
+  display: inline-block;
+}
+
 /* The logo-ish element of the nav. */
 .header-nav li.primary {
-  font-size: 0.8em;
+  font-size: 2em;
   margin-right: 1em;
-  text-transform: uppercase;
 }
-.header-nav li.primary a::first-letter {
-  font-size: 1.4em;
+
+.header-nav hr.top {
+  margin-bottom: 0.1em;
+}
+.header-nav hr.bottom {
+  margin-top: 0.1em;
 }
