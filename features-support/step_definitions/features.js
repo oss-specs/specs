@@ -39,6 +39,72 @@ function getScenarioFromProject(callback, world) {
 
 module.exports = function () {
 
+  this.Given(/^a URL representing a remote Git repo "([^"]*)"$/, function (repoUrl, callback) {
+    this.repoUrl = repoUrl;
+    callback();
+  });
+
+
+  this.When(/^an interested party wants to view the features in that repo\.?$/, getProjectFromUrl);
+  this.When(/^they request the features for the same repository again\.?$/, getProjectFromUrl);
+
+  this.When(/^an interested party wants to view the scenarios within a feature\.?$/, function (callback) {
+    var world = this;
+    getProjectFromUrl.bind(world)(getScenarioFromProject(callback, world));
+  });
+
+  this.When(/^they decide to change which branch is being displayed$/, function (callback) {
+    var world = this;
+    var burgerMenuId = "expand-collapse-repository-controls";
+    var repositoryCongtrolsId = "repository-controls";
+    var projectShaElId = "project-commit";
+    var changeBranchSelectElId = "change-branch-control";
+    var testingBranchOptionValue = "refs%2Fremotes%2Forigin%2Ftest%2FdoNotDelete";
+    var burgerMenuEl;
+    var repoControlsEl;
+
+
+    // Get the burger menu element.
+    world.browser.findElement(By.id(burgerMenuId))
+      .then(function(_burgerMenuEl) {
+        burgerMenuEl = _burgerMenuEl;
+        return world.browser.findElement(By.id(repositoryCongtrolsId));
+
+      // Get the repo controls element.
+      }).then(function(_repoControlsEl) {
+        repoControlsEl = _repoControlsEl;
+        return repoControlsEl.getAttribute('class');
+
+      // Open the repo controls.
+      }).then(function(repoControlsClass) {
+        var isClosed = repoControlsClass.indexOf("collapse") !== -1;
+        if (isClosed) {
+          return burgerMenuEl.click();
+        }
+        return;
+
+      // Grab the current SHA
+      }).then(function() {
+        return world.browser.findElement(By.id(projectShaElId));
+      }).then(function(_projectShaEl) {
+        return _projectShaEl.getText();
+      }).then(function(originalSha) {
+        world.oringalSha = originalSha;
+
+        // Grab the branch selecting control.
+        return world.browser.findElement(By.id(changeBranchSelectElId));
+
+      // Request to change branch.
+      }).then(function(_changeBranchSelectEl) {
+        return _changeBranchSelectEl.findElement(By.xpath('option[@value=\'' + testingBranchOptionValue + '\']'));
+      }).then(function(_testBranchOptionEl) {
+        return _testBranchOptionEl.click();
+      }).then(function() {
+        callback();
+      });
+  });
+
+
   this.Then(/^the list of features will be visible\.?$/, function (callback) {
     should.equal(
       /\.feature/i.test(this.body) && /\.md/i.test(this.body),
@@ -54,16 +120,19 @@ module.exports = function () {
     callback();
   });
 
-  this.Given(/^a URL representing a remote Git repo "([^"]*)"$/, function (repoUrl, callback) {
-    this.repoUrl = repoUrl;
-    callback();
-  });
-
-  this.When(/^an interested party wants to view the features in that repo\.?$/, getProjectFromUrl);
-  this.When(/^they request the features for the same repository again\.?$/, getProjectFromUrl);
-
-  this.When(/^an interested party wants to view the scenarios within a feature\.?$/, function (callback) {
+  this.Then(/^the files from the selected branch are displayed\.$/, function (callback) {
     var world = this;
-    getProjectFromUrl.bind(world)(getScenarioFromProject(callback, world));
+
+    var projectShaElId = "project-commit";
+
+
+    // Get the new SHA.
+    return world.browser.findElement(By.id(projectShaElId))
+      .then(function(_projectShaEl) {
+        return _projectShaEl.getText();
+      }).then(function(newSha) {
+        should.notEqual(newSha, world.oringalSha, 'The SHA did not change on changing branch.');
+        callback();
+      });
   });
 };

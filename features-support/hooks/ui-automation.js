@@ -104,13 +104,14 @@ module.exports = function seleniumHooks() {
   });
 
   // Tidy up.
-  this.After('@ui-automation', function(callback) {
-    var world = this;
-    try {
-      world.browser.quit();
-    } catch (error) {
-      callback(error);
+  this.After('@ui-automation', function() {
+    var browser = this.browser;
+
+    // Cope with this step getting called twice at the end of the run
+    // possibly because @ui-automation is a feature tag?
+    if (browser.session_ !== undefined) {
+      browser.quit();
     }
-    callback();
+
   });
 };
