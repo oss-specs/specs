@@ -73,8 +73,20 @@ module.exports = function seleniumHooks() {
   });
 
   // Tidy up.
-  this.After('@ui-automation', function() {
+  this.After('@ui-automation', function(callback) {
     var browser = this.browser;
-    browser.quit();
+
+    var buildNumber = process.env('BUILD_NUMBER') || '';
+
+    browser.getSession()
+      .then(function(session) {
+        return session.getId();
+      })
+      .then(function(sessionId) {
+        // For Sauce onDemand plugin in TeamCity
+        process.stderr('SauceOnDemandSessionID=' + sessionId + 'job-name=oss-specs-' + buildNumber);
+        browser.quit();
+        callback();
+      });
   });
 };
