@@ -53,10 +53,6 @@ function getCapabilities(webdriver) {
   // Default to Firefox
   caps[browserKey] = caps[browserKey] || firefoxKey;
 
-  console.log('$$$$$');
-  console.log(caps);
-  console.log('$$$$$');
-
   return caps;
 }
 
