@@ -24,6 +24,8 @@ function getCustomCapabilitiesFromEnvironment() {
 
   // Loop over enumerable keys without going up the prototype chain.
   Object.keys(process.env).forEach(function(key) {
+
+    // Prefixed general environment variables.
     if(/^SAUCELABS_.*/.test(key)) {
       var sanitisedKey = key
         .replace(/^SAUCELABS_/, '')
@@ -33,29 +35,12 @@ function getCustomCapabilitiesFromEnvironment() {
       sanitisedKey = toCamelCase(sanitisedKey);
       saucelabsProperties[sanitisedKey] = process.env[key];
     }
+
+    // Sauce labs specific environment variables.
     if(/^SAUCE_.*/.test(key)) {
       saucelabsProperties[key] = process.env[key];
     }
   });
-
-  // Set up sauce labs credentials.
-  // This will fail unless SauceConnect is running.
-  // And possibly fail if sauce connect is working
-  // because the credentials are in the URL.
-  var user = saucelabsProperties['SAUCE_USERNAME'];
-  var accessKey = saucelabsProperties['SAUCE_ACCESS_KEY'];
-  var remoteSauceURL = process.env['SELENIUM_REMOTE_URL'];
-  if (user && accessKey && remoteSauceURL) {
-    remoteSauceURL = remoteSauceURL.replace(/^http:\/\//, 'http://' + user + ':' + accessKey + '@');
-
-    console.log('****');
-    console.log(remoteSauceURL);
-    console.log('*****');
-
-    //process.env['SELENIUM_REMOTE_URL'] = remoteSauceURL;
-
-    saucelabsProperties.remoteServer = remoteSauceURL;
-  }
 
   return saucelabsProperties;
 }
@@ -87,16 +72,9 @@ module.exports = function seleniumHooks() {
     // this is defaults, can be overriden through environment variables
     // http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver_builder_class_Builder.html
     try {
-      if (capabilities.remoteServer) {
-        world.browser = new webdriver.Builder()
-          .withCapabilities(capabilities)
-          .usingServer(capabilities.remoteServer)
-          .build();
-      } else {
-        world.browser = new webdriver.Builder()
-          .withCapabilities(capabilities)
-          .build();
-      }
+      world.browser = new webdriver.Builder()
+        .withCapabilities(capabilities)
+        .build();
     } catch (error) {
       callback(error);
     }
