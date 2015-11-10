@@ -127,7 +127,7 @@ module.exports = function () {
 
 
     // Get the new SHA.
-    return world.browser.findElement(By.id(projectShaElId))
+    world.browser.findElement(By.id(projectShaElId))
       .then(function(_projectShaEl) {
         return _projectShaEl.getText();
       }).then(function(newSha) {
