@@ -35,11 +35,6 @@ function getCustomCapabilitiesFromEnvironment() {
       sanitisedKey = toCamelCase(sanitisedKey);
       saucelabsProperties[sanitisedKey] = process.env[key];
     }
-
-    // Sauce labs specific environment variables.
-    if(/^SAUCE_.*/.test(key)) {
-      saucelabsProperties[key] = process.env[key];
-    }
   });
 
   return saucelabsProperties;
