@@ -57,8 +57,8 @@
         {{/if}}
         {{#each project.filesByDir as |files directoryPath|}}
           <section class="directory">
-            <h2 class="directory-path interactive" title="{{directoryPath}}">{{#directory_path directoryPath pathsToHideRegex=../view.regex.pathsToHide}}{{this}}{{/directory_path}}</h2>
-            <ul class="file-list collapsible">
+            <h2 class="directory-path interactive {{#if ../view.[start collapsed]}}can-expand{{/if}}" title="{{directoryPath}}">{{#directory_path directoryPath pathsToHideRegex=../view.regex.pathsToHide}}{{this}}{{/directory_path}}</h2>
+            <ul class="file-list collapsible {{#if ../view.[start collapsed]}}collapse{{/if}}">
               {{#each files}}
                 {{#if this.isFeatureFile}}
                   {{> project_file_feature this currentBranchName=../../../project.currentBranchName}}
