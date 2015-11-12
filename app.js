@@ -107,7 +107,6 @@ app.get('/github-markdown-css/github-markdown.css', function(req, res, next) {
 // Vendor resources in bower_components/ routes.
 app.get('/bower/*', function(req, res, next) {
   var filePath = path.join(__dirname, 'bower_components', req.params[0]);
-  console.log(filePath);
   res.sendFile(filePath, {}, function(err) {
     if (err) {
       next(err);

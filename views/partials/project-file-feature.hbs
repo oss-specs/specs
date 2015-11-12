@@ -19,6 +19,12 @@
           {{#if this.data.scenarioDefinitions}}
             <ul class="feature-scenarios">
               {{#each this.data.scenarioDefinitions}}
+                {{!--
+                   -- Because the whole spec-link component is a link we can't embed more links within it.
+                   -- To allow special behaviour when clicking on a specific scenario name rather than
+                   -- the whole feature, client-side JavaScript prevents the navigation, modifies the
+                   -- target URL using the data specified on the element then causes a navigation to that URL.
+                   --}}
                 <li><span class="scenario-summary" data-scenario-encoded-name="{{#uri_encode this.name}}{{this}}{{/uri_encode}}" >{{this.name}}</span></li>
               {{/each}}
             </ul>
