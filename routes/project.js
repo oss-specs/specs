@@ -170,10 +170,7 @@ function getRender(res, appConfig, renderOptions) {
             });
             editUrl = path.posix.normalize(editUrl);
 
-            file.editUrl = editUrl
-
-            console.log('****');
-            console.log(editUrl);
+            file.editUrl = editUrl;
           });
         }
 
