@@ -57,11 +57,20 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
   .then(function (projectData) {
     return getFileContents(projectData, filePath);
   })
-  .then(function (fileContents) {
+  .then(function (file) {
+    var fileContents = file.content;
+    var commitPromises = file.commits;
     var feature = {};
     var isFeatureFile = /.*\.feature/.test(filePath);
     var isMarkdownFile = /.*\.md/.test(filePath);
     var originalUrl;
+
+    Promise.all(commitPromises.values())
+      .then(function (commits) {
+        commits.forEach(function(commit) {
+          console.log(commit.date());
+        })
+      });
 
     if (isFeatureFile && !renderPlainFile) {
 

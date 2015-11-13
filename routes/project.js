@@ -48,7 +48,7 @@ function getFilePathToFileData(appConfig, projectData, getFileContents) {
 // Given some file content process it into the relevant data structure.
 function getProcessFileContent(fileContents) {
   return function processFileContent(file, index) {
-    var fileContent = fileContents[index];
+    var fileContent = fileContents[index].content;
 
     if (!fileContent || !fileContent.length) {
       file.empty = true;
