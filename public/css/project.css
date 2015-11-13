@@ -24,6 +24,11 @@ ul.file-list {
   top: -0.5em;
 }
 
+/* Make sure the horizontal rule is under any floating elements. */
+.project .controls hr {
+  clear: both;
+}
+
 /**
  * Wideview port (e.g. landscape tablet).
  */
@@ -48,7 +53,15 @@ ul.file-list {
 
 .project .content-controls .config-views {
   display: inline-block;
-  margin: 1em 0 1em 0;
+  margin-top: 1em;
+}
+/**
+ * Wideview port (e.g. landscape tablet).
+ */
+@media (min-width: 800px) {
+  .project .content-controls .config-views {
+    margin: 0;
+  }
 }
 .project .content-controls .config-views select {
   min-width: 10em;
@@ -70,10 +83,11 @@ ul.file-list {
 
 .project .burger-menu {
   position: relative;
+  font-size: 0.4em;
   z-index: 99;
   display: block;
-  margin: 0 0 0 0.5em;
-  float:right;
+  margin: 0 0 0.5em 0.5em;
+  float: right;
   border: 1px solid darkgrey;
 }
 
