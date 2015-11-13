@@ -5,6 +5,9 @@
 
 var webdriver;
 
+var pageLoadTimeoutms = 60 * 1000;
+var implicitlyWaitTimeoutms = 1 * 1000;
+
 /*
  * Convert a string to camel case.
  * @param  String string The string to modify.
@@ -54,6 +57,7 @@ function getCapabilities(webdriver) {
 module.exports = function seleniumHooks() {
   this.Before('@ui-automation', function(callback) {
     var world = this;
+    var timeoutManager;
 
     // Lazy require WebDriver so it isn't pulled in for non-selenium tests.
     webdriver = require('selenium-webdriver');
@@ -63,9 +67,15 @@ module.exports = function seleniumHooks() {
     // this is defaults, can be overriden through environment variables
     // http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver_builder_class_Builder.html
     try {
-      world.browser = new webdriver.Builder()
+      var driver = world.browser = new webdriver.Builder()
         .withCapabilities(capabilities)
         .build();
+
+      // Manage timeouts.
+      timeoutManager = driver.manage().timeouts();
+      timeoutManager.pageLoadTimeout(pageLoadTimeoutms);
+      timeoutManager.implicitlyWait(implicitlyWaitTimeoutms);
+
     } catch (error) {
       callback(error);
     }
