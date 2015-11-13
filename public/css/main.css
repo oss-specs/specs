@@ -101,19 +101,6 @@ button.call-to-action:active {
   box-shadow: 1px 1px rgba(0, 0, 0, 0.4);
 }
 
-button.burger-menu {
-  padding: 0.1em 0.5em;
-  font-size: 1.4em;
-  font-weight: bolder;
-  margin-left: 0.5em;
-  margin-bottom: 0.5em;
-  background-color: #BABABA;
-}
-
-button.burger-menu::before {
-  content: '\2630';
-}
-
 button.back-button::before {
   content: '\21A9';
 }
