@@ -149,7 +149,7 @@
       var queryParams = getQueryParams(window.location.href);
 
       // Modify the query params to replace or create on for the current tag.
-      queryParams['tags'] = tag;
+      queryParams.tags = tag;
 
       window.location.href = window.location.pathname + generateQueryString(queryParams);
     });
@@ -178,7 +178,7 @@
 
             // Modify the query params so the server can know which scenario
             // was requested.
-            queryParams['scenario'] = targetScenarioId;
+            queryParams.scenario = targetScenarioId;
             targetUrl.search = generateQueryString(queryParams);
 
             // Add a hash fragment so that the named scenario is brought
