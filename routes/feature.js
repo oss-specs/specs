@@ -65,36 +65,42 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
     var isMarkdownFile = /.*\.md/.test(filePath);
     var originalUrl;
 
-    Promise.all(commitPromises.values())
+    return Promise.all(commitPromises.values())
       .then(function (commits) {
-        commits.forEach(function(commit) {
-          console.log(commit.date());
-        })
+
+        // Map and sort the commit info.
+        commits = commits.map(c => ({
+          id: c.sha(),
+          date: c.date(),
+          time: c.date().getTime()
+        }));
+        commits.sort(function(a, b) {
+          return a.time - b.time;
+        });
+
+        if (isFeatureFile && !renderPlainFile) {
+          try {
+            feature = Parser.parse(fileContents);
+          } catch (err) {
+            originalUrl = url.parse(req.originalUrl);
+            originalUrl.search = originalUrl.search.length ? originalUrl.search + '&plain=true' : '?plain=true';
+            feature.plainFileUrl = url.format(originalUrl);
+            feature.error = err;
+          }
+
+          // Determine if a particular scenario was targeted and mark
+          // it so that it can be rendered accordingly.
+          if (targetedScenarioName) {
+            feature = markTargetedFeature(feature, targetedScenarioName);
+          }
+          res.render('feature', {feature: feature, commits: commits});
+
+        } else if (isMarkdownFile && !renderPlainFile) {
+          res.render('markdown-file', {markdownHtml: markdown.toHTML(fileContents)});
+        } else {
+          res.render('general-file', {contents: fileContents});
+        }
       });
-
-    if (isFeatureFile && !renderPlainFile) {
-
-      try {
-        feature = Parser.parse(fileContents);
-      } catch (err) {
-        originalUrl = url.parse(req.originalUrl);
-        originalUrl.search = originalUrl.search.length ? originalUrl.search + '&plain=true' : '?plain=true';
-        feature.plainFileUrl = url.format(originalUrl);
-        feature.error = err;
-      }
-
-      // Determine if a particular scenario was targeted and mark
-      // it so that it can be rendered accordingly.
-      if (targetedScenarioName) {
-        feature = markTargetedFeature(feature, targetedScenarioName);
-      }
-
-      res.render('feature', {feature: feature});
-    } else if (isMarkdownFile && !renderPlainFile) {
-      res.render('markdown-file', {markdownHtml: markdown.toHTML(fileContents)});
-    } else {
-      res.render('general-file', {contents: fileContents});
-    }
   })
   .catch(function (err) {
     // Pass on to the error handling route.
