@@ -11,7 +11,9 @@
         </section>
       {{/if}}
       {{#if this.data}}
-        <button class="feature-edit call-to-action" data-edit-url="{{this.editUrl}}">Edit</button>
+        {{#if this.editUrl}}
+          <button class="feature-edit call-to-action" data-edit-url="{{this.editUrl}}">Edit</button>
+        {{/if}}
         <section class="feature-summary">
           <p class="feature-name" title="{{this.filePath}}">{{this.data.name}}</p>
           {{#if this.data.description }}
