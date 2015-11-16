@@ -1,5 +1,6 @@
 {{> layout_start_document}}
 <link rel="stylesheet" href="/public/css/project.css">
+<link rel="stylesheet" href="/public/css/burger.css">
 <link href="/bower/select2/dist/css/select2.min.css" rel="stylesheet" />
 <script src="/bower/jquery/dist/jquery.min.js"></script>
 <script src="/bower/select2/dist/js/select2.min.js"></script>
@@ -12,13 +13,13 @@
   </header>
   {{#if project}}
     <section class="project">
-      <section class="controls">
-        <button id="expand-collapse-repository-controls" class="burger-menu"></button>
+      <section class="controls group">
+        <button id="expand-collapse-repository-controls" class="burger-menu"><span>Open and close menu</span></button>
         <section id="repository-controls" class="repository-controls collapsible {{#unless openBurgerMenu}}collapse{{/unless}}">
           <h3>Repository controls</h3>
           <div class="project-refs">
             <span class="project-branch">
-              <label for="project-branch-select">Branch or tag:</label>
+              <label for="project-branch-select" title="Version control system branch or tag">Branch or tag:</label>
               <select id="change-branch-control" title="{{project.currentBranchName}}">
                 {{#each project.tagsAndBranches}}
                   <option value="{{this.urlEncodedName}}" {{#if this.current}}selected{{/if}}>{{this.name}}</option>
@@ -48,6 +49,19 @@
             </div>
           {{/if}}
         </section>
+        {{#if project.hasTags}}
+          <section class="tag-controls">
+            <div class="select-tag-container">
+              <label for="select-tag-control" title="Select a feature, scenario or example tag to filter scenarios by">Filter by tag:</label>
+              <select id="select-tag-control">
+                <option value="none">none</option>
+                {{#each project.tags}}
+                  <option value="{{this.urlEncodedName}}" {{#if this.isCurrent}}selected{{/if}}>{{@key}}</option>
+                {{/each}}
+              </select>
+            </div>
+          </section>
+        {{/if}}
         <hr>
       </section>
       <section class="spec-links">

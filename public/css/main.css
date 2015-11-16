@@ -11,7 +11,7 @@ html {
 
 /* Body. */
 body {
-  font-family: Helvetica,FreeSans,"Liberation Sans",Helmet,Arial,sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
   background-color: #f0f0f0;
 }
 
@@ -99,19 +99,6 @@ button.call-to-action:hover {
 }
 button.call-to-action:active {
   box-shadow: 1px 1px rgba(0, 0, 0, 0.4);
-}
-
-button.burger-menu {
-  padding: 0.1em 0.5em;
-  font-size: 1.4em;
-  font-weight: bolder;
-  margin-left: 0.5em;
-  margin-bottom: 0.5em;
-  background-color: #BABABA;
-}
-
-button.burger-menu::before {
-  content: '\2630';
 }
 
 button.back-button::before {
