@@ -1,13 +1,13 @@
 {{#if this}}
   {{!-- Start each scenario collapsed. --}}
   <li>
-    <section class="scenario can-expand">
-      <section class="scenario-details collapsible collapse">
+    <section class="scenario {{#unless defaultOpen}}can-expand{{/unless}}">
+      <section class="scenario-details collapsible {{#unless defaultOpen}}collapse{{/unless}}">
         {{> feature_comments}}
         {{> feature_tags}}
       </section>
-      <h3 class="scenario-title interactive">{{keyword}}: {{name}}</h3>
-      <section class="scenario-details collapsible collapse">
+      <h3 class="scenario-title interactive" id="{{#uri_encode name}}{{this}}{{/uri_encode}}">{{keyword}}: {{name}}</h3>
+      <section class="scenario-details collapsible {{#unless defaultOpen}}collapse{{/unless}}">
         {{> feature_description}}
         {{> feature_steps}}
         {{> feature_examples}}

@@ -67,6 +67,20 @@ ul.file-list {
   min-width: 10em;
 }
 
+.project .tag-controls select {
+  min-width: 15em;
+}
+/**
+ * Wideview port (e.g. landscape tablet).
+ */
+@media (min-width: 800px) {
+  .project .tag-controls {
+    margin-top: 1em;
+    margin-bottom: 1em;
+  }
+}
+
+
 .project .burger-menu {
   position: relative;
   font-size: 0.4em;
@@ -223,11 +237,10 @@ h2.directory-path {
 }
 
 .feature-summary {
-  padding: 0.8em 0.5em 0.3em 0.5em;
+  padding: 0.8em 0.5em 0.5em 1em;
 }
 .feature-summary p {
   margin-bottom: 0.5em;
-  margin-left: 0.5em;
 }
 .feature-summary .feature-name {
   color: rgb(80, 134, 60);
@@ -235,11 +248,29 @@ h2.directory-path {
 }
 .feature-summary .feature-description {
   font-size: 0.8em;
-
   color: #999;
 
   /* Truncate the feature descriptions. */
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.feature-summary ul.feature-scenarios {
+  text-align: center;
+}
+.feature-summary .feature-scenarios li {
+  font-size: 0.9em;
+  display: inline-block;
+  padding: 0.4em;
+  margin: 0.2em;
+  border-radius: 0.3em;
+  background-color: #E5E5E5;
+}
+.feature-summary .feature-scenarios li:hover {
+  background-color: #F0F0F0;
+}
+.feature-summary .feature-scenarios li a {
+  text-decoration: none;
+  color: inherit;
 }

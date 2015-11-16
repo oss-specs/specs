@@ -82,6 +82,11 @@ function parseDirectoryPath(context, options) {
   return path;
 }
 
+// URI encode a string.
+function uriEncodeString(context) {
+  return encodeURIComponent(context);
+}
+
 module.exports = {
   newlinesToBreaks: getStringConverter(function toBreaks(safeContent) {
     return safeContent + '<br>';
@@ -90,5 +95,6 @@ module.exports = {
     return '<p>' + safeContent + '</p>';
   }),
   stepContent: highlightStepParams,
-  directoryPath: parseDirectoryPath
+  directoryPath: parseDirectoryPath,
+  uriEncodeString: uriEncodeString
 };

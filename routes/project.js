@@ -16,6 +16,8 @@ var getProject = require('../lib/specifications/project').get;
 var getProjectData = require('../lib/specifications/project').getData;
 var getFileContents = require('../lib/specifications/project').getFileContents;
 
+var countTags = require('../lib/specifications/tags').count;
+
 var appConfig = require('../lib/configuration').get();
 
 // Given a file path, generate additional data or promises for data.
@@ -73,6 +75,7 @@ function getRender(res, appConfig, renderOptions) {
     var view = {};
     var viewNames = [];
     var currentView;
+    var projectTags = {};
 
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
 
@@ -90,6 +93,10 @@ function getRender(res, appConfig, renderOptions) {
       res.render('project', renderingData);
       return;
     }
+
+    /*
+      Applying views from configuration.
+     */
 
     // If the project config contains specified views use them.
     currentView = renderOptions.currentView;
@@ -138,11 +145,13 @@ function getRender(res, appConfig, renderOptions) {
       }
     }
 
+
+    /*
+      Getting file content and rendering.
+     */
+
     // Configure function for mapping file paths to file data.
     var pathToData = getFilePathToFileData(appConfig, projectData, getFileContents);
-
-    // Make a copy of the simple file list before modifying it.
-    var fileList = projectData.files.slice();
 
     // Map list of file paths to list of file data objects.
     projectData.files = projectData.files.map(pathToData);
@@ -152,11 +161,90 @@ function getRender(res, appConfig, renderOptions) {
     var promisesForFileContent = projectData.files.map(function(f) {return f.contentsPromise;});
     return Promise.all(promisesForFileContent)
       .then(function(fileContents) {
+        var tagNames = [];
 
         // Mix in the file content.
         projectData.files = projectData.files.map(getProcessFileContent(fileContents));
 
-        // Generate a file tree data structure.
+        /*
+          Applying filtering based on feature and scenario tags.
+         */
+
+        var currentTags = renderOptions.currentTags;
+        // Count the tags in the project.
+        projectData.files.forEach(function(file) {
+          if (!file.isFeatureFile || file.error) {
+            return;
+          }
+
+          // This counts tags and marks when an
+          // object contains the requested tag.
+          projectTags = countTags(file.data, projectTags, currentTags);
+        });
+        tagNames = Object.keys(projectTags);
+        projectData.hasTags = !!tagNames.length;
+        // Mark the currently requested tag if any,
+        // this is used to set the selected option
+        // in the tag select box.
+        tagNames.forEach(function(name) {
+          // Currently on one tag is passed in the query parameter.
+          if (name === currentTags) {
+            projectTags[name].isCurrent = true;
+          }
+        });
+        projectData.tags = projectTags;
+
+        // Filter the features and scenarios based on
+        // whether they contain the requested tag.
+        if (currentTags) {
+          projectData.files = projectData.files.filter(function(file) {
+            var feature;
+            var featureScenarioContainsTag = false;
+
+            // Filter out non-feature or erroring files.
+            if (!file.isFeatureFile || file.error) {
+              return false;
+            }
+
+            // If the feature contains the tag keep it and take no
+            // further action.
+            feature = file.data;
+            if (feature.containsRequestedTag) {
+              return true;
+            }
+
+            feature.scenarioDefinitions.forEach(function (scenario, index, defs) {
+
+              // if any example contains the tag keep all examples.
+              if (scenario.type === 'ScenarioOutline') {
+                scenario.examples.forEach(function(example) {
+                  if (example.containsRequestedTag) {
+                    scenario.containsRequestedTag = true;
+                  }
+                });
+              }
+              if (scenario.containsRequestedTag) {
+                featureScenarioContainsTag = true;
+              } else {
+                // Set the scenario to undefined so it won't be rendered.
+                defs[index] = undefined;
+              }
+            });
+            // Remove undefined scenarios because handlbars' `each`
+            // helper doen't ignore undefined array elements.
+            feature.scenarioDefinitions = feature.scenarioDefinitions.filter(function(scenario) { return scenario !== undefined; });
+
+            // Retain or lose the feature depending on whether a scenario
+            // contained the requested tag.
+            return featureScenarioContainsTag;
+          });
+        }
+
+
+        /*
+          Generate a tree data structure from the flat file list.
+         */
+        var fileList = projectData.files.map(function(file) { return file.filePath; });
         arrrayToTree(fileList, function(filePath, next) {
 
           // Fix the assumption in file-tree that we are dealing with actual
@@ -183,7 +271,7 @@ function getRender(res, appConfig, renderOptions) {
           // Wrap in tree model convenience object.
           var treeRoot = (new TreeModel()).parse({name: 'root', children: fileTree});
 
-          // Use the tree to construct a set of files by directory.
+          // Use the tree to construct sets of files grouped by parent directory.
           var filesByDir = {};
           var fileNodes = treeRoot.all(function(node) { return node.model.isFile; });
           fileNodes.forEach(function(fileNode) {
@@ -247,10 +335,17 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   // Query parameter containing desired named view from project config.
   var currentView = req.query.view || false;
 
+  // Query parameter containing desired feature tags to filer on.
+  var currentTags = req.query.tags || false;
+  if (currentTags === 'none') {
+    currentTags = false;
+  }
+
   // Create rendering options.
   var renderOptions = {
     openBurgerMenu: openBurgerMenu,
-    currentView: currentView
+    currentView: currentView,
+    currentTags: currentTags
   };
 
   // Create the render and passError functions.

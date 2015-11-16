@@ -55,6 +55,7 @@ hbs.registerHelper('newlines_to_breaks', handlebarHelpers.newlinesToBreaks);
 hbs.registerHelper('newlines_to_paragraphs', handlebarHelpers.newlinesToParagraphs);
 hbs.registerHelper('step_content', handlebarHelpers.stepContent);
 hbs.registerHelper('directory_path', handlebarHelpers.directoryPath);
+hbs.registerHelper('uri_encode', handlebarHelpers.uriEncodeString);
 
 /**
  * LOGGING.
@@ -106,7 +107,6 @@ app.get('/github-markdown-css/github-markdown.css', function(req, res, next) {
 // Vendor resources in bower_components/ routes.
 app.get('/bower/*', function(req, res, next) {
   var filePath = path.join(__dirname, 'bower_components', req.params[0]);
-  console.log(filePath);
   res.sendFile(filePath, {}, function(err) {
     if (err) {
       next(err);
