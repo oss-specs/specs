@@ -1,6 +1,6 @@
 <li>
   <a class="spec-link" href="{{this.route}}?ref={{currentBranchName}}">
-    <section class="file-container">
+    <section class="file-container group">
       {{#if this.empty}}
         <section class="file-details">
           <p class="file-name"><span class="empty-file" title="This file is empty" >&#x2205;&nbsp;&nbsp;{{this.name}}</span></p>
@@ -11,11 +11,25 @@
         </section>
       {{/if}}
       {{#if this.data}}
+        {{> edit_button url=this.editUrl}}
         <section class="feature-summary">
           <p class="feature-name" title="{{this.filePath}}">{{this.data.name}}</p>
           {{#if this.data.description }}
-          <p class="feature-description" title="{{this.data.description}}">{{this.data.description}}</p>
+            <p class="feature-description" title="{{this.data.description}}">{{this.data.description}}</p>
           {{/if }}
+          {{#if this.data.scenarioDefinitions}}
+            <ul class="feature-scenarios">
+              {{#each this.data.scenarioDefinitions}}
+                {{!--
+                   -- Because the whole spec-link component is a link we can't embed more links within it.
+                   -- To allow special behaviour when clicking on a specific scenario name rather than
+                   -- the whole feature, client-side JavaScript prevents the navigation, modifies the
+                   -- target URL using the data specified on the element then causes a navigation to that URL.
+                   --}}
+                <li><span class="scenario-summary" data-scenario-encoded-name="{{#uri_encode this.name}}{{this}}{{/uri_encode}}" >{{this.name}}</span></li>
+              {{/each}}
+            </ul>
+          {{/if}}
         </section>
       {{/if}}
     </section>

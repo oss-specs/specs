@@ -1,0 +1,117 @@
+/**
+ * Adapted with gratitude from http://callmenick.com/post/animating-css-only-hamburger-menu-icons
+ */
+
+
+/**
+ * Dimensions and locations
+ */
+
+.burger-menu {
+  font-size: 0.6em;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  width: 6em;
+  height: 6em;
+  text-indent: -9999px;
+  appearance: none;
+  box-shadow: none;
+  border-radius: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.burger-menu:focus {
+  outline: none;
+}
+
+.burger-menu span {
+  display: block;
+  position: absolute;
+  top: 2.6em;
+  left: 1em;
+  right: 1em;
+  height: 0.6em;
+}
+
+.burger-menu span::before,
+.burger-menu span::after {
+  position: absolute;
+  display: block;
+  left: 0;
+  width: 100%;
+  height: 0.6em;
+  content: "";
+}
+
+.burger-menu span::before {
+  top: -1.4em;
+}
+
+.burger-menu span::after {
+  bottom: -1.4em;
+}
+
+
+/**
+ * Styling and animations.
+ */
+
+/* Menu open state. */
+
+.burger-menu {
+  background-color: red;
+}
+
+.burger-menu span,
+.burger-menu span::before,
+.burger-menu span::after {
+  background-color: white;
+}
+
+.burger-menu span {
+  transition: background 0s 0.3s;
+}
+
+.burger-menu span::before,
+.burger-menu span::after {
+  transition-duration: 0.3s, 0.3s;
+  transition-delay: 0.3s, 0s;
+}
+
+.burger-menu span::before {
+  transition-property: top, transform;
+}
+
+.burger-menu span::after {
+  transition-property: bottom, transform;
+}
+
+/* Menu open state. */
+
+.burger-menu.open {
+  background-color: darkred;
+}
+
+.burger-menu.open span {
+  background: none;
+}
+
+.burger-menu.open span::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.burger-menu.open span::after {
+  bottom: 0;
+  transform: rotate(-45deg);
+}
+
+.burger-menu.open span::before,
+.burger-menu.open span::after {
+  transition-delay: 0s, 0.3s;
+}

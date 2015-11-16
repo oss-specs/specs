@@ -2,6 +2,7 @@
 /* eslint new-cap: 0 */
 
 var path = require('path');
+var url = require('url');
 
 var express = require('express');
 var router = express.Router();
@@ -13,6 +14,24 @@ var appConfig = require('../lib/configuration').get();
 
 var Gherkin = require('gherkin');
 var Parser = new Gherkin.Parser();
+
+/**
+ * Given a feature data structure and a scenario id mark a particular scenario as requested.
+ * @param  Object feature              Feature data structure.
+ * @param  String targetedScenarioId   The id of the targeted scenario (URI encoded scenario name)
+ * @return Object                      Modified feature data structure.
+ */
+function markTargetedFeature(feature, targetedScenarioName) {
+  var scenarios = feature.scenarioDefinitions;
+  scenarios.forEach(function(scenario) {
+    if (scenario.name === targetedScenarioName) {
+      scenario.requested = true;
+      scenario.defaultOpen = true;
+    }
+  });
+
+  return feature;
+}
 
 
 // Display an individual feature in a project.
@@ -31,6 +50,9 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
   // Skip the rendering for query param ?plain=true ?plain=1 etc.
   var renderPlainFile = req.query.plain === 'true' || !!parseInt(req.query.plain);
 
+  // Optional name of a particular scenario.
+  var targetedScenarioName = req.query.scenario || false;
+
   getProjectData(projectData, ref)
   .then(function (projectData) {
     return getFileContents(projectData, filePath);
@@ -39,14 +61,23 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
     var feature = {};
     var isFeatureFile = /.*\.feature/.test(filePath);
     var isMarkdownFile = /.*\.md/.test(filePath);
+    var originalUrl;
 
     if (isFeatureFile && !renderPlainFile) {
 
       try {
         feature = Parser.parse(fileContents);
       } catch (err) {
-        feature.plainFileUrl = req.originalUrl + '&plain=true';
+        originalUrl = url.parse(req.originalUrl);
+        originalUrl.search = originalUrl.search.length ? originalUrl.search + '&plain=true' : '?plain=true';
+        feature.plainFileUrl = url.format(originalUrl);
         feature.error = err;
+      }
+
+      // Determine if a particular scenario was targeted and mark
+      // it so that it can be rendered accordingly.
+      if (targetedScenarioName) {
+        feature = markTargetedFeature(feature, targetedScenarioName);
       }
 
       res.render('feature', {feature: feature});
