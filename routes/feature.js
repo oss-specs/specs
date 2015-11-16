@@ -71,8 +71,8 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
         // Map and sort the commit info.
         commits = commits.map(c => ({
           id: c.sha(),
-          date: c.date(),
-          time: c.date().getTime()
+          time: c.date().getTime(),
+          timeStamp: c.date().toLocaleString()
         }));
         commits.sort(function(a, b) {
           return a.time - b.time;
