@@ -155,6 +155,18 @@
     });
   });
 
+  // Edit button functionality
+  $(function() {
+    $('.feature-edit').click(function(event) {
+      event.preventDefault();
+      var editUrl = this.dataset.editUrl;
+      if (!editUrl) {
+        throw new TypeError("Edit URL not supplied.");
+      }
+      window.location.href = editUrl;
+    });
+  });
+
   // Override clicking on feature links when a scenario summary has been
   // clicked so that a query param and hash-fragment can be appended.
   $(function() {
