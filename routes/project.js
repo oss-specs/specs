@@ -158,11 +158,20 @@ function getRender(res, appConfig, renderOptions) {
         // Mix in the file content.
         projectData.files = projectData.files.map(getProcessFileContent(fileContents));
 
+
+        console.log("&&&")
+        console.log(projectData.config);
+
         // If the project config contains a URL format
         // for creating links to edit files then grab it.
         if (projectData.config.editUrlFormat) {
           projectData.files.forEach(function(file) {
             var editUrlTemplate = handlebars.compile(projectData.config.editUrlFormat);
+
+            console.log("*****")
+            console.log(projectData.config.editUrlFormat);
+            console.log(projectData.repoUrl)
+
             var editUrl = editUrlTemplate({
               repoUrl: projectData.repoUrl,
               branchName: projectData.currentShortBranchName,

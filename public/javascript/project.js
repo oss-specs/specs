@@ -99,6 +99,9 @@
     $('.feature-edit').click(function(event) {
       event.preventDefault();
       var editUrl = this.dataset.editUrl;
+      if (!editUrl) {
+        throw new TypeError("Edit URL not supplied.");
+      }
       window.location.href = editUrl;
     });
   });
