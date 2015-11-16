@@ -179,7 +179,6 @@ function getRender(res, appConfig, renderOptions) {
               branchName: projectData.currentShortBranchName,
               pathToFile: file.filePath
             });
-            editUrl = path.posix.normalize(editUrl);
 
             file.editUrl = editUrl;
           });
