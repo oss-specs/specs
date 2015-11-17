@@ -69,14 +69,13 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
       .then(function (commits) {
 
         // Map and sort the commit info.
-        commits = commits.map(c => ({
-          id: c.sha(),
-          time: c.date().getTime(),
-          timeStamp: c.date().toLocaleString()
-        }));
-        commits.sort(function(a, b) {
-          return a.time - b.time;
-        });
+        commits = commits
+                  .map(c => ({
+                    id: c.sha(),
+                    time: c.date().getTime(),
+                    timeStamp: c.date().toLocaleString()
+                  }))
+                  .sort((a, b) => a.time - b.time);
 
         if (isFeatureFile && !renderPlainFile) {
           try {
