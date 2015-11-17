@@ -39,7 +39,14 @@ function markTargetedFeature(feature, targetedScenarioName) {
 router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
   var projectName = req.params[0];
   var filePath = req.params[1];
+
   var ref = req.query.ref;
+  var commit = req.query.commit;
+
+  // If a specific commit is defined don't try and use the branch.
+  if (commit) {
+    ref = undefined;
+  }
 
   var projectData = {
     name: projectName,
@@ -72,8 +79,9 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
         commits = commits
                   .map(c => ({
                     id: c.sha(),
+                    shortId: c.sha().substring(0, 7),
                     time: c.date().getTime(),
-                    timeStamp: c.date().toLocaleString()
+                    timeStamp: c.date().toUTCString()
                   }))
                   .sort((a, b) => a.time - b.time);
 

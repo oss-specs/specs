@@ -23,7 +23,11 @@
     </section>
     <section id="time-controls" class="time-controls">
       <form action="">
-        <input name="ref" type="range"></input>
+        <select id="change-time-control" name="commit">
+          {{#each commits}}
+            <option value="{{this.id}}">{{this.timeStamp}}: ({{this.shortId}})</option>
+          {{/each}}
+        </select>
         <button>Submit</button>
       </form>
     </section>
