@@ -8,7 +8,7 @@
  */
 
 .burger-menu {
-  font-size: 0.6em;
+  font-size: 0.5em;
   display: block;
   position: relative;
   overflow: hidden;
@@ -29,13 +29,18 @@
   outline: none;
 }
 
+.burger-menu span,
+.burger-menu span::before,
+.burger-menu span::after {
+  height: calc(3px + 0.3em);
+}
+
 .burger-menu span {
   display: block;
   position: absolute;
   top: 2.6em;
   left: 1em;
   right: 1em;
-  height: 0.6em;
 }
 
 .burger-menu span::before,
@@ -44,16 +49,16 @@
   display: block;
   left: 0;
   width: 100%;
-  height: 0.6em;
   content: "";
 }
 
+
 .burger-menu span::before {
-  top: -1.4em;
+  top: calc(-2px - 1em);
 }
 
 .burger-menu span::after {
-  bottom: -1.4em;
+  bottom: calc(-2px - 1em);
 }
 
 

@@ -54,6 +54,9 @@
   $(function() {
     var selectEl = $('#change-views-control');
 
+    // Set up the searchable select box jquery widget.
+    selectEl.select2();
+
     // On change, reload the page with a new query param dictating configured view.
     if (selectEl) {
       selectEl.on('change', function() {
