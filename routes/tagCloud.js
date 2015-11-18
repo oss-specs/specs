@@ -1,9 +1,22 @@
 'use strict';
+/* eslint new-cap: 0 */
+var cloud = require("d3-cloud");
+var canvas = cloud.canvas;
 
 var path = require('path');
+var url = require('url');
 
 var express = require('express');
 var router = express.Router();
+
+var markdown = require('markdown').markdown;
+var getProjectData = require('../lib/specifications/project').getData;
+var getFileContents = require('../lib/specifications/project').getFileContents;
+var appConfig = require('../lib/configuration').get();
+
+var Gherkin = require('gherkin');
+var Parser = new Gherkin.Parser();
+
 
 var handlebars = require('hbs').handlebars;
 
@@ -30,7 +43,7 @@ function getFilePathToFileData(appConfig, projectData, getFileContents) {
     file.name = path.basename(filePath);
     file.filePath = filePath;
 
-    file.route = path.posix.join(appConfig.projectRoute, projectData.repoName, "file", filePath);
+    file.route = path.posix.join(appConfig.projectRoute, projectData.repoName, filePath);
 
     file.isFeatureFile = /.*\.feature/.test(filePath);
     file.isMarkdownFile = /.*\.md/.test(filePath);
@@ -211,7 +224,20 @@ function getRender(res, appConfig, renderOptions) {
             projectTags[name].isCurrent = true;
           }
         });
+
+        console.log("$$$$$$")
+        projectData.tagCloud = Object.keys(projectTags).map(function (key) {
+            console.log(key);
+          return {
+            text: key,
+            size: projectTags[key].count
+          }
+        });
         projectData.tags = projectTags;
+
+        console.log("Tag cloud:", projectData.tagCloud);
+        projectData.tagCloudJsonString = JSON.stringify(projectData.tagCloud);
+        console.log("Tag cloud string: ", projectData.tagCloudJsonString);
 
         // Filter the features and scenarios based on
         // whether they contain the requested tag.
@@ -318,8 +344,24 @@ function getRender(res, appConfig, renderOptions) {
           // Reference the finished file tree on the rendering data object.
           renderingData['project'].filesByDir = filesByDir;
 
+
+          //
+          //
+          //
+          // cloud().size([960, 500])
+          //     .canvas(function() { return new canvas(1, 1); })
+          //     .words(renderingData.tagCloud)
+          //     .padding(5)
+          //     .rotate(function() { return ~~(Math.random() * 2) * 90; })
+          //     .font("Impact")
+          //     .fontSize(function(d) { return d.size; })
+          //     .on("end", end)
+          //     .start();
+          //
+          // function end(words) { console.log(JSON.stringify(words)); }
+
           // Render the page.
-          res.render('project', renderingData);
+          res.render('tag-cloud', renderingData);
         });
       });
   };
@@ -332,86 +374,82 @@ function getPassError(next) {
   };
 }
 
-// List of available features in a project.
-router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
-  // Cookie variables.
-  var openBurgerMenu = (req.cookies.specsOpenBurgerMenu === 'true');
 
-  // Session variable.
-  if(!req.session.branches) req.session.branches = {};
-  var sessionBranches = req.session.branches;
 
-  // The repository name from the URL.
-  var repoName = req.params[0];
 
-  // Query param indicating a particular ref should
-  // be used when retrieving repo data.
-  var targetBranchName = req.query.branch || false;
 
-  // Query param causing a Git fetch.
-  var projectShouldUpdate = (req.query.update === 'true');
 
-  // Query parameter containing desired named view from project config.
-  var currentView = req.query.view || false;
 
-  // Query parameter containing desired feature tags to filer on.
-  var currentTags = req.query.tags || false;
-  if (currentTags === 'none') {
-    currentTags = false;
-  }
 
-  // Create rendering options.
-  var renderOptions = {
-    openBurgerMenu: openBurgerMenu,
-    currentView: currentView,
-    currentTags: currentTags
-  };
 
-  // Create the render and passError functions.
-  var configuredRender = getRender(res, appConfig, renderOptions);
-  var configuredPassError = getPassError(next);
 
-  // TODO: Have one place this object is created.
+
+
+/**
+ * Given a feature data structure and a scenario id mark a particular scenario as requested.
+ * @param  Object feature              Feature data structure.
+ * @param  String targetedScenarioId   The id of the targeted scenario (URI encoded scenario name)
+ * @return Object                      Modified feature data structure.
+ */
+function markTargetedFeature(feature, targetedScenarioName) {
+  var scenarios = feature.scenarioDefinitions;
+  scenarios.forEach(function(scenario) {
+    if (scenario.name === targetedScenarioName) {
+      scenario.requested = true;
+      scenario.defaultOpen = true;
+    }
+  });
+
+  return feature;
+}
+
+
+// Display an individual feature in a project.
+// htpp://host/<project name>/<root/to/file>
+router.get(/([^\/]+)\/tagcloud/, function (req, res, next) {
+  console.log('WTF');
+  var projectName = req.params[0];
+  var ref = req.query.ref;
+
   var projectData = {
-    repoName: repoName,
-    projectLink: path.posix.join(appConfig.projectRoute, repoName),
-    localPath: path.join(appConfig.projectsPath, repoName)
+    name: projectName,
+    localPath: path.join(appConfig.projectsPath, projectName),
+    currentBranchName: ref
   };
 
-  // Perform a clone or fetch on the repo then get the data.
-  // If this switch is set then the branch will not change.
-  if (projectShouldUpdate) {
+    // Session variable.
+    if(!req.session.branches) req.session.branches = {};
+    var sessionBranches = req.session.branches;
 
-    // Set the current branch name which will be used in the update.
-    // If not supplied the repo default branch will be used.
-    projectData.currentBranchName = sessionBranches[repoName] || false;
+    // The repository name from the URL.
+    var repoName = req.params[0];
 
-    // Update the repo and get the repo data.
-    getProject(projectData)
-      .then(configuredRender)
-      .catch(configuredPassError);
+    // Query param indicating a particular ref should
+    // be used when retrieving repo data.
+    var targetBranchName = req.query.branch || false;
 
-  // Change the branch.
-  } else if (targetBranchName && targetBranchName !== sessionBranches[repoName]) {
-    getProjectData(projectData, targetBranchName)
-      .then(function(projectData) {
+    // Create rendering options.
+    var renderOptions = {}
 
-        // The data for the target branch was retrieved succesfully,
-        // Update the branch session variable. Done here rather than
-        // earlier to avoid bad requests (nonsense refs) persisting.
-        sessionBranches[repoName] = projectData.currentBranchName;
-        return projectData;
-      })
-      .then(configuredRender)
-      .catch(configuredPassError);
+    // Create the render and passError functions.
+    var configuredRender = getRender(res, appConfig, renderOptions);
+    var configuredPassError = getPassError(next);
 
-  // Else, generate the metadata and render the page.
-  } else {
-    getProjectData(projectData, sessionBranches[repoName])
-      .then(configuredRender)
-      .catch(configuredPassError);
-  }
+    // TODO: Have one place this object is created.
+    var projectData = {
+      repoName: repoName,
+      projectLink: path.posix.join(appConfig.projectRoute, repoName),
+      localPath: path.join(appConfig.projectsPath, repoName)
+    };
+
+    console.log(projectData);
+
+      // Update the repo and get the repo data.
+      getProject(projectData)
+        .then(configuredRender)
+        .catch(configuredPassError);
+
 });
 
 module.exports = router;

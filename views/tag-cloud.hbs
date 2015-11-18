@@ -1,0 +1,70 @@
+{{> layout_start_document}}
+<link rel="stylesheet" href="/public/css/project.css">
+<link rel="stylesheet" href="/public/css/burger.css">
+<link href="/bower/select2/dist/css/select2.min.css" rel="stylesheet" />
+<script src="/bower/jquery/dist/jquery.min.js"></script>
+<script src="/bower/select2/dist/js/select2.min.js"></script>
+<script src="/public/javascript/d3.min.js"></script>
+<script>
+var aaa = d3;
+</script>
+<!-- <script src="/public/javascript/cloud.min.js"></script> -->
+<script src="/public/javascript/d3.layout.cloud.js"></script>
+
+<script>
+
+var tagCloud = {{{ project.tagCloudJsonString }}};
+
+var fill = aaa.scale.category20();
+
+var filtered = tagCloud.filter(function (t) {
+  return t.size > 1;
+});
+
+var layout = d3.layout.cloud()
+    .size([1000, 600])
+    .words(filtered.map(function (s) {
+      return {
+        size: s.size,
+        text: s.text
+      };
+    }))
+    .padding(5)
+    .rotate(function() { return ~~(Math.random() * 120 - 60); })
+    .font("Impact")
+    .fontSize(function(d) { return d.size; })
+    .on("end", draw);
+
+  function draw(words) {
+      aaa.select("body").append("svg")
+          .attr("width", layout.size()[0])
+          .attr("height", layout.size()[1])
+        .append("g")
+          .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+        .selectAll("text")
+          .data(words)
+        .enter().append("text")
+          .style("font-size", function(d) { return d.size + "px"; })
+          .style("font-family", "Impact")
+          .style("fill", function(d, i) { return fill(i); })
+          .attr("text-anchor", "middle")
+          .attr("transform", function(d) {
+            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+          })
+          .text(function(d) { return d.text; });
+    }
+
+$(layout.start);
+
+</script>
+{{> layout_start_body}}
+<main>
+  <header>
+    <h1 class="project-name">{{project.repoName}}</h1>
+  </header>
+  {{#if project}}
+  {{else}}
+    <p>Sorry, no project data was found</p>
+  {{/if}}
+</main>
+{{> layout_end}}

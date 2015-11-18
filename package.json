@@ -57,7 +57,9 @@
   },
   "dependencies": {
     "body-parser": "^1.14.1",
+    "bower": "^1.6.3",
     "cookie-parser": "^1.4.0",
+    "d3-cloud": "^1.2.1",
     "express": "^4.13.3",
     "express-session": "^1.11.3",
     "file-stream-rotator": "0.0.6",
@@ -76,8 +78,7 @@
     "serve-favicon": "^2.3.0",
     "session-file-store": "0.0.20",
     "tree-model": "^1.0.2",
-    "underscore": "1.8.3",
-    "bower": "^1.6.3"
+    "underscore": "1.8.3"
   },
   "devDependencies": {
     "codeclimate-test-reporter": "^0.1.1",

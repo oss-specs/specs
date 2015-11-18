@@ -36,7 +36,7 @@ function markTargetedFeature(feature, targetedScenarioName) {
 
 // Display an individual feature in a project.
 // htpp://host/<project name>/<root/to/file>
-router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
+router.get(/([^\/]+)\/file\/([\w\W]+)/, function (req, res, next) {
   var projectName = req.params[0];
   var filePath = req.params[1];
   var ref = req.query.ref;

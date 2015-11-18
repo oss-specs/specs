@@ -34,6 +34,9 @@ var featureRoute = require('./routes/feature');
 // The invidual project route.
 var projectRoute = require('./routes/project');
 
+// The invidual project route.
+var tagCloudRoute = require('./routes/tagCloud');
+
 
 var app = express();
 
@@ -125,6 +128,10 @@ app.use(appConfig.projectRoute, projectRoute);
 // Markdown and feature files within a project.
 // htpp://host/project/<project name>/<root/to/file>
 app.use(appConfig.projectRoute, featureRoute);
+
+// Tag cloud
+// htpp://host/project/<project name>/tagCloud
+app.use(appConfig.projectRoute, tagCloudRoute);
 
 // Catch 404 and forward to error handler.
 app.use(function(req, res, next) {
