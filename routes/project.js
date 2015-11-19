@@ -176,6 +176,7 @@ function getRender(res, appConfig, renderOptions) {
             var editUrlTemplate = handlebars.compile(projectData.config.editUrlFormat);
             var editUrl = editUrlTemplate({
               repoUrl: projectData.repoUrl,
+                repoUrlWithoutGitSuffix: projectData.repoUrl.replace(/\.git$/i, ''),
               branchName: projectData.currentShortBranchName,
               pathToFile: file.filePath
             });
