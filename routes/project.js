@@ -7,10 +7,6 @@ var router = express.Router();
 
 var handlebars = require('hbs').handlebars;
 
-var Gherkin = require('gherkin');
-var Parser = new Gherkin.Parser();
-var markdown = require('markdown').markdown;
-
 var arrrayToTree = require('file-tree');
 var TreeModel = require('tree-model');
 
@@ -113,15 +109,16 @@ function getRender(res, appConfig, renderOptions) {
     // Map list of file paths to list of file data objects.
     projectData.files = projectData.files.map(pathToData);
 
-    // Wait for content promises to resolve then mix
-    // in the resolved file content.
-    var promisesForFileContent = projectData.files.map(function(f) {return f.contentsPromise;});
+    // Wait for content promises to resolve.
+    // We don't actually care about the promise values here, they are already
+    // part of the file object, we just need them all fulfilled or rejected.
+    var promisesForFileContent = projectData.files.map(function(f) {return f.contentPromise;});
     return Promise.all(promisesForFileContent)
       .then(function(fileContents) {
         var tagNames = [];
 
         // Mix in the file content.
-        projectData.files = projectData.files.map(processFiles.getProcessFileContent(fileContents));
+        projectData.files = projectData.files.map(processFiles.processFileContent);
 
 
         // If the project config contains a URL format
