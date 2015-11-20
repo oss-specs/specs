@@ -14,61 +14,16 @@ var markdown = require('markdown').markdown;
 var arrrayToTree = require('file-tree');
 var TreeModel = require('tree-model');
 
+var processFiles = require('../lib/specifications/files/process-files');
+
 var getProject = require('../lib/specifications/projects/project').get;
 var getProjectData = require('../lib/specifications/projects/project').getData;
 var getFileContents = require('../lib/specifications/projects/project').getFileContents;
 
-var countTags = require('../lib/specifications/feature-files/tags').count;
+var countTags = require('../lib/specifications/files/feature-files/tags').count;
 
 var appConfig = require('../lib/configuration/app-config').get();
 
-// Given a file path, generate additional data or promises for data.
-function getFilePathToFileData(appConfig, projectData, getFileContents) {
-  return function filePathToFileData(filePath) {
-    var file = {};
-
-    file.name = path.basename(filePath);
-    file.filePath = filePath;
-
-    file.route = path.posix.join(appConfig.projectRoute, projectData.repoName, filePath);
-
-    file.isFeatureFile = /.*\.feature/.test(filePath);
-    file.isMarkdownFile = /.*\.md/.test(filePath);
-
-    if (file.isFeatureFile || file.isMarkdownFile) {
-      file.contentsPromise = getFileContents(projectData, filePath);
-    } else {
-      file.contentsPromise = undefined;
-    }
-
-    return file;
-  };
-}
-
-// Given some file content process it into the relevant data structure.
-function getProcessFileContent(fileContents) {
-  return function processFileContent(file, index) {
-    var fileContent = fileContents[index];
-
-    if (!fileContent || !fileContent.length) {
-      file.empty = true;
-    }
-
-    if (file.isFeatureFile) {
-      try {
-        file.data = Parser.parse(fileContent);
-      } catch (err) {
-        file.error = err;
-      }
-    } else if(file.isMarkdownFile) {
-      file.data = markdown.parse(fileContent);
-    } else {
-      file.data = false;
-    }
-
-    return file;
-  };
-}
 
 // Render the project page and send to client.
 function getRender(res, appConfig, renderOptions) {
@@ -153,7 +108,7 @@ function getRender(res, appConfig, renderOptions) {
      */
 
     // Configure function for mapping file paths to file data.
-    var pathToData = getFilePathToFileData(appConfig, projectData, getFileContents);
+    var pathToData = processFiles.getFilePathToFileData(appConfig.projectRoute, projectData, getFileContents);
 
     // Map list of file paths to list of file data objects.
     projectData.files = projectData.files.map(pathToData);
@@ -166,7 +121,7 @@ function getRender(res, appConfig, renderOptions) {
         var tagNames = [];
 
         // Mix in the file content.
-        projectData.files = projectData.files.map(getProcessFileContent(fileContents));
+        projectData.files = projectData.files.map(processFiles.getProcessFileContent(fileContents));
 
 
         // If the project config contains a URL format
