@@ -15,7 +15,7 @@ var countTags = require('../lib/specifications/files/feature-files/tags').count;
 
 var getProject = require('../lib/specifications/projects/project').get;
 var getProjectData = require('../lib/specifications/projects/project').getData;
-
+var getFileContent = require('../lib/specifications/projects/project').getFileContent;
 
 var appConfig = require('../lib/configuration/app-config').get();
 
@@ -103,7 +103,7 @@ function getRender(res, appConfig, renderOptions) {
      */
 
     // Configure function for mapping file paths to file data.
-    var pathToData = processFiles.getFilePathToFileObject(appConfig.projectRoute, projectData);
+    var pathToData = processFiles.getFilePathToFileObject(appConfig.projectRoute, projectData, getFileContent);
 
     // Map list of file paths to list of file data objects.
     projectData.files = projectData.files.map(pathToData);

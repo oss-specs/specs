@@ -9,12 +9,15 @@ var router = express.Router();
 
 
 var getProjectData = require('../lib/specifications/projects/project').getData;
-var appConfig = require('../lib/configuration/app-config').get();
+var getFileContent = require('../lib/specifications/projects/project').getFileContent;
 
-var getFileContent = require('../lib/specifications/files/process-files').getFileContent;
 var Gherkin = require('gherkin');
 var Parser = new Gherkin.Parser();
 var markdown = require('markdown').markdown;
+
+
+var appConfig = require('../lib/configuration/app-config').get();
+
 
 /**
  * Given a feature data structure and a scenario id mark a particular scenario as requested.
