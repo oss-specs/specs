@@ -5,7 +5,7 @@ var path = require('path');
 
 // This config is purely to get correct directories for deletion, it
 // does not affect how the app is configured.
-var appConfig = require('../lib/configuration').set({
+var appConfig = require('../lib/configuration/app-config').set({
   rootPath: path.join(__dirname, '../')
 });
 

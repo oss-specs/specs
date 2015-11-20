@@ -8,9 +8,9 @@ var express = require('express');
 var router = express.Router();
 
 var markdown = require('markdown').markdown;
-var getProjectData = require('../lib/specifications/project').getData;
-var getFileContents = require('../lib/specifications/project').getFileContents;
-var appConfig = require('../lib/configuration').get();
+var getProjectData = require('../lib/specifications/projects/project').getData;
+var getFileContents = require('../lib/specifications/projects/project').getFileContents;
+var appConfig = require('../lib/configuration/app-config').get();
 
 var Gherkin = require('gherkin');
 var Parser = new Gherkin.Parser();

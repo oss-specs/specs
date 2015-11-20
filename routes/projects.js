@@ -3,10 +3,10 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var appConfig = require('../lib/configuration').get();
+var appConfig = require('../lib/configuration/app-config').get();
 
-var getProjectsNames = require('../lib/specifications/project').getNames;
-var getProject = require('../lib/specifications/project').get;
+var getProjectsNames = require('../lib/specifications/projects/project').getNames;
+var getProject = require('../lib/specifications/projects/project').get;
 
 var appVersion = require('../package.json').version;
 

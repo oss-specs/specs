@@ -14,13 +14,13 @@ var markdown = require('markdown').markdown;
 var arrrayToTree = require('file-tree');
 var TreeModel = require('tree-model');
 
-var getProject = require('../lib/specifications/project').get;
-var getProjectData = require('../lib/specifications/project').getData;
-var getFileContents = require('../lib/specifications/project').getFileContents;
+var getProject = require('../lib/specifications/projects/project').get;
+var getProjectData = require('../lib/specifications/projects/project').getData;
+var getFileContents = require('../lib/specifications/projects/project').getFileContents;
 
-var countTags = require('../lib/specifications/tags').count;
+var countTags = require('../lib/specifications/feature-files/tags').count;
 
-var appConfig = require('../lib/configuration').get();
+var appConfig = require('../lib/configuration/app-config').get();
 
 // Given a file path, generate additional data or promises for data.
 function getFilePathToFileData(appConfig, projectData, getFileContents) {
