@@ -103,7 +103,7 @@ function getRender(res, appConfig, renderOptions) {
      */
 
     // Configure function for mapping file paths to file data.
-    var pathToData = processFiles.getFilePathToFileData(appConfig.projectRoute, projectData);
+    var pathToData = processFiles.getFilePathToFileObject(appConfig.projectRoute, projectData);
 
     // Map list of file paths to list of file data objects.
     projectData.files = projectData.files.map(pathToData);
