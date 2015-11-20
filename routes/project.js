@@ -11,12 +11,11 @@ var arrrayToTree = require('file-tree');
 var TreeModel = require('tree-model');
 
 var processFiles = require('../lib/specifications/files/process-files');
+var countTags = require('../lib/specifications/files/feature-files/tags').count;
 
 var getProject = require('../lib/specifications/projects/project').get;
 var getProjectData = require('../lib/specifications/projects/project').getData;
-var getFileContents = require('../lib/specifications/projects/project').getFileContents;
 
-var countTags = require('../lib/specifications/files/feature-files/tags').count;
 
 var appConfig = require('../lib/configuration/app-config').get();
 
@@ -104,7 +103,7 @@ function getRender(res, appConfig, renderOptions) {
      */
 
     // Configure function for mapping file paths to file data.
-    var pathToData = processFiles.getFilePathToFileData(appConfig.projectRoute, projectData, getFileContents);
+    var pathToData = processFiles.getFilePathToFileData(appConfig.projectRoute, projectData);
 
     // Map list of file paths to list of file data objects.
     projectData.files = projectData.files.map(pathToData);

@@ -7,13 +7,14 @@ var url = require('url');
 var express = require('express');
 var router = express.Router();
 
-var markdown = require('markdown').markdown;
+
 var getProjectData = require('../lib/specifications/projects/project').getData;
-var getFileContents = require('../lib/specifications/projects/project').getFileContents;
 var appConfig = require('../lib/configuration/app-config').get();
 
+var getFileContent = require('../lib/specifications/files/process-files').getFileContent;
 var Gherkin = require('gherkin');
 var Parser = new Gherkin.Parser();
+var markdown = require('markdown').markdown;
 
 /**
  * Given a feature data structure and a scenario id mark a particular scenario as requested.
@@ -55,7 +56,7 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
 
   getProjectData(projectData, ref)
   .then(function (projectData) {
-    return getFileContents(projectData, filePath);
+    return getFileContent(projectData, filePath);
   })
   .then(function (fileContents) {
     var feature = {};
