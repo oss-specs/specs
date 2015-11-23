@@ -37,12 +37,9 @@ router.get('/', function(req, res, next) {
   }
 
   // Else get the project and load the individual project page.
-  var projectRoute = appConfig.projectRoute;
-
   var projectData = {
     repoUrl: repoUrl,
-    localPath: path.join(appConfig.projectsPath, repoName),
-    projectLink: path.posix.join(projectRoute, repoName)
+    localPathRoot: appConfig.projectsPath,
   };
 
   // Done like this rather than in the project route
@@ -51,10 +48,11 @@ router.get('/', function(req, res, next) {
   // If the project repo does not exist it will be cloned
   // if it does exist it will be updated.
   getProject(projectData)
-    .then(function(projectMetadata) {
+    .then(function(projectData) {
+      var projectLink = path.posix.join(appConfig.projectRoute, projectData.repoName);
 
       // Redirect to the project page.
-      res.redirect(projectMetadata.projectLink);
+      res.redirect(projectLink);
     })
     .catch(function(err) {
 

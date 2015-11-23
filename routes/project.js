@@ -327,8 +327,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   // TODO: Have one place this object is created.
   var projectData = {
     repoName: repoName,
-    projectLink: path.posix.join(appConfig.projectRoute, repoName),
-    localPath: path.join(appConfig.projectsPath, repoName)
+    localPathRoot: appConfig.projectsPath
   };
 
   // Perform a clone or fetch on the repo then get the data.
