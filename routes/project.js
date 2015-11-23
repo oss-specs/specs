@@ -19,17 +19,68 @@ var getFileContent = require('../lib/specifications/projects/project').getFileCo
 
 var appConfig = require('../lib/configuration/app-config').get();
 
+function applyView(projectData, renderingData) {
+  var currentViewName = renderingData.currentViewName;
+  var view = {};
+  var viewNames = [];
+
+  // If the project config contains specified views use them.
+  if (projectData.config) {
+    viewNames = Object.keys(projectData.config.views);
+  }
+
+  if (viewNames.length > 0) {
+    renderingData.hasViews = true;
+
+    // No view specified, attempt to use a DEFAULT view.
+    if (currentViewName === false) {
+      // The defaultView value may be undefined, that will result in no view logic being applied.
+      currentViewName = viewNames
+                     .filter(function(name) {
+                       return !!projectData.config.views[name].default;
+                     })[0] || false;
+    }
+
+    // Generate view name data for the UI.
+    renderingData.viewNames = viewNames.map(function (viewName) {
+      return {
+        name: viewName,
+        urlEncodedName: encodeURIComponent(viewName),
+        isCurrent: viewName === currentViewName
+      };
+    });
+
+    // Explicit request for no view logic to be applied.
+    if (currentViewName === 'none') {
+      view = renderingData.view = false;
+
+    // Grab any view config that might have been specified in the project config.
+    } else {
+      view = renderingData.view = projectData.config.views[currentViewName];
+    }
+
+    // Filter the file list based on the excludedPaths in project config.
+    if (view && view.hasExcludedPaths) {
+      projectData.files = projectData.files.filter(view.helpers.isIncludedPath);
+    }
+
+    // Filter the file list based on the anchor path in the project config.
+    if (view && view.hasAnchor) {
+      projectData.files = projectData.files.filter(view.helpers.isWithinAnchor);
+    }
+  }
+
+  return [projectData, renderingData];
+}
 
 // Render the project page and send to client.
 function getRender(res, appConfig, renderOptions) {
   return function render(projectData) {
     var renderingData = {};
-    var view = {};
-    var viewNames = [];
-    var currentView;
     var projectTags = {};
 
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
+    renderingData.currentViewName = renderOptions.currentViewName;
 
     // Handle no project data being found.
     if (!projectData) {
@@ -46,56 +97,14 @@ function getRender(res, appConfig, renderOptions) {
       return;
     }
 
-    /*
-      Applying views from configuration.
-     */
 
-    // If the project config contains specified views use them.
-    currentView = renderOptions.currentView;
-    if (projectData.config) {
-      viewNames = Object.keys(projectData.config.views);
-    }
+    // Applying views from configuration.
+    // Chrome hasn't turned destructuring assignment on yet,
+    // so I'm cheating
+    var ret = applyView(projectData, renderingData);
+    projectData = ret[0];
+    renderingData = ret[1];
 
-    if (viewNames.length > 0) {
-      renderingData.hasViews = true;
-
-      // No view specified, attempt to use a DEFAULT view.
-      if (currentView === false) {
-        // The defaultView value may be undefined, that will result in no view logic being applied.
-        currentView = viewNames
-                        .filter(function(name) {
-                          return !!projectData.config.views[name].default;
-                        })[0] || false;
-      }
-
-      // Generate view name data for the UI.
-      renderingData.viewNames = viewNames.map(function (viewName) {
-        return {
-          name: viewName,
-          urlEncodedName: encodeURIComponent(viewName),
-          isCurrent: viewName === currentView
-        };
-      });
-
-      // Explicit request for no view logic to be applied.
-      if (currentView === 'none') {
-        view = renderingData.view = false;
-
-      // Grab any view config that might have been specified in the project config.
-      } else {
-        view = renderingData.view = projectData.config.views[currentView];
-      }
-
-      // Filter the file list based on the excludedPaths in project config.
-      if (view && view.hasExcludedPaths) {
-        projectData.files = projectData.files.filter(view.helpers.isIncludedPath);
-      }
-
-      // Filter the file list based on the anchor path in the project config.
-      if (view && view.hasAnchor) {
-        projectData.files = projectData.files.filter(view.helpers.isWithinAnchor);
-      }
-    }
 
 
     /*
@@ -113,7 +122,7 @@ function getRender(res, appConfig, renderOptions) {
     // part of the file object, we just need them all fulfilled or rejected.
     var promisesForFileContent = projectData.files.map(function(f) {return f.contentPromise;});
     return Promise.all(promisesForFileContent)
-      .then(function(fileContents) {
+      .then(function() {
         var tagNames = [];
 
         // Mix in the file content.
@@ -305,7 +314,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   var projectShouldUpdate = (req.query.update === 'true');
 
   // Query parameter containing desired named view from project config.
-  var currentView = req.query.view || false;
+  var currentViewName = req.query.view || false;
 
   // Query parameter containing desired feature tags to filer on.
   var currentTags = req.query.tags || false;
@@ -316,7 +325,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   // Create rendering options.
   var renderOptions = {
     openBurgerMenu: openBurgerMenu,
-    currentView: currentView,
+    currentViewName: currentViewName,
     currentTags: currentTags
   };
 
