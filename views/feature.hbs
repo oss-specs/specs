@@ -4,7 +4,7 @@
 <script src="/public/javascript/feature.js"></script>
 {{> layout_start_body}}
 <main>
-  {{#if feature.error}}
+  {{#if file.error}}
     <section class="content-controls">
       <button class="back-button call-to-action" onclick="window.history.back()"></button>
     </section>
@@ -12,8 +12,8 @@
       <header>
         <h1 class="title">Error parsing feature</h1>
       </header>
-      <p>We are sorry, that feature file could not be understood, this is likely an issue with the file contents. If you would like to see the unprocessed file contents please click <a href="{{feature.plainFileUrl}}">here</a>. The error encountered is given below.</p>
-      <p>{{feature.error.message}}</p>
+      <p>We are sorry, that feature file could not be understood, this is likely an issue with the file contents. If you would like to see the unprocessed file contents please click <a href="{{file.plainFileUrl}}">here</a>. The error encountered is given below.</p>
+      <p>{{file.error.message}}</p>
     </section>
   {{else}}
     <section class="content-controls">
@@ -23,17 +23,17 @@
     </section>
     <article class="feature">
       <header>
-        <h1 id="feature-title" class="title feature-title can-expand">{{feature.name}}</h1>
+        <h1 id="feature-title" class="title feature-title can-expand">{{file.data.name}}</h1>
       </header>
       {{!-- Start the feature details collapsed. --}}
       <section class="feature-details collapsible collapse">
-        {{> feature_comments feature}}
-        {{> feature_tags feature}}
-        {{> feature_description feature}}
+        {{> feature_comments file.data}}
+        {{> feature_tags file.data}}
+        {{> feature_description file.data}}
       </section>
       <ul class="scenarios">
-        {{> feature_scenario feature.background}}
-        {{#each feature.scenarioDefinitions}}
+        {{> feature_scenario file.data.background}}
+        {{#each file.data.scenarioDefinitions}}
           {{> feature_scenario this}}
         {{/each}}
       </ul>

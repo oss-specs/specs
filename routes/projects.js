@@ -39,14 +39,7 @@ router.get('/', function(req, res, next) {
   // Else get the project and load the individual project page.
   var projectRoute = appConfig.projectRoute;
 
-  var repoName = /\/([^\/]+?)(?:\.git)?\/?$/.exec(repoUrl);
-  repoName = (repoName && repoName.length ? repoName[1] : false);
-  if (!repoName) {
-    throw new TypeError('Could not determine repository name.');
-  }
-
   var projectData = {
-    repoName: repoName,
     repoUrl: repoUrl,
     localPath: path.join(appConfig.projectsPath, repoName),
     projectLink: path.posix.join(projectRoute, repoName)
