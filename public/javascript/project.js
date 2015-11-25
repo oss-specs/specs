@@ -5,8 +5,18 @@
   'use strict';
 
   function getQueryParams(urlString) {
-    var url = new window.URL(urlString);
-    var search = url.search.replace(/^\?/,'');
+    var search;
+
+    // IE11 doesn't support the URL API.
+    // If the API doesn't work then
+    // don't try and preserve the
+    // search parameters.
+    try {
+      var url = new window.URL(urlString);
+      search = url.search.replace(/^\?/,'');
+    } catch (err) {
+      search = '';
+    }
     var params = [];
     var parsedParams = {};
     if (!search.length) {
@@ -186,9 +196,19 @@
           // This click originated on a scenario summary and the requested
           // URL should be modified.
           if (targetScenarioId !== undefined) {
-            event.preventDefault();
 
-            targetUrl = new window.URL(el.href);
+            // IE11 doesn't support the URL API.
+            // If the API isn't supported just
+            // follow the feature file link.
+            try {
+              targetUrl = new window.URL(el.href);
+            } catch (err) {
+              console.warn('URL API not supported');
+              console.warn(err);
+              return;
+            }
+
+            event.preventDefault();
             queryParams = getQueryParams(targetUrl.href);
 
             // Modify the query params so the server can know which scenario
