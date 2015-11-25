@@ -51,7 +51,7 @@ module.exports = function() {
   // key2 is an optional key on a sub-object.
   function compareScenarioValues(key1, key2) {
     return function compare(scenarioNumber, table) {
-      var done = undefined;
+      var done;
 
       /**
        * Sometimes just a table is passed in the first argument slot,

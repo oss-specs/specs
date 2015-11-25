@@ -87,7 +87,7 @@ function getRender(res, appConfig, renderOptions) {
       return;
     }
 
-    renderingData['project'] = projectData;
+    renderingData.project = projectData;
 
     // If there are no files in the project then don't
     // try and get file contents.
@@ -317,7 +317,7 @@ function getRender(res, appConfig, renderOptions) {
           });
 
           // Reference the finished file tree on the rendering data object.
-          renderingData['project'].filesByDir = filesByDir;
+          renderingData.project.filesByDir = filesByDir;
 
           // Render the page.
           res.render('project', renderingData);
@@ -340,7 +340,9 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   var openBurgerMenu = (req.cookies.specsOpenBurgerMenu === 'true');
 
   // Session variable.
-  if(!req.session.branches) req.session.branches = {};
+  if(!req.session.branches) {
+    req.session.branches = {};
+  }
   var sessionBranches = req.session.branches;
 
   // The repository name from the URL.

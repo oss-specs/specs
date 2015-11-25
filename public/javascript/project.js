@@ -15,8 +15,10 @@
       var url = new window.URL(urlString);
       search = url.search.replace(/^\?/,'');
     } catch (err) {
+      /* eslint-disable no-console */
       console.warn('URL API not supported');
       console.warn(err);
+      /* eslint-enable no-console */
       search = '';
     }
     var params = [];
@@ -176,7 +178,7 @@
       event.preventDefault();
       var editUrl = this.dataset.editUrl;
       if (!editUrl) {
-        throw new TypeError("Edit URL not supplied.");
+        throw new TypeError('Edit URL not supplied.');
       }
       window.location.href = editUrl;
     });
@@ -205,8 +207,10 @@
             try {
               targetUrl = new window.URL(el.href);
             } catch (err) {
+              /* eslint-disable no-console */
               console.warn('URL API not supported');
               console.warn(err);
+              /* eslint-enable no-console */
               return;
             }
 
