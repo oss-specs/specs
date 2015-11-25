@@ -21,6 +21,58 @@ var applyView = require('../lib/specifications/projects/views').applyView;
 
 var appConfig = require('../lib/configuration/app-config').get();
 
+function getGenerateLeaf(projectData) {
+  return function generateLeaf(filePath, next) {
+
+    // Fix the assumption in file-tree that we are dealing with actual
+    // files on disk.
+    filePath = path.relative(appConfig.rootPath, filePath);
+
+    // Use a loop to find the file matching this part of the tree.
+    var currentFile = projectData.files.filter(function(file) {
+      return filePath === file.filePath;
+    })[0];
+
+    // Link the file list and the tree structure by reference.
+    var leaf = {
+      name: filePath,
+      file: currentFile,
+      isFile: true
+    };
+
+    // Continue to generate the tree.
+    next(null, leaf);
+  };
+}
+
+// Use the tree to construct sets of files grouped by parent directory.
+function groupFilesByDirectory(fileTree) {
+  var filesByDir = {};
+  var treeRoot = (new TreeModel()).parse({name: 'root', children: fileTree});
+  var fileNodes = treeRoot.all(function(node) { return node.model.isFile; });
+  fileNodes.forEach(function(fileNode) {
+    var pathToNode = fileNode.getPath();
+
+    // Derive a directory path.
+    var directoryNames = pathToNode
+                          .map(function(node) {
+                            var model = node.model;
+                            if (!node.isRoot() && !model.isFile) {
+                              return node.model.name;
+                            }
+                            return '';
+                          });
+    var directoryPath = path.join.apply(path, directoryNames);
+
+    // Store the file data keyed by containing directory.
+    if (!filesByDir[directoryPath]) {
+      filesByDir[directoryPath] = [];
+    }
+    filesByDir[directoryPath].push(fileNode.model.file);
+  });
+
+  return filesByDir;
+}
 
 /**
  * Conditionally add edit link data to file objects.
@@ -109,58 +161,10 @@ function getRender(res, appConfig, renderOptions) {
           callback to arrrayToTree.
          */
         var fileList = projectData.files.map(function(file) { return file.filePath; });
-        arrrayToTree(fileList, function(filePath, next) {
-
-          // Fix the assumption in file-tree that we are dealing with actual
-          // files on disk.
-          filePath = path.relative(appConfig.rootPath, filePath);
-
-          // Use a loop to find the file matching this part of the tree.
-          var currentFile = projectData.files.filter(function(file) {
-            return filePath === file.filePath;
-          })[0];
-
-          // Link the file list and the tree structure by reference.
-          var leaf = {
-            name: filePath,
-            file: currentFile,
-            isFile: true
-          };
-
-          // Continue to generate the tree.
-          next(null, leaf);
-        }, function(err, fileTree) {
-
-          // Tree generation is complete.
-          // Wrap in tree model convenience object.
-          var treeRoot = (new TreeModel()).parse({name: 'root', children: fileTree});
-
-          // Use the tree to construct sets of files grouped by parent directory.
-          var filesByDir = {};
-          var fileNodes = treeRoot.all(function(node) { return node.model.isFile; });
-          fileNodes.forEach(function(fileNode) {
-            var pathToNode = fileNode.getPath();
-
-            // Derive a directory path.
-            var directoryNames = pathToNode
-                                  .map(function(node) {
-                                    var model = node.model;
-                                    if (!node.isRoot() && !model.isFile) {
-                                      return node.model.name;
-                                    }
-                                    return '';
-                                  });
-            var directoryPath = path.join.apply(path, directoryNames);
-
-            // Store the file data keyed by containing directory.
-            if (!filesByDir[directoryPath]) {
-              filesByDir[directoryPath] = [];
-            }
-            filesByDir[directoryPath].push(fileNode.model.file);
-          });
+        arrrayToTree(fileList, getGenerateLeaf(projectData), function postTreeConstruction(err, fileTree) {
 
           // Reference the finished file tree on the rendering data object.
-          renderingData.project.filesByDir = filesByDir;
+          renderingData.project.filesByDir = groupFilesByDirectory(fileTree);
 
           // Render the page.
           res.render('project', renderingData);
