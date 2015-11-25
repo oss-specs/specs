@@ -15,6 +15,8 @@
       var url = new window.URL(urlString);
       search = url.search.replace(/^\?/,'');
     } catch (err) {
+      console.warn('URL API not supported');
+      console.warn(err);
       search = '';
     }
     var params = [];
