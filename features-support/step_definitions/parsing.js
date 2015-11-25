@@ -51,7 +51,7 @@ module.exports = function() {
   // key2 is an optional key on a sub-object.
   function compareScenarioValues(key1, key2) {
     return function compare(scenarioNumber, table) {
-      var done = undefined;
+      var done;
 
       /**
        * Sometimes just a table is passed in the first argument slot,
@@ -71,7 +71,7 @@ module.exports = function() {
       var scenario = features.scenarioDefinitions[scenarioIndex];
       var scenarioValues;
 
-      // If the suboject key is specified dig the values out of the objects.
+      // If the suboject key is specified dig the values out of the objects
       // e.g. get the names of steps out of an array of steps.
       // c.f. https://lodash.com/docs#pluck .
       if (key2) {
