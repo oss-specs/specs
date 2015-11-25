@@ -64,7 +64,6 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   var configuredRender = getRender(res, appConfig, renderOptions);
   var configuredPassError = getPassError(next);
 
-  // TODO: Have one place this object is created.
   var projectData = {
     repoName: repoName,
     localPathRoot: appConfig.projectsPath

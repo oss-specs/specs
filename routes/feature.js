@@ -93,8 +93,6 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
     } else if (file.isMarkdownFile && !renderPlainFile) {
       res.render('markdown-file', {file: file});
 
-    // TODO: update the template to look for the error on the file object
-    // and content in file.data .
     } else {
       res.render('general-file', {file: file});
     }
