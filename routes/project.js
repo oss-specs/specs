@@ -21,6 +21,29 @@ var applyView = require('../lib/specifications/projects/views').applyView;
 
 var appConfig = require('../lib/configuration/app-config').get();
 
+
+/**
+ * Conditionally add edit link data to file objects.
+ * @param {Object} projectData  The project data.
+ * @return {Object}             The modified project data.
+ */
+function addEditLinks(projectData) {
+  if (projectData.config.editUrlFormat) {
+    projectData.files.forEach(function(file) {
+      var editUrlTemplate = handlebars.compile(projectData.config.editUrlFormat);
+      var editUrl = editUrlTemplate({
+        repoUrl: projectData.repoUrl,
+        repoUrlWithoutGitSuffix: projectData.repoUrl.replace(/\.git$/i, ''),
+        branchName: projectData.currentShortBranchName,
+        pathToFile: file.filePath
+      });
+
+      file.editUrl = editUrl;
+    });
+  }
+  return projectData;
+}
+
 // Render the project page and send to client.
 function getRender(res, appConfig, renderOptions) {
   return function render(projectData) {
@@ -77,21 +100,8 @@ function getRender(res, appConfig, renderOptions) {
         // Mix in the file content.
         projectData.files = projectData.files.map(processFiles.processFileContent);
 
-        // If the project config contains a URL format
-        // for creating links to edit files then grab it.
-        if (projectData.config.editUrlFormat) {
-          projectData.files.forEach(function(file) {
-            var editUrlTemplate = handlebars.compile(projectData.config.editUrlFormat);
-            var editUrl = editUrlTemplate({
-              repoUrl: projectData.repoUrl,
-              repoUrlWithoutGitSuffix: projectData.repoUrl.replace(/\.git$/i, ''),
-              branchName: projectData.currentShortBranchName,
-              pathToFile: file.filePath
-            });
-
-            file.editUrl = editUrl;
-          });
-        }
+        // Conditionally add the edit links to individual files.
+        projectData = addEditLinks(projectData);
 
         // Filer the features and scenarios by requested tag name.
         let ret = filterByTag(projectData, projectTags, renderOptions.currentTags);
