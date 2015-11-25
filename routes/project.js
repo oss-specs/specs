@@ -61,6 +61,9 @@ function getRender(res, appConfig, renderOptions) {
       return;
     }
 
+    // Create a reference to the project data on
+    // the object that will be passed to the
+    // template.
     renderingData.project = projectData;
 
     // If there are no files in the project then don't
@@ -70,7 +73,6 @@ function getRender(res, appConfig, renderOptions) {
       return;
     }
 
-
     // Applying views from configuration.
     // Chrome hasn't turned destructuring assignment on yet,
     // so I'm cheating
@@ -78,17 +80,10 @@ function getRender(res, appConfig, renderOptions) {
     projectData = ret[0];
     renderingData = ret[1];
 
-
-
-    /*
-      Getting file content and rendering.
-     */
-
-    // Configure function for mapping file paths to file data.
+    // Configure function for mapping file paths to file data and use it.
     var pathToData = processFiles.getFilePathToFileObject(appConfig.projectRoute, projectData, getFileContent);
-
-    // Map list of file paths to list of file data objects.
     projectData.files = projectData.files.map(pathToData);
+
 
     // Wait for content promises to resolve.
     // We don't actually care about the promise values here, they are already
@@ -110,9 +105,10 @@ function getRender(res, appConfig, renderOptions) {
 
         /*
           Generate a tree data structure from the flat file list.
+          The rest of this function is part of the
+          callback to arrrayToTree.
          */
         var fileList = projectData.files.map(function(file) { return file.filePath; });
-
         arrrayToTree(fileList, function(filePath, next) {
 
           // Fix the assumption in file-tree that we are dealing with actual
