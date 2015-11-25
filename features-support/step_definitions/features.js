@@ -3,7 +3,12 @@
 var should = require('should');
 var By = require('selenium-webdriver').By;
 
-// Test helper.
+/**
+ * Given parameters on the world object, load a URL.
+ * @param  {Function} callback Cucumber done callback.
+ * @return {undefined}
+ * @this World
+ */
 function getProjectFromUrl(callback) {
   var world = this;
   var projectRetrievalUrl = 'http://localhost:' + world.appPort + '/?repo_url=' + encodeURIComponent(world.repoUrl);
@@ -55,11 +60,11 @@ module.exports = function () {
 
   this.When(/^they decide to change which branch is being displayed$/, function (callback) {
     var world = this;
-    var burgerMenuId = "expand-collapse-repository-controls";
-    var repositoryCongtrolsId = "repository-controls";
-    var projectShaElId = "project-commit";
-    var changeBranchSelectElId = "change-branch-control";
-    var testingBranchOptionValue = "refs%2Fremotes%2Forigin%2Ftest%2FdoNotDelete";
+    var burgerMenuId = 'expand-collapse-repository-controls';
+    var repositoryCongtrolsId = 'repository-controls';
+    var projectShaElId = 'project-commit';
+    var changeBranchSelectElId = 'change-branch-control';
+    var testingBranchOptionValue = 'refs%2Fremotes%2Forigin%2Ftest%2FdoNotDelete';
     var burgerMenuEl;
     var repoControlsEl;
 
@@ -77,7 +82,7 @@ module.exports = function () {
 
       // Open the repo controls.
       }).then(function(repoControlsClass) {
-        var isClosed = repoControlsClass.indexOf("collapse") !== -1;
+        var isClosed = repoControlsClass.indexOf('collapse') !== -1;
         if (isClosed) {
           return burgerMenuEl.click();
         }
@@ -123,7 +128,7 @@ module.exports = function () {
   this.Then(/^the files from the selected branch are displayed\.$/, function (callback) {
     var world = this;
 
-    var projectShaElId = "project-commit";
+    var projectShaElId = 'project-commit';
 
 
     // Get the new SHA.

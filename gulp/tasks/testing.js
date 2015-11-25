@@ -10,7 +10,7 @@ var fs = require('fs');
 // Sequential Gulp tasks
 var runSequence = require('run-sequence').use(gulp);
 
-var projectPaths = require('../../package.json')['paths'];
+var projectPaths = require('../../package.json').paths;
 var path = require('path');
 
 var cucumber = require('gulp-cucumber');

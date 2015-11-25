@@ -45,7 +45,9 @@ function stringRepeat(str, num) {
       result += str;
     }
     num >>>= 1;
-    if (num <= 0) break;
+    if (num <= 0) {
+      break;
+    }
     str += str;
   }
   return result;

@@ -52,10 +52,14 @@
 
           // The `can-expand` class drives the UI display of the
           // symbols hinting that an element is expandable.
-          if (titleParent) titleParent.classList.remove('can-expand');
+          if (titleParent) {
+            titleParent.classList.remove('can-expand');
+          }
         } else {
           el.classList.add('collapse');
-          if (titleParent) titleParent.classList.add('can-expand');
+          if (titleParent) {
+            titleParent.classList.add('can-expand');
+          }
         }
       });
 
