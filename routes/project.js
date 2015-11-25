@@ -93,6 +93,7 @@ function getRender(res, appConfig, renderOptions) {
           });
         }
 
+        // Filer the features and scenarios by requested tag name.
         let ret = filterByTag(projectData, projectTags, renderOptions.currentTags);
         projectData = ret[0];
         projectTags = ret[1];
