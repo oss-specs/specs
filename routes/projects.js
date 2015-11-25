@@ -39,7 +39,7 @@ router.get('/', function(req, res, next) {
   // Else get the project and load the individual project page.
   var projectData = {
     repoUrl: repoUrl,
-    localPathRoot: appConfig.projectsPath,
+    localPathRoot: appConfig.projectsPath
   };
 
   // Done like this rather than in the project route

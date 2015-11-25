@@ -1,7 +1,6 @@
 'use strict';
 /* eslint new-cap: 0 */
 
-var path = require('path');
 var url = require('url');
 
 var express = require('express');
@@ -68,9 +67,7 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
     return file.contentPromise;
   })
   .then(function () {
-    var feature = {};
     var originalUrl;
-    var markdownHtml;
 
     // Parse the file content.
     file = processFiles.processFileContent(file);
