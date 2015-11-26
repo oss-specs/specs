@@ -25,6 +25,12 @@ function toCamelCase(string) {
 function getCustomCapabilitiesFromEnvironment() {
   var saucelabsProperties = {};
 
+  var browserKey = webdriver.Capability.BROWSER_NAME;
+  var platformKey = webdriver.Capability.PLATFORM_NAME;
+
+  saucelabsProperties[browserKey] = process.env.SELENIUM_BROWSER || "firefox";
+  if(process.env.SELENIUM_PLATFORM) saucelabsProperties[platformKey] = process.env.SELENIUM_PLATFORM;
+
   // Loop over enumerable keys without going up the prototype chain.
   Object.keys(process.env).forEach(function(key) {
 
@@ -45,12 +51,6 @@ function getCustomCapabilitiesFromEnvironment() {
 
 function getCapabilities(webdriver) {
   var caps = getCustomCapabilitiesFromEnvironment();
-  var browserKey = webdriver.Capability.BROWSER_NAME;
-  var firefoxKey = webdriver.Browser.FIREFOX;
-
-  // Default to Firefox
-  caps[browserKey] = caps[browserKey] || firefoxKey;
-
   return caps;
 }
 
