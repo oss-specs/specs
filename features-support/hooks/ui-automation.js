@@ -28,7 +28,7 @@ function getCustomCapabilitiesFromEnvironment() {
   var browserKey = webdriver.Capability.BROWSER_NAME;
   var platformKey = webdriver.Capability.PLATFORM_NAME;
 
-  saucelabsProperties[browserKey] = process.env.SELENIUM_BROWSER || "firefox";
+  saucelabsProperties[browserKey] = process.env.SELENIUM_BROWSER || 'firefox';
   if(process.env.SELENIUM_PLATFORM) saucelabsProperties[platformKey] = process.env.SELENIUM_PLATFORM;
 
   // Loop over enumerable keys without going up the prototype chain.
@@ -49,7 +49,7 @@ function getCustomCapabilitiesFromEnvironment() {
   return saucelabsProperties;
 }
 
-function getCapabilities(webdriver) {
+function getCapabilities() {
   var caps = getCustomCapabilitiesFromEnvironment();
   return caps;
 }
