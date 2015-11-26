@@ -209,7 +209,7 @@ function getPostTreeCallback(renderingData, renderCallback) {
     // Generate and reference the file grouped by directory.
     projectData.filesByDir = groupFilesByDirectory(fileTree);
 
-    renderCallback();
+    renderCallback(renderingData);
   };
 }
 
