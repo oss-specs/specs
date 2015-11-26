@@ -45,7 +45,13 @@
     ],
     "client-js": "public/javascript/**/*.js",
     "cucumber-support-js": "features-support/**/*.js",
-    "unit-test-js": "lib/**/*test.js",
+    "unit-test-js": [
+      "lib/**/*test.js",
+      "routes/**/*test.js",
+      "public/**/*test.js",
+      "views/**/*test.js",
+      "feature-support/**/*test.js"
+    ],
     "gulp-js": [
       "gulpfile.js",
       "gulp-tasks/**/*.js"
@@ -89,7 +95,7 @@
     "gulp-develop-server": "^0.4.3",
     "gulp-eslint": "^1.0.0",
     "gulp-help": "^1.6.1",
-    "gulp-jasmine": "^2.1.0",
+    "gulp-jasmine": "^2.2.1",
     "istanbul": "^0.3.21",
     "jasmine-reporters": "^2.0.7",
     "minimist": "^1.2.0",
