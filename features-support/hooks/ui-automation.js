@@ -30,11 +30,20 @@ function getCustomCapabilitiesFromEnvironment(webdriver) {
 
   var browserValue = process.env.SELENIUM_BROWSER || webdriver.Browser.FIREFOX;
 
-  if (Object.keys(webdriver.Browser).some((browser) => browser === browserValue)) {
+  // Object.values() will be in ES7, but until then...
+  let validBrowser = false;
+  for (let key in webdriver.Browser) {
+    validBrowser = webdriver.Browser[key] === browserValue;
+    if (validBrowser) {
+      break;
+    }
+  }
+
+  if (validBrowser) {
     saucelabsProperties[browserKey] = browserValue;
   } else {
     /* eslint-disable no-console */
-    console.warning('Unsupported browser requested, ignoring: ', browserValue);
+    console.warn('Unsupported browser requested, ignoring: ', browserValue);
     /* eslint-enable no-console */
   }
 
