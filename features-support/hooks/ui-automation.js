@@ -22,13 +22,39 @@ function toCamelCase(string) {
   });
 }
 
-function getCustomCapabilitiesFromEnvironment() {
+function getCustomCapabilitiesFromEnvironment(webdriver) {
   var saucelabsProperties = {};
 
-  // Loop over enumerable keys without going up the prototype chain.
-  Object.keys(process.env).forEach(function(key) {
+  var browserKey = webdriver.Capability.BROWSER_NAME;
+  var platformKey = webdriver.Capability.PLATFORM_NAME;
 
-    // Prefixed general environment variables.
+  var browserValue = process.env.SELENIUM_BROWSER || webdriver.Browser.FIREFOX;
+
+  // Object.values() will be in ES7, but until then...
+  let validBrowser = false;
+  for (let key in webdriver.Browser) {
+    validBrowser = webdriver.Browser[key] === browserValue;
+    if (validBrowser) {
+      break;
+    }
+  }
+
+  if (validBrowser) {
+    saucelabsProperties[browserKey] = browserValue;
+  } else {
+    /* eslint-disable no-console */
+    console.warn('Unsupported browser requested, ignoring: ', browserValue);
+    /* eslint-enable no-console */
+  }
+
+
+  if(process.env.SELENIUM_PLATFORM) {
+    saucelabsProperties[platformKey] = process.env.SELENIUM_PLATFORM;
+  }
+
+  // Parse any prefixed general environment variables,
+  // e.g. SAUCELABS_BUILD on teamcity.
+  Object.keys(process.env).forEach(function(key) {
     if(/^SAUCELABS_.*/.test(key)) {
       var sanitisedKey = key
         .replace(/^SAUCELABS_/, '')
@@ -43,17 +69,6 @@ function getCustomCapabilitiesFromEnvironment() {
   return saucelabsProperties;
 }
 
-function getCapabilities(webdriver) {
-  var caps = getCustomCapabilitiesFromEnvironment();
-  var browserKey = webdriver.Capability.BROWSER_NAME;
-  var firefoxKey = webdriver.Browser.FIREFOX;
-
-  // Default to Firefox
-  caps[browserKey] = caps[browserKey] || firefoxKey;
-
-  return caps;
-}
-
 module.exports = function seleniumHooks() {
   this.Before('@ui-automation', function(callback) {
     var world = this;
@@ -62,7 +77,7 @@ module.exports = function seleniumHooks() {
     // Lazy require WebDriver so it isn't pulled in for non-selenium tests.
     webdriver = require('selenium-webdriver');
 
-    var capabilities = getCapabilities(webdriver);
+    var capabilities = getCustomCapabilitiesFromEnvironment(webdriver);
 
     // this is defaults, can be overriden through environment variables
     // http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver_builder_class_Builder.html
