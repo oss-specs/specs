@@ -48,11 +48,11 @@ There are two types of possible configuration:
 * SPECS_ALLOW_INSECURE_SSL - Disables SSL certificate verification when cloning repos.
 
 ### Project specific configuration via a specs.json file
-The file should be in the root of your repository. The file an be named `specs.json` or `.specs.json` .See the [.specs.json](.specs.json) file in the root of this repository for an example.
+The file should be in the root of your repository. The file an be named `specs.json` or `.specs.json` .See the [.specs.json](.specs.json) file in the root of this repository for examples.
 
 Keys:
- * views: An object with keys specifying named view configurations. Allowed keys are:
-   * default - A boolean, if true this view will be used by default in the UI. 
+ * projectViews: An object with keys specifying named configurations for creating filtered views into projects. Allowed keys are:
+   * default - A boolean, if true this view will be used by default in the UI.
    * excludedPaths - An array of folder paths to exclude from the UI on the project page.
    * pathsToHide - Specify beginnings of directory paths to hide on the project page. E.g. if you specified 'src/test/specs' then a directory 'src/test/specs/my_wondeful_feature' would be displayed in the directory list as '... my_wonderful_feature'.
 

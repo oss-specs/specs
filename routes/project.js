@@ -17,7 +17,7 @@ var getProject = require('../lib/specifications/projects/project').get;
 var getProjectData = require('../lib/specifications/projects/project').getData;
 var getFileContent = require('../lib/specifications/projects/project').getFileContent;
 
-var applyView = require('../lib/specifications/projects/views').applyView;
+var applyProjectView = require('../lib/specifications/projects/project-views').applyProjectView;
 
 var appConfig = require('../lib/configuration/app-config').get();
 
@@ -45,7 +45,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   var projectShouldUpdate = (req.query.update === 'true');
 
   // Query parameter containing desired named view from project config.
-  var currentViewName = req.query.view || false;
+  var currentProjectViewName = req.query.view || false;
 
   // Query parameter containing desired feature tags to filer on.
   var currentTags = req.query.tags || false;
@@ -56,7 +56,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   // Create rendering options.
   var renderOptions = {
     openBurgerMenu: openBurgerMenu,
-    currentViewName: currentViewName,
+    currentProjectViewName: currentProjectViewName,
     currentTags: currentTags
   };
 
@@ -124,7 +124,7 @@ function getRender(res, appConfig, renderOptions) {
     var projectTags = {};
 
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
-    renderingData.currentViewName = renderOptions.currentViewName;
+    renderingData.currentProjectViewName = renderOptions.currentProjectViewName;
 
     // Handle no project data being found.
     if (!projectData) {
@@ -147,7 +147,7 @@ function getRender(res, appConfig, renderOptions) {
     // Applying views from configuration.
     // Chrome hasn't turned destructuring assignment on yet,
     // so I'm cheating
-    let ret = applyView(projectData, renderingData);
+    let ret = applyProjectView(projectData, renderingData);
     projectData = ret[0];
     renderingData = ret[1];
 
