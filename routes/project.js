@@ -11,7 +11,7 @@ var arrrayToTree = require('file-tree');
 var TreeModel = require('tree-model');
 
 var processFiles = require('../lib/specifications/files/process-files');
-var filterByTag = require('../lib/specifications/files/feature-files/tags').filter;
+var filterFeaturesAndScenarios = require('../lib/specifications/files/feature-files/tags').filterFeaturesAndScenarios;
 
 var getProject = require('../lib/specifications/projects/project').get;
 var getProjectData = require('../lib/specifications/projects/project').getData;
@@ -170,7 +170,7 @@ function getRender(res, appConfig, renderOptions) {
         projectData = addEditLinks(projectData);
 
         // Filer the features and scenarios by requested tag name.
-        let ret = filterByTag(projectData, projectTags, renderOptions.currentTags);
+        let ret = filterFeaturesAndScenarios(projectData, projectTags, renderOptions.currentTags);
         projectData = ret[0];
         projectTags = ret[1];
 
