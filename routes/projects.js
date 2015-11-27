@@ -3,10 +3,10 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var appConfig = require('../lib/configuration').get();
+var appConfig = require('../lib/configuration/app-config').get();
 
-var getProjectsNames = require('../lib/specifications/project').getNames;
-var getProject = require('../lib/specifications/project').get;
+var getProjectsNames = require('../lib/specifications/projects/project').getNames;
+var getProject = require('../lib/specifications/projects/project').get;
 
 var appVersion = require('../package.json').version;
 
@@ -37,19 +37,9 @@ router.get('/', function(req, res, next) {
   }
 
   // Else get the project and load the individual project page.
-  var projectRoute = appConfig.projectRoute;
-
-  var repoName = /\/([^\/]+?)(?:\.git)?\/?$/.exec(repoUrl);
-  repoName = (repoName && repoName.length ? repoName[1] : false);
-  if (!repoName) {
-    throw new TypeError('Could not determine repository name.');
-  }
-
   var projectData = {
-    repoName: repoName,
     repoUrl: repoUrl,
-    localPath: path.join(appConfig.projectsPath, repoName),
-    projectLink: path.posix.join(projectRoute, repoName)
+    localPathRoot: appConfig.projectsPath
   };
 
   // Done like this rather than in the project route
@@ -58,10 +48,11 @@ router.get('/', function(req, res, next) {
   // If the project repo does not exist it will be cloned
   // if it does exist it will be updated.
   getProject(projectData)
-    .then(function(projectMetadata) {
+    .then(function(projectData) {
+      var projectLink = path.posix.join(appConfig.projectRoute, projectData.repoName);
 
       // Redirect to the project page.
-      res.redirect(projectMetadata.projectLink);
+      res.redirect(projectLink);
     })
     .catch(function(err) {
 

@@ -1,19 +1,20 @@
 'use strict';
 /* eslint new-cap: 0 */
 
-var path = require('path');
 var url = require('url');
 
 var express = require('express');
 var router = express.Router();
 
-var markdown = require('markdown').markdown;
-var getProjectData = require('../lib/specifications/project').getData;
-var getFileContents = require('../lib/specifications/project').getFileContents;
-var appConfig = require('../lib/configuration').get();
 
-var Gherkin = require('gherkin');
-var Parser = new Gherkin.Parser();
+var getProjectData = require('../lib/specifications/projects/project').getData;
+var getFileContent = require('../lib/specifications/projects/project').getFileContent;
+
+var processFiles = require('../lib/specifications/files/process-files');
+
+
+var appConfig = require('../lib/configuration/app-config').get();
+
 
 /**
  * Given a feature data structure and a scenario id mark a particular scenario as requested.
@@ -37,13 +38,13 @@ function markTargetedFeature(feature, targetedScenarioName) {
 // Display an individual feature in a project.
 // htpp://host/<project name>/<root/to/file>
 router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
-  var projectName = req.params[0];
+  var repoName = req.params[0];
   var filePath = req.params[1];
   var ref = req.query.ref;
 
   var projectData = {
-    name: projectName,
-    localPath: path.join(appConfig.projectsPath, projectName),
+    repoName: repoName,
+    localPathRoot: appConfig.projectsPath,
     currentBranchName: ref
   };
 
@@ -53,38 +54,47 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
   // Optional name of a particular scenario.
   var targetedScenarioName = req.query.scenario || false;
 
+  // An object referring to the file we want to render.
+  var file;
+
   getProjectData(projectData, ref)
   .then(function (projectData) {
-    return getFileContents(projectData, filePath);
+    var filePathToFileObject = processFiles.getFilePathToFileObject(appConfig.projectRoute, projectData, getFileContent);
+    return filePathToFileObject(filePath);
   })
-  .then(function (fileContents) {
-    var feature = {};
-    var isFeatureFile = /.*\.feature/.test(filePath);
-    var isMarkdownFile = /.*\.md/.test(filePath);
+  .then(function(_file) {
+    file = _file;
+    return file.contentPromise;
+  })
+  .then(function () {
     var originalUrl;
 
-    if (isFeatureFile && !renderPlainFile) {
+    // Parse the file content.
+    file = processFiles.processFileContent(file);
 
-      try {
-        feature = Parser.parse(fileContents);
-      } catch (err) {
-        originalUrl = url.parse(req.originalUrl);
-        originalUrl.search = originalUrl.search.length ? originalUrl.search + '&plain=true' : '?plain=true';
-        feature.plainFileUrl = url.format(originalUrl);
-        feature.error = err;
-      }
+    // If there was a parsing error provide a link to the plain text file
+    // so that it can be linked to in the UI to help with issue analysis.
+    if (file.error) {
+      originalUrl = url.parse(req.originalUrl);
+      originalUrl.search = originalUrl.search.length ? originalUrl.search + '&plain=true' : '?plain=true';
+      file.plainFileUrl = url.format(originalUrl);
+    }
+
+    if (file.isFeatureFile && !renderPlainFile) {
 
       // Determine if a particular scenario was targeted and mark
       // it so that it can be rendered accordingly.
       if (targetedScenarioName) {
-        feature = markTargetedFeature(feature, targetedScenarioName);
+        file.data = markTargetedFeature(file.data, targetedScenarioName);
       }
 
-      res.render('feature', {feature: feature});
-    } else if (isMarkdownFile && !renderPlainFile) {
-      res.render('markdown-file', {markdownHtml: markdown.toHTML(fileContents)});
+      res.render('feature', {file: file});
+
+    } else if (file.isMarkdownFile && !renderPlainFile) {
+      res.render('markdown-file', {file: file});
+
     } else {
-      res.render('general-file', {contents: fileContents});
+      res.render('general-file', {file: file});
     }
   })
   .catch(function (err) {

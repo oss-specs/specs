@@ -18,7 +18,7 @@ var appVersion = require('./package.json').version;
 // this needs to happen before the
 // routes are required as they depend on
 // configuration state at require time.
-var appConfig = require('./lib/configuration').set({
+var appConfig = require('./lib/configuration/app-config').set({
   rootPath: process.env.SPECS_OUT_DIR || __dirname,
   allowInsecureSSL: process.env.SPECS_ALLOW_INSECURE_SSL
 });

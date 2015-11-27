@@ -37,12 +37,12 @@
         <section class="content-controls">
           <button class="back-button call-to-action" onclick="window.history.back()"></button>
           <button id="expand-collapse-file-lists" class="call-to-action"><span>Expand/Collapse All</span></button>
-          {{#if hasViews}}
+          {{#if hasProjectViews}}
             <div class="config-views">
               <label for="change-views-control">View:</label>
               <select id="change-views-control">
                 <option value="none">none</option>
-                {{#each viewNames}}
+                {{#each projectViewNames}}
                   <option value="{{this.urlEncodedName}}" {{#if this.isCurrent}}selected{{/if}}>{{this.name}}</option>
                 {{/each}}
               </select>
@@ -65,13 +65,13 @@
         <hr>
       </section>
       <section class="spec-links">
-        {{#if view.hasAnchor}}
-          <section class="anchor"><p>File root: {{view.anchor}}</p></section>
+        {{#if projectView.hasAnchor}}
+          <section class="anchor"><p>File root: {{projectView.anchor}}</p></section>
         {{/if}}
         {{#each project.filesByDir as |files directoryPath|}}
           <section class="directory">
-            <h2 class="directory-path interactive {{#if ../view.[start collapsed]}}can-expand{{/if}}" title="{{directoryPath}}">{{#directory_path directoryPath pathsToHideRegex=../view.regex.pathsToHide}}{{this}}{{/directory_path}}</h2>
-            <ul class="file-list collapsible {{#if ../view.[start collapsed]}}collapse{{/if}}">
+            <h2 class="directory-path interactive {{#if ../projectView.[start collapsed]}}can-expand{{/if}}" title="{{directoryPath}}">{{#directory_path directoryPath pathsToHideRegex=../projectView.regex.pathsToHide}}{{this}}{{/directory_path}}</h2>
+            <ul class="file-list collapsible {{#if ../projectView.[start collapsed]}}collapse{{/if}}">
               {{#each files}}
                 {{#if this.isFeatureFile}}
                   {{> project_file_feature this currentBranchName=../../../project.currentBranchName}}
