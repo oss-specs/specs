@@ -22,19 +22,30 @@ function toCamelCase(string) {
   });
 }
 
-function getCustomCapabilitiesFromEnvironment() {
+function getCustomCapabilitiesFromEnvironment(webdriver) {
   var saucelabsProperties = {};
 
   var browserKey = webdriver.Capability.BROWSER_NAME;
   var platformKey = webdriver.Capability.PLATFORM_NAME;
 
-  saucelabsProperties[browserKey] = process.env.SELENIUM_BROWSER || 'firefox';
-  if(process.env.SELENIUM_PLATFORM) saucelabsProperties[platformKey] = process.env.SELENIUM_PLATFORM;
+  var browserValue = process.env.SELENIUM_BROWSER || webdriver.Browser.FIREFOX;
 
-  // Loop over enumerable keys without going up the prototype chain.
+  if (Object.keys(webdriver.Browser).some((browser) => browser === browserValue)) {
+    saucelabsProperties[browserKey] = browserValue;
+  } else {
+    /* eslint-disable no-console */
+    console.warning('Unsupported browser requested, ignoring: ', browserValue);
+    /* eslint-enable no-console */
+  }
+
+
+  if(process.env.SELENIUM_PLATFORM) {
+    saucelabsProperties[platformKey] = process.env.SELENIUM_PLATFORM;
+  }
+
+  // Parse any prefixed general environment variables,
+  // e.g. SAUCELABS_BUILD on teamcity.
   Object.keys(process.env).forEach(function(key) {
-
-    // Prefixed general environment variables.
     if(/^SAUCELABS_.*/.test(key)) {
       var sanitisedKey = key
         .replace(/^SAUCELABS_/, '')
@@ -49,11 +60,6 @@ function getCustomCapabilitiesFromEnvironment() {
   return saucelabsProperties;
 }
 
-function getCapabilities() {
-  var caps = getCustomCapabilitiesFromEnvironment();
-  return caps;
-}
-
 module.exports = function seleniumHooks() {
   this.Before('@ui-automation', function(callback) {
     var world = this;
@@ -62,7 +68,7 @@ module.exports = function seleniumHooks() {
     // Lazy require WebDriver so it isn't pulled in for non-selenium tests.
     webdriver = require('selenium-webdriver');
 
-    var capabilities = getCapabilities(webdriver);
+    var capabilities = getCustomCapabilitiesFromEnvironment(webdriver);
 
     // this is defaults, can be overriden through environment variables
     // http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver_builder_class_Builder.html
