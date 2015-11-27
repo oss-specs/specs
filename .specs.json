@@ -1,6 +1,6 @@
 {
   "editUrlFormat": "{{repoUrl}}/edit/{{branchName}}/{{pathToFile}}",
-  "views": {
+  "projectViews": {
     "tidy": {
       "default": true,
       "start collapsed": true,
