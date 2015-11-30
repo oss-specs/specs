@@ -79,6 +79,10 @@ module.exports = function seleniumHooks() {
 
     var capabilities = getCustomCapabilitiesFromEnvironment(webdriver);
 
+    // Set the meta data for possbile use by SauceLabs.
+    capabilities.name = scenario.getName() || undefined;
+    capabilities.tags = scenario.getTags().map((t) => t.getName()) || undefined;
+
     // this is defaults, can be overriden through environment variables
     // http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver_builder_class_Builder.html
     try {
