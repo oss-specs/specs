@@ -231,6 +231,11 @@ h2.directory-path {
   margin-bottom: 0;
 }
 
+.file-details .icon {
+  margin-right: 0.4em;
+  margin-bottom: 0.1em;
+}
+
 .file-container .feature-edit {
   font-size: 0.9em;
   float: right;

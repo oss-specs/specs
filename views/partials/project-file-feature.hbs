@@ -3,11 +3,11 @@
     <section class="file-container group">
       {{#if this.empty}}
         <section class="file-details">
-          <p class="file-name"><span class="empty-file" title="This file is empty" >&#x2205;&nbsp;&nbsp;{{this.name}}</span></p>
+          <p class="file-name">{{> empty_file_notice name=this.name}}</p>
         </section>
       {{else if this.error}}
         <section class="file-details">
-          <p class="file-name"><span class="parse-error" title="Error parsing file.">&#x1F645;&nbsp;&nbsp;{{this.name}}</span></p>
+          <p class="file-name">{{> parse_error_notice name=this.name}}</p>
         </section>
       {{/if}}
       {{#if this.data}}
