@@ -70,7 +70,7 @@ function getCustomCapabilitiesFromEnvironment(webdriver) {
 }
 
 module.exports = function seleniumHooks() {
-  this.Before('@ui-automation', function(callback) {
+  this.Before('@ui-automation', function(scenario, callback) {
     var world = this;
     var timeoutManager;
 
@@ -98,8 +98,9 @@ module.exports = function seleniumHooks() {
   });
 
   // Tidy up.
-  this.After('@ui-automation', function() {
+  this.After('@ui-automation', function(scenario, callback) {
     var browser = this.browser;
     browser.quit();
+    callback();
   });
 };
