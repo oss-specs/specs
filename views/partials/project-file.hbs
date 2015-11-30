@@ -4,10 +4,10 @@
       <section class="file-details">
         <p class="file-name">
           {{#if this.empty}}
-            <span class="empty-file" title="This file is empty" >&#x2205;&nbsp;&nbsp;{{this.name}}</span>
+            {{> empty_file_notice name=this.name}}
           {{else}}
             {{#if this.error}}
-              <span class="parse-error" title="Error parsing file.">&#x1F645;&nbsp;&nbsp;{{this.name}}</span>
+              {{> parse_error_notice name=this.name}}
             {{else}}
               <span title="{{this.filePath}}">{{this.name}}</span>
             {{/if}}

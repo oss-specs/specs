@@ -158,6 +158,7 @@ button.back-button::before {
  */
 svg.icon {
   display: inline-block;
+  vertical-align: middle;
   width: 1em;
   height: 1em;
   fill: currentColor;
