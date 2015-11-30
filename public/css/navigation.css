@@ -19,7 +19,7 @@
 
 .header-nav a {
   display: inline-block;
-  color: blue;
+  color: darkgreen;
   text-decoration: none;
 }
 
@@ -36,6 +36,10 @@
 .header-nav li.primary {
   font-size: 2em;
   margin-right: 1em;
+}
+
+.header-nav .icon {
+  margin-top: 0.2em;
 }
 
 .header-nav hr.top {

@@ -153,6 +153,15 @@ button.back-button::before {
   }
 }
 
+/**
+ * Normalisation for SVG icons
+ */
+svg.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
 
 /**
  * Hide things.
