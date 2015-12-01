@@ -109,7 +109,7 @@ module.exports = function seleniumHooks() {
 
       // Communicate the Sauce Id to TeamCity Sauce plugin.
       /* eslint-disable no-console */
-      console.log('SauceOnDemandSessionID=%s job-name=%s', session.getId(), scenario.getName());
+      console.error('SauceOnDemandSessionID=%s job-name=%s', session.getId(), scenario.getName());
       /* eslint-enable no-console */
 
       browser.quit();
