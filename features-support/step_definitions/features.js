@@ -3,6 +3,9 @@
 var should = require('should');
 var By = require('selenium-webdriver').By;
 
+const pageLoadTimeout = 30 * 1000;
+const timeoutObject = {timeout: pageLoadTimeout};
+
 /**
  * Given parameters on the world object, load a URL.
  * @param  {Function} callback Cucumber done callback.
@@ -50,10 +53,9 @@ module.exports = function () {
   });
 
 
-  this.When(/^an interested party wants to view the features in that repo\.?$/, getProjectFromUrl);
-  this.When(/^they request the features for the same repository again\.?$/, getProjectFromUrl);
-
-  this.When(/^an interested party wants to view the scenarios within a feature\.?$/, function (callback) {
+  this.When(/^an interested party wants to view the features in that repo\.?$/, timeoutObject, getProjectFromUrl);
+  this.When(/^they request the features for the same repository again\.?$/, timeoutObject, getProjectFromUrl);
+  this.When(/^an interested party wants to view the scenarios within a feature\.?$/, timeoutObject, function (callback) {
     var world = this;
     getProjectFromUrl.bind(world)(getScenarioFromProject(callback, world));
   });
@@ -110,12 +112,11 @@ module.exports = function () {
   });
 
 
-  this.Then(/^the list of features will be visible\.?$/, function (callback) {
+  this.Then(/^the list of features will be visible\.?$/, function () {
     should.equal(
       /\.feature/i.test(this.body) && /\.md/i.test(this.body),
       true,
       'The returned document body does not contain the strings \'.feature\' and \'.md\'' + this.body);
-    callback();
   });
 
   this.Then(/^the scenarios will be visible\.?$/, function (callback) {

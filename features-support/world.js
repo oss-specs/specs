@@ -10,7 +10,7 @@ var appConfig = require('../lib/configuration/app-config').set({
 });
 
 module.exports = function() {
-  this.World = function World(callback) {
+  this.World = function World() {
     this.appPort = process.env.PORT || 3000;
 
     /**
@@ -28,8 +28,5 @@ module.exports = function() {
           }
         });
     };
-
-    // Done defining World.
-    callback();
   };
 };
