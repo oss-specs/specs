@@ -1,4 +1,5 @@
 {
+  "ciLink": "https://teamcity.sponte.uk/project.html?projectId=OssSpecs&tab=projectOverview",
   "editUrlFormat": "{{repoUrl}}/edit/{{branchName}}/{{pathToFile}}",
   "projectViews": {
     "tidy": {
