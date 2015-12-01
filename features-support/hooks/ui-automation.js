@@ -70,7 +70,7 @@ function getCustomCapabilitiesFromEnvironment(webdriver) {
 }
 
 module.exports = function seleniumHooks() {
-  this.Before('@ui-automation', function(callback) {
+  this.Before('@ui-automation', function(scenario, callback) {
     var world = this;
     var timeoutManager;
 
@@ -78,6 +78,10 @@ module.exports = function seleniumHooks() {
     webdriver = require('selenium-webdriver');
 
     var capabilities = getCustomCapabilitiesFromEnvironment(webdriver);
+
+    // Set the meta data for possbile use by SauceLabs.
+    capabilities.name = scenario.getName() || undefined;
+    capabilities.tags = scenario.getTags().map((t) => t.getName()) || undefined;
 
     // this is defaults, can be overriden through environment variables
     // http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver_builder_class_Builder.html
@@ -98,8 +102,18 @@ module.exports = function seleniumHooks() {
   });
 
   // Tidy up.
-  this.After('@ui-automation', function() {
+  this.After('@ui-automation', function(scenario, callback) {
     var browser = this.browser;
-    browser.quit();
+
+    browser.getSession().then(function(session) {
+
+      // Communicate the Sauce Id to TeamCity Sauce plugin.
+      /* eslint-disable no-console */
+      console.error('SauceOnDemandSessionID=%s job-name=%s', session.getId(), scenario.getName());
+      /* eslint-enable no-console */
+
+      browser.quit();
+      callback();
+    });
   });
 };

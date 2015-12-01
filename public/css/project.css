@@ -113,15 +113,24 @@ ul.file-list {
 
 .repo-link {
   font-size: 0.7em;
+}
+.ci-link {
+  font-size: 0.8em;
+}
+.repo-link,
+.ci-link {
+
   font-weight: bold;
   text-transform: uppercase;
   margin-right: 2em;
 }
-.repo-link a {
+.repo-link a,
+.ci-link a {
   text-decoration: none;
   color: blue;
 }
-.repo-link:hover a {
+.repo-link:hover a,
+.ci-link:hover a {
   color: green;
   text-decoration: underline;
 }
@@ -229,6 +238,11 @@ h2.directory-path {
 .file-path {
   font-size: 0.6em;
   margin-bottom: 0;
+}
+
+.file-details .icon {
+  margin-right: 0.4em;
+  margin-bottom: 0.1em;
 }
 
 .file-container .feature-edit {
