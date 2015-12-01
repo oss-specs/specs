@@ -62,6 +62,11 @@
             </div>
           </section>
         {{/if}}
+        {{#if project.config.ciLink}}
+          <section class="ci-link-container">
+            <a href={{{project.config.ciLink}}}>CI Results</a>
+          </section>
+        {{/if}}
         <hr>
       </section>
       <section class="spec-links">
