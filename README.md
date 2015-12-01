@@ -53,8 +53,7 @@ The file should be in the root of your repository. The file an be named `specs.j
 Keys:
  * ciLink: A string specifying a link to a CI server with results related to the current specifications. This is a simplistic first pass at linking the specifications to the results. If provided then the link will be visible on project pages. See the [.specs.json](.specs.json) for an example.
  * editUrlFormat: A string in the format of a [Handlebars](http://handlebarsjs.com/) template used for constructing a link that will allow a file of interest to be edited in the UI of the Git server where the project repository is kept.  See the [.specs.json](.specs.json) for an example.
- * projectViews: An object with keys specifying named configurations for creating filtered views into projects.  See the [.specs.json](.specs.json) for an example.
- Allowed keys are:
+ * projectViews: An object with keys specifying named configurations for creating filtered views into projects.  See the [.specs.json](.specs.json) for an example. Allowed keys are:
    * default - A boolean, if true this view will be used by default in the UI.
    * excludedPaths - An array of folder paths to exclude from the UI on the project page.
    * pathsToHide - Specify beginnings of directory paths to hide on the project page. E.g. if you specified 'src/test/specs' then a directory 'src/test/specs/my_wondeful_feature' would be displayed in the directory list as '... my_wonderful_feature'.
