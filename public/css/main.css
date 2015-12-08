@@ -109,6 +109,9 @@ button.back-button::before {
 .interactive {
   cursor: pointer;
 }
+.interactive:hover {
+  color: green;
+}
 
 /**
  * Landscape and larger phones
