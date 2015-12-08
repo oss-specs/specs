@@ -14,7 +14,7 @@
   {{#if project}}
     <section class="project">
       <section class="controls group">
-        <button id="expand-collapse-repository-controls" class="burger-menu"><span>Open and close menu</span></button>
+        <button id="expand-collapse-repository-controls" class="burger-menu {{#if openBurgerMenu}}open{{/if}}"><span>Open and close menu</span></button>
         <section id="repository-controls" class="repository-controls collapsible {{#unless openBurgerMenu}}collapse{{/unless}}">
           <h3>Repository controls</h3>
           <div class="project-refs">
