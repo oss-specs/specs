@@ -117,14 +117,16 @@ button.back-button::before {
 /* UI hints */
 .hint {
   display: inline-block;
+  position: relative;
+  top: -0.4em;
   color: darkblue;
-  font-size: 0.65em;
+  font-size: 0.6em;
   vertical-align: super;
 }
 .hint:hover:after {
   font-size: 1.4rem;
   display: block;
-  position: absolute;
+  position: fixed;
   box-sizing: border-box;
   width: 100%;
   min-height: 4em;
