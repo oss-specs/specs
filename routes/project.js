@@ -5,13 +5,12 @@ var path = require('path');
 var express = require('express');
 var router = express.Router();
 
-var handlebars = require('hbs').handlebars;
-
 var arrrayToTree = require('file-tree');
 var TreeModel = require('tree-model');
 
 var processFiles = require('../lib/specifications/files/process-files');
 var filterFeaturesAndScenarios = require('../lib/specifications/files/feature-files/tags').filterFeaturesAndScenarios;
+var getEditUrl = require('../lib/specifications/files/get-edit-url');
 
 var getProject = require('../lib/specifications/projects/project').get;
 var getProjectData = require('../lib/specifications/projects/project').getData;
@@ -295,20 +294,11 @@ function groupFilesByDirectory(fileTree) {
 function addEditLinks(projectData) {
   if (projectData.config.editUrlFormat) {
     projectData.files.forEach(function(file) {
-      var editUrlTemplate = handlebars.compile(projectData.config.editUrlFormat);
-      var editUrl = editUrlTemplate({
-        repoUrl: projectData.repoUrl,
-        repoUrlWithoutGitSuffix: projectData.repoUrl.replace(/\.git$/i, ''),
-        branchName: projectData.currentShortBranchName,
-        pathToFile: file.filePath
-      });
-
-      file.editUrl = editUrl;
+      file.editUrl = getEditUrl(projectData, file.filePath);
     });
   }
   return projectData;
 }
-
 
 /**
  * Pass errors to the next Express middleware for handling.
