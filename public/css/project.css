@@ -66,6 +66,11 @@ ul.file-list {
 .project .content-controls .config-views select {
   min-width: 10em;
 }
+.project .content-controls .config-views .hint {
+  font-size: 0.9em;
+  top: -0.6em;
+  margin-right: -0.3em;
+}
 
 .project .tag-controls {
   margin-top: 1em;
