@@ -1,3 +1,7 @@
 {{#if url}}
-  <button class="feature-edit call-to-action" data-edit-url="{{url}}">Edit</button>
+  {{#if isLink}}
+    <a class="feature-edit" href="{{url}}"><button class="call-to-action">Edit</button></a>
+  {{else}}
+    <button class="feature-edit call-to-action" data-edit-url="{{url}}">Edit</button>
+  {{/if}}
 {{/if}}
