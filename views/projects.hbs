@@ -8,7 +8,7 @@
     <h1>Projects</h1>
   </header>
   <section>
-    <h2>Add Project</h2>
+    <h2>Add Project {{> hint text="To add a project put a Git repository URL into text box and hit submit."}}</h2>
     <form action="/" method="get">
       <label>Project's Git URL (https only please): <input type="text" name="repo_url" /></label>
       <button class="call-to-action loader-button">Submit</button>
