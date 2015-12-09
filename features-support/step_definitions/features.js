@@ -119,11 +119,9 @@ module.exports = function () {
         return _changeBranchSelectEl.findElement(By.xpath('option[@value=\'' + testingBranchOptionValue + '\']'));
       }, handleErr(callback))
       .then(function(_testBranchOptionEl) {
-        return _testBranchOptionEl.click();
-      }, handleErr(callback))
-      .then(function() {
+        _testBranchOptionEl.click();
         callback();
-      });
+      }, handleErr(callback));
   });
 
 
@@ -140,7 +138,8 @@ module.exports = function () {
       'The returned document body does not contain a feature title');
   });
 
-  this.Then(/^the files from the selected branch are displayed\.$/, function (callback) {
+  // This has to wait for a page to load so it gets the page load time out.
+  this.Then(/^the files from the selected branch are displayed\.$/, timeoutObject, function (callback) {
     var world = this;
 
     var projectShaElId = 'project-commit';
