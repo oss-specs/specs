@@ -1,1 +1,1 @@
---ignore=fallback-colors
+--ignore=fallback-colors,box-model,adjoining-classes,order-alphabetical,unqualified-attributes
