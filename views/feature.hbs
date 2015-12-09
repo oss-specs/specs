@@ -18,7 +18,7 @@
   {{else}}
     <section class="content-controls group">
       {{> edit_button url=file.editUrl isLink=true}}
-      <button class="back-button call-to-action" onclick="window.history.back()"></button>
+      {{> back_button}}
       <button id="expand-collapse-details" class="call-to-action"><span>Expand/Collapse Details</span></button>
       <button id="expand-collapse-tags" class="call-to-action collapsible collapse"><span>Expand/Collapse Tags</span></button>
     </section>

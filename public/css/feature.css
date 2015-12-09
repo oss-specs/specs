@@ -7,14 +7,6 @@
   margin-bottom: 0;
 }
 
-.content-controls .feature-edit {
-  float: right;
-  box-shadow: 0 0 0.4em 0.2em orange;
-}
-.content-controls .feature-edit button {
-  margin: 0;
-}
-
 .feature header {
   text-align: center;
   margin-bottom: 1.4em;

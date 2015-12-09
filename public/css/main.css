@@ -105,6 +105,15 @@ button.back-button::before {
   content: '\21A9';
 }
 
+/* File editing buttons and links */
+.feature-edit {
+  float: right;
+  box-shadow: 0 0 0.4em 0.2em orange;
+}
+.feature-edit button {
+  margin: 0;
+}
+
 /* Other interactice things */
 .interactive {
   cursor: pointer;
