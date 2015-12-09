@@ -6,6 +6,13 @@ var By = require('selenium-webdriver').By;
 const pageLoadTimeout = 30 * 1000;
 const timeoutObject = {timeout: pageLoadTimeout};
 
+// Deal with the non-standard webdriver promises.
+function handleErr(cb) {
+  return function(err) {
+    cb(err);
+  };
+}
+
 /**
  * Given parameters on the world object, load a URL.
  * @param  {Function} callback Cucumber done callback OR a custom callback.
@@ -17,21 +24,18 @@ function getProjectFromUrl(callback) {
   var projectRetrievalUrl = 'http://localhost:' + world.appPort + '/?repo_url=' + encodeURIComponent(world.repoUrl);
 
   world.browser.get(projectRetrievalUrl)
-  .then(world.browser.getPageSource.bind(world.browser))
+  .then(world.browser.getPageSource.bind(world.browser), handleErr(callback))
   .then(function (body) {
     world.body = body;
     callback();
-  })
-  .catch(function(err) {
-    callback(err);
-  });
+  }, handleErr(callback));
 }
 
 // The returned function is passed as a callback to getProjectFromUrl.
-function getScenarioFromProject(stepCallback, world) {
+function getScenarioFromProject(callback, world) {
   return function(error) {
     if (error) {
-      stepCallback(error);
+      callback(error);
       return;
     }
 
@@ -39,15 +43,12 @@ function getScenarioFromProject(stepCallback, world) {
     .then(function (specLinks) {
       var featureLink = specLinks[specLinks.length - 1];
       return world.browser.get(featureLink.getAttribute('href'));
-    })
-    .then(world.browser.getPageSource.bind(world.browser))
+    }, handleErr(callback))
+    .then(world.browser.getPageSource.bind(world.browser), handleErr(callback))
     .then(function (body) {
       world.body = body;
-      stepCallback();
-    })
-    .catch(function(err) {
-      stepCallback(err);
-    });
+      callback();
+    }, handleErr(callback));
   };
 }
 
@@ -84,12 +85,14 @@ module.exports = function () {
         return world.browser.findElement(By.id(repositoryCongtrolsId));
 
       // Get the repo controls element.
-      }).then(function(_repoControlsEl) {
+      }, handleErr(callback))
+      .then(function(_repoControlsEl) {
         repoControlsEl = _repoControlsEl;
         return repoControlsEl.getAttribute('class');
 
       // Open the repo controls.
-      }).then(function(repoControlsClass) {
+      }, handleErr(callback))
+      .then(function(repoControlsClass) {
         var isClosed = repoControlsClass.indexOf('collapse') !== -1;
         if (isClosed) {
           return burgerMenuEl.click();
@@ -97,26 +100,29 @@ module.exports = function () {
         return;
 
       // Grab the current SHA
-      }).then(function() {
+      }, handleErr(callback))
+      .then(function() {
         return world.browser.findElement(By.id(projectShaElId));
-      }).then(function(_projectShaEl) {
+      }, handleErr(callback))
+      .then(function(_projectShaEl) {
         return _projectShaEl.getText();
-      }).then(function(originalSha) {
+      }, handleErr(callback))
+      .then(function(originalSha) {
         world.oringalSha = originalSha;
 
         // Grab the branch selecting control.
         return world.browser.findElement(By.id(changeBranchSelectElId));
 
       // Request to change branch.
-      }).then(function(_changeBranchSelectEl) {
+      }, handleErr(callback))
+      .then(function(_changeBranchSelectEl) {
         return _changeBranchSelectEl.findElement(By.xpath('option[@value=\'' + testingBranchOptionValue + '\']'));
-      }).then(function(_testBranchOptionEl) {
+      }, handleErr(callback))
+      .then(function(_testBranchOptionEl) {
         return _testBranchOptionEl.click();
-      }).then(function() {
+      }, handleErr(callback))
+      .then(function() {
         callback();
-      })
-      .catch(function(err) {
-        callback(err);
       });
   });
 
@@ -144,12 +150,10 @@ module.exports = function () {
     world.browser.findElement(By.id(projectShaElId))
       .then(function(_projectShaEl) {
         return _projectShaEl.getText();
-      }).then(function(newSha) {
+      }, handleErr(callback))
+      .then(function(newSha) {
         should.notEqual(newSha, world.oringalSha, 'The SHA did not change on changing branch.');
         callback();
-      })
-      .catch(function(err) {
-        callback(err);
-      });
+      }, handleErr(callback));
   });
 };
