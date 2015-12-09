@@ -8,7 +8,7 @@ const timeoutObject = {timeout: pageLoadTimeout};
 
 /**
  * Given parameters on the world object, load a URL.
- * @param  {Function} callback Cucumber done callback.
+ * @param  {Function} callback Cucumber done callback OR a custom callback.
  * @return {undefined}
  * @this World
  */
@@ -21,14 +21,17 @@ function getProjectFromUrl(callback) {
   .then(function (body) {
     world.body = body;
     callback();
+  })
+  .catch(function(err) {
+    callback(err);
   });
 }
 
 // The returned function is passed as a callback to getProjectFromUrl.
-function getScenarioFromProject(callback, world) {
+function getScenarioFromProject(stepCallback, world) {
   return function(error) {
     if (error) {
-      callback(error);
+      stepCallback(error);
       return;
     }
 
@@ -40,7 +43,10 @@ function getScenarioFromProject(callback, world) {
     .then(world.browser.getPageSource.bind(world.browser))
     .then(function (body) {
       world.body = body;
-      callback();
+      stepCallback();
+    })
+    .catch(function(err) {
+      stepCallback(err);
     });
   };
 }
@@ -108,6 +114,9 @@ module.exports = function () {
         return _testBranchOptionEl.click();
       }).then(function() {
         callback();
+      })
+      .catch(function(err) {
+        callback(err);
       });
   });
 
@@ -119,11 +128,10 @@ module.exports = function () {
       'The returned document body does not contain the strings \'.feature\' and \'.md\'' + this.body);
   });
 
-  this.Then(/^the scenarios will be visible\.?$/, function (callback) {
+  this.Then(/^the scenarios will be visible\.?$/, function () {
     should.equal(/feature-title/i.test(this.body),
       true,
       'The returned document body does not contain a feature title');
-    callback();
   });
 
   this.Then(/^the files from the selected branch are displayed\.$/, function (callback) {
@@ -139,6 +147,9 @@ module.exports = function () {
       }).then(function(newSha) {
         should.notEqual(newSha, world.oringalSha, 'The SHA did not change on changing branch.');
         callback();
+      })
+      .catch(function(err) {
+        callback(err);
       });
   });
 };
