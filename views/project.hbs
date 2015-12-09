@@ -39,7 +39,7 @@
           <button id="expand-collapse-file-lists" class="call-to-action"><span>Expand/Collapse All</span></button>
           {{#if hasProjectViews}}
             <div class="config-views">
-              <label for="change-views-control">View:</label>
+              <label for="change-views-control">View{{> hint text="Views are ways to filter or organise the project files."}}:</label>
               <select id="change-views-control">
                 <option value="none">none</option>
                 {{#each projectViewNames}}
@@ -52,7 +52,7 @@
         {{#if project.hasTags}}
           <section class="tag-controls">
             <div class="select-tag-container">
-              <label for="select-tag-control" title="Select a feature, scenario or example tag to filter scenarios by">Filter by tag:</label>
+              <label for="select-tag-control" title="Select a feature, scenario or example tag to filter scenarios by">Filter by tag{{> hint text="Filter the visible features and scenarios by their tags."}}:</label>
               <select id="select-tag-control">
                 <option value="none">none</option>
                 {{#each project.tags}}

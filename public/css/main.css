@@ -109,6 +109,41 @@ button.back-button::before {
 .interactive {
   cursor: pointer;
 }
+.interactive:hover {
+  color: green;
+  text-shadow: 0 0 1em lightgreen;
+}
+
+/* UI hints */
+.hint {
+  font-size: 0.65em;
+  display: inline-block;
+  position: relative;
+  top: -0.4em;
+  color: darkblue;
+  vertical-align: super;
+}
+.hint:hover:after {
+  font-size: 1.4rem;
+  display: block;
+  position: fixed;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 4em;
+
+  top: 0;
+  left: 0;
+
+  padding: 1.5em 1em;
+  border-radius: 0.4em;
+
+  text-align: center;
+  content: attr(title);
+
+  color: green;
+  background-color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 0 0 black;
+}
 
 /**
  * Landscape and larger phones
