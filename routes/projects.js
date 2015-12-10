@@ -10,6 +10,7 @@ var getProject = require('../lib/specifications/projects/project').get;
 
 var appVersion = require('../package.json').version;
 
+
 // Projects page.
 // http://host/
 router.get('/', function(req, res, next) {
@@ -57,6 +58,31 @@ router.get('/', function(req, res, next) {
     .catch(function(err) {
 
       // Pass on to the error handling route.
+      next(err);
+    });
+});
+
+
+// Post request to trigger an update remotely.
+router.post( '/', function(req, res, next) {
+  var repoUrl = req.query.repo_url;
+
+  if (!repoUrl) {
+    res.status(400);
+    res.send('Please provide a "repo_url" query parameter.');
+    return;
+  }
+
+  var projectData = {
+    repoUrl: repoUrl,
+    localPathRoot: appConfig.projectsPath
+  };
+
+  getProject(projectData)
+    .then(function() {
+      res.send('Project updated.');
+    })
+    .catch(function(err) {
       next(err);
     });
 });
