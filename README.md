@@ -58,4 +58,10 @@ Keys:
    * excludedPaths - An array of folder paths to exclude from the UI on the project page.
    * pathsToHide - Specify beginnings of directory paths to hide on the project page. E.g. if you specified 'src/test/specs' then a directory 'src/test/specs/my_wondeful_feature' would be displayed in the directory list as '... my_wonderful_feature'.
 
+## POST request endpoints
+
+There is a POST request route defined on the deployed app root URL for requesting repos to be checked out or updated, for instance if the app is deployed to myspecs.example.com then the POST route for adding or updating the Specs repo would be `https://myspecs.example.com/?repo_url=https%3A%2F%2Fgithub.com%2Foss-specs%2Fspecs.git` .
+This can be useful for instance in configuring web-hooks in your Git server so that the information in your Specs deployment is updated whenever someone pushes new information your remote Git repo.
+
+
 (C) 2015
