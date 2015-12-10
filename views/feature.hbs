@@ -6,7 +6,7 @@
 <main>
   {{#if file.error}}
     <section class="content-controls">
-      <button class="back-button call-to-action" onclick="window.history.back()"></button>
+      {{> back_button}}
     </section>
     <section class="feature">
       <header>
