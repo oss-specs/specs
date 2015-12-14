@@ -6,12 +6,11 @@ var url = require('url');
 var express = require('express');
 var router = express.Router();
 
-
 var getProjectData = require('../lib/specifications/projects/project').getData;
 var getFileContent = require('../lib/specifications/projects/project').getFileContent;
 
 var processFiles = require('../lib/specifications/files/process-files');
-
+var getEditUrl = require('../lib/specifications/files/get-edit-url');
 
 var appConfig = require('../lib/configuration/app-config').get();
 
@@ -58,7 +57,9 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
   var file;
 
   getProjectData(projectData, ref)
-  .then(function (projectData) {
+  .then(function (_projectData) {
+    projectData = _projectData;
+
     var filePathToFileObject = processFiles.getFilePathToFileObject(appConfig.projectRoute, projectData, getFileContent);
     return filePathToFileObject(filePath);
   })
@@ -79,6 +80,9 @@ router.get(/([^\/]+)\/([\w\W]+)/, function (req, res, next) {
       originalUrl.search = originalUrl.search.length ? originalUrl.search + '&plain=true' : '?plain=true';
       file.plainFileUrl = url.format(originalUrl);
     }
+
+    // Add an edit link to the file.
+    file.editUrl = getEditUrl(projectData, file.filePath);
 
     if (file.isFeatureFile && !renderPlainFile) {
 
