@@ -1,8 +1,10 @@
 /* eslint-env browser */
-/* global $ */
+/* global $, lscache */
 
 (function() {
   'use strict';
+
+  var lscacheTimeoutMins = 5;
 
   function getQueryParams(urlString) {
     var search;
@@ -104,6 +106,7 @@
     expandCollapseRepoControlsEl.addEventListener('click', expandCollapseRepoControls);
   });
 
+
   // Expand/collapse file lists button logic.
   $(function() {
     var directoryEls = window.document.getElementsByClassName('directory-path');
@@ -116,8 +119,10 @@
       [].forEach.call(els, function(el) {
         if (doExpand) {
           el.classList.remove('can-expand');
+          lscache.set(el.id, {expanded: true}, lscacheTimeoutMins);
         } else {
           el.classList.add('can-expand');
+          lscache.remove(el.id);
         }
       });
 
@@ -135,22 +140,45 @@
       doExpand = !doExpand;
     }
 
-    var expandCollapseAlEl = window.document.getElementById('expand-collapse-file-lists');
-    expandCollapseAlEl.addEventListener('click', expandCollapseAll);
+    var expandCollapseAllEl = window.document.getElementById('expand-collapse-file-lists');
+    expandCollapseAllEl.addEventListener('click', expandCollapseAll);
   });
 
-  // Expand/collapse individual directories.
+  // Expand/collapse individual directories based on interactions.
   $(function() {
     var els = window.document.getElementsByClassName('directory-path');
     [].forEach.call(els, function(el) {
       el.addEventListener('click', function() {
-        this.classList.toggle('can-expand');
-
         // Expand or collapse the file list.
-        this.nextElementSibling.classList.toggle('collapse');
+        if (this.classList.contains('can-expand')) {
+          this.classList.remove('can-expand');
+          lscache.set(this.id, {expanded:true}, lscacheTimeoutMins);
+          this.nextElementSibling.classList.remove('collapse');
+        } else {
+          this.classList.add('can-expand');
+          lscache.remove(this.id);
+          this.nextElementSibling.classList.add('collapse');
+        }
       });
     });
   });
+
+  // Expand/collapse individual directories based local state
+  $(function() {
+    var els = window.document.getElementsByClassName('directory-path');
+    [].forEach.call(els, function(el) {
+      var id = el.id;
+      var state = lscache.get(id);
+      if (state && state.expanded) {
+        el.classList.remove('can-expand');
+        el.nextElementSibling.classList.remove('collapse');
+      } else {
+        el.classList.add('can-expand');
+        el.nextElementSibling.classList.add('collapse');
+      }
+    });
+  });
+
 
   // Tag selecting element logic.
   $(function() {

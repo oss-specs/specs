@@ -4,6 +4,7 @@
 <link href="/bower/select2/dist/css/select2.min.css" rel="stylesheet" />
 <script src="/bower/jquery/dist/jquery.min.js"></script>
 <script src="/bower/select2/dist/js/select2.min.js"></script>
+<script src="/bower/lscache/lscache.min.js"></script>
 <script src="/public/javascript/project.js"></script>
 <script src="/public/javascript/loader.js"></script>
 {{> layout_start_body}}
@@ -75,7 +76,7 @@
         {{/if}}
         {{#each project.filesByDir as |files directoryPath|}}
           <section class="directory">
-            <h2 class="directory-path interactive {{#if ../projectView.[start collapsed]}}can-expand{{/if}}" title="{{directoryPath}}">{{#directory_path directoryPath pathsToHideRegex=../projectView.regex.pathsToHide}}{{this}}{{/directory_path}}</h2>
+            <h2 class="directory-path interactive {{#if ../projectView.[start collapsed]}}can-expand{{/if}}" title="{{directoryPath}}" id="{{# uri_encode directoryPath}}{{this}}{{/uri_encode}}">{{#directory_path directoryPath pathsToHideRegex=../projectView.regex.pathsToHide}}{{this}}{{/directory_path}}</h2>
             <ul class="file-list collapsible {{#if ../projectView.[start collapsed]}}collapse{{/if}}">
               {{#each files}}
                 {{#if this.isFeatureFile}}

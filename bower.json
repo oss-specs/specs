@@ -6,6 +6,7 @@
   "Everything else": "See package.json",
   "dependencies": {
     "jquery": "2.1.4",
-    "select2": "4.0.0"
+    "select2": "4.0.0",
+    "lscache": "1.0.5"
   }
 }
