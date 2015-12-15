@@ -1,6 +1,7 @@
 <li>
   <a class="spec-link" href="{{this.route}}?ref={{currentBranchName}}">
-    <section class="file-container">
+    <section class="file-container group">
+      {{> edit_button url=this.editUrl}}
       <section class="file-details">
         <p class="file-name">
           {{#if this.empty}}

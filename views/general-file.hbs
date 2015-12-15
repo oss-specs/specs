@@ -6,7 +6,8 @@
     <h1>File contents</h1>
   </header>
   <section class="content-controls">
-    <button class="back-button call-to-action" onclick="window.history.back()"></button>
+    {{> edit_button url=file.editUrl isLink=true}}
+    {{> back_button}}
   </section>
   <section>
     <p class="file-contents">

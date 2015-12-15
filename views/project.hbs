@@ -36,7 +36,7 @@
           <div class="loader-container"><div class="loader dark"></div></div>
         </section>
         <section class="content-controls">
-          <button class="back-button call-to-action" onclick="window.history.back()"></button>
+          {{> back_button}}
           <button id="expand-collapse-file-lists" class="call-to-action"><span>Expand/Collapse All</span></button>
           {{#if hasProjectViews}}
             <div class="config-views">
