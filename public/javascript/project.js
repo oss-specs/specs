@@ -4,7 +4,7 @@
 (function() {
   'use strict';
 
-  var lscacheTimeoutMins = 5;
+  var lscacheTimeoutMins = 30;
 
   function getQueryParams(urlString) {
     var search;
