@@ -113,11 +113,7 @@
       repoControlsEl.classList.toggle('collapse');
       openBurgerMenu = !repoControlsEl.classList.contains('collapse');
 
-      if (openBurgerMenu) {
-        burgerMenuEl.classList.add('open');
-      } else {
-        burgerMenuEl.classList.remove('open');
-      }
+      setExpandClass(!openBurgerMenu, burgerMenuEl, 'open');
 
       // Persist the burger menu state in a cookie for five minutes.
       window.document.cookie = 'specsOpenBurgerMenu=' + openBurgerMenu + ';max-age=' + 5 * 60;
