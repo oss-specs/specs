@@ -150,16 +150,12 @@
     var els = window.document.getElementsByClassName('directory-path');
     [].forEach.call(els, function(el) {
       el.addEventListener('click', function() {
+
         // Expand or collapse the file list.
-        if (this.classList.contains('can-expand')) {
-          this.classList.remove('can-expand');
-          lscache.set(this.id, {expanded:true}, lscacheTimeoutMins);
-          this.nextElementSibling.classList.remove('collapse');
-        } else {
-          this.classList.add('can-expand');
-          lscache.remove(this.id);
-          this.nextElementSibling.classList.add('collapse');
-        }
+        var doExpand = this.classList.contains('can-expand');
+        setExpandClass(doExpand, this, 'can-expand');
+        setExpandClass(doExpand, this.nextElementSibling, 'collapse');
+        cache(doExpand, this.id);
       });
     });
   });
