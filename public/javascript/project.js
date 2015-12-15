@@ -53,6 +53,30 @@
     }, '?');
   }
 
+  function cache(id) {
+    lscache.set(id, {expanded: true}, lscacheTimeoutMins);
+  }
+
+  function uncache(id) {
+    lscache.remove(id);
+  }
+
+  function expandOrCollapse(doExpand, els, className, cache, uncache) {
+    [].forEach.call(els, function(el) {
+      if (doExpand) {
+        el.classList.remove(className);
+        if (typeof cache === 'function') {
+          cache(el.id);
+        }
+      } else {
+        el.classList.add(className);
+        if (typeof cache === 'function') {
+          uncache(el.id);
+        }
+      }
+    });
+  }
+
   // Branch changing select element logic.
   $(function() {
     var selectEl = $('#change-branch-control');
@@ -115,26 +139,12 @@
     function expandCollapseAll() {
       var els;
       var parent = document.getElementsByClassName('spec-links')[0];
-      els = parent.getElementsByClassName('directory-path');
-      [].forEach.call(els, function(el) {
-        if (doExpand) {
-          el.classList.remove('can-expand');
-          lscache.set(el.id, {expanded: true}, lscacheTimeoutMins);
-        } else {
-          el.classList.add('can-expand');
-          lscache.remove(el.id);
-        }
-      });
 
+      els = parent.getElementsByClassName('directory-path');
+      expandOrCollapse(doExpand, els, 'can-expand', cache, uncache);
 
       els = parent.getElementsByClassName('file-list');
-      [].forEach.call(els, function(el) {
-        if (doExpand) {
-          el.classList.remove('collapse');
-        } else {
-          el.classList.add('collapse');
-        }
-      });
+      expandOrCollapse(doExpand, els, 'collapse');
 
       // Toggle expansion on alternative executions.
       doExpand = !doExpand;
