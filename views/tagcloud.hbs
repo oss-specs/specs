@@ -10,7 +10,7 @@
 {{> layout_start_body}}
 <main>
   <header>
-    <h1 class="project-name">{{project.repoName}}</h1>
+    <h1 class="project-name">{{project.repoName}} Tag Cloud</h1>
   </header>
   {{#if project}}
     <section class="project">
@@ -52,6 +52,9 @@
         </section>
         {{#if project.hasTags}}
           <section class="tag-controls">
+            <section class="tag-cloud-link">
+              <a href="{{project.repoName}}/tagcloud">Tag cloud</a>
+            </section>
             <section class="select-tag-container">
               <label for="select-tag-control" title="Select a feature, scenario or example tag to filter scenarios by">Filter by tag{{> hint text="Filter the visible features and scenarios by their tags."}}:</label>
               <select id="select-tag-control">
@@ -61,9 +64,6 @@
                 {{/each}}
               </select>
             </section>
-          </section>
-          <section class="tag-cloud-link-container">
-            <span class="tag-cloud-link">See the <a href="{{project.repoName}}/tagcloud">Tag cloud</a></span>
           </section>
         {{/if}}
         {{#if project.config.ciLink}}
