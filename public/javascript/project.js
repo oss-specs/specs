@@ -1,8 +1,10 @@
 /* eslint-env browser */
-/* global $ */
+/* global $, lscache */
 
 (function() {
   'use strict';
+
+  var lscacheTimeoutMins = 30;
 
   function getQueryParams(urlString) {
     var search;
@@ -51,6 +53,27 @@
     }, '?');
   }
 
+  function cache(doExpand, id) {
+    lscache.set(id, {expanded: doExpand}, lscacheTimeoutMins);
+  }
+
+  function setExpandClass(doExpand, el, className) {
+    if (doExpand) {
+      el.classList.remove(className);
+    } else {
+      el.classList.add(className);
+    }
+  }
+
+  function expandOrCollapse(doExpand, els, className, doCache) {
+    [].forEach.call(els, function(el) {
+      setExpandClass(doExpand, el, className);
+      if (doCache) {
+        cache(doExpand, el.id);
+      }
+    });
+  }
+
   // Branch changing select element logic.
   $(function() {
     var selectEl = $('#change-branch-control');
@@ -90,11 +113,7 @@
       repoControlsEl.classList.toggle('collapse');
       openBurgerMenu = !repoControlsEl.classList.contains('collapse');
 
-      if (openBurgerMenu) {
-        burgerMenuEl.classList.add('open');
-      } else {
-        burgerMenuEl.classList.remove('open');
-      }
+      setExpandClass(!openBurgerMenu, burgerMenuEl, 'open');
 
       // Persist the burger menu state in a cookie for five minutes.
       window.document.cookie = 'specsOpenBurgerMenu=' + openBurgerMenu + ';max-age=' + 5 * 60;
@@ -104,53 +123,55 @@
     expandCollapseRepoControlsEl.addEventListener('click', expandCollapseRepoControls);
   });
 
+
   // Expand/collapse file lists button logic.
   $(function() {
     var directoryEls = window.document.getElementsByClassName('directory-path');
-    var doExpand = [].every.call(directoryEls, function(el) { return el.classList.contains('can-expand'); });
 
     function expandCollapseAll() {
       var els;
+      var doExpand = [].every.call(directoryEls, function(el) { return el.classList.contains('can-expand'); });
       var parent = document.getElementsByClassName('spec-links')[0];
-      els = parent.getElementsByClassName('directory-path');
-      [].forEach.call(els, function(el) {
-        if (doExpand) {
-          el.classList.remove('can-expand');
-        } else {
-          el.classList.add('can-expand');
-        }
-      });
+      var doCache = true;
 
+      els = parent.getElementsByClassName('directory-path');
+      expandOrCollapse(doExpand, els, 'can-expand', doCache);
 
       els = parent.getElementsByClassName('file-list');
-      [].forEach.call(els, function(el) {
-        if (doExpand) {
-          el.classList.remove('collapse');
-        } else {
-          el.classList.add('collapse');
-        }
-      });
-
-      // Toggle expansion on alternative executions.
-      doExpand = !doExpand;
+      expandOrCollapse(doExpand, els, 'collapse');
     }
 
-    var expandCollapseAlEl = window.document.getElementById('expand-collapse-file-lists');
-    expandCollapseAlEl.addEventListener('click', expandCollapseAll);
+    var expandCollapseAllEl = window.document.getElementById('expand-collapse-file-lists');
+    expandCollapseAllEl.addEventListener('click', expandCollapseAll);
   });
 
-  // Expand/collapse individual directories.
+  // Expand/collapse individual directories based on interactions.
   $(function() {
     var els = window.document.getElementsByClassName('directory-path');
     [].forEach.call(els, function(el) {
       el.addEventListener('click', function() {
-        this.classList.toggle('can-expand');
 
         // Expand or collapse the file list.
-        this.nextElementSibling.classList.toggle('collapse');
+        var doExpand = this.classList.contains('can-expand');
+        setExpandClass(doExpand, this, 'can-expand');
+        setExpandClass(doExpand, this.nextElementSibling, 'collapse');
+        cache(doExpand, this.id);
       });
     });
   });
+
+  // Expand/collapse individual directories based local state
+  $(function() {
+    var els = window.document.getElementsByClassName('directory-path');
+    [].forEach.call(els, function(el) {
+      var id = el.id;
+      var state = lscache.get(id);
+      var doExpand = state && state.expanded;
+      setExpandClass(doExpand, el, 'can-expand');
+      setExpandClass(doExpand, el.nextElementSibling, 'collapse');
+    });
+  });
+
 
   // Tag selecting element logic.
   $(function() {
