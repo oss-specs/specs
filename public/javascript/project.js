@@ -53,26 +53,23 @@
     }, '?');
   }
 
-  function cache(id) {
-    lscache.set(id, {expanded: true}, lscacheTimeoutMins);
+  function cache(doExpand, id) {
+    lscache.set(id, {expanded: doExpand}, lscacheTimeoutMins);
   }
 
-  function uncache(id) {
-    lscache.remove(id);
+  function setExpandClass(doExpand, el, className) {
+    if (doExpand) {
+      el.classList.remove(className);
+    } else {
+      el.classList.add(className);
+    }
   }
 
-  function expandOrCollapse(doExpand, els, className, cache, uncache) {
+  function expandOrCollapse(doExpand, els, className, doCache) {
     [].forEach.call(els, function(el) {
-      if (doExpand) {
-        el.classList.remove(className);
-        if (typeof cache === 'function') {
-          cache(el.id);
-        }
-      } else {
-        el.classList.add(className);
-        if (typeof cache === 'function') {
-          uncache(el.id);
-        }
+      setExpandClass(doExpand, el, className);
+      if (doCache) {
+        cache(doExpand, el.id);
       }
     });
   }
@@ -134,20 +131,18 @@
   // Expand/collapse file lists button logic.
   $(function() {
     var directoryEls = window.document.getElementsByClassName('directory-path');
-    var doExpand = [].every.call(directoryEls, function(el) { return el.classList.contains('can-expand'); });
 
     function expandCollapseAll() {
       var els;
+      var doExpand = [].every.call(directoryEls, function(el) { return el.classList.contains('can-expand'); });
       var parent = document.getElementsByClassName('spec-links')[0];
+      var doCache = true;
 
       els = parent.getElementsByClassName('directory-path');
-      expandOrCollapse(doExpand, els, 'can-expand', cache, uncache);
+      expandOrCollapse(doExpand, els, 'can-expand', doCache);
 
       els = parent.getElementsByClassName('file-list');
       expandOrCollapse(doExpand, els, 'collapse');
-
-      // Toggle expansion on alternative executions.
-      doExpand = !doExpand;
     }
 
     var expandCollapseAllEl = window.document.getElementById('expand-collapse-file-lists');
