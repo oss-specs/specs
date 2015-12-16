@@ -2,16 +2,25 @@
 <script src="/bower/jquery/dist/jquery.min.js"></script>
 <script src="/bower/d3/d3.js"></script>
 <script src="/bower/d3-cloud/build/d3.layout.cloud.js"></script>
-<script>var tags = {{{tagJson}}};</script>
+<script>
+  window.tags = {{{tagJson}}};
+  window.processedTags = Object.keys(window.tags).map(function(tagName) {
+    return {
+      text: tagName,
+      size: window.tags[tagName].count
+    }
+  });
+</script>
 <script>
   var fill = d3.scale.category20();
 
   var cloud = d3.layout.cloud().size([300, 300])
-    .words([
-      ".NET", "Silverlight", "jQuery", "CSS3", "HTML5", "JavaScript", "SQL","C#"].map(function(d) {
-      return {text: d, size: 10 + Math.random() * 50};
-    }))
-    .rotate(function() { return ~~(Math.random() * 120) - 60; })
+    .words(window.processedTags)
+    // .words([
+    //   ".NET", "Silverlight", "jQuery", "CSS3", "HTML5", "JavaScript", "SQL","C#"].map(function(d) {
+    //   return {text: d, size: 10 + Math.random() * 50};
+    // }))
+    .rotate(function() { return ~~(Math.random() * 160) - 80; })
     .font("Impact")
     .fontSize(function(d) { return d.size; })
     .on("end", draw);
