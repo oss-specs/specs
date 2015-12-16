@@ -11,6 +11,10 @@
       size: window.tags[tagName].count
     }
   });
+
+  var tagCounts = window.processedTags.map(function (tag) { return tag.size });
+  window.minTagCount = Math.min.apply(null, tagCounts);
+  window.maxTagCount = Math.max.apply(null, tagCounts);
 </script>
 <script src="/public/javascript/tagcloud.js"></script>
 {{> layout_start_body}}
