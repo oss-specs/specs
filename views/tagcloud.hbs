@@ -8,7 +8,8 @@
   window.processedTags = Object.keys(window.tags).map(function(tagName) {
     return {
       text: tagName,
-      size: window.tags[tagName].count
+      size: window.tags[tagName].count,
+      count: window.tags[tagName].count
     }
   });
 
@@ -25,7 +26,7 @@
   {{#if project}}
     <section class="project">
       <section class="summary">
-        <p>There are {{numTags}} tags in the project</p>
+        <p>There are {{numTags}} unique tags in the project</p>
         <!-- <ul>
           {{#each project.tags}}
             <li>{{@key}}</li>

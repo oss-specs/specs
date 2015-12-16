@@ -46,7 +46,6 @@ $(function() {
       .text(function(d) { return d.text; });
 
     wordContainersD3.append('title')
-      .text(function(d) { return d.text; });
-
+      .text(function(d) { return d.text + '\ncount: ' + d.count; });
   }
 });
