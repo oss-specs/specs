@@ -7,12 +7,12 @@
   window.tags = {{{tagJson}}};
 
   // Convert object to array of objects.
-  window.processedTags = Object.keys(window.tags).map(function(tagName) {
+  window.processedTags = window.tags.map(function(t) {
     return {
-      text: tagName,
-      size: window.tags[tagName].count,
-      count: window.tags[tagName].count,
-      urlEncodedName: window.tags[tagName].urlEncodedName
+      text: t.tag,
+      size: t.count,
+      count: t.count,
+      urlEncodedName: t.urlEncodedName
     }
   });
 

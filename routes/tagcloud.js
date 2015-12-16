@@ -82,13 +82,14 @@ function getRender(res, appConfig, tagVisualisationType) {
         projectData = ret[0];
 
         renderingData.numTags = Object.keys(projectData.tags).length;
-        renderingData.tagJson = JSON.stringify(projectData.tags);
         renderingData.sortedTags = Object.keys(projectData.tags)
                                       .map(t => ({
                                         tag: t,
-                                        count: projectData.tags[t].count
+                                        count: projectData.tags[t].count,
+                                        urlEncodedName: projectData.tags[t].urlEncodedName
                                       }))
                                       .sort((a, b) => b.count - a.count);
+        renderingData.tagJson = JSON.stringify(renderingData.sortedTags);
 
         // Use the tagcloud or taglist template.
         res.render(tagVisualisationType, renderingData);
