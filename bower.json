@@ -7,6 +7,8 @@
   "dependencies": {
     "jquery": "2.1.4",
     "select2": "4.0.0",
-    "lscache": "1.0.5"
+    "lscache": "1.0.5",
+    "d3": "~3.5.11",
+    "d3-cloud": "~1.2.1"
   }
 }

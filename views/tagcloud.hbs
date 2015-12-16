@@ -1,5 +1,44 @@
 {{> layout_start_document}}
+<script src="/bower/jquery/dist/jquery.min.js"></script>
+<script src="/bower/d3/d3.js"></script>
+<script src="/bower/d3-cloud/build/d3.layout.cloud.js"></script>
 <script>var tags = {{{tagJson}}};</script>
+<script>
+  var fill = d3.scale.category20();
+
+  var cloud = d3.layout.cloud().size([300, 300])
+    .words([
+      ".NET", "Silverlight", "jQuery", "CSS3", "HTML5", "JavaScript", "SQL","C#"].map(function(d) {
+      return {text: d, size: 10 + Math.random() * 50};
+    }))
+    .rotate(function() { return ~~(Math.random() * 120) - 60; })
+    .font("Impact")
+    .fontSize(function(d) { return d.size; })
+    .on("end", draw);
+
+  function draw(words) {
+    d3.select("#word-cloud-container").append("svg")
+      .attr("width", 300)
+      .attr("height", 300)
+    .append("g")
+      .attr("transform", "translate(150,150)")
+    .selectAll("text")
+      .data(words)
+    .enter().append("text")
+      .style("font-size", function(d) { return d.size + "px"; })
+      .style("font-family", "Impact")
+      .style("fill", function(d, i) { return fill(i); })
+      .attr("text-anchor", "middle")
+      .attr("transform", function(d) {
+        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+     })
+     .text(function(d) { return d.text; });
+  }
+
+  $(function() {
+    cloud.start();
+  });
+</script>
 {{> layout_start_body}}
 <main>
   <header>
@@ -9,11 +48,11 @@
     <section class="project">
       <section class="summary">
         <p>There are {{numTags}} tags in the project</p>
-        <ul>
+        <!-- <ul>
           {{#each project.tags}}
             <li>{{@key}}</li>
           {{/each}}
-        </ul>
+        </ul> -->
       </section>
       <section id="word-cloud-container" class="world-cloud-container">
       </section>
