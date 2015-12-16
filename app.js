@@ -1,7 +1,7 @@
 'use strict';
 
 var express = require('express');
-var cors = require('cors')
+var cors = require('cors');
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
 var path = require('path');
