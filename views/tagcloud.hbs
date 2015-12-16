@@ -5,11 +5,14 @@
 <script src="/bower/d3-cloud/build/d3.layout.cloud.js"></script>
 <script>
   window.tags = {{{tagJson}}};
+
+  // Convert object to array of objects.
   window.processedTags = Object.keys(window.tags).map(function(tagName) {
     return {
       text: tagName,
       size: window.tags[tagName].count,
-      count: window.tags[tagName].count
+      count: window.tags[tagName].count,
+      urlEncodedName: window.tags[tagName].urlEncodedName
     }
   });
 
@@ -27,11 +30,6 @@
     <section class="project">
       <section class="summary">
         <p>There are {{numTags}} unique tags in the project</p>
-        <!-- <ul>
-          {{#each project.tags}}
-            <li>{{@key}}</li>
-          {{/each}}
-        </ul> -->
       </section>
       <section class="world-cloud-container">
         <svg id="word-cloud"></svg>

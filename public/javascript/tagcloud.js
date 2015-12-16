@@ -35,15 +35,23 @@ $(function() {
       .data(words)
     .enter().append('g');
 
-    wordContainersD3.append('text')
-      .style('font-size', function(d) { return d.size + 'px'; })
-      .style('font-family', 'Impact')
-      .style('fill', function(d, i) { return fill(i); })
-      .attr('text-anchor', 'middle')
-      .attr('transform', function(d) {
-        return 'translate(' + [d.x, d.y] + ')rotate(' + d.rotate + ')';
-      })
-      .text(function(d) { return d.text; });
+    var linksD3 = wordContainersD3
+      .append('a');
+
+    linksD3.attr('xlink:href', function(d) {
+      return window.location.href.replace('/tagcloud', '?tags=' + d.urlEncodedName);
+    });
+
+    linksD3
+      .append('text')
+        .style('font-size', function(d) { return d.size + 'px'; })
+        .style('font-family', 'Impact')
+        .style('fill', function(d, i) { return fill(i); })
+        .attr('text-anchor', 'middle')
+        .attr('transform', function(d) {
+          return 'translate(' + [d.x, d.y] + ')rotate(' + d.rotate + ')';
+        })
+        .text(function(d) { return d.text; });
 
     wordContainersD3.append('title')
       .text(function(d) { return d.text + '\ncount: ' + d.count; });
