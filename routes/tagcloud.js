@@ -14,7 +14,10 @@ var appConfig = require('../lib/configuration/app-config').get();
 
 
 // List of available features in a project.
-router.get(/^\/([^\/]+)\/tagcloud$/, function(req, res, next) {
+router.get(/^\/([^\/]+)\/(tagcloud|taglist)$/, function(req, res, next) {
+
+  // tagcloud or taglist.
+  var tagVisualisationType = req.params[1];
 
   // Session variable.
   if(!req.session.branches) {
@@ -26,7 +29,7 @@ router.get(/^\/([^\/]+)\/tagcloud$/, function(req, res, next) {
   var repoName = req.params[0];
 
   // Create the render and passError functions.
-  var configuredRender = getRender(res, appConfig);
+  var configuredRender = getRender(res, appConfig, tagVisualisationType);
   var configuredPassError = getPassError(next);
 
   var projectData = {
@@ -50,7 +53,7 @@ router.get(/^\/([^\/]+)\/tagcloud$/, function(req, res, next) {
  * @param  {Object} appConfig     The application configuration object.
  * @return {Function}             The render function used in the route.
  */
-function getRender(res, appConfig) {
+function getRender(res, appConfig, tagVisualisationType) {
   return function render(projectData) {
     var renderingData = {};
 
@@ -80,8 +83,15 @@ function getRender(res, appConfig) {
 
         renderingData.numTags = Object.keys(projectData.tags).length;
         renderingData.tagJson = JSON.stringify(projectData.tags);
+        renderingData.sortedTags = Object.keys(projectData.tags)
+                                      .map(t => ({
+                                        tag: t,
+                                        count: projectData.tags[t].count
+                                      }))
+                                      .sort((a, b) => b.count - a.count);
 
-        res.render('tagcloud', renderingData);
+        // Use the tagcloud or taglist template.
+        res.render(tagVisualisationType, renderingData);
       });
   };
 }
