@@ -79,7 +79,8 @@ function getRender(res, appConfig) {
         projectData = ret[0];
 
         renderingData.numTags = Object.keys(projectData.tags).length;
-        
+        renderingData.tagJson = JSON.stringify(projectData.tags);
+
         res.render('tagcloud', renderingData);
       });
   };
