@@ -166,9 +166,14 @@
     [].forEach.call(els, function(el) {
       var id = el.id;
       var state = lscache.get(id);
-      var doExpand = state && state.expanded;
-      setExpandClass(doExpand, el, 'can-expand');
-      setExpandClass(doExpand, el.nextElementSibling, 'collapse');
+      var doExpand;
+      if (state) {
+        doExpand = state.expanded === true;
+
+        // Expand or collapse elements dependending on the value of doExpand.
+        setExpandClass(doExpand, el, 'can-expand');
+        setExpandClass(doExpand, el.nextElementSibling, 'collapse');
+      }
     });
   });
 
