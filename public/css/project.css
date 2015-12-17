@@ -126,26 +126,24 @@ ul.file-list {
   font-size: 0.7em;
 }
 .tag-cloud-link,
-.ci-link {
+.info-link {
   font-size: 0.8em;
 }
 .repo-link,
 .tag-cloud-link,
-.ci-link {
+.info-link {
 
   font-weight: bold;
   text-transform: uppercase;
   margin-right: 2em;
 }
 .repo-link a,
-.tag-cloud-link a,
-.ci-link a {
+.info-link a {
   text-decoration: none;
   color: blue;
 }
 .repo-link:hover a,
-.tag-cloud-link:hover a,
-.ci-link:hover a {
+.info-link:hover a {
   color: green;
   text-decoration: underline;
 }

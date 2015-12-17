@@ -62,18 +62,16 @@
               </select>
             </section>
           </section>
-          <section class="tag-cloud-link-container">
-            <span class="tag-cloud-link">See the <a href="{{project.repoName}}/tagcloud">Tag cloud</a></span>
-          </section>
-          <section class="tag-cloud-link-container">
-            <span class="tag-cloud-link">See the <a href="{{project.repoName}}/taglist">Tag list</a></span>
-          </section>
         {{/if}}
-        {{#if project.config.ciLink}}
-          <section class="ci-link-container">
-            <span class="ci-link">Visit the <a href={{{project.config.ciLink}}}>CI Results</a></span>
-          </section>
-        {{/if}}
+        <section class="info-link-container">
+          {{#if project.hasTags}}
+            <span class="info-link"><a href="{{project.repoName}}/tagcloud">Tag cloud</a></span>
+            <span class="info-link"><a href="{{project.repoName}}/taglist">Tag list</a></span>
+          {{/if}}
+          {{#if project.config.ciLink}}
+            <span class="info-link"><a href={{{project.config.ciLink}}}>CI Results</a></span>
+          {{/if}}
+        </section>
         <hr>
       </section>
       <section class="spec-links">
