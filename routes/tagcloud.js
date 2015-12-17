@@ -28,8 +28,13 @@ router.get(/^\/([^\/]+)\/(tagcloud|taglist)$/, function(req, res, next) {
   // The repository name from the URL.
   var repoName = req.params[0];
 
+  var renderingOptions = {
+    tagVisualisationType: tagVisualisationType,
+    projectUrl: req.originalUrl.replace(/\/[^\/]*$/,'')
+  };
+
   // Create the render and passError functions.
-  var configuredRender = getRender(res, appConfig, tagVisualisationType);
+  var configuredRender = getRender(res, appConfig, renderingOptions);
   var configuredPassError = getPassError(next);
 
   var projectData = {
@@ -53,9 +58,12 @@ router.get(/^\/([^\/]+)\/(tagcloud|taglist)$/, function(req, res, next) {
  * @param  {Object} appConfig     The application configuration object.
  * @return {Function}             The render function used in the route.
  */
-function getRender(res, appConfig, tagVisualisationType) {
+function getRender(res, appConfig, renderingOptions) {
   return function render(projectData) {
     var renderingData = {};
+
+    var tagVisualisationType = renderingOptions.tagVisualisationType;
+    renderingData.projectUrl = renderingOptions.projectUrl;
 
     // Create a reference to the project data on
     // the object that will be passed to the

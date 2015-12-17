@@ -13,7 +13,7 @@
       <section class="tag-list-container">
         <ul>
           {{#each sortedTags}}
-            <li>{{this.tag}}: {{this.count}}</li>
+            <li class="interactive"><a href="{{../projectUrl}}?tags={{this.tag}}">{{this.tag}}: {{this.count}}</a></li>
           {{/each}}
         </ul>
       </section>

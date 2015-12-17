@@ -1,0 +1,8 @@
+.tag-list-container li {
+  margin: 0.4em;
+}
+
+.tag-list-container a {
+  text-decoration: none;
+  color: inherit;
+}
