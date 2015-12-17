@@ -46,7 +46,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   // Query parameter containing desired named view from project config.
   var currentProjectViewName = req.query.view || false;
 
-  // Query parameter containing desired feature tags to filer on.
+  // Query parameter containing desired feature tags to filter on.
   var currentTags = req.query.tags || false;
   if (currentTags === 'none') {
     currentTags = false;
