@@ -12,9 +12,9 @@ var deleteProject = require('../lib/specifications/projects/project').delete;
 var appVersion = require('../package.json').version;
 
 
-function getResponse(send, message) {
+function getResponse(res, message) {
   return function() {
-    send(message);
+    res.send(message);
   };
 }
 
@@ -22,6 +22,15 @@ function getErrorHandler(next) {
   return function(err) {
     next(err);
   };
+}
+
+function checkArgs(req, res, argName) {
+  if (!req.query[argName]) {
+    res.status(400);
+    res.send('Please provide a "' + argName + '" query parameter.');
+    return false;
+  }
+  return true;
 }
 
 // Projects page.
@@ -70,35 +79,29 @@ router.get('/', function(req, res, next) {
 
 // Post request to trigger an update remotely.
 router.post('/', function(req, res, next) {
-  var repoUrl = req.query.repo_url;
-
-  if (!repoUrl) {
-    res.status(400);
-    res.send('Please provide a "repo_url" query parameter.');
+  if (!checkArgs(req, res, 'repo_url')) {
     return;
   }
 
   var projectData = {
-    repoUrl: repoUrl,
+    repoUrl: req.query.repo_url,
     localPathRoot: appConfig.projectsPath
   };
 
   getProject(projectData)
-    .then(getResponse(res.send.bind(res), 'Project updated.'))
+    .then(getResponse(res, 'Project updated.'))
     .catch(getErrorHandler(next));
 });
 
 router.delete('/', function(req, res, next) {
-  var projectName = req.query.project_name;
-
-  if (!projectName) {
-    res.status(400);
-    res.send('Please provide a "project_name" query parameter.');
+  if (!checkArgs(req, res, 'project_name')) {
     return;
   }
 
+  var projectName = req.query.project_name;
+
   deleteProject(projectName)
-    .then(getResponse(res.send.bind(res), 'Project deleted.'))
+    .then(getResponse(res, 'Project deleted.'))
     .catch(getErrorHandler(next));
 });
 
