@@ -2,6 +2,7 @@
 <link rel="stylesheet" href="/public/css/projects.css">
 <script src="/bower/jquery/dist/jquery.min.js"></script>
 <script src="/public/javascript/loader.js"></script>
+<script src="/public/javascript/projects.js"></script>
 {{> layout_start_body}}
 <main class="projects">
   <header>
@@ -14,7 +15,7 @@
         <ul class="projects-list">
           {{#each projects}}
             <li class="project group">
-              <button class="delete-project call-to-action interactive"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></button>
+              <button data-project-name="{{this}}" class="delete-project call-to-action interactive"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></button>
               <a class="project-link-container" href="{{../projectRoute}}/{{this}}">
                 <section class="project-link">
                   <p>{{this}}</p>

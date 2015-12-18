@@ -50,6 +50,15 @@ button.delete-project:active {
   color: darkred;
 }
 
+button.delete-project.waiting {
+  animation: sweep 1s infinite linear;
+}
+@keyframes sweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* TODO: standardise and reuse styling via pre-processor */
 .project-link {
   cursor: interactive;
