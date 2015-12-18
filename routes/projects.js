@@ -7,9 +7,31 @@ var appConfig = require('../lib/configuration/app-config').get();
 
 var getProjectsNames = require('../lib/specifications/projects/project').getNames;
 var getProject = require('../lib/specifications/projects/project').get;
+var deleteProject = require('../lib/specifications/projects/project').delete;
 
 var appVersion = require('../package.json').version;
 
+
+function getResponse(res, message) {
+  return function() {
+    res.send(message);
+  };
+}
+
+function getErrorHandler(next) {
+  return function(err) {
+    next(err);
+  };
+}
+
+function checkArgs(req, res, argName) {
+  if (!req.query[argName]) {
+    res.status(400);
+    res.send('Please provide a "' + argName + '" query parameter.');
+    return false;
+  }
+  return true;
+}
 
 // Projects page.
 // http://host/
@@ -30,10 +52,7 @@ router.get('/', function(req, res, next) {
         }
         res.render('projects', data);
       })
-      .catch(function(err) {
-        // Pass on to the error handling route.
-        next(err);
-      });
+      .catch(getErrorHandler(next));
     return;
   }
 
@@ -55,36 +74,35 @@ router.get('/', function(req, res, next) {
       // Redirect to the project page.
       res.redirect(projectLink);
     })
-    .catch(function(err) {
-
-      // Pass on to the error handling route.
-      next(err);
-    });
+    .catch(getErrorHandler(next));
 });
 
-
 // Post request to trigger an update remotely.
-router.post( '/', function(req, res, next) {
-  var repoUrl = req.query.repo_url;
-
-  if (!repoUrl) {
-    res.status(400);
-    res.send('Please provide a "repo_url" query parameter.');
+router.post('/', function(req, res, next) {
+  if (!checkArgs(req, res, 'repo_url')) {
     return;
   }
 
   var projectData = {
-    repoUrl: repoUrl,
+    repoUrl: req.query.repo_url,
     localPathRoot: appConfig.projectsPath
   };
 
   getProject(projectData)
-    .then(function() {
-      res.send('Project updated.');
-    })
-    .catch(function(err) {
-      next(err);
-    });
+    .then(getResponse(res, 'Project updated.'))
+    .catch(getErrorHandler(next));
+});
+
+router.delete('/', function(req, res, next) {
+  if (!checkArgs(req, res, 'project_name')) {
+    return;
+  }
+
+  var projectName = req.query.project_name;
+
+  deleteProject(projectName)
+    .then(getResponse(res, 'Project deleted.'))
+    .catch(getErrorHandler(next));
 });
 
 

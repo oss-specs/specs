@@ -2,36 +2,40 @@
 <link rel="stylesheet" href="/public/css/projects.css">
 <script src="/bower/jquery/dist/jquery.min.js"></script>
 <script src="/public/javascript/loader.js"></script>
+<script src="/public/javascript/projects.js"></script>
 {{> layout_start_body}}
-<main class="projects group">
+<main class="projects">
   <header>
     <h1>Projects</h1>
   </header>
-  <section>
-    <h2>Add Project {{> hint text="To add a project put a Git repository URL into text box and hit submit."}}</h2>
-    <form action="/" method="get">
-      <label>Project's Git URL (https only please): <input type="text" name="repo_url" /></label>
-      <button class="call-to-action loader-button">Submit</button>
-    </form>
-    <div class="loader-container"><div class="loader"></div></div>
-  </section>
-  <section>
-    <h2>Available Projects</h2>
-    {{#if projects}}
-      <ul class="projects-list">
-        {{#each projects}}
-          <li class="project">
-            <a href="{{../projectRoute}}/{{this}}">
-              <section class="project-link">
-                <p>{{this}}</p>
-              </section>
-            </a>
-          </li>
-        {{/each}}
-      </ul>
-    {{else}}
-      <p>No projects here yet, add some!</p>
-    {{/if}}
+  <section class="project-controls group">
+    <section class="projects-list-container">
+      <h2>Available Projects</h2>
+      {{#if projects}}
+        <ul class="projects-list">
+          {{#each projects}}
+            <li class="project group">
+              <button data-project-name="{{this}}" class="delete-project call-to-action interactive"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></button>
+              <a class="project-link-container" href="{{../projectRoute}}/{{this}}">
+                <section class="project-link">
+                  <p>{{this}}</p>
+                </section>
+              </a>
+            </li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <p>No projects here yet, add some!</p>
+      {{/if}}
+    </section>
+    <section class="add-project-container">
+      <h2>Add Project {{> hint text="To add a project put a Git repository URL into text box and hit submit."}}</h2>
+      <form action="/" method="get">
+        <label>Project's Git URL (https only please): <input type="text" name="repo_url" /></label>
+        <button class="call-to-action loader-button">Submit</button>
+      </form>
+      <div class="loader-container"><div class="loader"></div></div>
+    </section>
   </section>
 </main>
 <footer>

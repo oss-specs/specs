@@ -1,9 +1,3 @@
-.projects > section {
-  text-align: center;
-  padding: 0.5em 1em;
-  margin-bottom: 1em;
-}
-
 .projects h2 {
   font-size: 1.8em;
 }
@@ -30,6 +24,41 @@
   text-decoration: none;
 }
 
+.delete-project,
+.project-link-container {
+  display: inline-block;
+}
+
+button.delete-project {
+  float: left;
+  font-size: 1.2em;
+  line-height: 1.7em;
+  padding-bottom: 0.3em;
+  margin: 0 0.5em 0 0;
+  background-color: rgba(255, 100, 0, 0.7);
+  color: white;
+}
+
+button.delete-project:hover {
+  background-color: rgba(255, 100, 0, 0.7);
+  color: red;
+}
+
+
+button.delete-project:active {
+  background-color: rgba(255, 100, 0, 0.5);
+  color: darkred;
+}
+
+button.delete-project.waiting {
+  animation: sweep 1s infinite linear;
+}
+@keyframes sweep {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* TODO: standardise and reuse styling via pre-processor */
 .project-link {
   cursor: interactive;
@@ -53,23 +82,39 @@
 }
 
 footer .app-version {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   right: 0;
   padding-bottom: 1em;
   padding-right: 1.3em;
-  color: #999;
+  color: rgba(100, 100, 100, 0.5);
 }
 
+
+.project-controls > section {
+  text-align: center;
+  padding: 0.5em 1em;
+  margin-top: 3rem; /* rem so that the sections line up at the top */
+  margin-bottom: 3em;
+}
 
 /**
  * Wideview port (e.g. landscape tablet).
  */
 @media (min-width: 800px) {
-  .projects > section {
-    text-align: inherit;
+  .project-controls > section {
     float: left;
-    margin-right: 3em;
+    text-align: inherit;
+  }
+
+  .projects-list-container {
+    font-size: 1em;
+  }
+
+  .add-project-container {
+    font-size: 1em;
+    max-width: 20em;
+    margin-left: 3.5em;
   }
 }
 
@@ -77,6 +122,16 @@ footer .app-version {
  * Wider viewport (e.g. monitor, tv).
  */
 @media (min-width: 1280px) {
+  .projects-list-container {
+    font-size: 1.1em;
+  }
+
+  .add-project-container {
+    font-size: 0.9em;
+    max-width: none;
+    margin-left: 5em;
+  }
+
   .projects input {
     margin-top: 0;
   }
