@@ -1,0 +1,25 @@
+{{> layout_start_document}}
+<link rel="stylesheet" href="/public/css/taglist.css">
+{{> layout_start_body}}
+<main>
+  <header>
+    <h1 class="project-name">{{project.repoName}} Tag List</h1>
+  </header>
+  {{#if project}}
+    <section class="project">
+      <section class="summary">
+        <p>There are {{numTags}} unique tags in the project</p>
+      </section>
+      <section class="tag-list-container">
+        <ul>
+          {{#each sortedTags}}
+            <li class="interactive"><a href="{{../projectUrl}}?tags={{this.tag}}">{{this.tag}}: {{this.count}}</a></li>
+          {{/each}}
+        </ul>
+      </section>
+    </section>
+  {{else}}
+    <p>Sorry, no project data was found</p>
+  {{/if}}
+</main>
+{{> layout_end}}

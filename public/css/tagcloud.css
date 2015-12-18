@@ -1,0 +1,8 @@
+.project-name {
+  text-transform: capitalize;
+}
+
+.word-cloud-container svg {
+  width: 100%;
+  min-height: 30em;
+}

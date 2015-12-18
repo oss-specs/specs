@@ -17,6 +17,7 @@ var getProjectData = require('../lib/specifications/projects/project').getData;
 var getFileContent = require('../lib/specifications/projects/project').getFileContent;
 
 var applyProjectView = require('../lib/specifications/projects/project-views').applyProjectView;
+var modifyProjectView = require('../lib/specifications/projects/project-views').modifyProjectView;
 
 var appConfig = require('../lib/configuration/app-config').get();
 
@@ -46,7 +47,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   // Query parameter containing desired named view from project config.
   var currentProjectViewName = req.query.view || false;
 
-  // Query parameter containing desired feature tags to filer on.
+  // Query parameter containing desired feature tags to filter on.
   var currentTags = req.query.tags || false;
   if (currentTags === 'none') {
     currentTags = false;
@@ -124,6 +125,7 @@ function getRender(res, appConfig, renderOptions) {
 
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
     renderingData.currentProjectViewName = renderOptions.currentProjectViewName;
+    renderingData.tagRequested = !!renderOptions.currentTags;
 
     // Handle no project data being found.
     if (!projectData) {
@@ -149,6 +151,12 @@ function getRender(res, appConfig, renderOptions) {
     let ret = applyProjectView(projectData, renderingData);
     projectData = ret[0];
     renderingData = ret[1];
+
+    // Modify the project view based on other information
+    // such as whether the files are being filtered by tag.
+    // This only affects rendering flags, it doesn't
+    // modify project data.
+    renderingData = modifyProjectView(renderingData);
 
     // Configure function for mapping file paths to file data and use it.
     var pathToData = processFiles.getFilePathToFileObject(appConfig.projectRoute, projectData, getFileContent);

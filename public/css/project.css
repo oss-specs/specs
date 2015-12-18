@@ -82,6 +82,11 @@ ul.file-list {
   min-width: 15em;
 }
 
+.project .tag-cloud-link-container {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
 .project .burger-menu {
   position: relative;
   font-size: 0.5em;
@@ -120,23 +125,25 @@ ul.file-list {
 .repo-link {
   font-size: 0.7em;
 }
-.ci-link {
+.tag-cloud-link,
+.info-link {
   font-size: 0.8em;
 }
 .repo-link,
-.ci-link {
+.tag-cloud-link,
+.info-link {
 
   font-weight: bold;
   text-transform: uppercase;
   margin-right: 2em;
 }
 .repo-link a,
-.ci-link a {
+.info-link a {
   text-decoration: none;
   color: blue;
 }
 .repo-link:hover a,
-.ci-link:hover a {
+.info-link:hover a {
   color: green;
   text-decoration: underline;
 }

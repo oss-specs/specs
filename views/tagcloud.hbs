@@ -1,0 +1,44 @@
+{{> layout_start_document}}
+<link rel="stylesheet" href="/public/css/tagcloud.css">
+<script src="/bower/jquery/dist/jquery.min.js"></script>
+<script src="/bower/d3/d3.js"></script>
+<script src="/bower/d3-cloud/build/d3.layout.cloud.js"></script>
+<script>
+  window.tagCloud = {
+    tags: {{{tagJson}}}
+  }
+
+  // Tweak structure for D3 Cloud.
+  window.tagCloud.tags = window.tagCloud.tags.map(function(t) {
+    return {
+      text: t.tag,
+      size: t.count,
+      count: t.count,
+      urlEncodedName: t.urlEncodedName
+    }
+  });
+
+  var tagCounts = window.tagCloud.tags.map(function (tag) { return tag.size });
+  window.tagCloud.minTagCount = Math.min.apply(null, tagCounts);
+  window.tagCloud.maxTagCount = Math.max.apply(null, tagCounts);
+</script>
+<script src="/public/javascript/tagcloud.js"></script>
+{{> layout_start_body}}
+<main>
+  <header>
+    <h1 class="project-name">{{project.repoName}} Tag Cloud</h1>
+  </header>
+  {{#if project}}
+    <section class="project">
+      <section class="summary">
+        <p>There are {{numTags}} unique tags in the project</p>
+      </section>
+      <section class="word-cloud-container">
+        <svg id="word-cloud"></svg>
+      </section>
+    </section>
+  {{else}}
+    <p>Sorry, no project data was found</p>
+  {{/if}}
+</main>
+{{> layout_end}}
