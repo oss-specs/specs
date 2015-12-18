@@ -12,6 +12,18 @@ var deleteProject = require('../lib/specifications/projects/project').delete;
 var appVersion = require('../package.json').version;
 
 
+function getResponse(send, message) {
+  return function() {
+    send(message);
+  };
+}
+
+function getErrorHandler(next) {
+  return function(err) {
+    next(err);
+  };
+}
+
 // Projects page.
 // http://host/
 router.get('/', function(req, res, next) {
@@ -31,10 +43,7 @@ router.get('/', function(req, res, next) {
         }
         res.render('projects', data);
       })
-      .catch(function(err) {
-        // Pass on to the error handling route.
-        next(err);
-      });
+      .catch(getErrorHandler(next));
     return;
   }
 
@@ -56,13 +65,8 @@ router.get('/', function(req, res, next) {
       // Redirect to the project page.
       res.redirect(projectLink);
     })
-    .catch(function(err) {
-
-      // Pass on to the error handling route.
-      next(err);
-    });
+    .catch(getErrorHandler(next));
 });
-
 
 // Post request to trigger an update remotely.
 router.post('/', function(req, res, next) {
@@ -80,12 +84,8 @@ router.post('/', function(req, res, next) {
   };
 
   getProject(projectData)
-    .then(function() {
-      res.send('Project updated.');
-    })
-    .catch(function(err) {
-      next(err);
-    });
+    .then(getResponse(res.send.bind(res), 'Project updated.'))
+    .catch(getErrorHandler(next));
 });
 
 router.delete('/', function(req, res, next) {
@@ -98,12 +98,8 @@ router.delete('/', function(req, res, next) {
   }
 
   deleteProject(projectName)
-    .then(function() {
-      res.send('Project deleted.');
-    })
-    .catch(function(err) {
-      next(err);
-    });
+    .then(getResponse(res.send.bind(res), 'Project deleted.'))
+    .catch(getErrorHandler(next));
 });
 
 
