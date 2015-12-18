@@ -7,6 +7,7 @@ var appConfig = require('../lib/configuration/app-config').get();
 
 var getProjectsNames = require('../lib/specifications/projects/project').getNames;
 var getProject = require('../lib/specifications/projects/project').get;
+var deleteProject = require('../lib/specifications/projects/project').delete;
 
 var appVersion = require('../package.json').version;
 
@@ -64,7 +65,7 @@ router.get('/', function(req, res, next) {
 
 
 // Post request to trigger an update remotely.
-router.post( '/', function(req, res, next) {
+router.post('/', function(req, res, next) {
   var repoUrl = req.query.repo_url;
 
   if (!repoUrl) {
@@ -81,6 +82,24 @@ router.post( '/', function(req, res, next) {
   getProject(projectData)
     .then(function() {
       res.send('Project updated.');
+    })
+    .catch(function(err) {
+      next(err);
+    });
+});
+
+router.delete('/', function(req, res, next) {
+  var projectName = req.query.project_name;
+
+  if (!projectName) {
+    res.status(400);
+    res.send('Please provide a "project_name" query parameter.');
+    return;
+  }
+
+  deleteProject(projectName)
+    .then(function() {
+      res.send('Project deleted.');
     })
     .catch(function(err) {
       next(err);
