@@ -24,6 +24,31 @@
   text-decoration: none;
 }
 
+.delete-project,
+.project-link-container {
+  display: inline-block;
+}
+
+button.delete-project {
+  float: left;
+  font-size: 1.2em;
+  line-height: 1.8em;
+  margin: 0 0.5em 0 0;
+  background-color: rgba(255, 100, 0, 0.5);
+  color: white;
+}
+
+button.delete-project:hover {
+  background-color: rgba(255, 100, 0, 0.7);
+  color: red;
+}
+
+
+button.delete-project:active {
+  background-color: rgba(255, 100, 0, 0.5);
+  color: darkred;
+}
+
 /* TODO: standardise and reuse styling via pre-processor */
 .project-link {
   cursor: interactive;

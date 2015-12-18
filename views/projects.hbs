@@ -13,9 +13,9 @@
       {{#if projects}}
         <ul class="projects-list">
           {{#each projects}}
-            <li class="project">
-              <button class="delete-project"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></button>
-              <a href="{{../projectRoute}}/{{this}}">
+            <li class="project group">
+              <button class="delete-project call-to-action interactive"><svg class="icon icon-cross"><use xlink:href="#icon-cross"></use></svg></button>
+              <a class="project-link-container" href="{{../projectRoute}}/{{this}}">
                 <section class="project-link">
                   <p>{{this}}</p>
                 </section>
