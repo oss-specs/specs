@@ -4,10 +4,12 @@
 <script src="/bower/d3/d3.js"></script>
 <script src="/bower/d3-cloud/build/d3.layout.cloud.js"></script>
 <script>
-  window.tags = {{{tagJson}}};
+  window.tagCloud = {
+    tags: {{{tagJson}}}
+  }
 
-  // Convert object to array of objects.
-  window.processedTags = window.tags.map(function(t) {
+  // Tweak structure for D3 Cloud.
+  window.tagCloud.tags = window.tagCloud.tags.map(function(t) {
     return {
       text: t.tag,
       size: t.count,
@@ -16,9 +18,9 @@
     }
   });
 
-  var tagCounts = window.processedTags.map(function (tag) { return tag.size });
-  window.minTagCount = Math.min.apply(null, tagCounts);
-  window.maxTagCount = Math.max.apply(null, tagCounts);
+  var tagCounts = window.tagCloud.tags.map(function (tag) { return tag.size });
+  window.tagCloud.minTagCount = Math.min.apply(null, tagCounts);
+  window.tagCloud.maxTagCount = Math.max.apply(null, tagCounts);
 </script>
 <script src="/public/javascript/tagcloud.js"></script>
 {{> layout_start_body}}

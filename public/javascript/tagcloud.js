@@ -12,13 +12,15 @@ $(function() {
   var width = dimensions.width;
   var height = dimensions.height;
 
+  var tagCloudData = window.tagCloud;
+
   // Scale to translate from tag counts to font size in pixels.
   var textScale = d3.scale.log()
-    .domain([window.minTagCount, window.maxTagCount])
+    .domain([tagCloudData.minTagCount, tagCloudData.maxTagCount])
     .range([10, 80]);
 
   d3.layout.cloud().size([width, height])
-    .words(window.processedTags)
+    .words(tagCloudData.tags)
     .rotate(function() { return ~~(Math.random() * 160) - 80; })
     .font('Impact')
     .fontSize(function(d) { return textScale(d.size); })
