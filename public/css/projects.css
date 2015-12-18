@@ -1,7 +1,9 @@
 .projects > section {
   text-align: center;
   padding: 0.5em 1em;
-  margin-bottom: 1em;
+  margin-top: 3em;
+  margin-right: 3em;
+  margin-bottom: 3em;
 }
 
 .projects h2 {
@@ -67,9 +69,8 @@ footer .app-version {
  */
 @media (min-width: 800px) {
   .projects > section {
+    display: inline-block;
     text-align: inherit;
-    float: left;
-    margin-right: 3em;
   }
 }
 

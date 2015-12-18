@@ -3,19 +3,11 @@
 <script src="/bower/jquery/dist/jquery.min.js"></script>
 <script src="/public/javascript/loader.js"></script>
 {{> layout_start_body}}
-<main class="projects group">
+<main class="projects">
   <header>
     <h1>Projects</h1>
   </header>
-  <section>
-    <h2>Add Project {{> hint text="To add a project put a Git repository URL into text box and hit submit."}}</h2>
-    <form action="/" method="get">
-      <label>Project's Git URL (https only please): <input type="text" name="repo_url" /></label>
-      <button class="call-to-action loader-button">Submit</button>
-    </form>
-    <div class="loader-container"><div class="loader"></div></div>
-  </section>
-  <section>
+  <section class="projects-list-container">
     <h2>Available Projects</h2>
     {{#if projects}}
       <ul class="projects-list">
@@ -32,6 +24,14 @@
     {{else}}
       <p>No projects here yet, add some!</p>
     {{/if}}
+  </section>
+  <section>
+    <h2>Add Project {{> hint text="To add a project put a Git repository URL into text box and hit submit."}}</h2>
+    <form action="/" method="get">
+      <label>Project's Git URL (https only please): <input type="text" name="repo_url" /></label>
+      <button class="call-to-action loader-button">Submit</button>
+    </form>
+    <div class="loader-container"><div class="loader"></div></div>
   </section>
 </main>
 <footer>
