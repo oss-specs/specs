@@ -14,6 +14,29 @@ ul.file-list {
   text-transform: capitalize;
 }
 
+.project-summary {
+  margin: 1em 1em 0 1em;
+  background-color: #FAFAFA;
+  border: 1px solid rgb(220, 220, 220);
+  border-radius: 0.3em;
+  box-shadow: 0.05em 0.1em 0.2em 0.01em rgb(220, 220, 220);
+}
+.project-summary li {
+  margin: 0.2em;
+}
+/**
+ * Wideview port (e.g. landscape tablet).
+ */
+@media (min-width: 800px) {
+  .project-summary li {
+    display: inline-block;
+  }
+  .project-summary li:not(:first-of-type) {
+    margin-left: 1em;
+  }
+}
+
+
 .project .controls {
   margin-bottom: 0;
   padding: 1em;

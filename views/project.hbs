@@ -12,7 +12,10 @@
   <header>
     <h1 class="project-name">{{project.repoName}}</h1>
     <section class="project-summary">
-      <span>Number features in view: {{fileStats.features.numFeatures}}</span><span>Number scenarios in view: {{fileStats.features.numScenarios}}</span>
+      <ul>
+        <li><span>Number features in view: {{fileStats.features.numFeatures}}</span></li>
+        <li><span>Number scenarios in view: {{fileStats.features.numScenarios}}</span></li>
+      </ul>
     </section>
   </header>
   {{#if project}}
