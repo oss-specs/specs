@@ -9,6 +9,7 @@ var arrrayToTree = require('file-tree');
 var TreeModel = require('tree-model');
 
 var processFiles = require('../lib/specifications/files/process-files');
+
 var filterFeaturesAndScenarios = require('../lib/specifications/files/feature-files/tags').filterFeaturesAndScenarios;
 var getEditUrl = require('../lib/specifications/files/get-edit-url');
 
@@ -180,6 +181,9 @@ function getRender(res, appConfig, renderOptions) {
         let ret = filterFeaturesAndScenarios(projectData, projectTags, renderOptions.currentTags);
         projectData = ret[0];
         projectTags = ret[1];
+
+        // Extract general stats about the files, dependent on file types.
+        renderingData.fileStats = processFiles.generateFileStats(projectData.files);
 
         // Generate a file tree and use it to do the final render.
         var fileList = projectData.files.map(function(file) { return file.filePath; });
