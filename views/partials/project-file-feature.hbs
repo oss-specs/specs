@@ -1,6 +1,7 @@
 <li>
   <a class="spec-link" href="{{this.route}}?ref={{currentBranchName}}">
     <section class="file-container group">
+      {{> edit_button url=this.editUrl}}
       {{#if this.empty}}
         <section class="file-details">
           <p class="file-name">{{> empty_file_notice name=this.name}}</p>
@@ -11,7 +12,6 @@
         </section>
       {{/if}}
       {{#if this.data}}
-        {{> edit_button url=this.editUrl}}
         <section class="feature-summary">
           <p class="feature-name" title="{{this.filePath}}">{{this.data.name}}</p>
           {{#if this.data.description }}
