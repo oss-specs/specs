@@ -176,7 +176,7 @@ function getRender(res, appConfig, renderOptions) {
         // Conditionally add the edit links to individual files.
         projectData = addEditLinks(projectData);
 
-        // Filer the features and scenarios by requested tag name.
+        // Filter the features and scenarios by requested tag name.
         let ret = filterFeaturesAndScenarios(projectData, projectTags, renderOptions.currentTags);
         projectData = ret[0];
         projectTags = ret[1];
