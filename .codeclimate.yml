@@ -1,2 +1,17 @@
-exclude_path:
+---
+engines:
+  csslint:
+    enabled: true
+  eslint:
+    enabled: true
+  fixme:
+    enabled: true
+ratings:
+  paths:
+  - "**.css"
+  - "**.js"
+exclude_paths:
+- features/**/*
+- node_modules/**/*
+- bower_modules/**/*
 - public/javascript/vendor/**/*
