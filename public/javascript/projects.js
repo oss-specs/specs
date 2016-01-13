@@ -10,6 +10,10 @@
 
     buttonEls$.click(function() {
       var projectName = this.dataset.projectName;
+      
+      var confirm = window.confirm('Do you really want to delete project ' + projectName + '? This cannot be undone!')
+      if(!confirm) return;
+
       var loc = window.location;
       var baseUrl = loc.origin + loc.pathname;
 
