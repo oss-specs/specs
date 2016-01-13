@@ -11,6 +11,7 @@
     buttonEls$.click(function() {
       var projectName = this.dataset.projectName;
       
+      // It is trivial to add project again but incovenient when you delete it by mistake
       var confirm = window.confirm('Do you really want to delete project ' + projectName + '? This cannot be undone!');
       if(!confirm) return;
 
