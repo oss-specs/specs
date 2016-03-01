@@ -313,8 +313,7 @@ h2.directory-path {
 }
 .feature-summary .feature-scenarios li {
   font-size: 0.9em;
-  display: inline-block;
-  max-width: 10em;
+  text-align: left;
   vertical-align: middle;
   padding: 0.4em;
   margin: 0.2em;
