@@ -12,7 +12,7 @@ html {
 /* Body. */
 body {
   font-family: Helvetica, Arial, sans-serif;
-  background-color: #f0f0f0;
+  background-color: #EEF1F7;
 }
 
 /**
@@ -97,15 +97,11 @@ button.call-to-action a {
 button.call-to-action:hover {
   background-color: green;
 }
-button.call-to-action:active {
-  box-shadow: 1px 1px rgba(0, 0, 0, 0.4);
-}
 
 
 /* File editing buttons and links */
 .feature-edit {
   float: right;
-  box-shadow: 0 0 0.4em 0.2em orange;
 }
 .feature-edit button {
   margin: 0;
@@ -212,10 +208,12 @@ svg.icon {
    display: none;
  }
  .collapsible {
-   height: 100%;
+   height: auto;
    transition: all 0.4s ease-in-out;
  }
+
  .collapsible.collapse {
+   display: none;
    height: 0 !important;
    opacity: 0 !important;
    margin: 0 !important;
