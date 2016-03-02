@@ -172,7 +172,7 @@ ul.file-list {
 }
 
 .directory {
-  margin: 1em;
+  margin: 0.5em 1em;
 }
 .directory:first-child {
   margin-top: 0;
