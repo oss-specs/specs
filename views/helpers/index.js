@@ -81,7 +81,7 @@ function parseDirectoryPath(context, options) {
   if (pathsToHideRegex) {
     path = path.replace(pathsToHideRegex, '<span class="redacted"></span>');
   }
-  return path;
+  return path.replace(/\//g, ' / ');
 }
 
 // URI encode a string.
