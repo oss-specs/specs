@@ -97,7 +97,9 @@ button.call-to-action a {
 button.call-to-action:hover {
   background-color: green;
 }
-
+button.call-to-action:active {
+  box-shadow: 1px 1px rgba(0, 0, 0, 0.4);
+}
 
 /* File editing buttons and links */
 .feature-edit {
