@@ -92,7 +92,27 @@ function uriEncodeString(context) {
 function checkResultsFromList(array,second) {
   if (array && array.length > 0) {
     var passes ='';
-    //add in logic here to check the array
+    for( var i = 0; i < array.length ; i++) {
+      //If we check direct equals then we miss out some in scenario outline that end in digits, so needs changing
+      //previously tested name contained second but this caused some tests to show extra results
+      if (array[i]['name']=== second) {
+        var status = array[i]['status'];
+        switch (status) {
+          case 'FIXED':
+            status = 'PASSED';
+            break;
+          case 'REGRESSION':
+            status = 'FAILED';
+            break;
+        }
+        var url = array[i]['url'];
+        var scen = array[i]['className'].replace(/ /g, '%20');
+        //Want to link direct to test, however current jenkins reporting for scenario outline is causing issues.
+        // var feat = array[i]['name'].replace(/ /g, '_').replace(/\./g, '_');
+        url = url.replace('api/json?pretty=true', 'junit/(root)/' + scen);
+        passes = passes + '<form method="post" action="' + url + '"> <input class="' + status + '" type="submit" value="' + status + '"> </form>';
+      }
+    }
     return passes;
   }
 }

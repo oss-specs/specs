@@ -213,6 +213,45 @@ svg.icon {
    height: auto;
  }
 
+ .PASSED {
+   background-color: darkgreen;
+   display: inline-block;
+   padding: 0.2em 0.4em;
+   margin-bottom: 0;
+   font-weight: normal;
+   line-height: 1.4;
+   text-align: center;
+   white-space: nowrap;
+   vertical-align: middle;
+   user-select: none;
+   background-image: none;
+   border: 1px solid transparent;
+   border-radius: 4px;
+ }
+
+ .FAILED {
+   background-color: red;
+   display: inline-block;
+   padding: 0.2em 0.4em;
+   margin-bottom: 0;
+   font-weight: normal;
+   line-height: 1.4;
+   text-align: center;
+   white-space: nowrap;
+   vertical-align: middle;
+   user-select: none;
+   background-image: none;
+   border: 1px solid transparent;
+   border-radius: 4px;
+ }
+
+
+ form.theForm {
+   display:inline;
+   margin:0px;
+   padding:0px;
+ }
+
  .collapsible.collapse {
    height: 0;
    overflow: hidden;
