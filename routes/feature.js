@@ -92,6 +92,8 @@ router.get(/([^\/]+)\/file\/([\w\W]+)/, function (req, res, next) {
         file.data = markTargetedFeature(file.data, targetedScenarioName);
       }
 
+      file.data.jobNames = appConfig.jobNames;
+
       res.render('feature', {file: file});
 
     } else if (file.isMarkdownFile && !renderPlainFile) {

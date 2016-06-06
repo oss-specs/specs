@@ -88,6 +88,14 @@ function parseDirectoryPath(context, options) {
 function uriEncodeString(context) {
   return encodeURIComponent(context);
 }
+//TODO add description
+function checkResultsFromList(array,second) {
+  if (array && array.length > 0) {
+    var passes ='';
+    //add in logic here to check the array
+    return passes;
+  }
+}
 
 module.exports = {
   newlinesToBreaks: getStringConverter(function toBreaks(safeContent) {
@@ -98,5 +106,6 @@ module.exports = {
   }),
   stepContent: highlightStepParams,
   directoryPath: parseDirectoryPath,
-  uriEncodeString: uriEncodeString
+  uriEncodeString: uriEncodeString,
+  checkResultsFromList:checkResultsFromList
 };
