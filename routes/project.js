@@ -20,11 +20,19 @@ var getFileContent = require('../lib/specifications/projects/project').getFileCo
 var applyProjectView = require('../lib/specifications/projects/project-views').applyProjectView;
 var modifyProjectView = require('../lib/specifications/projects/project-views').modifyProjectView;
 
+var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+
 var appConfig = require('../lib/configuration/app-config').get();
 
 
 // List of available features in a project.
 router.get(/^\/([^\/]+)$/, function(req, res, next) {
+
+  var getResults = req.query.get_results;
+  if(getResults){
+    //Replace value with hard coded value until next bit implemented
+    appConfig.jobNames = httpGetJobs("Hard coded value");
+  }
 
   // Cookie variables.
   var openBurgerMenu = (req.cookies.specsOpenBurgerMenu === 'true');
@@ -321,6 +329,55 @@ function getPassError(next) {
   return function passError(err) {
     next(err);
   };
+}
+
+//This is going to need cleaning probably
+function httpGetAsync(theUrl, callBack)
+{
+  var xmlHttp = new XMLHttpRequest();
+  var jobsList = [];
+  xmlHttp.onreadystatechange = function() {
+    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+      jobsList=callBack(xmlHttp.responseText, theUrl);
+    }
+  };
+  //make asynchronous? and then if the state is other show loading?
+  xmlHttp.open("GET", theUrl, false);
+  xmlHttp.send(null);
+  return jobsList;
+}
+
+function ParseJsonJobs(responseText) {
+  var jobsList = [];
+  var jsonText = JSON.parse(responseText);
+  var jobsJson = jsonText['jobs'];
+  for(var i = 0; i < jobsJson.length; i++){
+    jobsList.push(jobsJson[i]['name']);
+  }
+  return jobsList
+}
+
+function ParseJsonIndividualJobs(responseText,url) {
+  var jobsList = [];
+  var jsonText = JSON.parse(responseText);
+  var jobsJson = jsonText['suites'];
+  //big ole hack
+  var i = jobsJson.length-1;
+    for(var j = 0; j < jobsJson[i]['cases'].length; j++){
+      var jobJson =jobsJson[i]['cases'][j];
+      jobJson.url = url;
+      jobsList.push(jobJson);
+  }
+  return jobsList;
+}
+
+function httpGetJobs(url) {
+  var jobList = httpGetAsync(url+"api/json?depth=1&tree=jobs[name]", ParseJsonJobs);
+  var allJobs = [];
+  for(var i = 0; i < jobList.length; i++){
+    allJobs.push.apply(allJobs,httpGetAsync(url+'job/'+jobList[i]+'/lastCompletedBuild/testReport/api/json?pretty=true',ParseJsonIndividualJobs));
+  }
+  return allJobs
 }
 
 module.exports = router;
