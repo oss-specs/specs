@@ -88,14 +88,22 @@ function parseDirectoryPath(context, options) {
 function uriEncodeString(context) {
   return encodeURIComponent(context);
 }
-//TODO add description
-function checkResultsFromList(array,second) {
+
+/*
+ *Using an array of json objects of cases from jenkins and the scenario name to match the test results to a feature.
+ *
+ * @param {Object} array        An array from jenkins of json objects for each case found
+ * @param {Object} scenarioName The scenario name we want to check against list of results
+ * @return {Object} passes      The string representing the html to display buttons for the associated passes
+ */
+function checkResultsFromList(array,scenarioName) {
   if (array && array.length > 0) {
     var passes ='';
     for( var i = 0; i < array.length ; i++) {
       //If we check direct equals then we miss out some in scenario outline that end in digits, so needs changing
       //previously tested name contained second but this caused some tests to show extra results
-      if (array[i]['name']=== second) {
+      var storedJob = array[i]['name'].replace(/ \d+$/g,'');
+      if (storedJob=== scenarioName) {
         var status = array[i]['status'];
         switch (status) {
           case 'FIXED':
