@@ -258,4 +258,19 @@
     });
   });
 
+  // Starts the loading image to be more clear when fetching jenkins results
+  $(function() {
+
+    function startLoading() {
+      document.getElementById("loading").style.display = 'block';
+    }
+
+    var jenkinsLoad = window.document.getElementById('get-jenkins-results');
+    jenkinsLoad.addEventListener('click', startLoading);
+  });
+
+  $(document).ready(function() {
+    document.getElementById("loading").style.display = 'none';
+  })
+
 })();
