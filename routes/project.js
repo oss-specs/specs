@@ -24,14 +24,15 @@ var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
 var appConfig = require('../lib/configuration/app-config').get();
 
-
+var allJobs;
 // List of available features in a project.
 router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   var getResults = req.query.get_results;
   if(getResults){
     //Replace value with hard coded value until next bit implemented
-    appConfig.jobNames = httpGetJobs("Hard coded value");
+    allJobs=[];
+    httpGetJobs("Hard Coded Value");
   }
 
   // Cookie variables.
@@ -332,8 +333,7 @@ function getPassError(next) {
 }
 
 //This is going to need cleaning probably
-function httpGetAsync(theUrl, callBack)
-{
+function httpGet(theUrl, callBack, async) {
   var xmlHttp = new XMLHttpRequest();
   var jobsList = [];
   xmlHttp.onreadystatechange = function() {
@@ -341,8 +341,7 @@ function httpGetAsync(theUrl, callBack)
       jobsList=callBack(xmlHttp.responseText, theUrl);
     }
   };
-  //make asynchronous? and then if the state is other show loading?
-  xmlHttp.open("GET", theUrl, false);
+  xmlHttp.open("GET", theUrl, async);
   xmlHttp.send(null);
   return jobsList;
 }
@@ -368,16 +367,14 @@ function ParseJsonIndividualJobs(responseText,url) {
       jobJson.url = url;
       jobsList.push(jobJson);
   }
-  return jobsList;
+  allJobs.push.apply(allJobs,jobsList);
+  appConfig.jobNames = allJobs;
 }
 
 function httpGetJobs(url) {
-  var jobList = httpGetAsync(url+"api/json?depth=1&tree=jobs[name]", ParseJsonJobs);
-  var allJobs = [];
+  var jobList = httpGet(url+"api/json?depth=1&tree=jobs[name]", ParseJsonJobs,false);
   for(var i = 0; i < jobList.length; i++){
-    allJobs.push.apply(allJobs,httpGetAsync(url+'job/'+jobList[i]+'/lastCompletedBuild/testReport/api/json?pretty=true',ParseJsonIndividualJobs));
+    httpGet(url+'job/'+jobList[i]+'/lastCompletedBuild/testReport/api/json?pretty=true',ParseJsonIndividualJobs,true);
   }
-  return allJobs
 }
-
 module.exports = router;
