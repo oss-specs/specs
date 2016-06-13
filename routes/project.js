@@ -42,9 +42,22 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   // The repository name from the URL.
   var repoName = req.params[0];
 
+
+  var addJob = req.query.addJob;
+  var clearJobs = req.query.clearJobs;
+  var jobPath = fs.join(appConfig.projectsPath,repoName+"/jenkins");
+  if(addJob){
+    if(fs.exists(jobPath)){
+      addJob="\n"+addJob;
+    }
+    fs.append(jobPath,addJob);
+  }
+  if(clearJobs) {
+    fs.remove(jobPath);
+  }
+
   if(getResults){
     allJobs=[];
-    var jobPath = fs.join(appConfig.projectsPath,repoName+"/jenkins");
     fs.read(jobPath).then(function (content) {
       var jobList = content.split('\n');
       var len=jobList.length;

@@ -40,6 +40,13 @@
           <a href="?update=true"><button class="project-update call-to-action loader-button">Get Latest</button></a>
           <span class="repo-link"><a href="{{project.repoUrl}}">(visit&nbsp;repository)</a></span>
           <div class="loader-container"><div class="loader dark"></div></div>
+            <form method="get">
+                <label>Add Job: <input type="text" name="addJob" /></label>
+                <button class="call-to-action loader-button">Add</button>
+            </form>
+            <form method="get">
+                <button class="call-to-action loader-button" name="clearJobs" value="true">Delete Jobs</button>
+            </form>
         </section>
         <section class="content-controls">
           {{> back_button}}
