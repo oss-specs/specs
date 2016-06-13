@@ -21,7 +21,7 @@ var applyProjectView = require('../lib/specifications/projects/project-views').a
 var modifyProjectView = require('../lib/specifications/projects/project-views').modifyProjectView;
 
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
-
+var fs = require('q-io/fs');
 var appConfig = require('../lib/configuration/app-config').get();
 
 var allJobs;
@@ -29,11 +29,6 @@ var allJobs;
 router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   var getResults = req.query.get_results;
-  if(getResults){
-    //Replace value with hard coded value until next bit implemented
-    allJobs=[];
-    httpGetJobs("Hard Coded Value");
-  }
 
   // Cookie variables.
   var openBurgerMenu = (req.cookies.specsOpenBurgerMenu === 'true');
@@ -46,6 +41,18 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   // The repository name from the URL.
   var repoName = req.params[0];
+
+  if(getResults){
+    allJobs=[];
+    var jobPath = fs.join(appConfig.projectsPath,repoName+"/jenkins");
+    fs.read(jobPath).then(function (content) {
+      var jobList = content.split('\n');
+      var len=jobList.length;
+      for(var j=0;j<len;j++) {
+        httpGetJobs(jobList[j]);
+      }
+    });
+  }
 
   // Query param indicating a particular ref should
   // be used when retrieving repo data.
