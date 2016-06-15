@@ -34,7 +34,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   var openBurgerMenu = (req.cookies.specsOpenBurgerMenu === 'true');
 
   // Session variable.
-  if(!req.session.branches) {
+  if (!req.session.branches) {
     req.session.branches = {};
   }
   var sessionBranches = req.session.branches;
@@ -45,26 +45,39 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   var addJob = req.query.addJob;
   var clearJobs = req.query.clearJobs;
-  var jobPath = fs.join(appConfig.projectsPath,repoName+"/jenkins");
-  if(addJob){
-    if(fs.exists(jobPath)){
-      addJob="\n"+addJob;
+  var jobPath = fs.join(appConfig.projectsPath, repoName + "/jenkins");
+  if (addJob) {
+    if (fs.exists(jobPath)) {
+      addJob = "\n" + addJob;
     }
-    fs.append(jobPath,addJob);
+    fs.append(jobPath, addJob);
   }
-  if(clearJobs) {
-    fs.remove(jobPath);
-  }
+  if (clearJobs) {
+    if (clearJobs === 'true') {
+      fs.remove(jobPath);
+      appConfig.jobList = [];
+    } else {
+      fs.read(jobPath).then(function (content) {
+        var re = new RegExp(clearJobs+"\n","g");
+        content = content.replace(re, '');
+        appConfig.jobList = content.split('\n');
+        content = content.replace(/^\n/g, '');
+        fs.write(jobPath,content);
+      });
+    }
+  } else {
+  fs.read(jobPath).then(function (content) {
+    content = content.replace(/^\n/g, '');
+    appConfig.jobList = content.split('\n');
+  });
+}
 
   if(getResults){
     allJobs=[];
-    fs.read(jobPath).then(function (content) {
-      var jobList = content.split('\n');
-      var len=jobList.length;
+      var len=appConfig.jobList.length;
       for(var j=0;j<len;j++) {
-        httpGetJobs(jobList[j]);
+        httpGetJobs(appConfig.jobList[j]);
       }
-    });
   }
 
   // Query param indicating a particular ref should
@@ -156,6 +169,7 @@ function getRender(res, appConfig, renderOptions) {
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
     renderingData.currentProjectViewName = renderOptions.currentProjectViewName;
     renderingData.tagRequested = !!renderOptions.currentTags;
+    renderingData.jobList = appConfig.jobList;
 
     // Handle no project data being found.
     if (!projectData) {

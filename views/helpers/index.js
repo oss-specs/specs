@@ -125,6 +125,18 @@ function checkResultsFromList(array,scenarioName) {
   }
 }
 
+function addRemoveJenkinsJobs(array) {
+  var jobs = '<form method="get"><label>Add Job: <input type="text" name="addJob" /></label> <button class="call-to-action loader-button">Add</button> <button class="call-to-action loader-button" name="clearJobs" value="true">Delete all Jobs</button>'
+  //if not empty
+  for(var i = 0; i<array.length; i++) {
+    var escaped = array[i].replace(/\//g,'\\/').replace(/\./g,'\\.');
+    jobs+='<label>'+array[i]+'</label><button "call-to-action loader-button" name="clearJobs" value="'+escaped+'">delete</button>'
+  }
+  jobs+='</form>';
+  return jobs;
+
+}
+
 module.exports = {
   newlinesToBreaks: getStringConverter(function toBreaks(safeContent) {
     return safeContent + '<br>';
@@ -135,5 +147,6 @@ module.exports = {
   stepContent: highlightStepParams,
   directoryPath: parseDirectoryPath,
   uriEncodeString: uriEncodeString,
-  checkResultsFromList:checkResultsFromList
+  checkResultsFromList:checkResultsFromList,
+  addRemoveJenkinsJobs:addRemoveJenkinsJobs
 };
