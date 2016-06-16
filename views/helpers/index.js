@@ -126,13 +126,13 @@ function checkResultsFromList(array,scenarioName) {
 }
 
 function addRemoveJenkinsJobs(array) {
-  var jobs = '<form method="get"><label>Add Job: <input type="text" name="addJob" /></label> <button class="call-to-action loader-button">Add</button> <button class="call-to-action loader-button" name="clearJobs" value="true">Delete all Jobs</button>'
+  var jobs = '<form method="get"><label>Add Job: <input type="text" name="addJob" /></label> <button class="call-to-action loader-button">Add</button> <button class="call-to-action loader-button" name="clearJobs" value="true">Delete all Jobs</button><table>'
   //if not empty
   for(var i = 0; i<array.length; i++) {
     var escaped = array[i].replace(/\//g,'\\/').replace(/\./g,'\\.');
-    jobs+='<label>'+array[i]+'</label><button "call-to-action loader-button" name="clearJobs" value="'+escaped+'">delete</button>'
+    jobs+='<tr><td><label>'+array[i]+'</label></td><td><button class="call-to-action loader-button" name="clearJobs" value="'+escaped+'">delete</button></td></tr>'
   }
-  jobs+='</form>';
+  jobs+='</table></form>';
   return jobs;
 
 }
