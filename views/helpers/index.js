@@ -118,7 +118,7 @@ function checkResultsFromList(array,scenarioName) {
         //Want to link direct to test, however current jenkins reporting for scenario outline is causing issues.
         // var feat = array[i]['name'].replace(/ /g, '_').replace(/\./g, '_');
         url = url.replace('api/json?pretty=true', 'junit/(root)/' + scen);
-        passes = passes + '<form method="post" action="' + url + '"> <input class="' + status + '" type="submit" value="' + status + '"> </form>';
+        passes = passes + '<a class="resultLink" href="' + url + '"><input class="' + status + '" type="submit" value="' + status + '"></a><br/>';
       }
     }
     return passes;
