@@ -101,26 +101,32 @@ function checkResultsFromList(array, scenario) {
     var passes ='';
     var scenarioName= scenario.name;
     if(scenario.type === "ScenarioOutline" ) {
-      var updatedName =scenarioName;
-      for(var j =0; j< scenario.examples.length; j++) {
-        for(var iBody =0; iBody < scenario.examples[j].tableBody.length; iBody++){
-          for(var iHeader = 0; iHeader < scenario.examples[j].tableHeader.cells.length; iHeader++) {
-            var re = new RegExp("<"+scenario.examples[j].tableHeader.cells[iHeader].value+">","g");
-            updatedName = updatedName.replace(re,scenario.examples[j].tableBody[iBody].cells[iHeader].value);
+      var updatedName = scenarioName;
+      if (scenarioName.indexOf("<") > -1) {
+        for (var j = 0; j < scenario.examples.length; j++) {
+          for (var iBody = 0; iBody < scenario.examples[j].tableBody.length; iBody++) {
+            for (var iHeader = 0; iHeader < scenario.examples[j].tableHeader.cells.length; iHeader++) {
+              var re = new RegExp("<" + scenario.examples[j].tableHeader.cells[iHeader].value + ">", "g");
+              updatedName = updatedName.replace(re, scenario.examples[j].tableBody[iBody].cells[iHeader].value);
+            }
+            passes = passes += compareJobsAndFeatures(array, updatedName, true);
+            updatedName = scenarioName;
           }
-          passes = passes += compareJobsAndFeatures(array,updatedName);
-          updatedName=scenarioName;
         }
+      } else {
+        //If there is no example data in the scenario name then jenkins will report with numbers in a different order
+        // so just return the link the the job rather than the direct test
+        passes = passes += compareJobsAndFeatures(array, scenarioName, false);
       }
     }
     else {
-      passes = compareJobsAndFeatures(array,scenarioName);
+      passes = compareJobsAndFeatures(array,scenarioName, true);
     }
     return passes;
   }
 }
 
-function compareJobsAndFeatures(array, scenarioName) {
+function compareJobsAndFeatures(array, scenarioName,directFeature) {
   if (array && array.length > 0) {
     var passes ='';
     for( var i = 0; i < array.length ; i++) {
@@ -140,9 +146,12 @@ function compareJobsAndFeatures(array, scenarioName) {
         }
         var url = array[i]['url'];
         var scen = array[i]['className'].replace(/ /g, '%20');
-        //Want to link direct to test, however current jenkins reporting for scenario outline is causing issues.
-        var feat ="/"+ array[i]['name'].replace(/ /g, '_').replace(/\W/g, '_');
-        url = url.replace('api/json?pretty=true', 'junit/(root)/' + scen+feat);
+        if(directFeature) {
+          var feat = "/" + array[i]['name'].replace(/ /g, '_').replace(/\W/g, '_');
+          url = url.replace('api/json?pretty=true', 'junit/(root)/' + scen + feat);
+        } else {
+          url = url.replace('api/json?pretty=true', 'junit/(root)/' + scen);
+        }
         passes = passes + '<a class="resultLink" href="' + url + '"><input class="' + status + '" type="submit" value="' + status + '"></a><br/>';
       }
     }
