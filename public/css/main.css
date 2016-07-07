@@ -213,6 +213,51 @@ svg.icon {
    height: auto;
  }
 
+ .PASSED {
+   background-color: darkgreen;
+   display: inline-block;
+   padding: 0.2em 0.4em;
+   margin-bottom: 0;
+   font-weight: normal;
+   line-height: 1.4;
+   text-align: center;
+   white-space: nowrap;
+   vertical-align: middle;
+   user-select: none;
+   background-image: none;
+   border: 1px solid transparent;
+   border-radius: 1px;
+   width:85px;
+ }
+
+ .FAILED {
+   background-color: red;
+   display: inline-block;
+   padding: 0.2em 0.4em;
+   margin-bottom: 0;
+   font-weight: normal;
+   line-height: 1.4;
+   text-align: center;
+   white-space: nowrap;
+   vertical-align: middle;
+   user-select: none;
+   background-image: none;
+   border: 1px solid transparent;
+   border-radius: 1px;
+   width:85px;
+ }
+
+a.resultLink {
+  color:black;
+}
+
+
+ form.theForm {
+   display:inline;
+   margin:0px;
+   padding:0px;
+ }
+
  .collapsible.collapse {
    height: 0;
    overflow: hidden;
@@ -220,7 +265,6 @@ svg.icon {
    padding: 0;
    margin: 0;
  }
-
 
 /**
  * Semantic clearfix.
