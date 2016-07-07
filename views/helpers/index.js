@@ -96,13 +96,38 @@ function uriEncodeString(context) {
  * @param {Object} scenarioName The scenario name we want to check against list of results
  * @return {Object} passes      The string representing the html to display buttons for the associated passes
  */
-function checkResultsFromList(array,scenarioName) {
+function checkResultsFromList(array, scenario) {
+  if (array && array.length > 0) {
+    var passes ='';
+    var scenarioName= scenario.name;
+    if(scenario.type === "ScenarioOutline" ) {
+      var updatedName =scenarioName;
+      for(var j =0; j< scenario.examples.length; j++) {
+        for(var iBody =0; iBody < scenario.examples[j].tableBody.length; iBody++){
+          for(var iHeader = 0; iHeader < scenario.examples[j].tableHeader.cells.length; iHeader++) {
+            var re = new RegExp("<"+scenario.examples[j].tableHeader.cells[iHeader].value+">","g");
+            updatedName = updatedName.replace(re,scenario.examples[j].tableBody[iBody].cells[iHeader].value);
+          }
+          passes = passes += compareJobsAndFeatures(array,updatedName);
+          updatedName=scenarioName;
+        }
+      }
+    }
+    else {
+      passes = compareJobsAndFeatures(array,scenarioName);
+    }
+    return passes;
+  }
+}
+
+function compareJobsAndFeatures(array, scenarioName) {
   if (array && array.length > 0) {
     var passes ='';
     for( var i = 0; i < array.length ; i++) {
       //If we check direct equals then we miss out some in scenario outline that end in digits, so needs changing
       //previously tested name contained second but this caused some tests to show extra results
       var storedJob = array[i]['name'].replace(/ \d+$/g,'');
+      // if scenarioName has ' - <' then remove after - in storedJob
       if (storedJob=== scenarioName) {
         var status = array[i]['status'];
         switch (status) {
