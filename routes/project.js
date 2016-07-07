@@ -48,7 +48,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   var jobPath = fs.join(appConfig.projectsPath, repoName + "/jenkins");
   if (addJob) {
     if (fs.exists(jobPath)) {
-      addJob = "\n" + addJob;
+      addJob = addJob+"\n";
     }
     fs.append(jobPath, addJob);
   }
@@ -60,14 +60,13 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
       fs.read(jobPath).then(function (content) {
         var re = new RegExp(clearJobs+"\n","g");
         content = content.replace(re, '');
-        appConfig.jobList = content.split('\n');
-        content = content.replace(/^\n/g, '');
         fs.write(jobPath,content);
+        appConfig.jobList = content.replace(/\n$/g, '').split('\n');
       });
     }
   } else {
   fs.read(jobPath).then(function (content) {
-    content = content.replace(/^\n/g, '');
+    content = content.replace(/\n$/g, '');
     appConfig.jobList = content.split('\n');
   });
 }
