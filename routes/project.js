@@ -379,14 +379,19 @@ function httpGet(theUrl, callBack, async) {
   return jobsList;
 }
 
-function ParseJsonJobs(responseText) {
+function ParseJsonJobs(responseText,url) {
   var jobsList = [];
   var jsonText = JSON.parse(responseText);
   var jobsJson = jsonText['jobs'];
   for(var i = 0; i < jobsJson.length; i++){
     jobsList.push(jobsJson[i]['name']);
   }
-  return jobsList
+  // return jobsList
+  url = url.replace(/api\/json\?depth=1&tree=jobs\[name]/g,'');
+  console.log(url);
+  for(var j = 0; j < jobsList.length; j++){
+    httpGet(url+'job/'+jobsList[j]+'/lastCompletedBuild/testReport/api/json?pretty=true',ParseJsonIndividualJobs,true);
+  }
 }
 
 function ParseJsonIndividualJobs(responseText,url) {
@@ -405,9 +410,14 @@ function ParseJsonIndividualJobs(responseText,url) {
 }
 
 function httpGetJobs(url) {
-  var jobList = httpGet(url+"api/json?depth=1&tree=jobs[name]", ParseJsonJobs,false);
-  for(var i = 0; i < jobList.length; i++){
-    httpGet(url+'job/'+jobList[i]+'/lastCompletedBuild/testReport/api/json?pretty=true',ParseJsonIndividualJobs,true);
-  }
+  //Using async right now as is quicker and seems to be working, change to false if want results to come in same order each time
+  var jobList = httpGet(url+"api/json?depth=1&tree=jobs[name]", ParseJsonJobs,true);
+
+
+  //OLD WORKING CODE
+  // var jobList = httpGet(url+"api/json?depth=1&tree=jobs[name]", ParseJsonJobs,false);
+  // for(var i = 0; i < jobList.length; i++){
+  //   httpGet(url+'job/'+jobList[i]+'/lastCompletedBuild/testReport/api/json?pretty=true',ParseJsonIndividualJobs,true);
+  // }
 }
 module.exports = router;
