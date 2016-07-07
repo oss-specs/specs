@@ -93,7 +93,7 @@ function uriEncodeString(context) {
  *Using an array of json objects of cases from jenkins and the scenario name to match the test results to a feature.
  *
  * @param {Object} array        An array from jenkins of json objects for each case found
- * @param {Object} scenarioName The scenario name we want to check against list of results
+ * @param {Object} scenario     Contains all the details for the feature including scenario name and type
  * @return {Object} passes      The string representing the html to display buttons for the associated passes
  */
 function checkResultsFromList(array, scenario) {
@@ -126,6 +126,13 @@ function checkResultsFromList(array, scenario) {
   }
 }
 
+/**
+ * Takes in the scenario name and a array of json object to check if the scenario has passed
+ * @param array         An array of json objects for jobs, containing details such as the name, the status and the url
+ * @param scenarioName  the name of scenario we wish to check against
+ * @param directFeature When true return a direct link to the scenario, when false return link to more general job.
+ * @returns {string}    The string representing the html for displaying the results
+ */
 function compareJobsAndFeatures(array, scenarioName,directFeature) {
   if (array && array.length > 0) {
     var passes ='';
@@ -159,6 +166,11 @@ function compareJobsAndFeatures(array, scenarioName,directFeature) {
   }
 }
 
+/**
+ * Uses the list of stored urls to displaying them as well as allow for adding or removing jobs
+ * @param array       The list of urls stored
+ * @returns {string}  String representing the html for displaying the jobs and actions
+ */
 function addRemoveJenkinsJobs(array) {
   var jobs = '<form method="get"><label>Add Job: <input type="text" name="addJob" /></label> <button class="call-to-action loader-button">Add</button> <button class="call-to-action loader-button" name="clearJobs" value="true">Delete all Jobs</button><table>'
   //if not empty
