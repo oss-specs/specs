@@ -25,7 +25,6 @@ var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 var fs = require('q-io/fs');
 var appConfig = require('../lib/configuration/app-config').get();
 
-var allJobs;
 // List of available features in a project.
 router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
@@ -42,9 +41,6 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   // The repository name from the URL.
   var repoName = req.params[0];
-
-
-  var jobPath = fs.join(appConfig.projectsPath, repoName + "/jenkins");
 
   // Query param indicating a particular ref should
   // be used when retrieving repo data.
@@ -139,7 +135,6 @@ function getRender(res, appConfig, renderOptions) {
     //THIS feels like I should move it to another method
     if(renderOptions.shouldGetResults && projectData.config.jenkinsJobs){
       getResults(projectData);
-      allJobs=[];
       for(var j=0;j<projectData.config.jenkinsJobs.length;j++) {
         httpGetJobs(projectData.config.jenkinsJobs[j]);
       }
@@ -388,8 +383,10 @@ function ParseJsonIndividualJobs(responseText,url) {
     jobJson.url = url;
     jobsList.push(jobJson);
   }
-  allJobs.push.apply(allJobs,jobsList);
-  appConfig.jobNames = allJobs;
+  // allJobs.push.apply(allJobs,jobsList);
+  // appConfig.jobNames = allJobs;
+
+  appConfig.jobNames.push.apply(appConfig.jobNames,jobsList);
 }
 
 function httpGetJobs(url) {
