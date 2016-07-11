@@ -16,6 +16,7 @@ var getEditUrl = require('../lib/specifications/files/get-edit-url');
 var getProject = require('../lib/specifications/projects/project').get;
 var getProjectData = require('../lib/specifications/projects/project').getData;
 var getFileContent = require('../lib/specifications/projects/project').getFileContent;
+var getResults = require('../lib/specifications/projects/project').getResults;
 
 var applyProjectView = require('../lib/specifications/projects/project-views').applyProjectView;
 var modifyProjectView = require('../lib/specifications/projects/project-views').modifyProjectView;
@@ -28,7 +29,7 @@ var allJobs;
 // List of available features in a project.
 router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
-  var getResults = req.query.get_results;
+  var shouldGetResults = req.query.get_results;
 
   // Cookie variables.
   var openBurgerMenu = (req.cookies.specsOpenBurgerMenu === 'true');
@@ -66,7 +67,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
     openBurgerMenu: openBurgerMenu,
     currentProjectViewName: currentProjectViewName,
     currentTags: currentTags,
-    getResults: getResults
+    shouldGetResults: shouldGetResults
   };
 
   // Create the render and passError functions.
@@ -136,7 +137,8 @@ function getRender(res, appConfig, renderOptions) {
     renderingData.currentProjectViewName = renderOptions.currentProjectViewName;
     renderingData.tagRequested = !!renderOptions.currentTags;
     //THIS feels like I should move it to another method
-    if(renderOptions.getResults && projectData.config.jenkinsJobs){
+    if(renderOptions.shouldGetResults && projectData.config.jenkinsJobs){
+      getResults(projectData);
       allJobs=[];
       for(var j=0;j<projectData.config.jenkinsJobs.length;j++) {
         httpGetJobs(projectData.config.jenkinsJobs[j]);
