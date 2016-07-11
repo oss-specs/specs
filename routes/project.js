@@ -44,14 +44,6 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
 
   var jobPath = fs.join(appConfig.projectsPath, repoName + "/jenkins");
-  if(getResults){
-    allJobs=[];
-  //     var len=appConfig.jobList.length;
-  //     for(var j=0;j<len;j++) {
-  //       httpGetJobs(appConfig.jobList[j]);
-  //     }
-  //   // getResultss()
-  }
 
   // Query param indicating a particular ref should
   // be used when retrieving repo data.
@@ -73,7 +65,8 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   var renderOptions = {
     openBurgerMenu: openBurgerMenu,
     currentProjectViewName: currentProjectViewName,
-    currentTags: currentTags
+    currentTags: currentTags,
+    getResults: getResults
   };
 
   // Create the render and passError functions.
@@ -147,6 +140,7 @@ function getRender(res, appConfig, renderOptions) {
     renderingData.tagRequested = !!renderOptions.currentTags;
     //THIS feels like I should move it to another method
     if(renderOptions.getResults && projectData.config.ciJobs){
+      allJobs=[];
       for(var j=0;j<projectData.config.ciJobs.length;j++) {
         httpGetJobs(projectData.config.ciJobs[j]);
       }
