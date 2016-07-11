@@ -16,6 +16,7 @@ var getEditUrl = require('../lib/specifications/files/get-edit-url');
 var getProject = require('../lib/specifications/projects/project').get;
 var getProjectData = require('../lib/specifications/projects/project').getData;
 var getFileContent = require('../lib/specifications/projects/project').getFileContent;
+var getResultss = require('../lib/specifications/projects/project').getResults;
 
 var applyProjectView = require('../lib/specifications/projects/project-views').applyProjectView;
 var modifyProjectView = require('../lib/specifications/projects/project-views').modifyProjectView;
@@ -67,16 +68,16 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   } else {
     fs.read(jobPath).then(function (content) {
       content = content.replace(/\n$/g, '');
-      appConfig.jobList = content.split('\n');
+      // appConfig.jobList = content.split('\n');
     });
   }
-
   if(getResults){
     allJobs=[];
-      var len=appConfig.jobList.length;
-      for(var j=0;j<len;j++) {
-        httpGetJobs(appConfig.jobList[j]);
-      }
+  //     var len=appConfig.jobList.length;
+  //     for(var j=0;j<len;j++) {
+  //       httpGetJobs(appConfig.jobList[j]);
+  //     }
+  //   // getResultss()
   }
 
   // Query param indicating a particular ref should
@@ -99,7 +100,8 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   var renderOptions = {
     openBurgerMenu: openBurgerMenu,
     currentProjectViewName: currentProjectViewName,
-    currentTags: currentTags
+    currentTags: currentTags,
+    getResults: getResults
   };
 
   // Create the render and passError functions.
@@ -143,7 +145,10 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
     getProjectData(projectData, sessionBranches[repoName])
       .then(configuredRender)
       .catch(configuredPassError);
+    console.log('is this after?');
   }
+  // console.log("after it");
+  // console.log(projectData.config.ciJobs);
 });
 
 
@@ -168,8 +173,15 @@ function getRender(res, appConfig, renderOptions) {
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
     renderingData.currentProjectViewName = renderOptions.currentProjectViewName;
     renderingData.tagRequested = !!renderOptions.currentTags;
-    renderingData.jobList = appConfig.jobList;
-
+    //THIS feels like I should move it to another method
+    if(renderOptions.getResults){
+      getResultss(projectData);
+      for(var j=0;j<projectData.config.ciJobs.length;j++) {
+        httpGetJobs(projectData.config.ciJobs[j]);
+      }
+    } else {
+      console.log('thingy is here');
+    }
     // Handle no project data being found.
     if (!projectData) {
       res.render('project', renderingData);
@@ -187,6 +199,8 @@ function getRender(res, appConfig, renderOptions) {
       res.render('project', renderingData);
       return;
     }
+    // console.log("in the render");
+    // console.log(projectData.config.ciJobs);
 
     // Applying views from configuration.
     // Chrome hasn't turned destructuring assignment on yet,

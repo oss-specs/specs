@@ -39,11 +39,16 @@
           </div>
           <a href="?update=true"><button class="project-update call-to-action loader-button">Get Latest</button></a>
           <span class="repo-link"><a href="{{project.repoUrl}}">(visit&nbsp;repository)</a></span>
-          <div class="loader-container"><div class="loader dark"></div></div>
+          <div class="loader-container"><div class="loader dark"></div></div> <br/><br/>
+            <!-- Make less ugly, The input is currently limited to one level in jenkins-->
+            {{#list_jobs jobList}}{{/list_jobs}}
         </section>
         <section class="content-controls">
           {{> back_button}}
           <button id="expand-collapse-file-lists" class="call-to-action"><span>Expand/Collapse All</span></button>
+            <form class="theForm" method="get">
+            <button id="get-jenkins-results" class="call-to-action" name="get_results" value="true"><span>Get Jenkins Results</span></button>
+            </form>
           {{#if hasProjectViews}}
             <div class="config-views">
               <label for="change-views-control">View{{> hint text="Views are ways to filter or organise the project files."}}:</label>
@@ -108,4 +113,5 @@
     <p>Sorry, no project data was found</p>
   {{/if}}
 </main>
+<div id="loading"><div class="page-loader-container"><div class="loader dark"></div></div></div>
 {{> layout_end}}

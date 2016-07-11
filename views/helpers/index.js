@@ -173,10 +173,11 @@ function compareJobsAndFeatures(array, scenarioName,directFeature) {
  */
 function addRemoveJenkinsJobs(array) {
   var jobs = '<form method="get"><label>Add Job: <input type="text" name="addJob" /></label> <button class="call-to-action loader-button">Add</button> <button class="call-to-action loader-button" name="clearJobs" value="true">Delete all Jobs</button><table>';
-  //if not empty
-  for(var i = 0; i<array.length; i++) {
-    var escaped = array[i].replace(/\//g,'\\/').replace(/\./g,'\\.');
-    jobs+='<tr><td><label>'+array[i]+'</label></td><td><button class="call-to-action loader-button" name="clearJobs" value="'+escaped+'">delete</button></td></tr>';
+  if (array && array.length > 0) {
+    for (var i = 0; i < array.length; i++) {
+      var escaped = array[i].replace(/\//g, '\\/').replace(/\./g, '\\.');
+      jobs += '<tr><td><label>' + array[i] + '</label></td><td><button class="call-to-action loader-button" name="clearJobs" value="' + escaped + '">delete</button></td></tr>';
+    }
   }
   jobs+='</table></form>';
   return jobs;
