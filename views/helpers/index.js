@@ -100,13 +100,13 @@ function checkResultsFromList(array, scenario) {
   if (array && array.length > 0) {
     var passes ='';
     var scenarioName= scenario.name;
-    if(scenario.type === "ScenarioOutline" ) {
+    if(scenario.type === 'ScenarioOutline' ) {
       var updatedName = scenarioName;
-      if (scenarioName.indexOf("<") > -1) {
+      if (scenarioName.indexOf('<') > -1) {
         for (var j = 0; j < scenario.examples.length; j++) {
           for (var iBody = 0; iBody < scenario.examples[j].tableBody.length; iBody++) {
             for (var iHeader = 0; iHeader < scenario.examples[j].tableHeader.cells.length; iHeader++) {
-              var re = new RegExp("<" + scenario.examples[j].tableHeader.cells[iHeader].value + ">", "g");
+              var re = new RegExp('<' + scenario.examples[j].tableHeader.cells[iHeader].value + '>', "g");
               updatedName = updatedName.replace(re, scenario.examples[j].tableBody[iBody].cells[iHeader].value);
             }
             passes = passes += compareJobsAndFeatures(array, updatedName, true);
@@ -154,7 +154,7 @@ function compareJobsAndFeatures(array, scenarioName,directFeature) {
         var url = array[i]['url'];
         var scen = array[i]['className'].replace(/ /g, '%20');
         if(directFeature) {
-          var feat = "/" + array[i]['name'].replace(/ /g, '_').replace(/\W/g, '_');
+          var feat = '/' + array[i]['name'].replace(/ /g, '_').replace(/\W/g, '_');
           url = url.replace('api/json?pretty=true', 'junit/(root)/' + scen + feat);
         } else {
           url = url.replace('api/json?pretty=true', 'junit/(root)/' + scen);
@@ -164,23 +164,6 @@ function compareJobsAndFeatures(array, scenarioName,directFeature) {
     }
     return passes;
   }
-}
-
-/**
- * Uses the list of stored urls to displaying them as well as allow for adding or removing jobs
- * @param array       The list of urls stored
- * @returns {string}  String representing the html for displaying the jobs and actions
- */
-function addRemoveJenkinsJobs(array) {
-  var jobs = '<form method="get"><label>Add Job: <input type="text" name="addJob" /></label> <button class="call-to-action loader-button">Add</button> <button class="call-to-action loader-button" name="clearJobs" value="true">Delete all Jobs</button><table>'
-  //if not empty
-  for(var i = 0; i<array.length; i++) {
-    var escaped = array[i].replace(/\//g,'\\/').replace(/\./g,'\\.');
-    jobs+='<tr><td><label>'+array[i]+'</label></td><td><button class="call-to-action loader-button" name="clearJobs" value="'+escaped+'">delete</button></td></tr>'
-  }
-  jobs+='</table></form>';
-  return jobs;
-
 }
 
 module.exports = {
@@ -193,6 +176,5 @@ module.exports = {
   stepContent: highlightStepParams,
   directoryPath: parseDirectoryPath,
   uriEncodeString: uriEncodeString,
-  checkResultsFromList:checkResultsFromList,
-  addRemoveJenkinsJobs:addRemoveJenkinsJobs
+  checkResultsFromList:checkResultsFromList
 };

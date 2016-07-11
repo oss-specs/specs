@@ -254,8 +254,7 @@ a.resultLink {
 
  form.theForm {
    display:inline;
-   margin:0px;
-   padding:0px;
+   padding:0;
  }
 
  .collapsible.collapse {

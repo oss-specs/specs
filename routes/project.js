@@ -43,41 +43,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   var repoName = req.params[0];
 
 
-  var addJob = req.query.addJob;
-  var clearJobs = req.query.clearJobs;
   var jobPath = fs.join(appConfig.projectsPath, repoName + "/jenkins");
-  if (addJob) {
-    if (fs.exists(jobPath)) {
-      addJob = addJob+"\n";
-    }
-    fs.append(jobPath, addJob);
-  }
-  if (clearJobs) {
-    if (clearJobs === 'true') {
-      fs.remove(jobPath);
-      appConfig.jobList = [];
-    } else {
-      fs.read(jobPath).then(function (content) {
-        var re = new RegExp(clearJobs+"\n","g");
-        content = content.replace(re, '');
-        fs.write(jobPath,content);
-        appConfig.jobList = content.replace(/\n$/g, '').split('\n');
-      });
-    }
-  } else {
-  fs.read(jobPath).then(function (content) {
-    content = content.replace(/\n$/g, '');
-    appConfig.jobList = content.split('\n');
-  });
-}
-
-  if(getResults){
-    allJobs=[];
-      var len=appConfig.jobList.length;
-      for(var j=0;j<len;j++) {
-        httpGetJobs(appConfig.jobList[j]);
-      }
-  }
 
   // Query param indicating a particular ref should
   // be used when retrieving repo data.
@@ -99,7 +65,8 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   var renderOptions = {
     openBurgerMenu: openBurgerMenu,
     currentProjectViewName: currentProjectViewName,
-    currentTags: currentTags
+    currentTags: currentTags,
+    getResults: getResults
   };
 
   // Create the render and passError functions.
@@ -168,8 +135,13 @@ function getRender(res, appConfig, renderOptions) {
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
     renderingData.currentProjectViewName = renderOptions.currentProjectViewName;
     renderingData.tagRequested = !!renderOptions.currentTags;
-    renderingData.jobList = appConfig.jobList;
-
+    //THIS feels like I should move it to another method
+    if(renderOptions.getResults && projectData.config.jenkinsJobs){
+      allJobs=[];
+      for(var j=0;j<projectData.config.jenkinsJobs.length;j++) {
+        httpGetJobs(projectData.config.jenkinsJobs[j]);
+      }
+    }
     // Handle no project data being found.
     if (!projectData) {
       res.render('project', renderingData);
@@ -376,7 +348,7 @@ function httpGet(theUrl, callBack, async) {
       resultsList=callBack(xmlHttp.responseText, theUrl);
     }
   };
-  xmlHttp.open("GET", theUrl, async);
+  xmlHttp.open('GET', theUrl, async);
   xmlHttp.send(null);
   return resultsList;
 }
@@ -409,10 +381,10 @@ function ParseJsonIndividualJobs(responseText,url) {
   var jsonText = JSON.parse(responseText);
   var jobsJson = jsonText['suites'];
   var i = jobsJson.length-1;
-    for(var j = 0; j < jobsJson[i]['cases'].length; j++){
-      var jobJson =jobsJson[i]['cases'][j];
-      jobJson.url = url;
-      jobsList.push(jobJson);
+  for(var j = 0; j < jobsJson[i]['cases'].length; j++){
+    var jobJson =jobsJson[i]['cases'][j];
+    jobJson.url = url;
+    jobsList.push(jobJson);
   }
   allJobs.push.apply(allJobs,jobsList);
   appConfig.jobNames = allJobs;
@@ -420,7 +392,7 @@ function ParseJsonIndividualJobs(responseText,url) {
 
 function httpGetJobs(url) {
   //Using async right now as is quicker and seems to be working, change to false if want results to come in same order each time
-  var jobList = httpGet(url+"api/json?depth=1&tree=jobs[name]", ParseJsonJobs,true);
+  httpGet(url+'api/json?depth=1&tree=jobs[name]', ParseJsonJobs,true);
 }
 
 module.exports = router;
