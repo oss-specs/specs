@@ -110,10 +110,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
     getProjectData(projectData, sessionBranches[repoName])
       .then(configuredRender)
       .catch(configuredPassError);
-    console.log('is this after?');
   }
-  // console.log("after it");
-  // console.log(projectData.config.ciJobs);
 });
 
 
@@ -162,8 +159,6 @@ function getRender(res, appConfig, renderOptions) {
       res.render('project', renderingData);
       return;
     }
-    // console.log("in the render");
-    // console.log(projectData.config.ciJobs);
 
     // Applying views from configuration.
     // Chrome hasn't turned destructuring assignment on yet,
