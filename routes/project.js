@@ -16,7 +16,6 @@ var getEditUrl = require('../lib/specifications/files/get-edit-url');
 var getProject = require('../lib/specifications/projects/project').get;
 var getProjectData = require('../lib/specifications/projects/project').getData;
 var getFileContent = require('../lib/specifications/projects/project').getFileContent;
-var getResultss = require('../lib/specifications/projects/project').getResults;
 
 var applyProjectView = require('../lib/specifications/projects/project-views').applyProjectView;
 var modifyProjectView = require('../lib/specifications/projects/project-views').modifyProjectView;
@@ -44,33 +43,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   var repoName = req.params[0];
 
 
-  var addJob = req.query.addJob;
-  var clearJobs = req.query.clearJobs;
   var jobPath = fs.join(appConfig.projectsPath, repoName + "/jenkins");
-  if (addJob) {
-    if (fs.exists(jobPath)) {
-      addJob = addJob+"\n";
-    }
-    fs.append(jobPath, addJob);
-  }
-  if (clearJobs) {
-    if (clearJobs === 'true') {
-      fs.remove(jobPath);
-      appConfig.jobList = [];
-    } else {
-      fs.read(jobPath).then(function (content) {
-        var re = new RegExp(clearJobs+'\n',"g");
-        content = content.replace(re, '');
-        fs.write(jobPath,content);
-        appConfig.jobList = content.replace(/\n$/g, '').split('\n');
-      });
-    }
-  } else {
-    fs.read(jobPath).then(function (content) {
-      content = content.replace(/\n$/g, '');
-      // appConfig.jobList = content.split('\n');
-    });
-  }
   if(getResults){
     allJobs=[];
   //     var len=appConfig.jobList.length;
@@ -100,8 +73,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   var renderOptions = {
     openBurgerMenu: openBurgerMenu,
     currentProjectViewName: currentProjectViewName,
-    currentTags: currentTags,
-    getResults: getResults
+    currentTags: currentTags
   };
 
   // Create the render and passError functions.
@@ -174,13 +146,10 @@ function getRender(res, appConfig, renderOptions) {
     renderingData.currentProjectViewName = renderOptions.currentProjectViewName;
     renderingData.tagRequested = !!renderOptions.currentTags;
     //THIS feels like I should move it to another method
-    if(renderOptions.getResults){
-      getResultss(projectData);
+    if(renderOptions.getResults && projectData.config.ciJobs){
       for(var j=0;j<projectData.config.ciJobs.length;j++) {
         httpGetJobs(projectData.config.ciJobs[j]);
       }
-    } else {
-      console.log('thingy is here');
     }
     // Handle no project data being found.
     if (!projectData) {
