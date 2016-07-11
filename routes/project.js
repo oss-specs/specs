@@ -139,10 +139,10 @@ function getRender(res, appConfig, renderOptions) {
     renderingData.currentProjectViewName = renderOptions.currentProjectViewName;
     renderingData.tagRequested = !!renderOptions.currentTags;
     //THIS feels like I should move it to another method
-    if(renderOptions.getResults && projectData.config.ciJobs){
+    if(renderOptions.getResults && projectData.config.jenkinsJobs){
       allJobs=[];
-      for(var j=0;j<projectData.config.ciJobs.length;j++) {
-        httpGetJobs(projectData.config.ciJobs[j]);
+      for(var j=0;j<projectData.config.jenkinsJobs.length;j++) {
+        httpGetJobs(projectData.config.jenkinsJobs[j]);
       }
     }
     // Handle no project data being found.
