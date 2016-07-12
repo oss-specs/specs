@@ -135,9 +135,6 @@ function getRender(res, appConfig, renderOptions) {
     //THIS feels like I should move it to another method
     if(renderOptions.shouldGetResults && projectData.config.jenkinsJobs){
       getResults(projectData);
-      for(var j=0;j<projectData.config.jenkinsJobs.length;j++) {
-        httpGetJobs(projectData.config.jenkinsJobs[j]);
-      }
     }
     // Handle no project data being found.
     if (!projectData) {

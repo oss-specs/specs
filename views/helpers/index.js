@@ -90,9 +90,9 @@ function uriEncodeString(context) {
 }
 
 /*
- *Using an array of json objects of cases from jenkins and the scenario name to match the test results to a feature.
+ *Using an array of json objects of cases from CI server and the scenario name to match the test results to a feature.
  *
- * @param {Object} array        An array from jenkins of json objects for each case found
+ * @param {Object} array        An array from CI server of json objects for each case found
  * @param {Object} scenario     Contains all the details for the feature including scenario name and type
  * @return {Object} passes      The string representing the html to display buttons for the associated passes
  */
@@ -128,7 +128,7 @@ function checkResultsFromList(array, scenario) {
 
 /**
  * Takes in the scenario name and a array of json object to check if the scenario has passed
- * @param array         An array of json objects for jobs, containing details such as the name, the status and the url
+ * @param array         An array of json objects for jobs, containing the name, the status and the url
  * @param scenarioName  the name of scenario we wish to check against
  * @param directFeature When true return a direct link to the scenario, when false return link to more general job.
  * @returns {string}    The string representing the html for displaying the results
@@ -152,12 +152,9 @@ function compareJobsAndFeatures(array, scenarioName,directFeature) {
             break;
         }
         var url = array[i]['url'];
-        var scen = array[i]['className'].replace(/ /g, '%20');
         if(directFeature) {
           var feat = '/' + array[i]['name'].replace(/ /g, '_').replace(/\W/g, '_');
-          url = url.replace('api/json?pretty=true', 'junit/(root)/' + scen + feat);
-        } else {
-          url = url.replace('api/json?pretty=true', 'junit/(root)/' + scen);
+          url = url + feat;
         }
         passes = passes + '<a class="resultLink" href="' + url + '"><input class="' + status + '" type="submit" value="' + status + '"></a><br/>';
       }
