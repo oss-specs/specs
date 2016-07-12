@@ -132,15 +132,17 @@ function getRender(res, appConfig, renderOptions) {
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
     renderingData.currentProjectViewName = renderOptions.currentProjectViewName;
     renderingData.tagRequested = !!renderOptions.currentTags;
-    //TODO this is optional yet will currently crash page if not there, fix
-    if(projectData.config.jenkinsJobs) {
-      renderingData.jenkinsURLs = true;
+    
+    if(projectData.config.ciJobs) {
+      if (projectData.config.jenkinsJobs) {
+        renderingData.jenkinsURLs = true;
+      }
+      if(false) {
+        renderingData.teamCityURLs = true;
+      }
+    } else {
+      
     }
-
-    if(false) {
-      renderingData.teamCityURLs = true;
-    }
-
     if(renderOptions.shouldGetResults){
       if(renderOptions.shouldGetResults==='jenkins') {
         getResults(projectData, 'jenkins');

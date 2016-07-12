@@ -264,9 +264,11 @@
     function startLoading() {
       document.getElementById('loading').style.display = 'block';
     }
+    var ciLoad = window.document.getElementsByClassName('get-results');
+    [].forEach.call(ciLoad, function(ciLoadButton) {
+      ciLoadButton.addEventListener('click', startLoading);
+    });
 
-    var jenkinsLoad = window.document.getElementById('get-jenkins-results');
-    jenkinsLoad.addEventListener('click', startLoading);
   });
 
   $(document).ready(function() {
