@@ -90,6 +90,8 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   // Change the branch.
   } else if (targetBranchName && targetBranchName !== sessionBranches[repoName]) {
+    //This is to clear the results when changing the branch
+    getResults(projectData,'clear');
     getProjectData(projectData, targetBranchName)
       .then(function(projectData) {
 
@@ -140,8 +142,6 @@ function getRender(res, appConfig, renderOptions) {
       if(false) {
         renderingData.teamCityURLs = true;
       }
-    } else {
-      getResults(projectData,'clear');
     }
     if(renderOptions.shouldGetResults){
       if(renderOptions.shouldGetResults==='jenkins') {
