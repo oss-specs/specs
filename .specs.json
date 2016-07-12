@@ -1,6 +1,11 @@
 {
   "ciLink": "https://teamcity.sponte.uk/project.html?projectId=OssSpecs&tab=projectOverview",
   "editUrlFormat": "{{repoUrl}}/edit/{{branchName}}/{{pathToFile}}",
+  "ciJobs": {
+    "jenkinsJobs": [
+      "http://localhost:5000/"
+    ]
+  },
   "projectViews": {
     "tidy": {
       "default": true,
