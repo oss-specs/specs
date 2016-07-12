@@ -141,7 +141,7 @@ function getRender(res, appConfig, renderOptions) {
         renderingData.teamCityURLs = true;
       }
     } else {
-      
+      getResults(projectData,'clear');
     }
     if(renderOptions.shouldGetResults){
       if(renderOptions.shouldGetResults==='jenkins') {
