@@ -139,9 +139,6 @@ function getRender(res, appConfig, renderOptions) {
       if (projectData.config.jenkinsJobs) {
         renderingData.jenkinsURLs = true;
       }
-      if(false) {
-        renderingData.teamCityURLs = true;
-      }
     }
     if(renderOptions.shouldGetResults){
       if(renderOptions.shouldGetResults==='jenkins') {

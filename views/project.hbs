@@ -44,17 +44,11 @@
           <section class="content-controls">
             {{> back_button}}
             <button id="expand-collapse-file-lists" class="call-to-action"><span>Expand/Collapse All</span></button>
-
             {{#if jenkinsURLs}}
               <form class="theForm" method="get">
                   <button id="get-jenkins-results" class="call-to-action get-results" name="get_results" value="jenkins"><span>Get Jenkins Results</span></button>
                 </form>
             {{/if}}
-              {{#if teamCityURLs}}
-                  <form class="theForm" method="get">
-                      <button id="get-teamCity-results" class="call-to-action get-results" name="get_results" value="true"><span>Get TeamCity Results</span></button>
-                  </form>
-              {{/if}}
           {{#if hasProjectViews}}
             <div class="config-views">
               <label for="change-views-control">View{{> hint text="Views are ways to filter or organise the project files."}}:</label>
