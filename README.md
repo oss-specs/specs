@@ -57,6 +57,8 @@ Keys:
    * default - A boolean, if true this view will be used by default in the UI.
    * excludedPaths - An array of folder paths to exclude from the UI on the project page.
    * pathsToHide - Specify beginnings of directory paths to hide on the project page. E.g. if you specified 'src/test/specs' then a directory 'src/test/specs/my_wondeful_feature' would be displayed in the directory list as '... my_wonderful_feature'.
+ * ciJobs - An object with keys specifying url links to jobs for different ci servers.
+   * jenkinsJobs - A list of urls to locations we wish to check when getting test results
 
 ## POST request endpoints
 
