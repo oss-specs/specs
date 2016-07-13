@@ -6,6 +6,33 @@ var By = require('selenium-webdriver').By;
 const pageLoadTimeout = 30 * 1000;
 const timeoutObject = {timeout: pageLoadTimeout};
 
+var express = require('express');
+var app = express();
+var server;
+
+app.get('/', function (req, res) {
+  res.send('Hello World!');
+});
+
+app.get('/api/json*', function(req, res) {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.send('{ "jobs": [{"name":"job" }]}');
+});
+
+app.get('/job/job/lastCompletedBuild/testReport/api/json*', function (req, res) {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.send('{ "suites": [{"cases": [{"className":"Features can be retrieved from a remote Git repositories", "name": "Features can be retrieved from a remote Git repo.", "status":"PASSED" }]}]}');
+});
+function startMockCiServer() {
+  server =app.listen(5000, function () {
+  });
+}
+function stopMockCIServer() {
+  if(server) {
+    server.close();
+  }
+}
+
 // Deal with the non-standard webdriver promises.
 function handleErr(cb) {
   return function(err) {
@@ -155,4 +182,55 @@ module.exports = function () {
         callback();
       }, handleErr(callback));
   });
+
+
+
+  this.Given(/^the test results are retrieved from ci server relating to a project on a remote Git repo "([^"]*)"$/, function(repoURL, callback) {
+    var world = this;
+    this.repoURL=repoURL;
+    getProjectFromUrl.bind(world)(callback);
+    
+    //set up express here for jenkins url
+  });
+
+  this.When(/^an interested party wants to view the results for a feature from the ci server\.?$/, timeoutObject, function (callback) {
+    var world = this;
+
+    var getResultsID='get-jenkins-results';
+    var getResults;
+    // get the get results button
+
+    // .then(function(){
+      world.browser.findElement(By.id(getResultsID))
+    // })
+        .then(function(_getResults) {
+          getResults = _getResults;
+          return getResults.click();
+        })
+        //, handleErr(callback))
+        .then(getProjectFromUrl.bind(world)(getScenarioFromProject(callback, world)));
+  });
+
+  this.Then(/^the list of results for the feature will be visible\.$/, timeoutObject, function (callback) {
+    var world = this;
+
+    var projectShaElId = 'resultLink';
+    world.browser.findElement(By.css('.resultLink .PASSED'))
+        .then(function(_resultButton) {
+          return _resultButton.getAttribute("value");
+        }, handleErr(callback))
+        .then(function(resultValue) {
+          should.equal(resultValue, 'PASSED', 'The value of the button was not PASSED, value was '+resultValue);
+          callback();
+        }, handleErr(callback));
+    stopMockCIServer();
+  });
+
+  this.Then(/^something dumb$/, timeoutObject, function (callback) {
+    startMockCiServer();
+    var world = this;
+    getProjectFromUrl.bind(world)(callback);
+  });
+
+
 };
