@@ -193,28 +193,22 @@ module.exports = function () {
     //set up express here for jenkins url
   });
 
-  this.When(/^an interested party wants to view the results for a feature from the ci server\.?$/, timeoutObject, function (callback) {
+  this.When(/^the results are retrieved from a CI server\.?$/, timeoutObject, function (callback) {
     var world = this;
 
     var getResultsID='get-jenkins-results';
     var getResults;
     // get the get results button
-
-    // .then(function(){
       world.browser.findElement(By.id(getResultsID))
-    // })
         .then(function(_getResults) {
           getResults = _getResults;
           return getResults.click();
-        })
-        //, handleErr(callback))
+        }, handleErr(callback))
         .then(getProjectFromUrl.bind(world)(getScenarioFromProject(callback, world)));
   });
 
   this.Then(/^the list of results for the feature will be visible\.$/, timeoutObject, function (callback) {
     var world = this;
-
-    var projectShaElId = 'resultLink';
     world.browser.findElement(By.css('.resultLink .PASSED'))
         .then(function(_resultButton) {
           return _resultButton.getAttribute("value");
@@ -223,13 +217,13 @@ module.exports = function () {
           should.equal(resultValue, 'PASSED', 'The value of the button was not PASSED, value was '+resultValue);
           callback();
         }, handleErr(callback));
-    stopMockCIServer();
   });
 
-  this.Then(/^something dumb$/, timeoutObject, function (callback) {
-    startMockCiServer();
+  this.When(/^an interested party wants to view the results for the features in that repo$/, timeoutObject, getProjectFromUrl);
+
+  this.Then(/^the get results button is displayed\.$/, timeoutObject, function (callback) {
     var world = this;
-    getProjectFromUrl.bind(world)(callback);
+    world.browser.findElement(By.id('get-jenkins-results'))
   });
 
 
