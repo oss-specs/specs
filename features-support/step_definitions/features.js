@@ -6,33 +6,6 @@ var By = require('selenium-webdriver').By;
 const pageLoadTimeout = 30 * 1000;
 const timeoutObject = {timeout: pageLoadTimeout};
 
-var express = require('express');
-var app = express();
-var server;
-
-app.get('/', function (req, res) {
-  res.send('Hello World!');
-});
-
-app.get('/api/json*', function(req, res) {
-  res.setHeader('Content-Type', 'application/javascript');
-  res.send('{ "jobs": [{"name":"job" }]}');
-});
-
-app.get('/job/job/lastCompletedBuild/testReport/api/json*', function (req, res) {
-  res.setHeader('Content-Type', 'application/javascript');
-  res.send('{ "suites": [{"cases": [{"className":"Features can be retrieved from a remote Git repositories", "name": "Features can be retrieved from a remote Git repo.", "status":"PASSED" }]}]}');
-});
-function startMockCiServer() {
-  server =app.listen(5000, function () {
-  });
-}
-function stopMockCIServer() {
-  if(server) {
-    server.close();
-  }
-}
-
 // Deal with the non-standard webdriver promises.
 function handleErr(cb) {
   return function(err) {
@@ -181,16 +154,6 @@ module.exports = function () {
         should.notEqual(newSha, world.oringalSha, 'The SHA did not change on changing branch.');
         callback();
       }, handleErr(callback));
-  });
-
-
-
-  this.Given(/^the test results are retrieved from ci server relating to a project on a remote Git repo "([^"]*)"$/, function(repoURL, callback) {
-    var world = this;
-    this.repoURL=repoURL;
-    getProjectFromUrl.bind(world)(callback);
-    
-    //set up express here for jenkins url
   });
 
   this.When(/^the results are retrieved from a CI server\.?$/, timeoutObject, function (callback) {
