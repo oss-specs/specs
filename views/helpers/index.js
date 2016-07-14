@@ -144,12 +144,12 @@ function compareJobsAndFeatures(array, scenarioName,directFeature) {
       if (storedJob=== scenarioName) {
         var status = array[i]['status'];
         switch (status) {
-          case 'FIXED':
-            status = 'PASSED';
-            break;
-          case 'REGRESSION':
-            status = 'FAILED';
-            break;
+        case 'FIXED':
+          status = 'PASSED';
+          break;
+        case 'REGRESSION':
+          status = 'FAILED';
+          break;
         }
         var url = array[i]['url'];
         if(directFeature) {
