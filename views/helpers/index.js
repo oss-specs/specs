@@ -106,7 +106,7 @@ function checkResultsFromList(array, scenario) {
         for (var j = 0; j < scenario.examples.length; j++) {
           for (var iBody = 0; iBody < scenario.examples[j].tableBody.length; iBody++) {
             for (var iHeader = 0; iHeader < scenario.examples[j].tableHeader.cells.length; iHeader++) {
-              var re = new RegExp('<' + scenario.examples[j].tableHeader.cells[iHeader].value + '>', "g");
+              var re = new RegExp('<' + scenario.examples[j].tableHeader.cells[iHeader].value + '>', 'g');
               updatedName = updatedName.replace(re, scenario.examples[j].tableBody[iBody].cells[iHeader].value);
             }
             passes = passes += compareJobsAndFeatures(array, updatedName, true);
