@@ -8,28 +8,28 @@ var app = express();
 var server;
 
 app.get('/api/json*', function(req, res) {
-    res.setHeader('Content-Type', 'application/javascript');
-    res.send('{ "jobs": [{"name":"job" }]}');
+  res.setHeader('Content-Type', 'application/javascript');
+  res.send('{ "jobs": [{"name":"job" }]}');
 });
 
 app.get('/job/job/lastCompletedBuild/testReport/api/json*', function (req, res) {
-    res.setHeader('Content-Type', 'application/javascript');
-    res.send('{ "suites": [{"cases": [{"className":"Features can be retrieved from a remote Git repositories", "name": "Features can be retrieved from a remote Git repo.", "status":"PASSED" }]}]}');
+  res.setHeader('Content-Type', 'application/javascript');
+  res.send('{ "suites": [{"cases": [{"className":"Features can be retrieved from a remote Git repositories", "name": "Features can be retrieved from a remote Git repo.", "status":"PASSED" }]}]}');
 });
 
 module.exports = function seleniumHooks() {
-    this.Before('@ci-mock', function(scenario, callback) {
-        var world = this;
-        server =app.listen(5000, function () {
-        });
-        callback();
+  this.Before('@ci-mock', function(scenario, callback) {
+    var world = this;
+    server =app.listen(5000, function () {
     });
+    callback();
+  });
 
-    // Tidy up.
-    this.After('@ci-mock', function(scenario, callback) {
-        if(server) {
-            server.close();
-        }
-        callback();
-    });
+  // Tidy up.
+  this.After('@ci-mock', function(scenario, callback) {
+    if(server) {
+      server.close();
+    }
+    callback();
+  });
 };

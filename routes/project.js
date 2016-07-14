@@ -21,8 +21,6 @@ var getResults = require('../lib/specifications/projects/project').getResults;
 var applyProjectView = require('../lib/specifications/projects/project-views').applyProjectView;
 var modifyProjectView = require('../lib/specifications/projects/project-views').modifyProjectView;
 
-var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
-var fs = require('q-io/fs');
 var appConfig = require('../lib/configuration/app-config').get();
 
 // List of available features in a project.
