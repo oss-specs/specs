@@ -16,6 +16,7 @@ var getEditUrl = require('../lib/specifications/files/get-edit-url');
 var getProject = require('../lib/specifications/projects/project').get;
 var getProjectData = require('../lib/specifications/projects/project').getData;
 var getFileContent = require('../lib/specifications/projects/project').getFileContent;
+var getResults = require('../lib/specifications/projects/project').getResults;
 
 var applyProjectView = require('../lib/specifications/projects/project-views').applyProjectView;
 var modifyProjectView = require('../lib/specifications/projects/project-views').modifyProjectView;
@@ -24,11 +25,10 @@ var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 var fs = require('q-io/fs');
 var appConfig = require('../lib/configuration/app-config').get();
 
-var allJobs;
 // List of available features in a project.
 router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
-  var getResults = req.query.get_results;
+  var shouldGetResults = req.query.get_results;
 
   // Cookie variables.
   var openBurgerMenu = (req.cookies.specsOpenBurgerMenu === 'true');
@@ -41,9 +41,6 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   // The repository name from the URL.
   var repoName = req.params[0];
-
-
-  var jobPath = fs.join(appConfig.projectsPath, repoName + "/jenkins");
 
   // Query param indicating a particular ref should
   // be used when retrieving repo data.
@@ -66,7 +63,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
     openBurgerMenu: openBurgerMenu,
     currentProjectViewName: currentProjectViewName,
     currentTags: currentTags,
-    getResults: getResults
+    shouldGetResults: shouldGetResults
   };
 
   // Create the render and passError functions.
@@ -93,6 +90,8 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   // Change the branch.
   } else if (targetBranchName && targetBranchName !== sessionBranches[repoName]) {
+    //This is to clear the results when changing the branch
+    getResults(projectData,'clear');
     getProjectData(projectData, targetBranchName)
       .then(function(projectData) {
 
@@ -135,11 +134,15 @@ function getRender(res, appConfig, renderOptions) {
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
     renderingData.currentProjectViewName = renderOptions.currentProjectViewName;
     renderingData.tagRequested = !!renderOptions.currentTags;
-    //THIS feels like I should move it to another method
-    if(renderOptions.getResults && projectData.config.jenkinsJobs){
-      allJobs=[];
-      for(var j=0;j<projectData.config.jenkinsJobs.length;j++) {
-        httpGetJobs(projectData.config.jenkinsJobs[j]);
+    
+    if(projectData.config.ciJobs) {
+      if (projectData.config.jenkinsJobs) {
+        renderingData.jenkinsURLs = true;
+      }
+    }
+    if(renderOptions.shouldGetResults){
+      if(renderOptions.shouldGetResults==='jenkins') {
+        getResults(projectData, 'jenkins');
       }
     }
     // Handle no project data being found.
@@ -335,64 +338,6 @@ function getPassError(next) {
   return function passError(err) {
     next(err);
   };
-}
-
-/**
- * Hits a url, calls a call back function and returns an array
- */
-function httpGet(theUrl, callBack, async) {
-  var xmlHttp = new XMLHttpRequest();
-  var resultsList = [];
-  xmlHttp.onreadystatechange = function() {
-    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-      resultsList=callBack(xmlHttp.responseText, theUrl);
-    }
-  };
-  xmlHttp.open('GET', theUrl, async);
-  xmlHttp.send(null);
-  return resultsList;
-}
-
-/**
- * Used as a callback function
- * Gets the list of jobs from jenkins and then uses that list to get a list of features
- * @param responseText    the json response from jenkins
- * @param url             the url for the jenkins area we are checking
- */
-function ParseJsonJobs(responseText,url) {
-  var jobsList = [];
-  var jsonText = JSON.parse(responseText);
-  var jobsJson = jsonText['jobs'];
-  for(var i = 0; i < jobsJson.length; i++){
-    jobsList.push(jobsJson[i]['name']);
-  }
-  url = url.replace(/api\/json\?depth=1&tree=jobs\[name]/g,'');
-  for(var j = 0; j < jobsList.length; j++){
-    httpGet(url+'job/'+jobsList[j]+'/lastCompletedBuild/testReport/api/json?pretty=true',ParseJsonIndividualJobs,true);
-  }
-}
-
-/**
- * Used as a call back function
- * Gets the list of ran features from jenkins and adds them to a global variable jobNames
- */
-function ParseJsonIndividualJobs(responseText,url) {
-  var jobsList = [];
-  var jsonText = JSON.parse(responseText);
-  var jobsJson = jsonText['suites'];
-  var i = jobsJson.length-1;
-  for(var j = 0; j < jobsJson[i]['cases'].length; j++){
-    var jobJson =jobsJson[i]['cases'][j];
-    jobJson.url = url;
-    jobsList.push(jobJson);
-  }
-  allJobs.push.apply(allJobs,jobsList);
-  appConfig.jobNames = allJobs;
-}
-
-function httpGetJobs(url) {
-  //Using async right now as is quicker and seems to be working, change to false if want results to come in same order each time
-  httpGet(url+'api/json?depth=1&tree=jobs[name]', ParseJsonJobs,true);
 }
 
 module.exports = router;

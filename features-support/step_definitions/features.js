@@ -155,4 +155,39 @@ module.exports = function () {
         callback();
       }, handleErr(callback));
   });
+
+  this.When(/^the results are retrieved from a CI server\.?$/, timeoutObject, function (callback) {
+    var world = this;
+
+    var getResultsID='get-jenkins-results';
+    var getResults;
+    // get the get results button
+      world.browser.findElement(By.id(getResultsID))
+        .then(function(_getResults) {
+          getResults = _getResults;
+          return getResults.click();
+        }, handleErr(callback))
+        .then(getProjectFromUrl.bind(world)(getScenarioFromProject(callback, world)));
+  });
+
+  this.Then(/^the list of results for the feature will be visible\.$/, timeoutObject, function (callback) {
+    var world = this;
+    world.browser.findElement(By.css('.resultLink .PASSED'))
+        .then(function(_resultButton) {
+          return _resultButton.getAttribute("value");
+        }, handleErr(callback))
+        .then(function(resultValue) {
+          should.equal(resultValue, 'PASSED', 'The value of the button was not PASSED, value was '+resultValue);
+          callback();
+        }, handleErr(callback));
+  });
+
+  this.When(/^an interested party wants to view the results for the features in that repo$/, timeoutObject, getProjectFromUrl);
+
+  this.Then(/^the get results button is displayed\.$/, timeoutObject, function (callback) {
+    var world = this;
+    world.browser.findElement(By.id('get-jenkins-results'))
+  });
+
+
 };
