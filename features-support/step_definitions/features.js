@@ -47,7 +47,7 @@ function getScenarioFromProject(callback, world) {
         } catch(err) {
           should.equal(false,
             true,
-            'The returned document body does not contain the strings \'.feature\' and \'.md\'' + this.body);
+            'The returned document body does not contain the strings \'.feature\' and \'.md\'' + world.body);
         }
       }, handleErr(callback))
       .then(world.browser.getPageSource.bind(world.browser), handleErr(callback))
