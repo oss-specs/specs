@@ -42,13 +42,7 @@ function getScenarioFromProject(callback, world) {
     world.browser.findElements(By.css('.spec-link'))
       .then(function (specLinks) {
         var featureLink = specLinks[specLinks.length - 1];
-        try{
-          return world.browser.get(featureLink.getAttribute('href'));
-        } catch(err) {
-          should.equal(false,
-            true,
-            'The returned document body does not contain the strings \'.feature\' and \'.md\'' + world.body);
-        }
+        return world.browser.get(featureLink.getAttribute('href'));
       }, handleErr(callback))
       .then(world.browser.getPageSource.bind(world.browser), handleErr(callback))
       .then(function (body) {
