@@ -167,7 +167,12 @@ module.exports = function () {
         getResults = _getResults;
         return getResults.click();
       }, handleErr(callback))
-      .then(getProjectFromUrl.bind(world)(getScenarioFromProject(callback, world)));
+      .then(world.browser.findElement(By.id(getResultsID)))
+      .then(
+        getProjectFromUrl.bind(world)(
+        getScenarioFromProject(callback, world)
+      )
+    );
   });
 
   this.Then(/^the list of results for the feature will be visible\.$/, timeoutObject, function (callback) {
