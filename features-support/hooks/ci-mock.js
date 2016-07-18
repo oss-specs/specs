@@ -19,7 +19,7 @@ app.get('/job/job/lastCompletedBuild/testReport/api/json*', function (req, res) 
 
 module.exports = function seleniumHooks() {
   this.Before('@ci-mock', function(scenario, callback) {
-    server =app.listen(5000, function () {
+    server =app.listen(5001, function () {
     });
     callback();
   });
