@@ -26,7 +26,7 @@ module.exports = function seleniumHooks() {
 
   // Tidy up.
   this.After('@ci-mock', function(scenario, callback) {
-      server.close();
+    server.close();
     callback();
   });
 };
