@@ -191,7 +191,7 @@ module.exports = function () {
 
   this.Then(/^the get results button is displayed\.$/, timeoutObject, function (callback) {
     var world = this;
-    world.browser.findElement(By.css('.get-results')).then(function(webElement) {
+    world.browser.findElement(By.css('.get-results')).then(function() {
       should.equal(true,true);
     }, function(err) {
       if (err.name && err.name === 'NoSuchElementError') {
