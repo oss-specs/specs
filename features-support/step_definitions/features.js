@@ -191,7 +191,16 @@ module.exports = function () {
 
   this.Then(/^the get results button is displayed\.$/, timeoutObject, function (callback) {
     var world = this;
-    world.browser.findElement(By.id('get-jenkins-results'));
+    world.browser.findElement(By.css('.get-results')).then(function(webElement) {
+      should.equal(true,true);
+    }, function(err) {
+      if (err.name && err.name === 'NoSuchElementError') {
+        // should.equal(false,true,'element not displayed');
+        should.fail('Could not find a get results button');
+      } else {
+        should.fail('Got the following unexpected error - ' + err);
+      }
+    });
     callback();
   });
 
