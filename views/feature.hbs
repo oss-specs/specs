@@ -35,7 +35,7 @@
       <ul class="scenarios">
         {{> feature_scenario file.data.background}}
         {{#each file.data.scenarioDefinitions}}
-          {{> feature_scenario this}}
+          {{> feature_scenario this jobNames=../file.data.jobNames}}
         {{/each}}
       </ul>
     </article>

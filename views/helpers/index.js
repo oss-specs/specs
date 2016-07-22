@@ -89,6 +89,80 @@ function uriEncodeString(context) {
   return encodeURIComponent(context);
 }
 
+/*
+ *Using an array of json objects of cases from CI server and the scenario name to match the test results to a feature.
+ *
+ * @param {Object} array        An array from CI server of json objects for each case found
+ * @param {Object} scenario     Contains all the details for the feature including scenario name and type
+ * @return {Object} passes      The string representing the html to display buttons for the associated passes
+ */
+function checkResultsFromList(array, scenario) {
+  if (array && array.length > 0) {
+    var passes ='';
+    var scenarioName= scenario.name;
+    if(scenario.type === 'ScenarioOutline' ) {
+      var updatedName = scenarioName;
+      if (scenarioName.indexOf('<') > -1) {
+        for (var j = 0; j < scenario.examples.length; j++) {
+          for (var iBody = 0; iBody < scenario.examples[j].tableBody.length; iBody++) {
+            for (var iHeader = 0; iHeader < scenario.examples[j].tableHeader.cells.length; iHeader++) {
+              var re = new RegExp('<' + scenario.examples[j].tableHeader.cells[iHeader].value + '>', 'g');
+              updatedName = updatedName.replace(re, scenario.examples[j].tableBody[iBody].cells[iHeader].value);
+            }
+            passes = passes += compareJobsAndFeatures(array, updatedName, true);
+            updatedName = scenarioName;
+          }
+        }
+      } else {
+        //If there is no example data in the scenario name then jenkins will report with numbers in a different order
+        // so just return the link the the job rather than the direct test
+        passes = passes += compareJobsAndFeatures(array, scenarioName, false);
+      }
+    }
+    else {
+      passes = compareJobsAndFeatures(array,scenarioName, true);
+    }
+    return passes;
+  }
+}
+
+/**
+ * Takes in the scenario name and a array of json object to check if the scenario has passed
+ * @param array         An array of json objects for jobs, containing the name, the status and the url
+ * @param scenarioName  the name of scenario we wish to check against
+ * @param directFeature When true return a direct link to the scenario, when false return link to more general job.
+ * @returns {string}    The string representing the html for displaying the results
+ */
+function compareJobsAndFeatures(array, scenarioName,directFeature) {
+  if (array && array.length > 0) {
+    var passes ='';
+    for( var i = 0; i < array.length ; i++) {
+      //If we check direct equals then we miss out some in scenario outline that end in digits, so needs changing
+      //previously tested name contained second but this caused some tests to show extra results
+      var storedJob = array[i]['name'].replace(/ \d+$/g,'');
+      // if scenarioName has ' - <' then remove after - in storedJob
+      if (storedJob=== scenarioName) {
+        var status = array[i]['status'];
+        switch (status) {
+        case 'FIXED':
+          status = 'PASSED';
+          break;
+        case 'REGRESSION':
+          status = 'FAILED';
+          break;
+        }
+        var url = array[i]['url'];
+        if(directFeature) {
+          var feat = '/' + array[i]['name'].replace(/ /g, '_').replace(/\W/g, '_');
+          url = url + feat;
+        }
+        passes = passes + '<a class="resultLink" href="' + url + '"><input class="' + status + '" type="submit" value="' + status + '"></a><br/>';
+      }
+    }
+    return passes;
+  }
+}
+
 module.exports = {
   newlinesToBreaks: getStringConverter(function toBreaks(safeContent) {
     return safeContent + '<br>';
@@ -98,5 +172,6 @@ module.exports = {
   }),
   stepContent: highlightStepParams,
   directoryPath: parseDirectoryPath,
-  uriEncodeString: uriEncodeString
+  uriEncodeString: uriEncodeString,
+  checkResultsFromList:checkResultsFromList
 };

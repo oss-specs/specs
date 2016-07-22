@@ -10,6 +10,18 @@
   top : -1.5em;
 }
 
+.page-loader-container {
+  display: inline-block;
+  margin: 0 2em;
+  background-position: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+
+}
+
 .waiting .loader-container {
   display: inline-block;
   visibility: inherit;
@@ -81,4 +93,17 @@
     box-shadow: 0 -2em #333;
     height: 5em;
   }
+}
+
+.loading {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(192, 192, 192, 0.5);
+  background-repeat: no-repeat;
+  background-position: center;
 }

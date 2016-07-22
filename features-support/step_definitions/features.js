@@ -24,11 +24,11 @@ function getProjectFromUrl(callback) {
   var projectRetrievalUrl = 'http://localhost:' + world.appPort + '/?repo_url=' + encodeURIComponent(world.repoUrl);
 
   world.browser.get(projectRetrievalUrl)
-  .then(world.browser.getPageSource.bind(world.browser), handleErr(callback))
-  .then(function (body) {
-    world.body = body;
-    callback();
-  }, handleErr(callback));
+    .then(world.browser.getPageSource.bind(world.browser), handleErr(callback))
+    .then(function (body) {
+      world.body = body;
+      callback();
+    }, handleErr(callback));
 }
 
 // The returned function is passed as a callback to getProjectFromUrl.
@@ -40,15 +40,15 @@ function getScenarioFromProject(callback, world) {
     }
 
     world.browser.findElements(By.css('.spec-link'))
-    .then(function (specLinks) {
-      var featureLink = specLinks[specLinks.length - 1];
-      return world.browser.get(featureLink.getAttribute('href'));
-    }, handleErr(callback))
-    .then(world.browser.getPageSource.bind(world.browser), handleErr(callback))
-    .then(function (body) {
-      world.body = body;
-      callback();
-    }, handleErr(callback));
+      .then(function (specLinks) {
+        var featureLink = specLinks[specLinks.length - 1];
+        return world.browser.get(featureLink.getAttribute('href'));
+      }, handleErr(callback))
+      .then(world.browser.getPageSource.bind(world.browser), handleErr(callback))
+      .then(function (body) {
+        world.body = body;
+        callback();
+      }, handleErr(callback));
   };
 }
 
@@ -84,13 +84,13 @@ module.exports = function () {
         burgerMenuEl = _burgerMenuEl;
         return world.browser.findElement(By.id(repositoryCongtrolsId));
 
-      // Get the repo controls element.
+        // Get the repo controls element.
       }, handleErr(callback))
       .then(function(_repoControlsEl) {
         repoControlsEl = _repoControlsEl;
         return repoControlsEl.getAttribute('class');
 
-      // Open the repo controls.
+        // Open the repo controls.
       }, handleErr(callback))
       .then(function(repoControlsClass) {
         var isClosed = repoControlsClass.indexOf('collapse') !== -1;
@@ -99,7 +99,7 @@ module.exports = function () {
         }
         return;
 
-      // Grab the current SHA
+        // Grab the current SHA
       }, handleErr(callback))
       .then(function() {
         return world.browser.findElement(By.id(projectShaElId));
@@ -113,7 +113,7 @@ module.exports = function () {
         // Grab the branch selecting control.
         return world.browser.findElement(By.id(changeBranchSelectElId));
 
-      // Request to change branch.
+        // Request to change branch.
       }, handleErr(callback))
       .then(function(_changeBranchSelectEl) {
         return _changeBranchSelectEl.findElement(By.xpath('option[@value=\'' + testingBranchOptionValue + '\']'));
@@ -155,4 +155,54 @@ module.exports = function () {
         callback();
       }, handleErr(callback));
   });
+
+  this.When(/^the results are retrieved from a CI server\.?$/, timeoutObject, function (callback) {
+    var world = this;
+
+    var getResultsID='get-jenkins-results';
+    var getResults;
+    // get the get results button
+    world.browser.findElement(By.id(getResultsID))
+      .then(function(_getResults) {
+        getResults = _getResults;
+        return getResults.click();
+      }, handleErr(callback))
+      .then(world.browser.findElement(By.id(getResultsID)))
+      .then(
+        getProjectFromUrl.bind(world)(
+        getScenarioFromProject(callback, world)
+      )
+    );
+  });
+
+  this.Then(/^the list of results for the feature will be visible\.$/, timeoutObject, function (callback) {
+    var world = this;
+    world.browser.findElement(By.css('.resultLink .PASSED'))
+      .then(function(_resultButton) {
+        return _resultButton.getAttribute('value');
+      }, handleErr(callback))
+      .then(function(resultValue) {
+        should.equal(resultValue, 'PASSED', 'The value of the button was not PASSED, value was '+resultValue);
+        callback();
+      }, handleErr(callback));
+  });
+
+  this.When(/^an interested party wants to view the results for the features in that repo$/, timeoutObject, getProjectFromUrl);
+
+  this.Then(/^the get results button is displayed\.$/, timeoutObject, function (callback) {
+    var world = this;
+    world.browser.findElement(By.css('.get-results')).then(function() {
+      should.equal(true,true);
+    }, function(err) {
+      if (err.name && err.name === 'NoSuchElementError') {
+        // should.equal(false,true,'element not displayed');
+        should.fail('Could not find a get results button');
+      } else {
+        should.fail('Got the following unexpected error - ' + err);
+      }
+    });
+    callback();
+  });
+
+
 };

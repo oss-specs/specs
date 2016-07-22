@@ -16,21 +16,23 @@ var getEditUrl = require('../lib/specifications/files/get-edit-url');
 var getProject = require('../lib/specifications/projects/project').get;
 var getProjectData = require('../lib/specifications/projects/project').getData;
 var getFileContent = require('../lib/specifications/projects/project').getFileContent;
+var getResults = require('../lib/specifications/projects/project').getResults;
 
 var applyProjectView = require('../lib/specifications/projects/project-views').applyProjectView;
 var modifyProjectView = require('../lib/specifications/projects/project-views').modifyProjectView;
 
 var appConfig = require('../lib/configuration/app-config').get();
 
-
 // List of available features in a project.
 router.get(/^\/([^\/]+)$/, function(req, res, next) {
+
+  var shouldGetResults = req.query.get_results;
 
   // Cookie variables.
   var openBurgerMenu = (req.cookies.specsOpenBurgerMenu === 'true');
 
   // Session variable.
-  if(!req.session.branches) {
+  if (!req.session.branches) {
     req.session.branches = {};
   }
   var sessionBranches = req.session.branches;
@@ -58,7 +60,8 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   var renderOptions = {
     openBurgerMenu: openBurgerMenu,
     currentProjectViewName: currentProjectViewName,
-    currentTags: currentTags
+    currentTags: currentTags,
+    shouldGetResults: shouldGetResults
   };
 
   // Create the render and passError functions.
@@ -85,6 +88,8 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   // Change the branch.
   } else if (targetBranchName && targetBranchName !== sessionBranches[repoName]) {
+    //This is to clear the results when changing the branch
+    getResults(projectData,'clear');
     getProjectData(projectData, targetBranchName)
       .then(function(projectData) {
 
@@ -127,7 +132,17 @@ function getRender(res, appConfig, renderOptions) {
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
     renderingData.currentProjectViewName = renderOptions.currentProjectViewName;
     renderingData.tagRequested = !!renderOptions.currentTags;
-
+    
+    if(projectData.config.ciJobs) {
+      if (projectData.config.jenkinsJobs) {
+        renderingData.jenkinsURLs = true;
+      }
+    }
+    if(renderOptions.shouldGetResults){
+      if(renderOptions.shouldGetResults==='jenkins') {
+        getResults(projectData, 'jenkins');
+      }
+    }
     // Handle no project data being found.
     if (!projectData) {
       res.render('project', renderingData);
