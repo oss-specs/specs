@@ -28,7 +28,7 @@ function getCustomCapabilitiesFromEnvironment(webdriver) {
   var browserKey = webdriver.Capability.BROWSER_NAME;
   var platformKey = webdriver.Capability.PLATFORM_NAME;
 
-  var browserValue = process.env.SELENIUM_BROWSER || webdriver.Browser.FIREFOX;
+  var browserValue = process.env.SELENIUM_BROWSER || webdriver.Browser.CHROME;
 
   // Object.values() will be in ES7, but until then...
   let validBrowser = false;
@@ -78,6 +78,7 @@ module.exports = function seleniumHooks() {
     webdriver = require('selenium-webdriver');
 
     var capabilities = getCustomCapabilitiesFromEnvironment(webdriver);
+      console.log(capabilities);
 
     // Set the meta data for possbile use by SauceLabs.
     capabilities.name = scenario.getName() || undefined;

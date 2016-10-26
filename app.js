@@ -122,6 +122,11 @@ app.get('/bower/*', function(req, res, next) {
 // http://host/
 app.use(projectsRoute);
 
+
+// Tag cloud
+// htpp://host/project/<project name>/tagcloud
+app.use(appConfig.projectRoute, tagViewRoutes);
+
 // Individual project.
 // http://host/project/<project name>
 app.use(appConfig.projectRoute, projectRoute);
@@ -130,9 +135,6 @@ app.use(appConfig.projectRoute, projectRoute);
 // htpp://host/project/<project name>/file/<root/to/file>
 app.use(appConfig.projectRoute, featureRoute);
 
-// Tag cloud
-// htpp://host/project/<project name>/tagcloud
-app.use(appConfig.projectRoute, tagViewRoutes);
 
 // Catch 404 and forward to error handler.
 app.use(function(req, res, next) {

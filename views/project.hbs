@@ -76,8 +76,8 @@
         {{/if}}
         <section class="info-link-container">
           {{#if project.hasTags}}
-            <span class="info-link"><a href="{{project.repoName}}/taglist">Tag list</a></span>
-            <span class="info-link"><a href="{{project.repoName}}/tagcloud">Tag cloud</a></span>
+            <span class="info-link"><a href="/project{{project.repoName}}/taglist">Tag list</a></span>
+            <span class="info-link"><a href="/project{{project.repoName}}/tagcloud">Tag cloud</a></span>
           {{/if}}
           {{#if project.config.ciLink}}
             <span class="info-link"><a href="{{{project.config.ciLink}}}">CI Results</a></span>

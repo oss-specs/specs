@@ -14,7 +14,7 @@ var appConfig = require('../lib/configuration/app-config').get();
 
 
 // List of available features in a project.
-router.get(/^\/([^\/]+)\/(tagcloud|taglist)$/, function(req, res, next) {
+router.get(/^\/(.+)\/(tagcloud|taglist)$/, function(req, res, next) {
 
   // tagcloud or taglist.
   var tagVisualisationType = req.params[1];

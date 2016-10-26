@@ -24,7 +24,8 @@ var modifyProjectView = require('../lib/specifications/projects/project-views').
 var appConfig = require('../lib/configuration/app-config').get();
 
 // List of available features in a project.
-router.get(/^\/([^\/]+)$/, function(req, res, next) {
+router.get(new RegExp("^(?!.*" + appConfig.fileRouteSeparator + ")(.*)"), function(req, res, next) {
+  console.log("project route", req.params);
 
   var shouldGetResults = req.query.get_results;
 

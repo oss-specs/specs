@@ -8,101 +8,117 @@ var appConfig = require('../lib/configuration/app-config').get();
 var getProjectsNames = require('../lib/specifications/projects/project').getNames;
 var getProject = require('../lib/specifications/projects/project').get;
 var deleteProject = require('../lib/specifications/projects/project').delete;
+var getProjectData = require('../lib/specifications/projects/project').getData;
 
 var appVersion = require('../package.json').version;
 
 
 function getResponse(res, message) {
-  return function() {
-    res.send(message);
-  };
+    return function () {
+        res.send(message);
+    };
 }
 
 function getErrorHandler(next) {
-  return function(err) {
-    next(err);
-  };
+    return function (err) {
+        next(err);
+    };
 }
 
 function checkArgs(req, res, argName) {
-  if (!req.query[argName]) {
-    res.status(400);
-    res.send('Please provide a "' + argName + '" query parameter.');
-    return false;
-  }
-  return true;
+    if (!req.query[argName]) {
+        res.status(400);
+        res.send('Please provide a "' + argName + '" query parameter.');
+        return false;
+    }
+    return true;
 }
 
 // Projects page.
 // http://host/
-router.get('/', function(req, res, next) {
-  var repoUrl = req.query.repo_url;
+router.get('/', function (req, res, next) {
+    var repoUrl = req.query.repo_url;
 
-  // If there is no URL query param then
-  // render the projects page.
-  if (!repoUrl) {
-    getProjectsNames()
-      .then(function(projectNames) {
-        var data = {
-          projectRoute: appConfig.projectRoute,
-          appVersion: appVersion
-        };
-        if (projectNames.length) {
-          data.projects = projectNames;
-        }
-        res.render('projects', data);
-      })
-      .catch(getErrorHandler(next));
-    return;
-  }
+    // If there is no URL query param then
+    // render the projects page.
+    if (!repoUrl) {
+        getProjectsNames()
+            .then(function (projectNames) {
+                var projectDataPromises = [];
+                projectNames.forEach(function (project) {
+                    console.log(">>>>>>>>", project);
+                    projectDataPromises.push(
+                        getProjectData(
+                            {
+                                repoName: project,
+                                localPathRoot: appConfig.projectsPath
+                            }));
+                });
 
-  // Else get the project and load the individual project page.
-  var projectData = {
-    repoUrl: repoUrl,
-    localPathRoot: appConfig.projectsPath
-  };
+                return Promise.all(projectDataPromises);
+            })
+            .then(function (projectDatas) {
+                var data = {
+                    projectRoute: appConfig.projectRoute,
+                    appVersion: appVersion
+                };
 
-  // Done like this rather than in the project route
-  // so that there is no blank page while the repo
-  // is cloned.
-  // If the project repo does not exist it will be cloned
-  // if it does exist it will be updated.
-  getProject(projectData)
-    .then(function(projectData) {
-      var projectLink = path.posix.join(appConfig.projectRoute, projectData.repoName);
+                if (projectDatas.length) {
+                    data.projects = projectDatas;
+                }
+                res.render('projects', data);
+            })
+            .catch(getErrorHandler(next));
+        return;
+    }
 
-      // Redirect to the project page.
-      res.redirect(projectLink);
-    })
-    .catch(getErrorHandler(next));
+    // Else get the project and load the individual project page.
+    var projectData = {
+        repoUrl: repoUrl,
+        localPathRoot: appConfig.projectsPath
+    };
+
+    // Done like this rather than in the project route
+    // so that there is no blank page while the repo
+    // is cloned.
+    // If the project repo does not exist it will be cloned
+    // if it does exist it will be updated.
+    getProject(projectData)
+        .then(function (projectData) {
+            var projectLink = path.posix.join(appConfig.projectRoute, projectData.repoName);
+
+            // Redirect to the project page.
+            res.redirect(projectLink);
+        })
+        .catch(getErrorHandler(next));
 });
 
 // Post request to trigger an update remotely.
-router.post('/', function(req, res, next) {
-  if (!checkArgs(req, res, 'repo_url')) {
-    return;
-  }
+router.post('/', function (req, res, next) {
+    if (!checkArgs(req, res, 'repo_url')) {
+        return;
+    }
 
-  var projectData = {
-    repoUrl: req.query.repo_url,
-    localPathRoot: appConfig.projectsPath
-  };
+    var projectData = {
+        repoUrl: req.query.repo_url,
+        localPathRoot: appConfig.projectsPath
+    };
 
-  getProject(projectData)
-    .then(getResponse(res, 'Project updated.'))
-    .catch(getErrorHandler(next));
+    getProject(projectData)
+        .then(getResponse(res, 'Project updated.'))
+        .catch(getErrorHandler(next));
 });
 
-router.delete('/', function(req, res, next) {
-  if (!checkArgs(req, res, 'project_name')) {
-    return;
-  }
+router.delete('/', function (req, res, next) {
+    if (!checkArgs(req, res, 'project_name')) {
+        return;
+    }
 
-  var projectName = req.query.project_name;
+    var projectName = req.query.project_name;
 
-  deleteProject(projectName)
-    .then(getResponse(res, 'Project deleted.'))
-    .catch(getErrorHandler(next));
+    deleteProject(projectName)
+        .then(getResponse(res, 'Project deleted.'))
+        .catch(getErrorHandler(next));
 });
 
 

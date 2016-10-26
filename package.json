@@ -1,109 +1,110 @@
 {
-  "name": "oss-specs",
-  "version": "0.15.14",
-  "engines": {
-    "node": "4.2.1"
-  },
-  "description": "A service for exposing specification files in version control via a nice web UI",
-  "bin": {
-    "oss-specs": "./bin/www"
-  },
-  "directories": {
-    "lib": "./lib"
-  },
-  "repository": "oss-specs/specs",
-  "license": "MIT",
-  "contributors": [
-    "Jim Cresswell <jim@jimcresswell.net> (jimcresswell.net)",
-    "Stanislaw Wozniak <swozniak@sponte.uk>"
-  ],
-  "keywords": [
-    "cucumber",
-    "specification by example",
-    "bdd",
-    "specifications",
-    "living documentation"
-  ],
-  "scripts": {
-    "postinstall": "node_modules/.bin/bower install",
-    "prestart": "npm stop",
-    "start": "node ./bin/www",
-    "stop": "pkill specs || true",
-    "test": "node_modules/.bin/gulp test:unit && node_modules/.bin/gulp test:features:fileoutput --silent",
-    "posttest": "cat test-results/cucumber.json | node_modules/.bin/cucumber-junit > test-results/cucumber.xml",
-    "pretest-with-coverage": "npm start &",
-    "test-with-coverage": "node_modules/.bin/istanbul cover node_modules/.bin/cucumber-js --report teamcity --report lcov -- --require features-support -f progress",
-    "posttest-with-coverage": "npm stop",
-    "upload-coverage-data": "node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info"
-  },
-  "paths": {
-    "server-js": [
-      "bin/www",
-      "app.js",
-      "routes/**/*.js",
-      "lib/**/*.js"
+    "name": "oss-specs",
+    "version": "0.15.14",
+    "engines": {
+        "node": "4.2.1"
+    },
+    "description": "A service for exposing specification files in version control via a nice web UI",
+    "bin": {
+        "oss-specs": "./bin/www"
+    },
+    "directories": {
+        "lib": "./lib"
+    },
+    "repository": "oss-specs/specs",
+    "license": "MIT",
+    "contributors": [
+        "Jim Cresswell <jim@jimcresswell.net> (jimcresswell.net)",
+        "Stanislaw Wozniak <swozniak@sponte.uk>"
     ],
-    "client-js": "public/javascript/**/*.js",
-    "cucumber-support-js": "features-support/**/*.js",
-    "unit-test-js": [
-      "lib/**/*test.js",
-      "routes/**/*test.js",
-      "public/**/*test.js",
-      "views/**/*test.js",
-      "feature-support/**/*test.js"
+    "keywords": [
+        "cucumber",
+        "specification by example",
+        "bdd",
+        "specifications",
+        "living documentation"
     ],
-    "gulp-js": [
-      "gulpfile.js",
-      "gulp-tasks/**/*.js"
-    ],
-    "css": "public/css/**/*.css",
-    "view-templates": "views/**/*.hbs",
-    "feature-files": "features/**/*.feature",
-    "test-output-dir": "test-results"
-  },
-  "dependencies": {
-    "body-parser": "^1.14.1",
-    "cookie-parser": "^1.4.0",
-    "express": "^4.13.3",
-    "express-session": "^1.11.3",
-    "file-stream-rotator": "0.0.6",
-    "file-tree": "git+https://github.com/jimCresswell/file-tree#v1.0.1-rc1",
-    "gherkin": "^3.1.1",
-    "github-markdown-css": "^2.0.10",
-    "hbs": "^3.1.1",
-    "lodash.assign": "^3.2.0",
-    "lodash.defaults": "^3.1.2",
-    "markdown": "^0.5.0",
-    "morgan": "^1.6.1",
-    "newrelic": "^1.22.1",
-    "nodegit": "^0.5.0",
-    "q": "^1.4.1",
-    "q-io": "^1.13.1",
-    "request-promise": "^3.0.0",
-    "serve-favicon": "^2.3.0",
-    "session-file-store": "0.0.20",
-    "tree-model": "^1.0.2",
-    "underscore": "1.8.3",
-    "bower": "^1.6.3"
-  },
-  "devDependencies": {
-    "codeclimate-test-reporter": "^0.1.1",
-    "cucumber": "^0.9.2",
-    "cucumber-junit": "^1.4.0",
-    "eslint": "^1.5.1",
-    "gulp": "^3.9.0",
-    "gulp-csslint": "^0.2.0",
-    "gulp-cucumber": "^0.0.14",
-    "gulp-develop-server": "^0.4.3",
-    "gulp-eslint": "^1.0.0",
-    "gulp-help": "^1.6.1",
-    "gulp-jasmine": "^2.2.1",
-    "istanbul": "^0.3.21",
-    "jasmine-reporters": "^2.0.7",
-    "minimist": "^1.2.0",
-    "require-dir": "^0.3.0",
-    "run-sequence": "^1.1.4",
-    "selenium-webdriver": "^2.48.0",
-    "should": "^7.1.0"
-  }
+    "scripts": {
+        "postinstall": "node_modules/.bin/bower install",
+        "prestart": "npm stop",
+        "start": "node ./bin/www",
+        "stop": "pkill specs || true",
+        "test": "node_modules/.bin/gulp test:unit && node_modules/.bin/gulp test:features:fileoutput --silent",
+        "posttest": "cat test-results/cucumber.json | node_modules/.bin/cucumber-junit > test-results/cucumber.xml",
+        "pretest-with-coverage": "npm start &",
+        "test-with-coverage": "node_modules/.bin/istanbul cover node_modules/.bin/cucumber-js --report teamcity --report lcov -- --require features-support -f progress",
+        "posttest-with-coverage": "npm stop",
+        "upload-coverage-data": "node_modules/.bin/codeclimate-test-reporter < coverage/lcov.info"
+    },
+    "paths": {
+        "server-js": [
+            "bin/www",
+            "app.js",
+            "routes/**/*.js",
+            "lib/**/*.js"
+        ],
+        "client-js": "public/javascript/**/*.js",
+        "cucumber-support-js": "features-support/**/*.js",
+        "unit-test-js": [
+            "lib/**/*test.js",
+            "routes/**/*test.js",
+            "public/**/*test.js",
+            "views/**/*test.js",
+            "feature-support/**/*test.js"
+        ],
+        "gulp-js": [
+            "gulpfile.js",
+            "gulp-tasks/**/*.js"
+        ],
+        "css": "public/css/**/*.css",
+        "view-templates": "views/**/*.hbs",
+        "feature-files": "features/**/*.feature",
+        "test-output-dir": "test-results"
+    },
+    "dependencies": {
+        "body-parser": "^1.14.1",
+        "cookie-parser": "^1.4.0",
+        "express": "^4.13.3",
+        "express-session": "^1.11.3",
+        "file-stream-rotator": "0.0.6",
+        "file-tree": "git+https://github.com/jimCresswell/file-tree#v1.0.1-rc1",
+        "gherkin": "^3.1.1",
+        "github-markdown-css": "^2.0.10",
+        "hbs": "^3.1.1",
+        "lodash.assign": "^3.2.0",
+        "lodash.defaults": "^3.1.2",
+        "markdown": "^0.5.0",
+        "morgan": "^1.6.1",
+        "newrelic": "^1.22.1",
+        "nodegit": "^0.5.0",
+        "q": "^1.4.1",
+        "q-io": "^1.13.1",
+        "request-promise": "^3.0.0",
+        "serve-favicon": "^2.3.0",
+        "session-file-store": "0.0.20",
+        "tree-model": "^1.0.2",
+        "underscore": "1.8.3",
+        "bower": "^1.6.3"
+    },
+    "devDependencies": {
+        "chromedriver": "^2.24.1",
+        "codeclimate-test-reporter": "^0.1.1",
+        "cucumber": "^0.9.2",
+        "cucumber-junit": "^1.4.0",
+        "eslint": "^1.5.1",
+        "gulp": "^3.9.0",
+        "gulp-csslint": "^0.2.0",
+        "gulp-cucumber": "^0.0.22",
+        "gulp-develop-server": "^0.4.3",
+        "gulp-eslint": "^1.0.0",
+        "gulp-help": "^1.6.1",
+        "gulp-jasmine": "^2.2.1",
+        "istanbul": "^0.3.21",
+        "jasmine-reporters": "^2.0.7",
+        "minimist": "^1.2.0",
+        "require-dir": "^0.3.0",
+        "run-sequence": "^1.1.4",
+        "selenium-webdriver": "^2.53.2",
+        "should": "^7.1.0"
+    }
 }
