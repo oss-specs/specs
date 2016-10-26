@@ -16,7 +16,7 @@ var getEditUrl = require('../lib/specifications/files/get-edit-url');
 var getProject = require('../lib/specifications/projects/project').get;
 var getProjectData = require('../lib/specifications/projects/project').getData;
 var getFileContent = require('../lib/specifications/projects/project').getFileContent;
-var getResults = require('../lib/specifications/projects/project').getResults;
+var getCiResults = require('../lib/specifications/projects/project').getCiResults;
 
 var applyProjectView = require('../lib/specifications/projects/project-views').applyProjectView;
 var modifyProjectView = require('../lib/specifications/projects/project-views').modifyProjectView;
@@ -26,7 +26,7 @@ var appConfig = require('../lib/configuration/app-config').get();
 // List of available features in a project.
 router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
-  var shouldGetResults = req.query.get_results;
+  var getCiResultsType = req.query.get_results;
 
   // Cookie variables.
   var openBurgerMenu = (req.cookies.specsOpenBurgerMenu === 'true');
@@ -61,7 +61,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
     openBurgerMenu: openBurgerMenu,
     currentProjectViewName: currentProjectViewName,
     currentTags: currentTags,
-    shouldGetResults: shouldGetResults
+    getCiResultsType: getCiResultsType
   };
 
   // Create the render and passError functions.
@@ -89,7 +89,7 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
   // Change the branch.
   } else if (targetBranchName && targetBranchName !== sessionBranches[repoName]) {
     //This is to clear the results when changing the branch
-    getResults(projectData,'clear');
+    getCiResults(projectData,'clear');
     getProjectData(projectData, targetBranchName)
       .then(function(projectData) {
 
@@ -132,22 +132,13 @@ function getRender(res, appConfig, renderOptions) {
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
     renderingData.currentProjectViewName = renderOptions.currentProjectViewName;
     renderingData.tagRequested = !!renderOptions.currentTags;
-    
-    if(projectData.config.ciJobs) {
-      if (projectData.config.jenkinsJobs) {
-        renderingData.jenkinsURLs = true;
-      }
-    }
-    if(renderOptions.shouldGetResults){
-      if(renderOptions.shouldGetResults==='jenkins') {
-        getResults(projectData, 'jenkins');
-      }
-    }
+
     // Handle no project data being found.
     if (!projectData) {
       res.render('project', renderingData);
       return;
     }
+
 
     // Create a reference to the project data on
     // the object that will be passed to the
@@ -160,6 +151,8 @@ function getRender(res, appConfig, renderOptions) {
       res.render('project', renderingData);
       return;
     }
+
+
 
     // Applying views from configuration.
     // Chrome hasn't turned destructuring assignment on yet,
@@ -179,11 +172,26 @@ function getRender(res, appConfig, renderOptions) {
     projectData.files = projectData.files.map(pathToData);
 
 
+    if(projectData.config.ciJobs !== undefined) {
+      Object.keys(projectData.config.ciJobs).forEach(function (ciType) {
+        renderingData.ciButtons = renderingData.ciButtons || [];
+        renderingData.ciButtons.push(ciType);
+      });
+    }
+
+    var promises = [];
+
+    if(renderOptions.getCiResultsType){
+      promises.push(getCiResults(projectData, renderOptions.getCiResultsType));
+    }
+
     // Wait for content promises to resolve.
     // We don't actually care about the promise values here, they are already
     // part of the file object, we just need them all fulfilled or rejected.
-    var promisesForFileContent = projectData.files.map(function(f) {return f.contentPromise;});
-    return Promise.all(promisesForFileContent)
+    projectData.files.map(function(f) {return f.contentPromise;}).forEach(function (contentPromise) {
+      promises.push(contentPromise);
+    });
+    return Promise.all(promises)
       .then(function() {
 
         // Mix in the file content.

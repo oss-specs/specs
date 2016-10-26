@@ -148,3 +148,24 @@ ul.scenarios {
 }
 /* Wider viewport (e.g. monitor, tv). */
 @media (min-width: 1280px) {}
+
+
+
+.PASSED, .FAILED {
+  text-align: center;
+  border: 0;
+  padding: 5px 10px;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 0.75em;
+  margin-bottom: 0.4em;
+}
+
+
+.PASSED {
+  background-color: #1db91d;
+}
+
+.FAILED {
+  background-color: red;
+}

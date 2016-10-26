@@ -137,11 +137,13 @@ function compareJobsAndFeatures(array, scenarioName,directFeature) {
   if (array && array.length > 0) {
     var passes ='';
     for( var i = 0; i < array.length ; i++) {
+      if(array[i] === undefined) continue;
       //If we check direct equals then we miss out some in scenario outline that end in digits, so needs changing
       //previously tested name contained second but this caused some tests to show extra results
-      var storedJob = array[i]['name'].replace(/ \d+$/g,'');
-      // if scenarioName has ' - <' then remove after - in storedJob
-      if (storedJob=== scenarioName) {
+      console.log(i, array[i]);
+      var testCaseName = array[i]['name'].replace(/ \d+$/g,'');
+      // if scenarioName has ' - <' then remove after - in testCaseName
+      if (testCaseName === scenarioName) {
         var status = array[i]['status'];
         switch (status) {
         case 'FIXED':
@@ -156,7 +158,7 @@ function compareJobsAndFeatures(array, scenarioName,directFeature) {
           var feat = '/' + array[i]['name'].replace(/ /g, '_').replace(/\W/g, '_');
           url = url + feat;
         }
-        passes = passes + '<a class="resultLink" href="' + url + '"><input class="' + status + '" type="submit" value="' + status + '"></a><br/>';
+        passes = passes + '<a target="_blank" class="resultLink" href="' + url + '"><input class="' + status + '" type="submit" value="' + status + ' in ' + array[i].job.name + '"></a><br/>';
       }
     }
     return passes;

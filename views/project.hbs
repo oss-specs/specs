@@ -1,7 +1,7 @@
 {{> layout_start_document}}
 <link rel="stylesheet" href="/public/css/project.css">
 <link rel="stylesheet" href="/public/css/burger.css">
-<link href="/bower/select2/dist/css/select2.min.css" rel="stylesheet" />
+<link href="/bower/select2/dist/css/select2.min.css" rel="stylesheet"/>
 <script src="/bower/jquery/dist/jquery.min.js"></script>
 <script src="/bower/select2/dist/js/select2.min.js"></script>
 <script src="/bower/lscache/lscache.min.js"></script>
@@ -9,109 +9,131 @@
 <script src="/public/javascript/loader.js"></script>
 {{> layout_start_body}}
 <main>
-  <header>
-    <h1 class="project-name">{{project.repoName}}</h1>
-    <section class="project-summary">
-      <ul>
-        <li><span>Number features in view: {{fileStats.features.numFeatures}}</span></li>
-        <li><span>Number scenarios in view: {{fileStats.features.numScenarios}}</span></li>
-      </ul>
-    </section>
-  </header>
-  {{#if project}}
-    <section class="project">
-      <section class="controls group">
-        <button id="expand-collapse-repository-controls" class="burger-menu {{#if openBurgerMenu}}open{{/if}}"><span>Open and close menu</span></button>
-        <section id="repository-controls" class="repository-controls collapsible {{#unless openBurgerMenu}}collapse{{/unless}}">
-          <h3>Repository controls</h3>
-          <div class="project-refs">
+    <header>
+        <h1 class="project-name">{{project.repoName}}</h1>
+        <section class="project-summary">
+            <ul>
+                <li><span>Number features in view: {{fileStats.features.numFeatures}}</span></li>
+                <li><span>Number scenarios in view: {{fileStats.features.numScenarios}}</span></li>
+            </ul>
+        </section>
+    </header>
+    {{#if project}}
+        <section class="project">
+            <section class="controls group">
+                <button id="expand-collapse-repository-controls" class="burger-menu {{#if openBurgerMenu}}open{{/if}}">
+                    <span>Open and close menu</span></button>
+                <section id="repository-controls"
+                         class="repository-controls collapsible {{#unless openBurgerMenu}}collapse{{/unless}}">
+                    <h3>Repository controls</h3>
+                    <div class="project-refs">
             <span class="project-branch">
               <label for="project-branch-select" title="Version control system branch or tag">Branch or tag:</label>
               <select id="change-branch-control" title="{{project.currentBranchName}}">
-                {{#each project.tagsAndBranches}}
-                  <option value="{{this.urlEncodedName}}" {{#if this.current}}selected{{/if}}>{{this.name}}</option>
-                {{else}}
-                  <option selected>No branch data found</option>
-                {{/each}}
+                  {{#each project.tagsAndBranches}}
+                      <option value="{{this.urlEncodedName}}" {{#if this.current}}selected{{/if}}>{{this.name}}</option>
+                  {{else}}
+                      <option selected>No branch data found</option>
+                  {{/each}}
               </select>
             </span>
-            <span id="project-commit" class="project-commit">&commat;{{project.shortCommit}}</span>
-          </div>
-          <a href="?update=true"><button class="project-update call-to-action loader-button">Get Latest</button></a>
-          <span class="repo-link"><a href="{{project.repoUrl}}">(visit&nbsp;repository)</a></span>
-            <div class="loader-container"><div class="loader dark"></div></div>
-        </section>
-          <section class="content-controls">
-            {{> back_button}}
-            <button id="expand-collapse-file-lists" class="call-to-action"><span>Expand/Collapse All</span></button>
-            {{#if jenkinsURLs}}
-              <form class="theForm" method="get">
-                  <button id="get-jenkins-results" class="call-to-action get-results" name="get_results" value="jenkins"><span>Get Jenkins Results</span></button>
-                </form>
-            {{/if}}
-          {{#if hasProjectViews}}
-            <div class="config-views">
-              <label for="change-views-control">View{{> hint text="Views are ways to filter or organise the project files."}}:</label>
-              <select id="change-views-control">
-                <option value="none">none</option>
-                {{#each projectViewNames}}
-                  <option value="{{this.urlEncodedName}}" {{#if this.isCurrent}}selected{{/if}}>{{this.name}}</option>
-                {{/each}}
-              </select>
-            </div>
-          {{/if}}
-        </section>
-        {{#if project.hasTags}}
-          <section class="tag-controls">
-            <section class="select-tag-container">
-              <label for="select-tag-control" title="Select a feature, scenario or example tag to filter scenarios by">Filter by tag{{> hint text="Filter the visible features and scenarios by their tags."}}:</label>
-              <select id="select-tag-control">
-                <option value="none">none</option>
-                {{#each project.tags}}
-                  <option value="{{this.urlEncodedName}}" {{#if this.isCurrent}}selected{{/if}}>{{@key}}</option>
-                {{/each}}
-              </select>
-            </section>
-          </section>
-        {{/if}}
-        <section class="info-link-container">
-          {{#if project.hasTags}}
-            <span class="info-link"><a href="{{project.repoName}}/taglist">Tag list</a></span>
-            <span class="info-link"><a href="{{project.repoName}}/tagcloud">Tag cloud</a></span>
-          {{/if}}
-          {{#if project.config.ciLink}}
-            <span class="info-link"><a href="{{{project.config.ciLink}}}">CI Results</a></span>
-          {{/if}}
-        </section>
-        <hr>
-      </section>
-      <section class="spec-links">
-        {{#if projectView.hasAnchor}}
-          <section class="anchor"><p>File root: {{projectView.anchor}}</p></section>
-        {{/if}}
-        {{#each project.filesByDir as |files directoryPath|}}
-          <section class="directory">
-            <h2 class="directory-path interactive {{#if ../projectView.[start collapsed]}}can-expand{{/if}}" title="{{directoryPath}}" id="{{# uri_encode directoryPath}}{{this}}{{/uri_encode}}">{{#directory_path directoryPath pathsToHideRegex=../projectView.regex.pathsToHide}}{{this}}{{/directory_path}}</h2>
-            <ul class="file-list collapsible {{#if ../projectView.[start collapsed]}}collapse{{/if}}">
-              {{#each files}}
-                {{#if this.isFeatureFile}}
-                  {{> project_file_feature this currentBranchName=../../../project.currentBranchName}}
-                {{else if this.isMarkdownFile}}
-                  {{> project_file_markdown this currentBranchName=../../../../project.currentBranchName}}
-                {{else}}
-                  {{> project_file this currentBranchName=../../../../project.currentBranchName}}
+                        <span id="project-commit" class="project-commit">&commat;{{project.shortCommit}}</span>
+                    </div>
+                    <a href="?update=true">
+                        <button class="project-update call-to-action loader-button">Get Latest</button>
+                    </a>
+                    <span class="repo-link"><a href="{{project.repoUrl}}">(visit&nbsp;repository)</a></span>
+                    <div class="loader-container">
+                        <div class="loader dark"></div>
+                    </div>
+                </section>
+                <section class="content-controls">
+                    {{> back_button}}
+                    <button id="expand-collapse-file-lists" class="call-to-action"><span>Expand/Collapse All</span>
+                    </button>
+
+                    <form class="inlineForm">
+                        {{# each ciButtons }}
+                            <button id="get-jenkins-results" class="call-to-action get-results" name="get_results"
+                                    value="jenkins"><span>Get Jenkins Results</span></button>
+                        {{/each}}
+                    </form>
+
+                    {{#if hasProjectViews}}
+                        <div class="config-views">
+                            <label for="change-views-control">View{{> hint text="Views are ways to filter or organise the project files."}}
+                                :</label>
+                            <select id="change-views-control">
+                                <option value="none">none</option>
+                                {{#each projectViewNames}}
+                                    <option value="{{this.urlEncodedName}}"
+                                            {{#if this.isCurrent}}selected{{/if}}>{{this.name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    {{/if}}
+                </section>
+                {{#if project.hasTags}}
+                    <section class="tag-controls">
+                        <section class="select-tag-container">
+                            <label for="select-tag-control"
+                                   title="Select a feature, scenario or example tag to filter scenarios by">Filter by
+                                tag{{> hint text="Filter the visible features and scenarios by their tags."}}:</label>
+                            <select id="select-tag-control">
+                                <option value="none">none</option>
+                                {{#each project.tags}}
+                                    <option value="{{this.urlEncodedName}}"
+                                            {{#if this.isCurrent}}selected{{/if}}>{{@key}}</option>
+                                {{/each}}
+                            </select>
+                        </section>
+                    </section>
                 {{/if}}
-              {{/each}}
-            </ul>
-          </section>
-        {{else}}
-          <p>Sorry, this project does not appear to contain any specifications</p>
-        {{/each}}
-      </section>
-    </section>
-  {{else}}
-    <p>Sorry, no project data was found</p>
-  {{/if}}
+                <section class="info-link-container">
+                    {{#if project.hasTags}}
+                        <span class="info-link"><a href="{{project.repoName}}/taglist">Tag list</a></span>
+                        <span class="info-link"><a href="{{project.repoName}}/tagcloud">Tag cloud</a></span>
+                    {{/if}}
+                    {{#if project.config.ciLink}}
+                        <span class="info-link"><a href="{{{project.config.ciLink}}}">CI Results</a></span>
+                    {{/if}}
+                </section>
+                <hr>
+            </section>
+            <section class="spec-links">
+                {{#if projectView.hasAnchor}}
+                    <section class="anchor"><p>File root: {{projectView.anchor}}</p></section>
+                {{/if}}
+                {{#each project.filesByDir as |files directoryPath|}}
+                    <section class="directory">
+                        <h2 class="directory-path interactive {{#if ../projectView.[start collapsed]}}can-expand{{/if}}"
+                            title="{{directoryPath}}"
+                            id="{{# uri_encode directoryPath}}{{this}}{{/uri_encode}}">{{#directory_path directoryPath
+                                                                                                         pathsToHideRegex=../projectView.regex.pathsToHide}}{{this}}{{/directory_path}}</h2>
+                        <ul class="file-list collapsible {{#if ../projectView.[start collapsed]}}collapse{{/if}}">
+                            {{#each files}}
+                                {{#if this.isFeatureFile}}
+                                    {{> project_file_feature this currentBranchName=../../../project.currentBranchName}}
+                                {{else if this.isMarkdownFile}}
+                                    {{> project_file_markdown this currentBranchName=../../../../project.currentBranchName}}
+                                {{else}}
+                                    {{> project_file this currentBranchName=../../../../project.currentBranchName}}
+                                {{/if}}
+                            {{/each}}
+                        </ul>
+                    </section>
+                {{else}}
+                    <p>Sorry, this project does not appear to contain any specifications</p>
+                {{/each}}
+            </section>
+        </section>
+    {{else}}
+        <p>Sorry, no project data was found</p>
+    {{/if}}
 </main>
-<div id="loading" class="loading"><div class="page-loader-container"><div class="loader dark"></div></div></div>
+<div id="loading" class="loading">
+    <div class="page-loader-container">
+        <div class="loader dark"></div>
+    </div>
+</div>
 {{> layout_end}}
