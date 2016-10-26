@@ -78,7 +78,6 @@ module.exports = function seleniumHooks() {
     webdriver = require('selenium-webdriver');
 
     var capabilities = getCustomCapabilitiesFromEnvironment(webdriver);
-      console.log(capabilities);
 
     // Set the meta data for possbile use by SauceLabs.
     capabilities.name = scenario.getName() || undefined;

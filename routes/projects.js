@@ -46,7 +46,6 @@ router.get('/', function (req, res, next) {
             .then(function (projectNames) {
                 var projectDataPromises = [];
                 projectNames.forEach(function (project) {
-                    console.log(">>>>>>>>", project);
                     projectDataPromises.push(
                         getProjectData(
                             {
