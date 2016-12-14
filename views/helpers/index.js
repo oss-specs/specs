@@ -130,7 +130,7 @@ function checkResultsFromList(array, scenario) {
 
 
 var ifEquals = function(a, b, opts) {
-  if (a == b) {
+  if (a === b) {
     return opts.fn(this);
   } else {
     return opts.inverse(this);
