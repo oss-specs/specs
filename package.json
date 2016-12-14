@@ -103,7 +103,7 @@
     "minimist": "^1.2.0",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.4",
-    "selenium-webdriver": "^2.48.0",
+    "selenium-webdriver": "^3.0.1",
     "should": "^7.1.0"
   }
 }

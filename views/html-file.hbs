@@ -1,0 +1,19 @@
+{{> layout_start_document}}
+<link rel="stylesheet" href="/public/css/html-file.css">
+
+{{> layout_start_body}}
+<main>
+  <section class="content-controls">
+    {{> edit_button url=file.editUrl isLink=true}}
+    {{> back_button}}
+  </section>
+
+  <header>
+    <h1 id="feature-title" class="title feature-title can-expand interactive">{{file.name}}</h1>
+  </header>
+
+  <section class="html-body">
+    <iframe src="data:text/html,{{file.content}}" />
+  </section>
+</main>
+{{> layout_end}}

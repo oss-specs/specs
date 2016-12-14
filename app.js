@@ -60,6 +60,7 @@ hbs.registerHelper('step_content', handlebarHelpers.stepContent);
 hbs.registerHelper('directory_path', handlebarHelpers.directoryPath);
 hbs.registerHelper('uri_encode', handlebarHelpers.uriEncodeString);
 hbs.registerHelper('test_results', handlebarHelpers.checkResultsFromList);
+hbs.registerHelper('if_eq', handlebarHelpers.ifEquals);
 
 /**
  * LOGGING.
