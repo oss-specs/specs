@@ -70,9 +70,12 @@ function getCustomCapabilitiesFromEnvironment(webdriver) {
 }
 
 module.exports = function seleniumHooks() {
-  this.Before('@ui-automation', function(scenario, callback) {
+  // Lets give browser a minute to start up
+  this.Before({ tags: ['@ui-automation'], timeout: 60 * 1000}, function(scenario, callback) {
     var world = this;
     var timeoutManager;
+
+    console.log("This should have timeouts");
 
     // Lazy require WebDriver so it isn't pulled in for non-selenium tests.
     webdriver = require('selenium-webdriver');
@@ -90,15 +93,18 @@ module.exports = function seleniumHooks() {
         .withCapabilities(capabilities)
         .build();
 
-      // Manage timeouts.
-      timeoutManager = driver.manage().timeouts();
-      timeoutManager.pageLoadTimeout(pageLoadTimeoutms);
-      timeoutManager.implicitlyWait(implicitlyWaitTimeoutms);
+      driver.getSession()
+          .then(function () {
+            // Manage timeouts.
+            timeoutManager = driver.manage().timeouts();
+            timeoutManager.pageLoadTimeout(pageLoadTimeoutms);
+            timeoutManager.implicitlyWait(implicitlyWaitTimeoutms);
 
+            callback();
+          });
     } catch (error) {
       callback(error);
     }
-    callback();
   });
 
   // Tidy up.
