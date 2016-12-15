@@ -19,9 +19,10 @@ app.get('/job/job/lastCompletedBuild/testReport/api/json*', function (req, res) 
 });
 
 module.exports = function seleniumHooks() {
+  var world = this;
   this.Before('@ci-mock', function(scenario, callback) {
-    var ciMockPort = process.env.CI_PORT || 5000;
-    server =app.listen(ciMockPort, function () {
+    world.ciMockPort = process.env.CI_PORT || 5001;
+    server = app.listen(world.ciMockPort, function () {
       callback();
     });
   });
