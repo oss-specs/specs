@@ -2,6 +2,7 @@
 
 var should = require('should');
 var By = require('selenium-webdriver').By;
+var until = require('selenium-webdriver').until;
 
 const pageLoadTimeout = 30 * 1000;
 const timeoutObject = {timeout: pageLoadTimeout};
@@ -126,7 +127,12 @@ module.exports = function () {
         return _changeBranchSelectEl.findElement(By.xpath('option[@value=\'' + testingBranchOptionValue + '\']'));
       })
       .then(function(_testBranchOptionEl) {
+        world._testBranchOptionEl = _testBranchOptionEl;
         return _testBranchOptionEl.click();
+      })
+      .then(function () {
+        // Waiting for the page to refresh after the click
+        return world.browser.wait(until.stalenessOf(world._testBranchOptionEl));
       })
       .then(function () {
         callback();
