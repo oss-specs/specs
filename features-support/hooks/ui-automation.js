@@ -98,7 +98,11 @@ module.exports = function seleniumHooks() {
             timeoutManager.pageLoadTimeout(pageLoadTimeoutms);
             timeoutManager.implicitlyWait(implicitlyWaitTimeoutms);
 
-            callback();
+            driver.manage().window().maximize()
+                .then(function () {
+                  callback();
+                });
+
           });
     } catch (error) {
       callback(error);
