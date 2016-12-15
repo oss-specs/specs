@@ -69,7 +69,7 @@ module.exports = function () {
 
   this.When(/^interested party wants to view HTML features in the repo$/, timeoutObject, function (callback) {
     this.browser.find(By.className('spec-link'))
-        .then(function (specLink) {
+        .then(function () {
           callback();
         });
   });
@@ -131,7 +131,7 @@ module.exports = function () {
       .then(function () {
         callback();
       })
-      .catch(function (err) {
+      .catch(function () {
         handleErr(callback);
       });
   });
@@ -231,7 +231,7 @@ module.exports = function () {
         .then(function () {
           callback();
         })
-        .catch(function(err) {
+        .catch(function() {
           handleErr(callback);
         });
   });
@@ -243,13 +243,13 @@ module.exports = function () {
         return browser.switchTo().frame(iframe);
       })
       .then(function () {
-        return browser.findElement(By.css("h1"));
+        return browser.findElement(By.css('h1'));
       })
       .then(function (el) {
         return el.getText();
       })
       .then(function (h1Text) {
-        should.equal(h1Text, "Title");
+        should.equal(h1Text, 'Title');
         callback();
       })
       .catch(function () {
