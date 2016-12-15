@@ -91,6 +91,7 @@
     "cucumber": "^0.9.2",
     "cucumber-junit": "^1.4.0",
     "eslint": "^1.5.1",
+    "fs-extra": "^1.0.0",
     "gulp": "^3.9.0",
     "gulp-csslint": "^0.2.0",
     "gulp-cucumber": "^0.0.14",

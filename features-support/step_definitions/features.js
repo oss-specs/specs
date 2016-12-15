@@ -67,6 +67,13 @@ module.exports = function () {
     getProjectFromUrl.bind(world)(getScenarioFromProject(callback, world));
   });
 
+  this.When(/^interested party wants to view HTML features in the repo$/, timeoutObject, function (callback) {
+    this.browser.find(By.className('spec-link'))
+        .then(function (specLink) {
+          callback();
+        });
+  });
+
   this.When(/^they decide to change which branch is being displayed$/, function (callback) {
     var world = this;
     var burgerMenuId = 'expand-collapse-repository-controls';
@@ -85,13 +92,13 @@ module.exports = function () {
         return world.browser.findElement(By.id(repositoryCongtrolsId));
 
         // Get the repo controls element.
-      }, handleErr(callback))
+      })
       .then(function(_repoControlsEl) {
         repoControlsEl = _repoControlsEl;
         return repoControlsEl.getAttribute('class');
 
         // Open the repo controls.
-      }, handleErr(callback))
+      })
       .then(function(repoControlsClass) {
         var isClosed = repoControlsClass.indexOf('collapse') !== -1;
         if (isClosed) {
@@ -100,13 +107,13 @@ module.exports = function () {
         return;
 
         // Grab the current SHA
-      }, handleErr(callback))
+      })
       .then(function() {
         return world.browser.findElement(By.id(projectShaElId));
-      }, handleErr(callback))
+      })
       .then(function(_projectShaEl) {
         return _projectShaEl.getText();
-      }, handleErr(callback))
+      })
       .then(function(originalSha) {
         world.oringalSha = originalSha;
 
@@ -114,14 +121,19 @@ module.exports = function () {
         return world.browser.findElement(By.id(changeBranchSelectElId));
 
         // Request to change branch.
-      }, handleErr(callback))
+      })
       .then(function(_changeBranchSelectEl) {
         return _changeBranchSelectEl.findElement(By.xpath('option[@value=\'' + testingBranchOptionValue + '\']'));
-      }, handleErr(callback))
+      })
       .then(function(_testBranchOptionEl) {
-        _testBranchOptionEl.click();
+        return _testBranchOptionEl.click();
+      })
+      .then(function () {
         callback();
-      }, handleErr(callback));
+      })
+      .catch(function (err) {
+        handleErr(callback);
+      });
   });
 
 
@@ -143,7 +155,6 @@ module.exports = function () {
     var world = this;
 
     var projectShaElId = 'project-commit';
-
 
     // Get the new SHA.
     world.browser.findElement(By.id(projectShaElId))
@@ -204,5 +215,46 @@ module.exports = function () {
     callback();
   });
 
+
+
+
+  this.When(/^they decide to view HTML specification$/, function (callback) {
+    var world = this;
+
+    world.browser.findElements(By.css('.spec-link[href*=\\.html]'))
+        .then(function (specLinks) {
+          var featureLink = specLinks[specLinks.length - 1];
+
+          // Navigates to a feature file
+          return world.browser.get(featureLink.getAttribute('href'));
+        })
+        .then(function () {
+          callback();
+        })
+        .catch(function(err) {
+          handleErr(callback);
+        });
+  });
+
+  this.Then(/^HTML specification is displayed$/, function (callback) {
+    var browser = this.browser;
+    browser.findElement(By.css('section.html-body iframe'))
+      .then(function (iframe) {
+        return browser.switchTo().frame(iframe);
+      })
+      .then(function () {
+        return browser.findElement(By.css("h1"));
+      })
+      .then(function (el) {
+        return el.getText();
+      })
+      .then(function (h1Text) {
+        should.equal(h1Text, "Title");
+        callback();
+      })
+      .catch(function () {
+        handleErr(callback);
+      });
+  });
 
 };

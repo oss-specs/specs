@@ -112,8 +112,7 @@ module.exports = function seleniumHooks() {
       console.error('SauceOnDemandSessionID=%s job-name=%s', session.getId(), scenario.getName());
       /* eslint-enable no-console */
 
-      browser.quit();
-      callback();
+      browser.quit().then(callback);
     });
   });
 };
