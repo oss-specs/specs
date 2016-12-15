@@ -75,8 +75,6 @@ module.exports = function seleniumHooks() {
     var world = this;
     var timeoutManager;
 
-    console.log("This should have timeouts");
-
     // Lazy require WebDriver so it isn't pulled in for non-selenium tests.
     webdriver = require('selenium-webdriver');
 
