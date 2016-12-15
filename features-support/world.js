@@ -12,6 +12,9 @@ var appConfig = require('../lib/configuration/app-config').set({
 });
 
 module.exports = function() {
+  // Default asynchronous step timeout to 10 seconds
+  this.setDefaultTimeout(10 * 1000);
+
   this.World = function World() {
     this.appPort = process.env.PORT || 3000;
 

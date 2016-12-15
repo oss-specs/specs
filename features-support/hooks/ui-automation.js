@@ -109,14 +109,19 @@ module.exports = function seleniumHooks() {
   this.After('@ui-automation', function(scenario, callback) {
     var browser = this.browser;
 
-    browser.getSession().then(function(session) {
+    var status = scenario.isSuccessful() ? 'passed' : 'failed';
 
-      // Communicate the Sauce Id to TeamCity Sauce plugin.
-      /* eslint-disable no-console */
-      console.error('SauceOnDemandSessionID=%s job-name=%s', session.getId(), scenario.getName());
-      /* eslint-enable no-console */
-
-      browser.quit().then(callback);
-    });
+    browser.getSession()
+      .then(function () {
+        return browser.executeScript('sauce:job-result=' + status);
+      })
+      .catch(function () {
+      })
+      .then(function () {
+        return browser.quit();
+      })
+      .then(function () {
+        callback();
+      });
   });
 };
