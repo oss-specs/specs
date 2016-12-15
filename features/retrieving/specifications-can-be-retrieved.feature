@@ -14,20 +14,19 @@ Feature: Specifications can be retrieved from remote Git repositories.
 
   @cleanSlate
   Scenario: Requesting features for an existing project displays features.
-    Given a URL representing a remote Git repo "https://github.com/oss-specs/specs"
+    Given a user is viewing oss-specs repository
     When an interested party wants to view the features in that repo
     And they request the features for the same repository again
     Then the list of features will be visible.
 
   @cleanSlate
   Scenario: It is simple to see the scenarios within with a feature file.
-    Given a URL representing a remote Git repo "https://github.com/oss-specs/specs"
+    Given a user is viewing oss-specs repository
     When an interested party wants to view the scenarios within a feature
     Then the scenarios will be visible.
 
   @cleanSlate
   Scenario: Users can change which branch is being displayed.
-    Given a URL representing a remote Git repo "https://github.com/oss-specs/specs"
-    When an interested party wants to view the features in that repo
-    And they decide to change which branch is being displayed
+    Given a user is viewing oss-specs repository
+    When they decide to change which branch is being displayed
     Then the files from the selected branch are displayed.

@@ -148,6 +148,9 @@ app.use(function(req, res, next) {
 /*eslint-disable no-unused-vars */
 app.use(function(err, req, res, next) {
 /*eslint-enable no-unused-vars */
+
+  console.log(err);
+
   var status = err.status || 500;
   var errorMessage = err.message || err;
   var stack = err.stack || false;

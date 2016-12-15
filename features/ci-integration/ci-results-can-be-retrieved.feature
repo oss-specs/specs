@@ -8,13 +8,13 @@ Feature: Continuous integration results can be retrieved from remote CI server.
 
   @cleanSlate
   Scenario: Results can be retrieved if project has CI links
-    Given a URL representing a remote Git repo "https://github.com/BenSummerfieldCowe/specs"
+    Given a user is viewing oss-specs repository
     When an interested party wants to view the results for the features in that repo
     Then the get results button is displayed.
 
   @cleanSlate
   Scenario: Results can be retrieved if project has CI Links
-    Given a URL representing a remote Git repo "https://github.com/BenSummerfieldCowe/specs"
+    Given a user is viewing oss-specs repository
     When an interested party wants to view the results for the features in that repo
     And the results are retrieved from a CI server
     Then the list of results for the feature will be visible.

@@ -3,6 +3,7 @@
 var should = require('should');
 var By = require('selenium-webdriver').By;
 var until = require('selenium-webdriver').until;
+var fs = require('fs-extra');
 
 const pageLoadTimeout = 30 * 1000;
 const timeoutObject = {timeout: pageLoadTimeout};
@@ -10,7 +11,7 @@ const timeoutObject = {timeout: pageLoadTimeout};
 // Deal with the non-standard webdriver promises.
 function handleErr(cb) {
   return function(err) {
-    cb(err);
+    return cb(err);
   };
 }
 
@@ -55,9 +56,8 @@ function getScenarioFromProject(callback, world) {
 
 module.exports = function () {
 
-  this.Given(/^a URL representing a remote Git repo "([^"]*)"$/, function (repoUrl, callback) {
+  this.Given(/^a URL representing a remote Git repo "([^"]*)"$/, function (repoUrl) {
     this.repoUrl = repoUrl;
-    callback();
   });
 
 
@@ -75,7 +75,7 @@ module.exports = function () {
         });
   });
 
-  this.When(/^they decide to change which branch is being displayed$/, function (callback) {
+  function switchToDemoBranch(callback) {
     var world = this;
     var burgerMenuId = 'expand-collapse-repository-controls';
     var repositoryCongtrolsId = 'repository-controls';
@@ -140,6 +140,9 @@ module.exports = function () {
       .catch(function () {
         handleErr(callback);
       });
+  }
+  this.When(/^they decide to change which branch is being displayed$/, function (callback) {
+    switchToDemoBranch.bind(this)(callback);
   });
 
 
@@ -224,29 +227,23 @@ module.exports = function () {
 
 
 
-  this.When(/^they decide to view HTML specification$/, function (callback) {
+  this.When(/^they decide to view HTML specification$/, function () {
+    // Need to switch to a demo branch because we have HTML specification in there
+    switchToDemoBranch.bind(this)();
+
     var world = this;
-
-    world.browser.findElements(By.css('.spec-link[href*=\\.html]'))
-        .then(function (specLinks) {
-          var featureLink = specLinks[specLinks.length - 1];
-
+    return world.browser.findElement(By.css('.spec-link[href*=\\.html]'))
+        .then(function (specLink) {
           // Navigates to a feature file
-          return world.browser.get(featureLink.getAttribute('href'));
-        })
-        .then(function () {
-          callback();
-        })
-        .catch(function() {
-          handleErr(callback);
+          return world.browser.get(specLink.getAttribute('href'));
         });
   });
 
   this.Then(/^HTML specification is displayed$/, function (callback) {
     var browser = this.browser;
     browser.findElement(By.css('section.html-body iframe'))
-      .then(function (iframe) {
-        return browser.switchTo().frame(iframe);
+      .then(function (frame) {
+        return browser.switchTo().frame(frame);
       })
       .then(function () {
         return browser.findElement(By.css('h1'));
@@ -263,4 +260,33 @@ module.exports = function () {
       });
   });
 
+  this.Given(/^a user is viewing (.*) repository$/, function (repository, callback) {
+    var dotGitPath = './.git';
+    var world = this;
+    world.repoUrl = 'https://github.com/oss-specs/specs';
+    fs.copy(dotGitPath, 'project-data/projects/specs', function() {
+      /*
+         Need to update remote url from git (local) to public https as we currently
+         dont support authentication
+       */
+      var gitConfigPath = 'project-data/projects/specs/config';
+      var gitConfig = fs.readFileSync(gitConfigPath);
+      var gitConfigContent = gitConfig.toString().replace('git@github.com:oss-specs/specs', world.repoUrl);
+
+      fs.writeFile(gitConfigPath, gitConfigContent, function(error) {
+        if(error) {
+          return callback(error);
+        }
+
+        world.browser.get('http://localhost:' + world.appPort + '/project/specs')
+            .then(function() {
+              callback();
+            })
+            .catch(function () {
+              handleErr(callback);
+            });
+      });
+    });
+  });
 };
+
