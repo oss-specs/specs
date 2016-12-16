@@ -4,6 +4,9 @@ var should = require('should');
 var By = require('selenium-webdriver').By;
 var until = require('selenium-webdriver').until;
 var fs = require('fs-extra');
+var r = require('request');
+var tar = require('tar-fs');
+var gunzip = require('gunzip-maybe');
 
 const pageLoadTimeout = 30 * 1000;
 const timeoutObject = {timeout: pageLoadTimeout};
@@ -261,30 +264,23 @@ module.exports = function () {
   });
 
   this.Given(/^a user is viewing (.*) repository$/, function (repository, callback) {
-    var dotGitPath = './.git';
+    let archiveUrl = "https://gist.github.com/sponte/1fa36cdb67ae2c8ac0fd70ed6e83b2d8/raw/203b45c21921fda6323a175e1bee246c327dcd60/specs.tar.gz";
     var world = this;
     world.repoUrl = 'https://github.com/oss-specs/specs';
-    fs.copy(dotGitPath, 'project-data/projects/specs', function() {
-      /*
-         Need to update remote url from git (local) to public https as we currently
-         dont support authentication
-       */
-      var gitConfigPath = 'project-data/projects/specs/config';
-      var gitConfig = fs.readFileSync(gitConfigPath);
-      var gitConfigContent = gitConfig.toString().replace('git@github.com:oss-specs/specs', world.repoUrl);
 
-      fs.writeFile(gitConfigPath, gitConfigContent, function(error) {
-        if(error) {
-          return callback(error);
-        }
+    fs.mkdirs('project-data/projects', function () {
+      var stream = r(archiveUrl)
+          .pipe(gunzip())
+          .pipe(tar.extract('project-data/projects/specs'));
 
+      stream.on('finish', function () {
         world.browser.get('http://localhost:' + world.appPort + '/project/specs')
-            .then(function() {
-              callback();
-            })
-            .catch(function () {
-              handleErr(callback);
-            });
+          .then(function() {
+            callback();
+          })
+          .catch(function () {
+            handleErr(callback);
+          });
       });
     });
   });
