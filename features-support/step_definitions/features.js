@@ -264,7 +264,7 @@ module.exports = function () {
   });
 
   this.Given(/^a user is viewing (.*) repository$/, function (repository, callback) {
-    let archiveUrl = 'https://gist.github.com/sponte/1fa36cdb67ae2c8ac0fd70ed6e83b2d8/raw/203b45c21921fda6323a175e1bee246c327dcd60/specs.tar.gz';
+    let archiveUrl = 'https://gist.github.com/sponte/1fa36cdb67ae2c8ac0fd70ed6e83b2d8/raw/26f767ac726e7eb6916813ba55e9f4b69517f787/specs.tar.gz';
     var world = this;
     world.repoUrl = 'https://github.com/oss-specs/specs';
 
