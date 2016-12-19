@@ -2,11 +2,6 @@
 // which lists what tasks are available.
 var gulp = require('gulp-help')(require('gulp'));
 
-// Process and file manipulation to capture stdout
-// from the Cucumber tests.
-var spawn = require('child_process').spawn;
-var fs = require('fs');
-
 // Sequential Gulp tasks
 var runSequence = require('run-sequence').use(gulp);
 
