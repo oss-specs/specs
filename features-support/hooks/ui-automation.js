@@ -116,7 +116,9 @@ module.exports = function seleniumHooks() {
     var status = scenario.isSuccessful() ? 'passed' : 'failed';
 
     browser.getSession()
-      .then(function () {
+      .then(function (session) {
+/*eslint no-console:0*/
+        console.error('SauceOnDemandSessionID=%s job-name=%s', session.getId(), scenario.getName());
         return browser.executeScript('sauce:job-result=' + status);
       })
       .catch(function () {
