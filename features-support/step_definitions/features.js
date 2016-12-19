@@ -2,6 +2,11 @@
 
 var should = require('should');
 var By = require('selenium-webdriver').By;
+var until = require('selenium-webdriver').until;
+var fs = require('fs-extra');
+var r = require('request');
+var tar = require('tar-fs');
+var gunzip = require('gunzip-maybe');
 
 const pageLoadTimeout = 30 * 1000;
 const timeoutObject = {timeout: pageLoadTimeout};
@@ -9,7 +14,7 @@ const timeoutObject = {timeout: pageLoadTimeout};
 // Deal with the non-standard webdriver promises.
 function handleErr(cb) {
   return function(err) {
-    cb(err);
+    return cb(err);
   };
 }
 
@@ -54,9 +59,8 @@ function getScenarioFromProject(callback, world) {
 
 module.exports = function () {
 
-  this.Given(/^a URL representing a remote Git repo "([^"]*)"$/, function (repoUrl, callback) {
+  this.Given(/^a URL representing a remote Git repo "([^"]*)"$/, function (repoUrl) {
     this.repoUrl = repoUrl;
-    callback();
   });
 
 
@@ -67,7 +71,14 @@ module.exports = function () {
     getProjectFromUrl.bind(world)(getScenarioFromProject(callback, world));
   });
 
-  this.When(/^they decide to change which branch is being displayed$/, function (callback) {
+  this.When(/^interested party wants to view HTML features in the repo$/, timeoutObject, function (callback) {
+    this.browser.find(By.className('spec-link'))
+        .then(function () {
+          callback();
+        });
+  });
+
+  function switchToDemoBranch(callback) {
     var world = this;
     var burgerMenuId = 'expand-collapse-repository-controls';
     var repositoryCongtrolsId = 'repository-controls';
@@ -85,13 +96,13 @@ module.exports = function () {
         return world.browser.findElement(By.id(repositoryCongtrolsId));
 
         // Get the repo controls element.
-      }, handleErr(callback))
+      })
       .then(function(_repoControlsEl) {
         repoControlsEl = _repoControlsEl;
         return repoControlsEl.getAttribute('class');
 
         // Open the repo controls.
-      }, handleErr(callback))
+      })
       .then(function(repoControlsClass) {
         var isClosed = repoControlsClass.indexOf('collapse') !== -1;
         if (isClosed) {
@@ -100,13 +111,13 @@ module.exports = function () {
         return;
 
         // Grab the current SHA
-      }, handleErr(callback))
+      })
       .then(function() {
         return world.browser.findElement(By.id(projectShaElId));
-      }, handleErr(callback))
+      })
       .then(function(_projectShaEl) {
         return _projectShaEl.getText();
-      }, handleErr(callback))
+      })
       .then(function(originalSha) {
         world.oringalSha = originalSha;
 
@@ -114,14 +125,27 @@ module.exports = function () {
         return world.browser.findElement(By.id(changeBranchSelectElId));
 
         // Request to change branch.
-      }, handleErr(callback))
+      })
       .then(function(_changeBranchSelectEl) {
         return _changeBranchSelectEl.findElement(By.xpath('option[@value=\'' + testingBranchOptionValue + '\']'));
-      }, handleErr(callback))
+      })
       .then(function(_testBranchOptionEl) {
-        _testBranchOptionEl.click();
+        world._testBranchOptionEl = _testBranchOptionEl;
+        return _testBranchOptionEl.click();
+      })
+      .then(function () {
+        // Waiting for the page to refresh after the click
+        return world.browser.wait(until.stalenessOf(world._testBranchOptionEl));
+      })
+      .then(function () {
         callback();
-      }, handleErr(callback));
+      })
+      .catch(function () {
+        handleErr(callback);
+      });
+  }
+  this.When(/^they decide to change which branch is being displayed$/, function (callback) {
+    switchToDemoBranch.bind(this)(callback);
   });
 
 
@@ -143,7 +167,6 @@ module.exports = function () {
     var world = this;
 
     var projectShaElId = 'project-commit';
-
 
     // Get the new SHA.
     world.browser.findElement(By.id(projectShaElId))
@@ -205,4 +228,61 @@ module.exports = function () {
   });
 
 
+
+
+  this.When(/^they decide to view HTML specification$/, function () {
+    // Need to switch to a demo branch because we have HTML specification in there
+    switchToDemoBranch.bind(this)();
+
+    var world = this;
+    return world.browser.findElement(By.css('.spec-link[href*=\\.html]'))
+        .then(function (specLink) {
+          // Navigates to a feature file
+          return world.browser.get(specLink.getAttribute('href'));
+        });
+  });
+
+  this.Then(/^HTML specification is displayed$/, function (callback) {
+    var browser = this.browser;
+    browser.findElement(By.css('section.html-body iframe'))
+      .then(function (frame) {
+        return browser.switchTo().frame(frame);
+      })
+      .then(function () {
+        return browser.findElement(By.css('h1'));
+      })
+      .then(function (el) {
+        return el.getText();
+      })
+      .then(function (h1Text) {
+        should.equal(h1Text, 'Title');
+        callback();
+      })
+      .catch(function () {
+        handleErr(callback);
+      });
+  });
+
+  this.Given(/^a user is viewing (.*) repository$/, function (repository, callback) {
+    let archiveUrl = 'https://gist.github.com/sponte/1fa36cdb67ae2c8ac0fd70ed6e83b2d8/raw/203b45c21921fda6323a175e1bee246c327dcd60/specs.tar.gz';
+    var world = this;
+    world.repoUrl = 'https://github.com/oss-specs/specs';
+
+    fs.mkdirs('project-data/projects', function () {
+      var stream = r(archiveUrl)
+          .pipe(gunzip())
+          .pipe(tar.extract('project-data/projects/specs'));
+
+      stream.on('finish', function () {
+        world.browser.get('http://localhost:' + world.appPort + '/project/specs')
+          .then(function() {
+            callback();
+          })
+          .catch(function () {
+            handleErr(callback);
+          });
+      });
+    });
+  });
 };
+

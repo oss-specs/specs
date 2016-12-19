@@ -16,7 +16,7 @@ We're trying out continuous delivery on this project so in theory the `master` b
 
 ## Development installation instructions
 
-* Install [node](https://nodejs.org/).
+* Install [node](https://nodejs.org/), currently supporting 6.9.2.
 * Clone this repository.
 * Move to the cloned project directory and run `npm install`.
 * To start the server locally `npm start` -- by default the web UI will be visible at [http://localhost:3000/](http://localhost:3000/).

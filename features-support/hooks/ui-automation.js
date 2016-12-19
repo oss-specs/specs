@@ -70,7 +70,8 @@ function getCustomCapabilitiesFromEnvironment(webdriver) {
 }
 
 module.exports = function seleniumHooks() {
-  this.Before('@ui-automation', function(scenario, callback) {
+  // Lets give browser a minute to start up
+  this.Before({ tags: ['@ui-automation'], timeout: 60 * 1000}, function(scenario, callback) {
     var world = this;
     var timeoutManager;
 
@@ -90,30 +91,43 @@ module.exports = function seleniumHooks() {
         .withCapabilities(capabilities)
         .build();
 
-      // Manage timeouts.
-      timeoutManager = driver.manage().timeouts();
-      timeoutManager.pageLoadTimeout(pageLoadTimeoutms);
-      timeoutManager.implicitlyWait(implicitlyWaitTimeoutms);
+      driver.getSession()
+          .then(function () {
+            // Manage timeouts.
+            timeoutManager = driver.manage().timeouts();
+            timeoutManager.pageLoadTimeout(pageLoadTimeoutms);
+            timeoutManager.implicitlyWait(implicitlyWaitTimeoutms);
 
+            driver.manage().window().maximize()
+                .then(function () {
+                  callback();
+                });
+
+          });
     } catch (error) {
       callback(error);
     }
-    callback();
   });
 
   // Tidy up.
   this.After('@ui-automation', function(scenario, callback) {
     var browser = this.browser;
 
-    browser.getSession().then(function(session) {
+    var status = scenario.isSuccessful() ? 'passed' : 'failed';
 
-      // Communicate the Sauce Id to TeamCity Sauce plugin.
-      /* eslint-disable no-console */
-      console.error('SauceOnDemandSessionID=%s job-name=%s', session.getId(), scenario.getName());
-      /* eslint-enable no-console */
-
-      browser.quit();
-      callback();
-    });
+    browser.getSession()
+      .then(function (session) {
+/*eslint no-console:0*/
+        console.error('SauceOnDemandSessionID=%s job-name=%s', session.getId(), scenario.getName());
+        return browser.executeScript('sauce:job-result=' + status);
+      })
+      .catch(function () {
+      })
+      .then(function () {
+        return browser.quit();
+      })
+      .then(function () {
+        callback();
+      });
   });
 };

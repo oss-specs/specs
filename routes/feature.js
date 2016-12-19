@@ -99,6 +99,9 @@ router.get(/([^\/]+)\/file\/([\w\W]+)/, function (req, res, next) {
     } else if (file.isMarkdownFile && !renderPlainFile) {
       res.render('markdown-file', {file: file});
 
+    } else if (file.isHTMLFile && !renderPlainFile) {
+      res.render('html-file', {file: file});
+
     } else {
       res.render('general-file', {file: file});
     }

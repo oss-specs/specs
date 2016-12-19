@@ -1,0 +1,20 @@
+<li>
+  <a class="spec-link" href="{{this.route}}?ref={{currentBranchName}}">
+    <section class="file-container group">
+      {{> edit_button url=this.editUrl}}
+      <section class="file-details">
+        <p class="file-name">
+          {{#if this.empty}}
+            {{> empty_file_notice name=this.name}}
+          {{else}}
+            {{#if this.error}}
+              {{> parse_error_notice name=this.name}}
+            {{else}}
+              <span title="{{this.filePath}}">{{this.name}}</span>
+            {{/if}}
+          {{/if}}
+        </p>
+      </section>
+    </section>
+  </a>
+</li>

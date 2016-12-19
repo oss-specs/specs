@@ -78,10 +78,12 @@ function getStringConverter(aggregator) {
 function parseDirectoryPath(context, options) {
   var path = context;
   var pathsToHideRegex = options.hash.pathsToHideRegex;
+
+  // Fixes https://github.com/oss-specs/specs/issues/240
   if (pathsToHideRegex) {
-    path = path.replace(pathsToHideRegex, '<span class="redacted"></span>');
+    path = path.replace(pathsToHideRegex, '%REDACTED%');
   }
-  return path.replace(/\//g, ' / ');
+  return path.replace(/\//g, ' / ').replace('%REDACTED%', '<span class="redacted"></span>');
 }
 
 // URI encode a string.
@@ -125,6 +127,16 @@ function checkResultsFromList(array, scenario) {
     return passes;
   }
 }
+
+
+var ifEquals = function(a, b, opts) {
+  if (a === b) {
+    return opts.fn(this);
+  } else {
+    return opts.inverse(this);
+  }
+};
+
 
 /**
  * Takes in the scenario name and a array of json object to check if the scenario has passed
@@ -173,5 +185,6 @@ module.exports = {
   stepContent: highlightStepParams,
   directoryPath: parseDirectoryPath,
   uriEncodeString: uriEncodeString,
-  checkResultsFromList:checkResultsFromList
+  checkResultsFromList:checkResultsFromList,
+  ifEquals: ifEquals
 };

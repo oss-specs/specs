@@ -28,6 +28,8 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
 
   var shouldGetResults = req.query.get_results;
 
+  var expandDirectoryPath = req.query.directoryPath;
+
   // Cookie variables.
   var openBurgerMenu = (req.cookies.specsOpenBurgerMenu === 'true');
 
@@ -61,7 +63,8 @@ router.get(/^\/([^\/]+)$/, function(req, res, next) {
     openBurgerMenu: openBurgerMenu,
     currentProjectViewName: currentProjectViewName,
     currentTags: currentTags,
-    shouldGetResults: shouldGetResults
+    shouldGetResults: shouldGetResults,
+    expandDirectoryPath: expandDirectoryPath
   };
 
   // Create the render and passError functions.
@@ -132,7 +135,7 @@ function getRender(res, appConfig, renderOptions) {
     renderingData.openBurgerMenu = renderOptions.openBurgerMenu;
     renderingData.currentProjectViewName = renderOptions.currentProjectViewName;
     renderingData.tagRequested = !!renderOptions.currentTags;
-    
+
     if(projectData.config.ciJobs) {
       if (projectData.config.jenkinsJobs) {
         renderingData.jenkinsURLs = true;

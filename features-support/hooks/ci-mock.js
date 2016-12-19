@@ -5,6 +5,7 @@
 
 var express = require('express');
 var app = express();
+var process = require('process');
 var server;
 
 app.get('/api/json*', function(req, res) {
@@ -18,8 +19,10 @@ app.get('/job/job/lastCompletedBuild/testReport/api/json*', function (req, res) 
 });
 
 module.exports = function seleniumHooks() {
+  var world = this;
   this.Before('@ci-mock', function(scenario, callback) {
-    server =app.listen(5001, function () {
+    world.ciMockPort = process.env.CI_PORT || 5001;
+    server = app.listen(world.ciMockPort, function () {
       callback();
     });
   });

@@ -91,11 +91,13 @@
         {{/if}}
         {{#each project.filesByDir as |files directoryPath|}}
           <section class="directory">
-            <h2 class="directory-path interactive {{#if ../projectView.[start collapsed]}}can-expand{{/if}}" title="{{directoryPath}}" id="{{# uri_encode directoryPath}}{{this}}{{/uri_encode}}">{{#directory_path directoryPath pathsToHideRegex=../projectView.regex.pathsToHide}}{{this}}{{/directory_path}}</h2>
+            <h2 class="directory-path interactive {{#if ../projectView.[start collapsed]}}can-expand{{/if}} {{#if_eq directoryPath expandDirectoryPath}}can-expand{{/if_eq}}" title="{{directoryPath}}" id="{{# uri_encode directoryPath}}{{this}}{{/uri_encode}}">{{#directory_path directoryPath pathsToHideRegex=../projectView.regex.pathsToHide}}{{this}}{{/directory_path}}</h2>
             <ul class="file-list collapsible {{#if ../projectView.[start collapsed]}}collapse{{/if}}">
               {{#each files}}
                 {{#if this.isFeatureFile}}
                   {{> project_file_feature this currentBranchName=../../../project.currentBranchName}}
+                {{else if this.isHTMLFile}}
+                  {{> project_file_html this currentBranchName=../../../../project.currentBranchName}}
                 {{else if this.isMarkdownFile}}
                   {{> project_file_markdown this currentBranchName=../../../../project.currentBranchName}}
                 {{else}}

@@ -1,4 +1,4 @@
-FROM node:4.2.1
+FROM node:6.9.2
 
 ENV NODE_ENV production
 ENV SPECS_ALLOW_INSECURE_SSL false
