@@ -35,7 +35,7 @@ function markTargetedFeature(feature, targetedScenarioName) {
 }
 
 router.get(/([^\/]+)\/fileContent\/([\w\W]+)/, function (req, res, next) {
-var repoName = req.params[0];
+  var repoName = req.params[0];
   var filePath = req.params[1];
   var ref = req.query.ref;
 
@@ -44,13 +44,7 @@ var repoName = req.params[0];
     localPathRoot: appConfig.projectsPath,
     currentBranchName: ref
   };
-
-  // Skip the rendering for query param ?plain=true ?plain=1 etc.
-  var renderPlainFile = req.query.plain === 'true' || !!parseInt(req.query.plain);
-
-  // Optional name of a particular scenario.
-  var targetedScenarioName = req.query.scenario || false;
-
+  
   // An object referring to the file we want to render.
   var file;
 
