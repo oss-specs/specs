@@ -182,6 +182,9 @@ module.exports = {
   newlinesToParagraphs: getStringConverter(function toParagraphs(safeContent) {
     return '<p>' + safeContent + '</p>';
   }),
+  debug: function(text) {
+    return JSON.stringify(text, null, 4);
+  },
   stepContent: highlightStepParams,
   directoryPath: parseDirectoryPath,
   uriEncodeString: uriEncodeString,

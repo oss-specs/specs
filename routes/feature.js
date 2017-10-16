@@ -11,6 +11,7 @@ var getFileContent = require('../lib/specifications/projects/project').getFileCo
 
 var processFiles = require('../lib/specifications/files/process-files');
 var getEditUrl = require('../lib/specifications/files/get-edit-url');
+var getContentUrl = require('../lib/specifications/files/get-content-url');
 
 var appConfig = require('../lib/configuration/app-config').get();
 
@@ -33,6 +34,48 @@ function markTargetedFeature(feature, targetedScenarioName) {
   return feature;
 }
 
+router.get(/([^\/]+)\/fileContent\/([\w\W]+)/, function (req, res, next) {
+var repoName = req.params[0];
+  var filePath = req.params[1];
+  var ref = req.query.ref;
+
+  var projectData = {
+    repoName: repoName,
+    localPathRoot: appConfig.projectsPath,
+    currentBranchName: ref
+  };
+
+  // Skip the rendering for query param ?plain=true ?plain=1 etc.
+  var renderPlainFile = req.query.plain === 'true' || !!parseInt(req.query.plain);
+
+  // Optional name of a particular scenario.
+  var targetedScenarioName = req.query.scenario || false;
+
+  // An object referring to the file we want to render.
+  var file;
+
+  getProjectData(projectData, ref)
+  .then(function (_projectData) {
+    projectData = _projectData;
+
+    var filePathToFileObject = processFiles.getFilePathToFileObject(appConfig.projectRoute, projectData, getFileContent);
+    return filePathToFileObject(filePath);
+  })
+  .then(function(_file) {
+    file = _file;
+    return file.contentPromise;
+  })
+  .then(function (content) {
+    res.send(content);
+  })
+  .catch(function (err) {
+    // Pass on to the error handling route.
+    if (!err.status && err.code === 'ENOENT') {
+      err.status = 404;
+    }
+    next(err);
+  });
+});
 
 // Display an individual feature in a project.
 // htpp://host/<project name>/file/<root/to/file>
@@ -83,6 +126,7 @@ router.get(/([^\/]+)\/file\/([\w\W]+)/, function (req, res, next) {
 
     // Add an edit link to the file.
     file.editUrl = getEditUrl(projectData, file.filePath);
+    file.contentUrl = getContentUrl(req.originalUrl);
 
     if (file.isFeatureFile && !renderPlainFile) {
 
