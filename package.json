@@ -1,6 +1,6 @@
 {
   "name": "oss-specs",
-  "version": "0.15.20",
+  "version": "0.15.21",
   "engines": {
     "node": "4.2.1"
   },
