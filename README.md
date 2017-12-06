@@ -7,6 +7,7 @@ A service for exposing specifications expressed as Gherkin feature files via a n
 [![Code Climate](https://codeclimate.com/github/oss-specs/specs/badges/gpa.svg)](https://codeclimate.com/github/oss-specs/specs)
 [![Test Coverage](https://codeclimate.com/github/oss-specs/specs/badges/coverage.svg)](https://codeclimate.com/github/oss-specs/specs/coverage)
 
+[![Build Status](https://saucelabs.com/browser-matrix/specs.svg)](https://saucelabs.com/beta/builds/eec541ef039b4fbcb790e35eaf01accd)
 
 In the UI specify a https URL for a Git repo, and if that repo contains markdown or feature files they will be displayed. The idea is to make specifications stored in a repo visible and searchable, for people who aren't familiar with version control systems, and as part of a living documentation system.
 
