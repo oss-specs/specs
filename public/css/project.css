@@ -129,8 +129,8 @@ ul.file-list {
 }
 
 .project-branch select {
-  min-width: 30%;
-  max-width: 60%;
+  min-width: 40%;
+  max-width: 80%;
 }
 
 .project-commit {
